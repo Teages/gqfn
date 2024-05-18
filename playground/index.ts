@@ -1,33 +1,31 @@
 /* eslint-disable no-console */
 
 import { print } from 'graphql'
-import { gqf, gqp } from '../src'
+import { gqf } from '../src'
+import { withDirective } from '../src/core'
 
-const UserFields = gqp('fragment UserFields', 'on User', {
-  max: 'Int!',
-}, () => ({
-  name: true,
-  friends: $ => $({
-    max: $.max,
-  }, [
-    'id',
-    'name',
-    'email',
-  ]),
-}))
-
-console.log(print(gqf('query FindUser', {
-  name: 'String! = "Teages"',
-  max: 'Int! = 5',
+console.log(print(gqf('mutation Login', {
+  username: 'String!',
+  password: withDirective([
+    ['@check', { rule: 'password' }],
+  ], 'String!'),
+  withUserData: 'Boolean! = true',
 }, [{
-  findUser: $ => $({
-    name: $.name,
-    role: $('ADMIN'),
+  login: $ => $({
+    username: $.username,
+    password: $.password,
   }, [
-    'id',
+    'token',
     {
-      '...': ['name'],
-      ...UserFields($),
+      '...': withDirective([
+        ['@include', { if: $.withUserData }],
+      ], [{
+        user: [
+          'id',
+          'name',
+          'email',
+        ],
+      }]),
     },
   ]),
 }])))

@@ -1,5 +1,7 @@
 import { Kind, parseConstValue, parseType } from 'graphql'
 import type { VariableDefinitionNode } from 'graphql'
+import type { AcceptDirective } from './directive'
+import { parseDirective } from './directive'
 
 const VariableDefineSymbol = Symbol('VariableType')
 
@@ -16,18 +18,22 @@ export class Variable<T extends string> {
 }
 
 export type PrepareVariables<
-  T extends Record<string, string>,
+  T extends Record<string, AcceptDirective<string>>,
 > = {
-  [K in keyof T]: T[K] extends `${infer Type} = ${infer _Default}`
-    ? Variable<Type>
-    : Variable<T[K]>
+  [K in keyof T]: T[K] extends AcceptDirective<infer Value extends string>
+    ? Value extends `${infer Type} = ${infer _Default}`
+      ? Variable<Type>
+      : Variable<Value>
+    : never
 }
 
 export function parseVariables(
-  vars: Record<string, string>,
+  vars: Record<string, AcceptDirective<string>>,
 ): VariableDefinitionNode[] {
   return Object.entries(vars).map(([name, def]) => {
-    const [type, defaultValue] = def.split('=').map(s => s.trim())
+    const { value: defContent, directives } = parseDirective(def, true)
+
+    const [type, defaultValue] = defContent.split('=').map(s => s.trim())
 
     return {
       kind: Kind.VARIABLE_DEFINITION,
@@ -42,7 +48,7 @@ export function parseVariables(
       defaultValue: defaultValue
         ? parseConstValue(defaultValue, { noLocation: true })
         : undefined,
-      directives: [], // TODO: directives
+      directives,
     } satisfies VariableDefinitionNode
   })
 }

@@ -4,6 +4,8 @@ import { type OperationName, parseOperation } from './operation'
 import { parseTypeSelection } from './select'
 import type { TypeSelection } from './select'
 import { type PrepareVariables, parseVariables } from './variable'
+import type { AcceptDirective } from './directive'
+import { parseDirective } from './directive'
 
 export function gqf(
   selection: TypeSelection<EmptyRecord>
@@ -13,7 +15,7 @@ export function gqf(
   selection: TypeSelection<EmptyRecord>
 ): DocumentNode
 export function gqf<
-  Variables extends Record<string, VariablesInputs>,
+  Variables extends Record<string, AcceptDirective<VariablesInputs>>,
   VariablesInputs extends string,
 >(
   name: OperationName,
@@ -37,20 +39,22 @@ export function gqf(...args: any[]): DocumentNode {
 }
 
 function graphQueryFunction<
-  Variables extends Record<string, VariablesInputs>,
+  Variables extends Record<string, AcceptDirective<VariablesInputs>>,
   VariablesInputs extends string,
 >(
   name: OperationName,
   vars: Variables,
-  selection: TypeSelection<PrepareVariables<Variables>>,
+  selection: AcceptDirective<TypeSelection<PrepareVariables<Variables>>>,
 ): DocumentNode {
   const { type: operationType, name: operationName } = parseOperation(name)
+
+  const { value, directives } = parseDirective(selection)
 
   return {
     kind: Kind.DOCUMENT,
     definitions: [{
       kind: Kind.OPERATION_DEFINITION,
-      directives: [], // TODO: directives
+      directives,
       operation: {
         query: OperationTypeNode.QUERY,
         mutation: OperationTypeNode.MUTATION,
@@ -63,7 +67,7 @@ function graphQueryFunction<
             kind: Kind.NAME,
             value: operationName,
           },
-      selectionSet: parseTypeSelection(selection),
+      selectionSet: parseTypeSelection(value),
     }],
   }
 }
