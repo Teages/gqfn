@@ -7,7 +7,7 @@ import { withDirective } from '../src/core'
 console.log(print(gqf('mutation Login', {
   username: 'String!',
   password: withDirective([
-    ['@check', { rule: 'password' }],
+    ['@check', $ => ({ rule: $('password') })],
   ], 'String!'),
   withUserData: 'Boolean! = true',
   skipToken: 'Boolean! = false',
@@ -23,14 +23,10 @@ console.log(print(gqf('mutation Login', {
       '...': withDirective([
         ['@include', { if: $.withUserData }],
       ], [{
-        user: [
-          'id',
-          'name',
-          'email',
-        ],
+        user: ['id', 'name', 'email'],
       }]),
     },
   ]),
 }], [
-  ['@captcha', $ => ({ provider: $('cloudfare') })],
+  ['@captcha', $ => ({ provider: $('cloudflare') })],
 ])))

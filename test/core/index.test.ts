@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { gqf } from '../../src'
+import { gqf, withDirective } from '../../src'
 import { coreFixture as fixture } from '../utils'
 
 describe('@teages/gqf/core', () => {
@@ -68,7 +68,54 @@ describe('@teages/gqf/core', () => {
   ))
 
   it('directive', fixture(
-    gql => gql(``),
-    gqf('', {}, []),
+    gql => gql(`
+      mutation Login(
+        $username: String!,
+        $password: String! @check(rule: password),
+        $withUserData: Boolean! = true,
+        $skipToken: Boolean! = false
+      ) @captcha(provider: cloudflare) {
+        login(username: $username, password: $password) {
+          token @skip(if: $skipToken)
+          ... @include(if: $withUserData) {
+            user {
+              id
+              name
+              email
+            }
+          }
+        }
+      }
+    `),
+    gqf('mutation Login', {
+      username: 'String!',
+      password: withDirective([
+        ['@check', $ => ({ rule: $('password') })],
+      ], 'String!'),
+      withUserData: 'Boolean! = true',
+      skipToken: 'Boolean! = false',
+    }, [{
+      login: $ => $({
+        username: $.username,
+        password: $.password,
+      }, [
+        withDirective([
+          ['@skip', { if: $.skipToken }],
+        ], 'token'),
+        {
+          '...': withDirective([
+            ['@include', { if: $.withUserData }],
+          ], [{
+            user: [
+              'id',
+              'name',
+              'email',
+            ],
+          }]),
+        },
+      ]),
+    }], [
+      ['@captcha', $ => ({ provider: $('cloudflare') })],
+    ]),
   ))
 })

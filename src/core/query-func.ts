@@ -4,8 +4,8 @@ import { type OperationName, parseOperation } from './operation'
 import { parseTypeSelection } from './select'
 import type { TypeSelection } from './select'
 import { type PrepareVariables, parseVariables } from './variable'
-import type { AcceptDirective, DirectiveInput, DirectiveInputWithDollar } from './directive'
-import { parseDirective, parseDollarDirective, withDirective } from './directive'
+import type { AcceptDirective, DirectiveInputWithDollar } from './directive'
+import { parseDollarDirective } from './directive'
 
 export function gqf(
   selection: TypeSelection<EmptyRecord>,

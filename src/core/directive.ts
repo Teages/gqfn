@@ -55,11 +55,14 @@ export interface Directive {
 }
 
 export function withDirective<T>(
-  directives: DirectiveInput[],
+  directives: DirectiveInputWithDollar<EmptyRecord>[],
   node: T,
 ): DirectivePackage<T> {
   return new DirectivePackage(directives.map((item) => {
-    const [name, args] = item
+    const [name, argsProvider] = item
+    const args = typeof argsProvider === 'function'
+      ? argsProvider(initDollar())
+      : argsProvider
     return { name, args }
   }), node)
 }
