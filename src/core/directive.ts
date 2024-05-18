@@ -1,6 +1,8 @@
 import { Kind } from 'graphql'
 import type { ConstDirectiveNode, DirectiveNode, ValueNode } from 'graphql'
+import type { EmptyRecord } from '../utils/object'
 import { type Argument, parseArgs } from './arg'
+import { type Dollar, type DollarPayload, initDollar } from './dollar'
 
 const directivesSymbol = Symbol('directives')
 const nodeSymbol = Symbol('node')
@@ -35,7 +37,18 @@ export class DirectivePackage<T> {
 
 export type AcceptDirective<T> = T | DirectivePackage<T>
 
-export type DirectiveInput = [`@${string}`, Argument]
+export type DirectiveInput = [
+  `@${string}`,
+  Argument,
+]
+export type DirectiveInputWithDollar<Var extends DollarPayload> = [
+  `@${string}`,
+  Argument | DirectiveArgumentProvider<Var>,
+]
+
+export type DirectiveArgumentProvider<Var extends DollarPayload> = (
+  $: Dollar<Var>
+) => Argument
 export interface Directive {
   name: string
   args: Argument
@@ -45,10 +58,10 @@ export function withDirective<T>(
   directives: DirectiveInput[],
   node: T,
 ): DirectivePackage<T> {
-  return new DirectivePackage(directives.map(item => ({
-    name: item[0],
-    args: item[1],
-  })), node)
+  return new DirectivePackage(directives.map((item) => {
+    const [name, args] = item
+    return { name, args }
+  }), node)
 }
 
 export function exportDirective<T>(
@@ -67,6 +80,37 @@ export function exportDirective<T>(
   return { directives, value }
 }
 
+export function parseDollarDirective<
+  Var extends DollarPayload,
+>(
+  directivesInput: Array<DirectiveInputWithDollar<Var>>,
+  constOnly: boolean = false,
+): ReadonlyArray<DirectiveNode> {
+  const directivePackage = new DirectivePackage(directivesInput.map((item) => {
+    const [name, argProvider] = item
+    const args = typeof argProvider === 'function'
+      ? argProvider(initDollar())
+      : argProvider
+    return { name, args }
+  }), {})
+
+  const directives = directivePackage.directives
+  if (constOnly) {
+    // check if all directives are const node
+    if (
+      directives.some(
+        directive => directive.arguments?.some(
+          arg => !isConstNode(arg.value),
+        ),
+      )
+    ) {
+      throw new Error('Not all directives are const node')
+    }
+  }
+
+  return directives
+}
+
 export function parseDirective<T>(
   context: AcceptDirective<T>,
   constOnly?: false,
@@ -74,6 +118,7 @@ export function parseDirective<T>(
   directives: ReadonlyArray<DirectiveNode>
   value: T
 }
+
 export function parseDirective<T>(
   context: AcceptDirective<T>,
   constOnly: true,
@@ -81,6 +126,7 @@ export function parseDirective<T>(
   directives: ReadonlyArray<ConstDirectiveNode>
   value: T
 }
+
 export function parseDirective<T>(
   context: AcceptDirective<T>,
   constOnly: boolean = false,

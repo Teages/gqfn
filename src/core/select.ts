@@ -18,8 +18,8 @@ export type SelectionContextWithArguments<Var extends DollarPayload> = (
 ) => [Argument, SelectionContext<Var>]
 
 export type SelectionContextWithoutDirective<Var extends DollarPayload> =
-  | ArrayMayFollowItem<AcceptDirective<string>, SelectionObject<Var>>
-  | Array<AcceptDirective<string>>
+  | ArrayMayFollowItem<string | DirectivePackage<string>, SelectionObject<Var>>
+  | Array<string | DirectivePackage<string>>
   | true
 
 export type SelectionContext<Var extends DollarPayload> =

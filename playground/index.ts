@@ -10,12 +10,15 @@ console.log(print(gqf('mutation Login', {
     ['@check', { rule: 'password' }],
   ], 'String!'),
   withUserData: 'Boolean! = true',
+  skipToken: 'Boolean! = false',
 }, [{
   login: $ => $({
     username: $.username,
     password: $.password,
   }, [
-    'token',
+    withDirective([
+      ['@skip', { if: $.skipToken }],
+    ], 'token'),
     {
       '...': withDirective([
         ['@include', { if: $.withUserData }],
@@ -28,4 +31,6 @@ console.log(print(gqf('mutation Login', {
       }]),
     },
   ]),
-}])))
+}], [
+  ['@captcha', $ => ({ provider: $('cloudfare') })],
+])))

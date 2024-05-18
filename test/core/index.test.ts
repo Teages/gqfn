@@ -66,4 +66,9 @@ describe('@teages/gqf/core', () => {
       },
     ]),
   ))
+
+  it('directive', fixture(
+    gql => gql(``),
+    gqf('', {}, []),
+  ))
 })

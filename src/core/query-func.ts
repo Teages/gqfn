@@ -4,15 +4,17 @@ import { type OperationName, parseOperation } from './operation'
 import { parseTypeSelection } from './select'
 import type { TypeSelection } from './select'
 import { type PrepareVariables, parseVariables } from './variable'
-import type { AcceptDirective } from './directive'
-import { parseDirective } from './directive'
+import type { AcceptDirective, DirectiveInput, DirectiveInputWithDollar } from './directive'
+import { parseDirective, parseDollarDirective, withDirective } from './directive'
 
 export function gqf(
-  selection: TypeSelection<EmptyRecord>
+  selection: TypeSelection<EmptyRecord>,
+  directives?: Array<DirectiveInputWithDollar<EmptyRecord>>
 ): DocumentNode
 export function gqf(
   name: OperationName,
-  selection: TypeSelection<EmptyRecord>
+  selection: TypeSelection<EmptyRecord>,
+  directives?: Array<DirectiveInputWithDollar<EmptyRecord>>
 ): DocumentNode
 export function gqf<
   Variables extends Record<string, AcceptDirective<VariablesInputs>>,
@@ -20,20 +22,40 @@ export function gqf<
 >(
   name: OperationName,
   vars: Variables,
-  selection: TypeSelection<PrepareVariables<Variables>>
+  selection: TypeSelection<PrepareVariables<NoInfer<Variables>>>,
+  directives?: Array<DirectiveInputWithDollar<PrepareVariables<Variables>>>
 ): DocumentNode
 export function gqf(...args: any[]): DocumentNode {
-  if (args.length === 3) {
-    const [name, vars, selection] = args
-    return graphQueryFunction(name, vars, selection)
+  if (args.length === 4) {
+    const [name, vars, selection, directives] = args
+    return graphQueryFunction(name, vars, selection, directives)
+  }
+  else if (args.length === 3) {
+    const [name, arg_1, arg_2] = args
+    if (!Array.isArray(arg_1)) {
+      const vars = arg_1
+      const selection = arg_2
+      return graphQueryFunction(name, vars, selection, [])
+    }
+    const selection = arg_1
+    const directives = arg_2
+    return graphQueryFunction(name, {}, selection, directives)
   }
   else if (args.length === 2) {
-    const [name, selection] = args
-    return graphQueryFunction(name, {}, selection)
+    const [arg_0, arg_1] = args
+    if (typeof arg_0 === 'string') {
+      const name = arg_0 as OperationName
+      const selection = arg_1
+      return graphQueryFunction(name, {}, selection, [])
+    }
+
+    const selection = arg_0
+    const directives = arg_1
+    return graphQueryFunction('query', {}, selection, directives)
   }
   else if (args.length === 1) {
     const [selection] = args
-    return graphQueryFunction('query', {}, selection)
+    return graphQueryFunction('query', {}, selection, [])
   }
   throw new Error('Invalid arguments')
 }
@@ -44,11 +66,12 @@ function graphQueryFunction<
 >(
   name: OperationName,
   vars: Variables,
-  selection: AcceptDirective<TypeSelection<PrepareVariables<Variables>>>,
+  selection: TypeSelection<PrepareVariables<Variables>>,
+  directivesInput: Array<DirectiveInputWithDollar<PrepareVariables<Variables>>>,
 ): DocumentNode {
   const { type: operationType, name: operationName } = parseOperation(name)
 
-  const { value, directives } = parseDirective(selection)
+  const directives = parseDollarDirective(directivesInput)
 
   return {
     kind: Kind.DOCUMENT,
@@ -67,7 +90,7 @@ function graphQueryFunction<
             kind: Kind.NAME,
             value: operationName,
           },
-      selectionSet: parseTypeSelection(value),
+      selectionSet: parseTypeSelection(selection),
     }],
   }
 }
