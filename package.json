@@ -1,0 +1,95 @@
+{
+  "name": "@teages/gqf",
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@9.1.1",
+  "description": "",
+  "license": "MIT",
+  "repository": "Teages/gqf",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.mjs",
+      "require": "./dist/core/index.cjs"
+    },
+    "./typed": {
+      "types": "./dist/typed/index.d.ts",
+      "import": "./dist/typed/index.mjs",
+      "require": "./dist/typed/index.cjs"
+    },
+    "./cli": {
+      "types": "./dist/cli/index.d.ts",
+      "import": "./dist/cli/index.mjs",
+      "require": "./dist/cli/index.cjs"
+    },
+    "./schema": {
+      "types": "./dist/schema/index.d.ts",
+      "import": "./dist/schema/index.mjs",
+      "require": "./dist/schema/index.cjs"
+    },
+    "./schema/codegen": {
+      "types": "./dist/schema/codegen/index.d.ts",
+      "import": "./dist/schema/codegen/index.mjs",
+      "require": "./dist/schema/codegen/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "gqf": "./dist/cli/main.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "dev": "vitest dev",
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint --cache --fix .",
+    "prepack": "pnpm build",
+    "play:prepare": "cd playground && pnpm i",
+    "play": "cd playground && pnpm play",
+    "play:gqf": "cd playground && pnpm gqf",
+    "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
+    "test": "pnpm lint && pnpm test:types && vitest run --coverage",
+    "test:types": "tsc --noEmit --skipLibCheck",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "dependencies": {
+    "@commander-js/extra-typings": "^12.1.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "c12": "^1.10.0",
+    "commander": "^12.1.0",
+    "consola": "^3.2.3",
+    "graphql": "^16.8.1",
+    "ofetch": "^1.3.4",
+    "ohash": "^1.1.3",
+    "pathe": "^1.1.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.18.1",
+    "@types/node": "^20.12.12",
+    "@vitest/coverage-v8": "^1.6.0",
+    "changelogen": "^0.5.5",
+    "eslint": "^9.3.0",
+    "graphql-request": "^7.0.1",
+    "tsx": "^4.11.2",
+    "typescript": "^5.4.5",
+    "unbuild": "^2.0.0",
+    "vitepress": "^1.2.2",
+    "vitest": "^1.6.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
