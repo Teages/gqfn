@@ -90,6 +90,7 @@ function initDollar() {
       if (args.length === 2) {
         if (
           typeof args[0] === 'string'
+          || typeof args[0] === 'boolean'
           || typeof args[0] === 'function'
           || Array.isArray(args[0])
         ) {

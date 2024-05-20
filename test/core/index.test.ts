@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { gqf } from '../../src'
+import { gqf, gqp } from '../../src'
 import { coreFixture as fixture } from '../utils'
 
 describe('@teages/gqf/core', () => {
@@ -75,7 +75,7 @@ describe('@teages/gqf/core', () => {
         $withUserData: Boolean! = true,
         $skipToken: Boolean! = false,
         $captchaType: CaptchaEnum! = google
-      ) @captcha(provider: $captchaType) {
+      ) @captcha(provider: $captchaType) @cors(host: "teages.xyz") {
         login(username: $username, password: $password) {
           token @skip(if: $skipToken)
           ... @include(if: $withUserData) {
@@ -110,6 +110,87 @@ describe('@teages/gqf/core', () => {
       ]),
     }], [
       ['@captcha', $ => ({ provider: $.captchaType })],
+      ['@cors', { host: 'teages.xyz' }],
     ]),
+  ))
+
+  it('parse args', fixture(
+    gql => gql(`
+      query FetchString {
+        getStr(
+          data: {
+            int: 42,
+            float: 3.14,
+            str: "hello",
+            bool: true,
+            null: null,
+            arr: [1, 2, 3],
+            obj: {a: 1, b: 2}
+          }
+        )
+      }
+    `),
+    gqf('query FetchString', [{
+      getStr: $ => $({
+        data: {
+          int: 42,
+          float: 3.14,
+          str: 'hello',
+          bool: true,
+          null: null,
+          arr: [1, 2, 3],
+          obj: { a: 1, b: 2 },
+        },
+      }, true),
+    }]),
+  ))
+
+  const userFragment = gqp('fragment UserFields', 'on User', {
+    withFriendsEmail: 'Boolean! = false',
+  }, () => ({
+    id: true,
+    name: true,
+    email: $ => $(true, [['@include', { if: $.withFriendsEmail }]]),
+  }))
+  it('fragment / partial', fixture(
+    gql => gql(`
+      query FetchUser($userId: ID!, $withFriendsEmail: Boolean! = false) {
+        user(id: $userId) {
+          id
+          name
+          email
+          friends {
+            id
+            name
+            email @include(if: $withFriendsEmail)
+          }
+        }
+        users {
+          id
+          name
+          email @include(if: $withFriendsEmail)
+        }
+      }
+    `),
+    gqf('query FetchUser', {
+      userId: 'ID!',
+      withFriendsEmail: 'Boolean! = false',
+    }, [{
+      user: $ => $({
+        id: $.userId,
+      }, [
+        'id',
+        'name',
+        'email',
+        {
+          friends: [{
+            ...userFragment($),
+          }],
+        },
+      ]),
+      users: $ => $({}, [
+        userFragment($),
+      ]),
+    }]),
   ))
 })

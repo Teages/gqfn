@@ -27,4 +27,5 @@ console.log(print(gqf('mutation Login', {
   ]),
 }], [
   ['@captcha', $ => ({ provider: $.captchaType })],
+  ['@cors', { host: 'teages.xyz' }],
 ])))

@@ -1,4 +1,3 @@
-import type { Empty } from '../utils/object'
 import type { SelectionDollar as Dollar } from './dollar'
 import type { SelectionObject } from './select'
 import type { PrepareVariables, ProvideVariable } from './variable'
@@ -6,8 +5,8 @@ import type { PrepareVariables, ProvideVariable } from './variable'
 export function gqp(
   name: 'fragment' | `fragment ${string}`,
   base: `on ${string}`,
-  selection: () => SelectionObject<Empty>,
-): <TVars extends Empty>($: Dollar<TVars>) => SelectionObject<Empty>
+  selection: () => SelectionObject<any>,
+): ($: Dollar<any>) => SelectionObject<any>
 export function gqp<
   Variables extends ProvideVariable<VariablesInputs>,
   VariablesInputs extends string,
@@ -16,7 +15,7 @@ export function gqp<
   base: `on ${string}`,
   vars: Variables,
   selection: () => SelectionObject<PrepareVariables<Variables>>,
-): <TVars extends PrepareVariables<Variables>>($: Dollar<TVars>) => SelectionObject<PrepareVariables<Variables>>
+): <TVars extends PrepareVariables<Variables>>($: Dollar<TVars>) => SelectionObject<any>
 export function gqp(
   ...args: any[]
 ) {

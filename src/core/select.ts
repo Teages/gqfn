@@ -29,7 +29,7 @@ export function parseTypeSelection<
 >(
   selectionSet: TypeSelection<Var>,
 ): SelectionSetNode {
-  const selections: Array<SelectionNode> = []
+  const selectionNodes: Array<SelectionNode> = []
 
   const last = selectionSet[selectionSet.length - 1]
   const items = selectionSet.slice(0, -1) as Array<SelectionField<Var>>
@@ -59,12 +59,15 @@ export function parseTypeSelection<
   }
 
   Object.keys(selects).forEach((key) => {
-    selections.push(parseSelection(key, selects[key]))
+    selectionNodes.push(parseSelection(key, selects[key]))
   })
 
+  if (selectionNodes.length === 0) {
+    throw new Error('Empty selection set')
+  }
   return {
     kind: Kind.SELECTION_SET,
-    selections,
+    selections: selectionNodes,
   } satisfies SelectionSetNode
 }
 
