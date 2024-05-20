@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { gqf, withDirective } from '../../src'
+import { gqf } from '../../src'
 import { coreFixture as fixture } from '../utils'
 
 describe('@teages/gqf/core', () => {
@@ -73,49 +73,43 @@ describe('@teages/gqf/core', () => {
         $username: String!,
         $password: String! @check(rule: password),
         $withUserData: Boolean! = true,
-        $skipToken: Boolean! = false
-      ) @captcha(provider: cloudflare) {
+        $skipToken: Boolean! = false,
+        $captchaType: CaptchaEnum! = google
+      ) @captcha(provider: $captchaType) {
         login(username: $username, password: $password) {
           token @skip(if: $skipToken)
           ... @include(if: $withUserData) {
-            user {
-              id
-              name
-              email
-            }
+            id
+            name
+            email
           }
         }
       }
     `),
     gqf('mutation Login', {
       username: 'String!',
-      password: withDirective([
-        ['@check', $ => ({ rule: $('password') })],
-      ], 'String!'),
+      password: $ => $('String!', [
+        ['@check', { rule: $('password') }],
+      ]),
       withUserData: 'Boolean! = true',
       skipToken: 'Boolean! = false',
+      captchaType: 'CaptchaEnum! = google',
     }, [{
       login: $ => $({
         username: $.username,
         password: $.password,
       }, [
-        withDirective([
-          ['@skip', { if: $.skipToken }],
-        ], 'token'),
+        $ => $('token', [['@skip', { if: $.skipToken }]]),
         {
-          '...': withDirective([
-            ['@include', { if: $.withUserData }],
-          ], [{
-            user: [
-              'id',
-              'name',
-              'email',
-            ],
-          }]),
+          '...': $ => $([
+            'id',
+            'name',
+            'email',
+          ], [['@include', { if: $.withUserData }]]),
         },
       ]),
     }], [
-      ['@captcha', $ => ({ provider: $('cloudflare') })],
+      ['@captcha', $ => ({ provider: $.captchaType })],
     ]),
   ))
 })

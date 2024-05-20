@@ -1,7 +1,7 @@
 import type { Empty } from '../utils/object'
-import type { Dollar } from './dollar'
+import type { SelectionDollar as Dollar } from './dollar'
 import type { SelectionObject } from './select'
-import type { PrepareVariables } from './variable'
+import type { PrepareVariables, ProvideVariable } from './variable'
 
 export function gqp(
   name: 'fragment' | `fragment ${string}`,
@@ -9,7 +9,7 @@ export function gqp(
   selection: () => SelectionObject<Empty>,
 ): <TVars extends Empty>($: Dollar<TVars>) => SelectionObject<Empty>
 export function gqp<
-  Variables extends Record<string, VariablesInputs>,
+  Variables extends ProvideVariable<VariablesInputs>,
   VariablesInputs extends string,
 >(
   name: 'fragment' | `fragment ${string}`,
@@ -32,7 +32,7 @@ export function gqp(
 }
 
 function graphQueryPartial<
-  Variables extends Record<string, VariablesInputs>,
+  Variables extends ProvideVariable<VariablesInputs>,
   VariablesInputs extends string,
 >(
   _name: 'fragment' | `fragment ${string}`,

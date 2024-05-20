@@ -1,1 +1,1 @@
-export { gqf, gqp, withDirective } from './core'
+export { gqf, gqp } from './core'

@@ -2,31 +2,29 @@
 
 import { print } from 'graphql'
 import { gqf } from '../src'
-import { withDirective } from '../src/core'
 
 console.log(print(gqf('mutation Login', {
   username: 'String!',
-  password: withDirective([
-    ['@check', $ => ({ rule: $('password') })],
-  ], 'String!'),
+  password: $ => $('String!', [
+    ['@check', { rule: $('password') }],
+  ]),
   withUserData: 'Boolean! = true',
   skipToken: 'Boolean! = false',
+  captchaType: 'CaptchaEnum! = google',
 }, [{
   login: $ => $({
     username: $.username,
     password: $.password,
   }, [
-    withDirective([
-      ['@skip', { if: $.skipToken }],
-    ], 'token'),
+    $ => $('token', [['@skip', { if: $.skipToken }]]),
     {
-      '...': withDirective([
-        ['@include', { if: $.withUserData }],
-      ], [{
-        user: ['id', 'name', 'email'],
-      }]),
+      '...': $ => $([
+        'id',
+        'name',
+        'email',
+      ], [['@include', { if: $.withUserData }]]),
     },
   ]),
 }], [
-  ['@captcha', $ => ({ provider: $('cloudflare') })],
+  ['@captcha', $ => ({ provider: $.captchaType })],
 ])))

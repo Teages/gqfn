@@ -1,29 +1,24 @@
 import type { FieldNode, InlineFragmentNode, SelectionNode, SelectionSetNode } from 'graphql'
 import { Kind } from 'graphql'
 import type { ArrayMayFollowItem } from '../utils/object'
-import { type Argument, parseArgs } from './arg'
-import { type Dollar, type DollarPayload, initDollar } from './dollar'
-import type { AcceptDirective } from './directive'
-import { DirectivePackage, exportDirective, parseDirective, withDirective } from './directive'
+import { DollarContext, type DollarPayload, type FieldDollar, type SelectionDollar, initFieldDollar, initSelectionDollar } from './dollar'
+import { parseArgs } from './arg'
+import { parseDirective } from './directive'
 
 export type TypeSelection<Var extends DollarPayload> =
-  Exclude<SelectionContextWithoutDirective<Var>, true>
+  Exclude<SelectionContext<Var>, true>
 
 export type SelectionSet<Var extends DollarPayload> =
   | SelectionContext<Var>
-  | SelectionContextWithArguments<Var>
-
-export type SelectionContextWithArguments<Var extends DollarPayload> = (
-  $: Dollar<Var>
-) => [Argument, SelectionContext<Var>]
-
-export type SelectionContextWithoutDirective<Var extends DollarPayload> =
-  | ArrayMayFollowItem<string | DirectivePackage<string>, SelectionObject<Var>>
-  | Array<string | DirectivePackage<string>>
-  | true
+  | (($: SelectionDollar<Var>) => DollarContext<SelectionContext<Var>>)
 
 export type SelectionContext<Var extends DollarPayload> =
-  AcceptDirective<SelectionContextWithoutDirective<Var>>
+  | ArrayMayFollowItem<SelectionField<Var>, SelectionObject<Var>>
+  | true
+
+export type SelectionField<Var extends DollarPayload> =
+  | string
+  | (($: FieldDollar<Var>) => DollarContext<string>)
 
 export interface SelectionObject<Var extends DollarPayload> {
   [key: string]: SelectionSet<Var>
@@ -37,13 +32,31 @@ export function parseTypeSelection<
   const selections: Array<SelectionNode> = []
 
   const last = selectionSet[selectionSet.length - 1]
-  const items = selectionSet.slice(0, -1) as Array<string>
-  const selects: SelectionObject<Var> = typeof last === 'string'
-    ? { [last]: true }
-    : { ...last }
-  items.forEach((item) => {
-    selects[item] = true
-  })
+  const items = selectionSet.slice(0, -1) as Array<SelectionField<Var>>
+
+  const selects: SelectionObject<Var> = {}
+  const addField = (field: SelectionField<Var>) => {
+    if (typeof field === 'function') {
+      const context = field(initFieldDollar())
+      selects[context.content] = () =>
+        new DollarContext<SelectionContext<Var>>(
+          true,
+          context.args,
+          context.directives,
+        )
+    }
+    else {
+      selects[field] = true
+    }
+  }
+
+  items.forEach(item => addField(item))
+  if (typeof last === 'object') {
+    Object.assign(selects, last)
+  }
+  else {
+    addField(last)
+  }
 
   Object.keys(selects).forEach((key) => {
     selections.push(parseSelection(key, selects[key]))
@@ -59,35 +72,46 @@ export function parseSelection<
   Var extends DollarPayload,
 >(
   key: string,
-  selectionSet: SelectionSet<Var>,
+  selection: SelectionSet<Var>,
 ): SelectionNode {
-  if (typeof selectionSet === 'function') {
-    if (key.startsWith('...')) {
-      throw new Error('Unexpected dollar function on inline fragment')
+  if (typeof selection === 'function') {
+    const { args, directives, content } = selection(initSelectionDollar())
+
+    const node = parseSelection(key, content)
+    if (node.kind === Kind.FIELD) {
+      return {
+        ...node,
+        arguments: parseArgs(args),
+        directives: parseDirective(directives),
+      } satisfies FieldNode | InlineFragmentNode
     }
-    const [arg, selection] = selectionSet(initDollar())
-    const node = parseSelection(key, selection)
-    if (node.kind !== Kind.FIELD) {
-      throw new Error(`Expected field node, got ${node.kind}`)
+
+    if (node.kind === Kind.INLINE_FRAGMENT) {
+      if (Object.keys(args).length > 0) {
+        throw new Error('Unexpected arguments on inline fragment')
+      }
+
+      return {
+        ...node,
+        directives: parseDirective(directives),
+      } satisfies FieldNode | InlineFragmentNode
     }
-    return {
-      ...node,
-      arguments: parseArgs(arg),
-    } satisfies FieldNode
+
+    throw new Error(`Unexpected selection kind: ${node.kind}`)
   }
 
-  const { directives, value: selectionSetContent } = parseDirective(selectionSet)
-  const context = parseSelectionContext(selectionSetContent)
+  const selectionSetNode = parseSelectionContext(selection)
 
-  // Inline Fragment
+  // Inline fragment
   if (key.startsWith('...')) {
     const type = key.startsWith('... on')
       ? /... on (\w+)/.exec(key)![1].trim()
       : undefined // self-referencing
 
-    if (!context) {
+    if (!selectionSetNode) {
       throw new Error('Unexpected field selection set for inline fragment')
     }
+
     return {
       kind: Kind.INLINE_FRAGMENT,
       typeCondition: type
@@ -99,8 +123,7 @@ export function parseSelection<
             },
           }
         : undefined,
-      selectionSet: context,
-      directives,
+      selectionSet: selectionSetNode,
     } satisfies InlineFragmentNode
   }
 
@@ -108,7 +131,6 @@ export function parseSelection<
   const { name, value } = parseAlias(key)
   return {
     kind: Kind.FIELD,
-    directives,
     arguments: [],
     alias: value === name
       ? undefined
@@ -120,7 +142,7 @@ export function parseSelection<
       kind: Kind.NAME,
       value,
     },
-    selectionSet: context,
+    selectionSet: selectionSetNode,
   } satisfies FieldNode
 }
 
@@ -135,47 +157,11 @@ function parseAlias(key: string): { name: string, value: string } {
 export function parseSelectionContext<
   Var extends DollarPayload,
 >(
-  selectionSet: SelectionContextWithoutDirective<Var>,
+  selectionSet: SelectionContext<Var>,
 ): SelectionSetNode | undefined {
   if (selectionSet === true) {
     return undefined
   }
 
-  const selections: Array<SelectionNode> = []
-
-  const last = selectionSet[selectionSet.length - 1]
-  const items = selectionSet.slice(0, -1) as Array<AcceptDirective<string>>
-
-  const selects: SelectionObject<Var> = {}
-  items.forEach((item) => {
-    const { value, directives } = exportDirective(item)
-    if (directives.length > 0) {
-      selects[value] = withDirective(directives, true)
-    }
-    else {
-      selects[value] = true
-    }
-  })
-  // put last item in last position
-  if (typeof last === 'string' || last instanceof DirectivePackage) {
-    const { value, directives } = exportDirective(last)
-    if (directives.length > 0) {
-      selects[value] = withDirective(directives, true)
-    }
-    else {
-      selects[value] = true
-    }
-  }
-  else {
-    Object.assign(selects, last)
-  }
-
-  Object.keys(selects).forEach((key) => {
-    selections.push(parseSelection(key, selects[key]))
-  })
-
-  return {
-    kind: Kind.SELECTION_SET,
-    selections,
-  } satisfies SelectionSetNode
+  return parseTypeSelection(selectionSet)
 }

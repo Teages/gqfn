@@ -3,9 +3,11 @@ import type { EmptyRecord } from '../utils/object'
 import { type OperationName, parseOperation } from './operation'
 import { parseTypeSelection } from './select'
 import type { TypeSelection } from './select'
-import { type PrepareVariables, parseVariables } from './variable'
-import type { AcceptDirective, DirectiveInputWithDollar } from './directive'
-import { parseDollarDirective } from './directive'
+import type { PrepareVariables, ProvideVariable } from './variable'
+import { parseVariables } from './variable'
+import type { DirectiveInputWithDollar } from './directive'
+import { parseDirective } from './directive'
+import { initDirectiveDollar } from './dollar'
 
 export function gqf(
   selection: TypeSelection<EmptyRecord>,
@@ -17,7 +19,7 @@ export function gqf(
   directives?: Array<DirectiveInputWithDollar<EmptyRecord>>
 ): DocumentNode
 export function gqf<
-  Variables extends Record<string, AcceptDirective<VariablesInputs>>,
+  Variables extends ProvideVariable<VariablesInputs>,
   VariablesInputs extends string,
 >(
   name: OperationName,
@@ -61,7 +63,7 @@ export function gqf(...args: any[]): DocumentNode {
 }
 
 function graphQueryFunction<
-  Variables extends Record<string, AcceptDirective<VariablesInputs>>,
+  Variables extends ProvideVariable<VariablesInputs>,
   VariablesInputs extends string,
 >(
   name: OperationName,
@@ -71,7 +73,14 @@ function graphQueryFunction<
 ): DocumentNode {
   const { type: operationType, name: operationName } = parseOperation(name)
 
-  const directives = parseDollarDirective(directivesInput)
+  const directives = parseDirective(directivesInput.map(([name, value]) => {
+    if (typeof value === 'function') {
+      return [name, value(initDirectiveDollar())]
+    }
+    else {
+      return [name, value]
+    }
+  }))
 
   return {
     kind: Kind.DOCUMENT,
