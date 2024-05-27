@@ -8,7 +8,7 @@ export interface FieldDollarFunction {
 
   (
     field: string,
-    directive?: Array<DirectiveInput>
+    directive: Array<DirectiveInput>
   ): DollarContext<string>
 
   (
