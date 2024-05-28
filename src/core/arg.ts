@@ -1,7 +1,6 @@
 import { Kind } from 'graphql'
 import type { ArgumentNode, BooleanValueNode, EnumValueNode, FloatValueNode, IntValueNode, ListValueNode, NullValueNode, ObjectFieldNode, ObjectValueNode, StringValueNode, ValueNode, VariableNode } from 'graphql'
 import { Variable } from './variable'
-import { DollarEnum } from './dollar'
 
 export type Argument = Record<string, unknown>
 
@@ -31,10 +30,10 @@ export function parseValue(value: unknown): ValueNode {
     } satisfies VariableNode
   }
 
-  if (value instanceof DollarEnum) {
+  if (typeof value === 'function') {
     return {
       kind: Kind.ENUM,
-      value: value.value,
+      value: value(),
     } satisfies EnumValueNode
   }
 

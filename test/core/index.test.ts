@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { gqf, gqp } from '../../src'
+import { $enum, gqf, gqp } from '../../src'
 import { coreFixture as fixture } from '../utils'
 
 describe('@teages/gqf/core', () => {
@@ -49,18 +49,18 @@ describe('@teages/gqf/core', () => {
               'title',
               'content',
             ]),
-            friends: ['id'],
+            friends: $ => $(['id']),
           },
         ]),
-        'posts': $ => $({ category: $('Announcement') }, [
+        'posts': $ => $({ category: $enum('Announcement') }, [
           'id',
           'title',
           'content',
           {
-            'author:owner': [
+            'author:owner': $ => $([
               'id',
               'name',
-            ],
+            ]),
           },
         ]),
       },
@@ -89,7 +89,7 @@ describe('@teages/gqf/core', () => {
     gqf('mutation Login', {
       username: 'String!',
       password: $ => $('String!', [
-        ['@check', { rule: $('password') }],
+        ['@check', { rule: $enum('password') }],
       ]),
       withUserData: 'Boolean! = true',
       skipToken: 'Boolean! = false',
@@ -181,14 +181,12 @@ describe('@teages/gqf/core', () => {
         'name',
         'email',
         {
-          friends: [{
+          friends: $ => $([{
             ...userFragment($),
-          }],
+          }]),
         },
       ]),
-      users: $ => $({}, [
-        userFragment($),
-      ]),
+      users: $ => $([userFragment($)]),
     }]),
   ))
 })

@@ -4,11 +4,9 @@ import type { SelectionContext } from './select'
 import { Variable } from './variable'
 
 export interface SelectionDollarFunction<Var extends DollarPayload> {
-  <T extends string>(enumValue: T): DollarEnum<T>
-
   (
     selection: SelectionContext<Var>,
-    directive: Array<DirectiveInput>
+    directive?: Array<DirectiveInput>
   ): DollarContext<SelectionContext<Var>>
 
   (
@@ -17,11 +15,8 @@ export interface SelectionDollarFunction<Var extends DollarPayload> {
     directive?: Array<DirectiveInput>
   ): DollarContext<SelectionContext<Var>>
 }
-export interface DirectiveDollarFunction {
-  <T extends string>(enumValue: T): DollarEnum<T>
-}
+
 export interface VariableDollarFunction {
-  <T extends string>(enumValue: T): DollarEnum<T>
   (
     args: string,
     directive: Array<DirectiveInput>
@@ -31,16 +26,8 @@ export interface VariableDollarFunction {
 export type DollarPayload = Record<string, Variable<string>>
 
 export type SelectionDollar<Var extends DollarPayload> = SelectionDollarFunction<Var> & Var
-export type DirectiveDollar<Var extends DollarPayload> = DirectiveDollarFunction & Var
+export type DirectiveDollar<Var extends DollarPayload> = Var
 export type VariableDollar = VariableDollarFunction
-
-export class DollarEnum<T extends string> {
-  #value: T
-  constructor(value: T) { this.#value = value }
-  get value() {
-    return this.#value
-  }
-}
 
 export class DollarContext<T> {
   content: T
@@ -54,20 +41,28 @@ export class DollarContext<T> {
 }
 
 export function initSelectionDollar<T extends DollarPayload>(): SelectionDollar<T> {
-  return initDollar() as SelectionDollar<T>
+  return initFuncDollar() as SelectionDollar<T>
 }
 export function initDirectiveDollar<T extends DollarPayload>(): DirectiveDollar<T> {
-  return initDollar() as DirectiveDollar<T>
+  return new Proxy(
+    {},
+    {
+      get(_target, key: string) {
+        return new Variable(key)
+      },
+    },
+  ) as DirectiveDollar<T>
 }
 export function initVariableDollar(): VariableDollar {
-  return initDollar() as VariableDollar
+  return initFuncDollar() as VariableDollar
 }
 
-function initDollar() {
+function initFuncDollar() {
   return new Proxy(
     (...args: any[]) => {
       if (args.length === 1) {
-        return new DollarEnum(args[0])
+        const [content] = args
+        return new DollarContext(content, {}, [])
       }
       if (args.length === 2) {
         if (

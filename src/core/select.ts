@@ -6,35 +6,35 @@ import { initSelectionDollar } from './dollar'
 import { parseArgs } from './arg'
 import { parseDirective } from './directive'
 
-export type TypeSelection<Var extends DollarPayload> =
-  Exclude<SelectionContext<Var>, true>
+export type TypeSelection<Vars extends DollarPayload> =
+  ArrayMayFollowItem<SelectionField, SelectionObject<Vars>>
 
-export type SelectionSet<Var extends DollarPayload> =
-  | SelectionContext<Var>
-  | (($: SelectionDollar<Var>) => DollarContext<SelectionContext<Var>>)
+export type SelectionSet<Vars extends DollarPayload> =
+  | true
+  | (($: SelectionDollar<Vars>) => DollarContext<SelectionContext<Vars>>)
 
-export type SelectionContext<Var extends DollarPayload> =
-  | ArrayMayFollowItem<SelectionField, SelectionObject<Var>>
+export type SelectionContext<Vars extends DollarPayload> =
+  | TypeSelection<Vars>
   | true
 
 export type SelectionField =
   | string
 
-export interface SelectionObject<Var extends DollarPayload> {
-  [key: string]: SelectionSet<Var>
+export interface SelectionObject<Vars extends DollarPayload> {
+  [key: string]: SelectionSet<Vars>
 }
 
 export function parseTypeSelection<
-  Var extends DollarPayload,
+  Vars extends DollarPayload,
 >(
-  selectionSet: TypeSelection<Var>,
+  selectionSet: TypeSelection<Vars>,
 ): SelectionSetNode {
   const selectionNodes: Array<SelectionNode> = []
 
   const last = selectionSet[selectionSet.length - 1]
   const items = selectionSet.slice(0, -1) as Array<SelectionField>
 
-  const selects: SelectionObject<Var> = {}
+  const selects: SelectionObject<Vars> = {}
 
   items.forEach(item => selects[item] = true)
   if (typeof last === 'object') {
@@ -57,39 +57,27 @@ export function parseTypeSelection<
   } satisfies SelectionSetNode
 }
 
+export function parseSelectionFunc<
+  Vars extends DollarPayload,
+>(
+  selection: SelectionSet<Vars>,
+): DollarContext<SelectionContext<Vars>> {
+  if (selection === true) {
+    return { content: true, args: {}, directives: [] }
+  }
+  return selection(initSelectionDollar())
+}
+
 export function parseSelection<
-  Var extends DollarPayload,
+  Vars extends DollarPayload,
 >(
   key: string,
-  selection: SelectionSet<Var>,
+  selection: SelectionSet<Vars>,
 ): SelectionNode {
-  if (typeof selection === 'function') {
-    const { args, directives, content } = selection(initSelectionDollar())
-
-    const node = parseSelection(key, content)
-    if (node.kind === Kind.FIELD) {
-      return {
-        ...node,
-        arguments: parseArgs(args),
-        directives: parseDirective(directives),
-      } satisfies FieldNode | InlineFragmentNode
-    }
-
-    if (node.kind === Kind.INLINE_FRAGMENT) {
-      if (Object.keys(args).length > 0) {
-        throw new Error('Unexpected arguments on inline fragment')
-      }
-
-      return {
-        ...node,
-        directives: parseDirective(directives),
-      } satisfies FieldNode | InlineFragmentNode
-    }
-
-    throw new Error(`Unexpected selection kind: ${node.kind}`)
-  }
-
-  const selectionSetNode = parseSelectionContext(selection)
+  const { args, directives, content } = parseSelectionFunc(selection)
+  const childNode = parseSelectionContext(content)
+  const argNodes = parseArgs(args)
+  const directiveNodes = parseDirective(directives)
 
   // Inline fragment
   if (key.startsWith('...')) {
@@ -97,8 +85,11 @@ export function parseSelection<
       ? /... on (\w+)/.exec(key)![1].trim()
       : undefined // self-referencing
 
-    if (!selectionSetNode) {
+    if (!childNode) {
       throw new Error('Unexpected field selection set for inline fragment')
+    }
+    if (argNodes.length > 0) {
+      throw new Error('Unexpected arguments for inline fragment')
     }
 
     return {
@@ -112,7 +103,8 @@ export function parseSelection<
             },
           }
         : undefined,
-      selectionSet: selectionSetNode,
+      selectionSet: childNode,
+      directives: directiveNodes,
     } satisfies InlineFragmentNode
   }
 
@@ -120,7 +112,6 @@ export function parseSelection<
   const { name, value } = parseAlias(key)
   return {
     kind: Kind.FIELD,
-    arguments: [],
     alias: value === name
       ? undefined
       : {
@@ -131,7 +122,9 @@ export function parseSelection<
       kind: Kind.NAME,
       value,
     },
-    selectionSet: selectionSetNode,
+    selectionSet: childNode,
+    arguments: argNodes,
+    directives: directiveNodes,
   } satisfies FieldNode
 }
 
@@ -144,9 +137,9 @@ function parseAlias(key: string): { name: string, value: string } {
 }
 
 export function parseSelectionContext<
-  Var extends DollarPayload,
+  Vars extends DollarPayload,
 >(
-  selectionSet: SelectionContext<Var>,
+  selectionSet: SelectionContext<Vars>,
 ): SelectionSetNode | undefined {
   if (selectionSet === true) {
     return undefined
