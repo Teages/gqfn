@@ -1,8 +1,8 @@
-import type { Field } from '../schema'
+import type { Field, TypeObject } from '../schema'
 import type { EmptyRecord, Exact } from '../utils/object'
 import type { Argument, ProvideSelectionArgument } from './argument'
 import type { DirectiveInput, IsSkipDirective } from './directive'
-import type { ProvideSelectionFieldContext } from './select'
+import type { ProvideSelectionFieldContext, ProvideTypeSelection } from './select'
 
 const DollarContextWithSkipSymbol = Symbol('')
 
@@ -24,6 +24,19 @@ type SelectionDollarFunction<
 > = ProvideSelectionArgument<T['Argument']> extends EmptyRecord
   ? SelectionDollarFunctionWithoutArgs<T, Vars>
   : SelectionDollarFunctionWithArgs<T, Vars>
+
+interface InlineFragmentDollarFunction<
+  TO extends TypeObject<string, any, any>,
+  Vars extends DollarPayload,
+> {
+  <
+    T extends ProvideTypeSelection<TO, Vars>,
+    U extends Array<DirectiveInput>,
+  >(
+    selection: Exact<ProvideTypeSelection<TO, Vars>, T>,
+    directive?: U,
+  ): DollarContext<T, IsSkipDirective<U>>
+}
 
 export interface SelectionDollarFunctionWithoutArgs<
   F extends Field<string, any, any>,
@@ -68,5 +81,9 @@ export type SelectionDollar<
   T extends Field<string, any, any>,
   Vars extends DollarPayload,
 > = SelectionDollarFunction<T, Vars> & Vars
+export type InlineFragmentDollar<
+  T extends TypeObject<string, any, any>,
+  Vars extends DollarPayload,
+> = InlineFragmentDollarFunction<T, Vars> & Vars
 export type VariableDollar = VariableDollarFunction
 export type DirectiveDollar<Var extends DollarPayload> = DirectiveDollarFunction & Var

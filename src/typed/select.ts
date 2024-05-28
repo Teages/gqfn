@@ -2,7 +2,7 @@ import type { Field, TypeObject } from '../schema'
 import type { ArrayMayFollowItem, EmptyRecord, MaybeArray, RecordAssign } from '../utils/object'
 import type { Trim } from '../utils/string'
 import type { ProvideSelectionArgument } from './argument'
-import type { DollarContext, SelectionDollar } from './dollar'
+import type { DollarContext, InlineFragmentDollar, SelectionDollar } from './dollar'
 
 export type ProvideOperationSelection<
   T extends TypeObject<string, any, any> | undefined,
@@ -82,19 +82,31 @@ export type ProvideTypeSelectionObjectInlineFragment<
   Vars extends Record<string, any>,
 > = T['Types'] extends EmptyRecord
   ? {
-      '...'?: ProvideTypeSelection<T, Vars>
+      '...'?: ProvideInlineFragment<T, Vars>
     }
   : {
-      [K in (T['Name'] | keyof T['Types']) as
-      K extends T['Name'] ? '...' : `... on ${K & string}`]?: K extends T['Name']
-        ? ProvideTypeSelection<T, Vars>
-        : ProvideTypeSelection<T['Types'][K], Vars>
+      [K in (T['Name'] | keyof T['Types']) as K extends T['Name']
+        ? '...' : `... on ${K & string}`]?:
+      K extends T['Name']
+        ? ProvideInlineFragment<T, Vars>
+        : ProvideInlineFragment<T['Types'][K], Vars>
     }
+
+type ProvideInlineFragment<
+  T extends TypeObject<string, any, any>,
+  Vars extends Record<string, any>,
+> = (
+  $: InlineFragmentDollar<T, Vars>,
+) => DollarContext<ProvideTypeSelection<T, Vars>, boolean>
 
 export type IsNonTypeObjectKeys<T extends Field<string, any, any>> =
   T['Return'] extends MaybeArray<TypeObject<string, any, any>>
     ? false
     : true
+
+// export type ParseSelection<
+//   Selection,
+// > = unknown
 
 type WithAlias<
   FieldName,

@@ -41,16 +41,8 @@ const i0 = gqf('mutation AddSaying', {
   ['@cors', { host: 'teages.xyz' }],
 ])
 
-const i1 = gqf(['hello'])
+const i1 = gqf([
+  'hello',
+])
 
 console.log(print(i1))
-
-type I2 = ParseVariables<
-  Schema,
-  {
-    a: 'String!'
-  }
->
-
-type I3 = ParseArg<ArgOf<Schema, 'String!'>, true>
-type I4 = ParseGqfType<string>
