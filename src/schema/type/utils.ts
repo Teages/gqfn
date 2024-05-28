@@ -1,4 +1,4 @@
-import type { EnumPackage } from '../../core/dollar'
+import type { EnumPackage } from '../../core/enum'
 import type { Nullable } from '../../utils/object'
 import type { DefineSchema } from './define'
 import type { BaseType } from './types'

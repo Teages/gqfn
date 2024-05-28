@@ -42,14 +42,14 @@ export interface GraphQueryFunction<
     VariablesInputs extends string,
     Selection extends ProvideOperationSelection<
       Schema['Objects'][GetOperationType<Name>],
-      ParseVariables<Schema, Variables>
+      PrepareVariables<Variables>
     >,
   >(
     name: Name,
     variables: Variables,
     selection: Exact<ProvideOperationSelection<
       Schema['Objects'][GetOperationType<Name>],
-      ParseVariables<Schema, Variables>
+      PrepareVariables<Variables>
     >, Selection>,
     directives?: ($: DirectiveDollar<PrepareVariables<Variables>>) => Array<DirectiveInput>,
   ): TypedQueryDocumentNode<unknown, ParseVariables<Schema, Variables>>
