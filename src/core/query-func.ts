@@ -9,16 +9,16 @@ import type { DirectivesInputWithDollar } from './directive'
 import { parseDirective } from './directive'
 import { initDirectiveDollar } from './dollar'
 
-export function _gqf(
+export function gqf(
   selection: TypeSelection<EmptyRecord>,
   directives?: Array<DirectivesInputWithDollar<EmptyRecord>>
 ): DocumentNode
-export function _gqf(
+export function gqf(
   name: OperationName,
   selection: TypeSelection<EmptyRecord>,
   directives?: DirectivesInputWithDollar<EmptyRecord>
 ): DocumentNode
-export function _gqf<
+export function gqf<
   Variables extends ProvideVariable<VariablesInputs>,
   VariablesInputs extends string,
 >(
@@ -27,7 +27,7 @@ export function _gqf<
   selection: TypeSelection<PrepareVariables<NoInfer<Variables>>>,
   directives?: DirectivesInputWithDollar<PrepareVariables<Variables>>
 ): DocumentNode
-export function _gqf(...args: any[]): DocumentNode {
+export function gqf(...args: any[]): DocumentNode {
   if (args.length === 4) {
     const [name, vars, selection, directives] = args
     return graphQueryFunction(name, vars, selection, directives)
@@ -69,17 +69,17 @@ function graphQueryFunction<
   name: OperationName,
   vars: Variables,
   selection: TypeSelection<PrepareVariables<Variables>>,
-  directivesInput: DirectivesInputWithDollar<PrepareVariables<Variables>>,
+  directives: DirectivesInputWithDollar<PrepareVariables<Variables>>,
 ): DocumentNode {
   const { type: operationType, name: operationName } = parseOperation(name)
 
-  const directives = parseDirective(directivesInput(initDirectiveDollar()))
+  const directivesNodes = parseDirective(directives(initDirectiveDollar()))
 
   return {
     kind: Kind.DOCUMENT,
     definitions: [{
       kind: Kind.OPERATION_DEFINITION,
-      directives,
+      directives: directivesNodes,
       operation: {
         query: OperationTypeNode.QUERY,
         mutation: OperationTypeNode.MUTATION,

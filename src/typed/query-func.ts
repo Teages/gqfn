@@ -1,7 +1,8 @@
 import type { UserSchemaTypes } from '../schema'
-import type { EmptyRecord } from '../utils/object'
-import type { DirectiveInputWithDollar } from './directive'
+import type { EmptyRecord, Exact } from '../utils/object'
+import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
 import type { TypedQueryDocumentNode } from './document-node'
+import type { DirectiveDollar } from './dollar'
 import type { GetOperationType, OperationName } from './operation'
 import type { ProvideOperationSelection } from './select'
 import type { ParseVariables, PrepareVariables, ProvideVariable } from './variable'
@@ -15,8 +16,10 @@ export interface GraphQueryFunction<
       EmptyRecord
     >,
   >(
-    selection: Selection,
-    directives?: Array<DirectiveInputWithDollar<EmptyRecord>>,
+    selection: Exact<ProvideOperationSelection<
+      Schema['Objects'][GetOperationType<'query'>],
+      EmptyRecord
+    >, Selection>,
   ): TypedQueryDocumentNode<unknown, EmptyRecord>
 
   <
@@ -27,8 +30,10 @@ export interface GraphQueryFunction<
     >,
   >(
     name: Name,
-    selection: Selection,
-    directives?: Array<DirectiveInputWithDollar<EmptyRecord>>,
+    selection: Exact<ProvideOperationSelection<
+      Schema['Objects'][GetOperationType<Name>],
+      EmptyRecord
+    >, Selection>,
   ): TypedQueryDocumentNode<unknown, EmptyRecord>
 
   <
@@ -42,7 +47,10 @@ export interface GraphQueryFunction<
   >(
     name: Name,
     variables: Variables,
-    selection: Selection,
-    directives?: Array<DirectiveInputWithDollar<PrepareVariables<Variables>>>,
+    selection: Exact<ProvideOperationSelection<
+      Schema['Objects'][GetOperationType<Name>],
+      ParseVariables<Schema, Variables>
+    >, Selection>,
+    directives?: ($: DirectiveDollar<PrepareVariables<Variables>>) => Array<DirectiveInput>,
   ): TypedQueryDocumentNode<unknown, ParseVariables<Schema, Variables>>
 }

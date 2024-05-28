@@ -16,62 +16,31 @@ export interface DollarContext<T, WithSkip extends boolean = false> {
 }
 
 export type DollarPayload = Record<string, unknown>
-export interface DollarEnum<T extends string> {
-  readonly value: T
-}
+export type DollarEnum<T extends string> = () => T
 
 type SelectionDollarFunction<
   T extends Field<string, any, any>,
   Vars extends DollarPayload,
 > = ProvideSelectionArgument<T['Argument']> extends EmptyRecord
   ? SelectionDollarFunctionWithoutArgs<T, Vars>
-  : EmptyRecord extends ProvideSelectionArgument<T['Argument']>
-    ? SelectionDollarFunctionWithArgs<T, Vars>
-    : SelectionDollarFunctionReqArgs<T, Vars>
+  : SelectionDollarFunctionWithArgs<T, Vars>
 
 export interface SelectionDollarFunctionWithoutArgs<
   F extends Field<string, any, any>,
   Vars extends DollarPayload,
 > {
-  <T extends string>(enumValue: T): DollarEnum<T>
-
   <
     T extends ProvideSelectionFieldContext<F, Vars>,
     U extends Array<DirectiveInput>,
   >(
     selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
-    directive: U,
+    directive?: U,
   ): DollarContext<T, IsSkipDirective<U>>
 }
 export interface SelectionDollarFunctionWithArgs<
   F extends Field<string, any, any>,
   Vars extends DollarPayload,
 > {
-  <T extends string>(enumValue: T): DollarEnum<T>
-
-  <
-    T extends ProvideSelectionFieldContext<F, Vars>,
-    U extends Array<DirectiveInput>,
-  >(
-    selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
-    directive: U,
-  ): DollarContext<T, IsSkipDirective<U>>
-
-  <
-    T extends ProvideSelectionFieldContext<F, Vars>,
-    U extends Array<DirectiveInput>,
-  >(
-    arg: ProvideSelectionArgument<F['Argument']>,
-    selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
-    directive?: U,
-  ): DollarContext<T, IsSkipDirective<U>>
-}
-export interface SelectionDollarFunctionReqArgs<
-  F extends Field<string, any, any>,
-  Vars extends DollarPayload,
-> {
-  <T extends string>(enumValue: T): DollarEnum<T>
-
   <
     T extends ProvideSelectionFieldContext<F, Vars>,
     U extends Array<DirectiveInput>,

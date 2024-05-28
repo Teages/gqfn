@@ -5,10 +5,8 @@ export type DirectiveInput = [
   `@${string}`,
   Argument,
 ]
-export type DirectiveInputWithDollar<Var extends DollarPayload> = [
-  `@${string}`,
-  Argument | (($: DirectiveDollar<Var>) => Argument),
-]
+export type DirectivesInputWithDollar<Var extends DollarPayload> =
+  ($: DirectiveDollar<Var>) => Array<DirectiveInput>
 
 export type IsSkipDirective<Input extends Array<DirectiveInput>> =
   Input extends Array<[infer Name, infer _Args]>

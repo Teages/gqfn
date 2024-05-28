@@ -90,15 +90,15 @@ export type RecordAssign<
  * @url https://github.com/microsoft/TypeScript/issues/12936#issuecomment-2088768988
  */
 export type Exact<Shape, T extends Shape> =
-  T extends Array<string>
-    ? T
-    : Shape extends [...Array<string>, infer FollowShape extends Record<string, any>]
-      ? T extends [...infer Items, infer Follow extends FollowShape]
+  Shape extends [...infer ItemShapes extends Array<string>, infer FollowShape extends Record<string, any>]
+    ? T extends Array<string>
+      ? T
+      : T extends [...infer Items extends ItemShapes, infer Follow extends FollowShape]
         ? [...Items, _Exact<FollowShape, Follow>]
         : never
-      : Shape extends Record<string, any>
-        ? _Exact<Shape, T>
-        : T
+    : Shape extends Record<string, any>
+      ? _Exact<Shape, T>
+      : T
 type _Exact<Shape, T extends Shape> = {
   [Key in keyof T]: Key extends keyof Shape
     ? Exact<Shape[Key], T[Key]>

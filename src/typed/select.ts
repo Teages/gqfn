@@ -15,7 +15,7 @@ export type ProvideTypeSelection<
   T extends TypeObject<string, any, any>,
   Vars extends Record<string, any>,
 > = ArrayMayFollowItem<
-  ProvideSimpleSelectionKeys<T>,
+  WithAlias<ProvideSimpleSelectionKeys<T>>,
   ProvideTypeSelectionObject<T, Vars>
 >
 
@@ -24,6 +24,7 @@ export type ProvideSimpleSelectionKeys<
 > = keyof {
   [K in keyof T['Fields'] as true extends CanFieldBeSimplySelected<T['Fields'][K]> ? K : never]: true
 } | '__typename'
+
 /**
  * The field can be simply selected, if
  * 1. It has no arguments (or can be no arguments), and
@@ -42,12 +43,11 @@ export type ProvideSelectionField<
   Vars extends Record<string, any>,
 > = (
   EmptyRecord extends ProvideSelectionArgument<T['Argument']>
-    ? ProvideSelectionFieldContext<T, Vars>
+    ? IsNonTypeObjectKeys<T> extends true
+      ? true
+      : never
     : never
 ) | (
-  /**
-   * The field can be selected with arguments, if it has arguments
-   */
   (
     $: SelectionDollar<T, Vars>,
   ) => DollarContext<ProvideSelectionFieldContext<T, Vars>, boolean>
@@ -74,7 +74,7 @@ export type ProvideTypeSelectionObjectFields<
   T extends TypeObject<string, any, any>,
   Vars extends Record<string, any>,
 > = {
-  [K in keyof T['Fields']]?: ProvideSelectionField<T['Fields'][K], Vars>
+  [K in keyof T['Fields'] as WithAlias<K>]?: ProvideSelectionField<T['Fields'][K], Vars>
 }
 
 export type ProvideTypeSelectionObjectInlineFragment<
@@ -96,14 +96,14 @@ export type IsNonTypeObjectKeys<T extends Field<string, any, any>> =
     ? false
     : true
 
-// type WithAlias<
-//   FieldName,
-//   AliasName = string,
-// > = FieldName extends string
-//   ? AliasName extends string
-//     ? `${AliasName}:${FieldName}` | FieldName
-//     : never
-//   : never
+type WithAlias<
+  FieldName,
+  AliasName = string,
+> = FieldName extends string
+  ? AliasName extends string
+    ? `${AliasName}:${FieldName}` | FieldName
+    : never
+  : never
 
 // type DecodeAlias<
 //   T extends string,
