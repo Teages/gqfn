@@ -106,8 +106,8 @@ describe('@teages/gqf/core', () => {
           'email',
         ], [['@include', { if: $.withUserData }]]),
       }]),
-    }], [
-      ['@captcha', $ => ({ provider: $.captchaType })],
+    }], $ => [
+      ['@captcha', { provider: $.captchaType }],
       ['@cors', { host: 'teages.xyz' }],
     ]),
   ))

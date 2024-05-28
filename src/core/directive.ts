@@ -38,10 +38,8 @@ export type DirectiveInput = [
   `@${string}`,
   Argument,
 ]
-export type DirectiveInputWithDollar<Var extends DollarPayload> = [
-  `@${string}`,
-  Argument | (($: DirectiveDollar<Var>) => Argument),
-]
+export type DirectivesInputWithDollar<Var extends DollarPayload> =
+  ($: DirectiveDollar<Var>) => Array<DirectiveInput>
 
 export interface Directive {
   name: `@${string}`

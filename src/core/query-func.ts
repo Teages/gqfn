@@ -5,18 +5,18 @@ import { parseTypeSelection } from './select'
 import type { TypeSelection } from './select'
 import type { PrepareVariables, ProvideVariable } from './variable'
 import { parseVariables } from './variable'
-import type { DirectiveInputWithDollar } from './directive'
+import type { DirectivesInputWithDollar } from './directive'
 import { parseDirective } from './directive'
 import { initDirectiveDollar } from './dollar'
 
 export function _gqf(
   selection: TypeSelection<EmptyRecord>,
-  directives?: Array<DirectiveInputWithDollar<EmptyRecord>>
+  directives?: Array<DirectivesInputWithDollar<EmptyRecord>>
 ): DocumentNode
 export function _gqf(
   name: OperationName,
   selection: TypeSelection<EmptyRecord>,
-  directives?: Array<DirectiveInputWithDollar<EmptyRecord>>
+  directives?: DirectivesInputWithDollar<EmptyRecord>
 ): DocumentNode
 export function _gqf<
   Variables extends ProvideVariable<VariablesInputs>,
@@ -25,7 +25,7 @@ export function _gqf<
   name: OperationName,
   vars: Variables,
   selection: TypeSelection<PrepareVariables<NoInfer<Variables>>>,
-  directives?: Array<DirectiveInputWithDollar<PrepareVariables<Variables>>>
+  directives?: DirectivesInputWithDollar<PrepareVariables<Variables>>
 ): DocumentNode
 export function _gqf(...args: any[]): DocumentNode {
   if (args.length === 4) {
@@ -37,7 +37,7 @@ export function _gqf(...args: any[]): DocumentNode {
     if (!Array.isArray(arg_1)) {
       const vars = arg_1
       const selection = arg_2
-      return graphQueryFunction(name, vars, selection, [])
+      return graphQueryFunction(name, vars, selection, () => [])
     }
     const selection = arg_1
     const directives = arg_2
@@ -48,7 +48,7 @@ export function _gqf(...args: any[]): DocumentNode {
     if (typeof arg_0 === 'string') {
       const name = arg_0 as OperationName
       const selection = arg_1
-      return graphQueryFunction(name, {}, selection, [])
+      return graphQueryFunction(name, {}, selection, () => [])
     }
 
     const selection = arg_0
@@ -57,7 +57,7 @@ export function _gqf(...args: any[]): DocumentNode {
   }
   else if (args.length === 1) {
     const [selection] = args
-    return graphQueryFunction('query', {}, selection, [])
+    return graphQueryFunction('query', {}, selection, () => [])
   }
   throw new Error('Invalid arguments')
 }
@@ -69,18 +69,11 @@ function graphQueryFunction<
   name: OperationName,
   vars: Variables,
   selection: TypeSelection<PrepareVariables<Variables>>,
-  directivesInput: Array<DirectiveInputWithDollar<PrepareVariables<Variables>>>,
+  directivesInput: DirectivesInputWithDollar<PrepareVariables<Variables>>,
 ): DocumentNode {
   const { type: operationType, name: operationName } = parseOperation(name)
 
-  const directives = parseDirective(directivesInput.map(([name, value]) => {
-    if (typeof value === 'function') {
-      return [name, value(initDirectiveDollar())]
-    }
-    else {
-      return [name, value]
-    }
-  }))
+  const directives = parseDirective(directivesInput(initDirectiveDollar()))
 
   return {
     kind: Kind.DOCUMENT,
