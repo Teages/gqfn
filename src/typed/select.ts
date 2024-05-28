@@ -1,5 +1,5 @@
 import type { Field, TypeObject } from '../schema'
-import type { ArrayMayFollowItem, EmptyRecord, MaybeArray } from '../utils/object'
+import type { ArrayMayFollowItem, EmptyRecord, MaybeArray, RecordAssign } from '../utils/object'
 import type { Trim } from '../utils/string'
 import type { ProvideSelectionArgument } from './argument'
 import type { DollarContext, SelectionDollar } from './dollar'
@@ -65,9 +65,10 @@ export type ProvideSelectionFieldContext<
 export type ProvideTypeSelectionObject<
   T extends TypeObject<string, any, any>,
   Vars extends Record<string, any>,
-> =
-  | ProvideTypeSelectionObjectFields<T, Vars>
-  | ProvideTypeSelectionObjectInlineFragment<T, Vars>
+> = RecordAssign<
+  ProvideTypeSelectionObjectFields<T, Vars>,
+  ProvideTypeSelectionObjectInlineFragment<T, Vars>
+>
 
 export type ProvideTypeSelectionObjectFields<
   T extends TypeObject<string, any, any>,

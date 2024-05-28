@@ -69,3 +69,38 @@ export type MaybeArray<T> = T | T[]
  * type B = Values<A> // number | string
  */
 export type Values<T> = T[keyof T]
+
+/**
+ * Avoid using `|` operator in union types for Exact.
+ */
+export type RecordAssign<
+  T extends Record<string, any>,
+  U extends Record<string, any>,
+  Pick extends keyof T | keyof U = keyof T | keyof U,
+> = {
+  [K in Pick]?: K extends keyof U
+    ? U[K]
+    : K extends keyof T
+      ? T[K]
+      : never
+}
+
+/**
+ * Make all properties in argument exact.
+ * @url https://github.com/microsoft/TypeScript/issues/12936#issuecomment-2088768988
+ */
+export type Exact<Shape, T extends Shape> =
+  T extends Array<string>
+    ? T
+    : Shape extends [...Array<string>, infer FollowShape extends Record<string, any>]
+      ? T extends [...infer Items, infer Follow extends FollowShape]
+        ? [...Items, _Exact<FollowShape, Follow>]
+        : never
+      : Shape extends Record<string, any>
+        ? _Exact<Shape, T>
+        : T
+type _Exact<Shape, T extends Shape> = {
+  [Key in keyof T]: Key extends keyof Shape
+    ? Exact<Shape[Key], T[Key]>
+    : never
+}

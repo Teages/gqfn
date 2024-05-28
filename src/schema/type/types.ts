@@ -1,4 +1,4 @@
-import type { DollarEnum } from '../../core/dollar'
+import type { DollarEnum } from '../../typed/dollar'
 import type { EmptyRecord } from '../../utils/object'
 import type { ArgOf, ResOf } from './utils'
 

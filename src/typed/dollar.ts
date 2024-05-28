@@ -1,5 +1,5 @@
 import type { Field } from '../schema'
-import type { ArrayMayFollowItem, EmptyRecord } from '../utils/object'
+import type { EmptyRecord, Exact } from '../utils/object'
 import type { Argument, ProvideSelectionArgument } from './argument'
 import type { DirectiveInput, IsSkipDirective } from './directive'
 import type { ProvideSelectionFieldContext } from './select'
@@ -16,7 +16,7 @@ export interface DollarContext<T, WithSkip extends boolean = false> {
 }
 
 export type DollarPayload = Record<string, unknown>
-interface DollarEnum<T extends string> {
+export interface DollarEnum<T extends string> {
   readonly value: T
 }
 
@@ -39,7 +39,7 @@ export interface SelectionDollarFunctionWithoutArgs<
     T extends ProvideSelectionFieldContext<F, Vars>,
     U extends Array<DirectiveInput>,
   >(
-    selection: T,
+    selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
     directive: U,
   ): DollarContext<T, IsSkipDirective<U>>
 }
@@ -53,7 +53,7 @@ export interface SelectionDollarFunctionWithArgs<
     T extends ProvideSelectionFieldContext<F, Vars>,
     U extends Array<DirectiveInput>,
   >(
-    selection: T,
+    selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
     directive: U,
   ): DollarContext<T, IsSkipDirective<U>>
 
@@ -62,7 +62,7 @@ export interface SelectionDollarFunctionWithArgs<
     U extends Array<DirectiveInput>,
   >(
     arg: ProvideSelectionArgument<F['Argument']>,
-    selection: T,
+    selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
     directive?: U,
   ): DollarContext<T, IsSkipDirective<U>>
 }
@@ -77,13 +77,14 @@ export interface SelectionDollarFunctionReqArgs<
     U extends Array<DirectiveInput>,
   >(
     arg: ProvideSelectionArgument<F['Argument']>,
-    selection: T,
+    selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
     directive?: U,
   ): DollarContext<T, IsSkipDirective<U>>
 }
 
 interface VariableDollarFunction {
   <T extends string>(enumValue: T): DollarEnum<T>
+
   <T extends string>(
     args: T,
     directive: Array<DirectiveInput>

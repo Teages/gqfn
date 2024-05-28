@@ -3,9 +3,9 @@
 import { print } from 'graphql'
 import { gqf as _gqf } from '../src'
 import type { GraphQueryFunction } from '../src/typed/query-func'
-import type { ProvideSelectionFieldContext, ProvideTypeSelectionObjectFields, ProvideTypeSelectionObjectInlineFragment } from '../src/typed/select'
-import type { EmptyRecord } from '../src/utils/object'
-import type { SelectionDollar, SelectionDollarFunctionWithoutArgs } from '../src/typed/dollar'
+import type { ProvideSelectionFieldContext, ProvideSimpleSelectionKeys, ProvideTypeSelection, ProvideTypeSelectionObject, ProvideTypeSelectionObjectFields, ProvideTypeSelectionObjectInlineFragment } from '../src/typed/select'
+import type { ArrayMayFollowItem, EmptyRecord, Exact } from '../src/utils/object'
+import type { DollarContext, SelectionDollar, SelectionDollarFunctionWithoutArgs } from '../src/typed/dollar'
 import type { ProvideSelectionArgument } from '../src/typed/argument'
 import type { Schema } from './schema'
 
@@ -37,48 +37,14 @@ type I1 = ProvideTypeSelectionObjectFields<
 >
 
 const i1 = (<T extends I1>(t: T) => t)({
-  sayings: $ => $({ }, [{}]),
-  users: $ => $([
-    'id',
-    {
-      id: true,
-    },
-  ], [
-    ['@operator', { userId: '123' }],
-  ]),
-  allId: [
-    'id',
-    '__typename',
-    {
-      '... on Saying': [
-        {
-          createdAt: true,
-          id: true,
-        },
-      ],
-    },
-  ],
+  sayings: $ => $({ category: [$('funny')] }, []),
+  user: $ => $({
+    id: 0,
+  }, ['id', {
+    id: true,
+  }]),
 })
-i1.users(null as any)
-
-;(<T extends I1>(t: T) => t)({
-  sayings: $ => $({ }, [{}]),
-  users: [
-    'id',
-    {
-      saying: [{
-        owner: [{
-          '...': [
-            {
-              some: false,
-            },
-          ],
-        }],
-      }],
-    },
-  ],
-})
-
+const p1 = i1.user(null as any)
 type I4 = ProvideTypeSelectionObjectInlineFragment<
   Schema['Objects']['User'],
   EmptyRecord
@@ -90,6 +56,17 @@ const i4: I4 = {
   '...': [],
 }
 
-type T = Schema['Objects']['Query']['Fields']['users']
-type I2 = ProvideSelectionFieldContext<T, EmptyRecord>
-const $: SelectionDollarFunctionWithoutArgs<T, EmptyRecord> = null as any
+type F = Schema['Objects']['Query']['Fields']['users']
+type User = Schema['Objects']['User']
+type I2 = ProvideSelectionFieldContext<F, EmptyRecord>
+// type I2 = [...ProvideSimpleSelectionKeys<User>[], ProvideTypeSelectionObject<User, EmptyRecord>]
+// type I2 = ArrayMayFollowItem< 'id' | 'name', { id?: true, name?: true }>
+const $ = <T extends I2>(t: Exact<I2, T>) => t
+const dollarRes = $(['id', {
+  id: true,
+  some: true,
+}])
+const I20 = dollarRes[0]
+
+type P3 = ProvideSimpleSelectionKeys<User>
+type P4 = ProvideTypeSelectionObject<User, EmptyRecord>
