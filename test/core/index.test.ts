@@ -98,16 +98,14 @@ describe('@teages/gqf/core', () => {
       login: $ => $({
         username: $.username,
         password: $.password,
-      }, [
-        $ => $('token', [['@skip', { if: $.skipToken }]]),
-        {
-          '...': $ => $([
-            'id',
-            'name',
-            'email',
-          ], [['@include', { if: $.withUserData }]]),
-        },
-      ]),
+      }, [{
+        'token': $ => $(true, [['@skip', { if: $.skipToken }]]),
+        '...': $ => $([
+          'id',
+          'name',
+          'email',
+        ], [['@include', { if: $.withUserData }]]),
+      }]),
     }], [
       ['@captcha', $ => ({ provider: $.captchaType })],
       ['@cors', { host: 'teages.xyz' }],

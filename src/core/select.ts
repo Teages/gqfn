@@ -1,7 +1,8 @@
 import type { FieldNode, InlineFragmentNode, SelectionNode, SelectionSetNode } from 'graphql'
 import { Kind } from 'graphql'
 import type { ArrayMayFollowItem } from '../utils/object'
-import { DollarContext, type DollarPayload, type FieldDollar, type SelectionDollar, initFieldDollar, initSelectionDollar } from './dollar'
+import type { DollarContext, DollarPayload, SelectionDollar } from './dollar'
+import { initSelectionDollar } from './dollar'
 import { parseArgs } from './arg'
 import { parseDirective } from './directive'
 
@@ -13,12 +14,11 @@ export type SelectionSet<Var extends DollarPayload> =
   | (($: SelectionDollar<Var>) => DollarContext<SelectionContext<Var>>)
 
 export type SelectionContext<Var extends DollarPayload> =
-  | ArrayMayFollowItem<SelectionField<Var>, SelectionObject<Var>>
+  | ArrayMayFollowItem<SelectionField, SelectionObject<Var>>
   | true
 
-export type SelectionField<Var extends DollarPayload> =
+export type SelectionField =
   | string
-  | (($: FieldDollar<Var>) => DollarContext<string>)
 
 export interface SelectionObject<Var extends DollarPayload> {
   [key: string]: SelectionSet<Var>
@@ -32,30 +32,16 @@ export function parseTypeSelection<
   const selectionNodes: Array<SelectionNode> = []
 
   const last = selectionSet[selectionSet.length - 1]
-  const items = selectionSet.slice(0, -1) as Array<SelectionField<Var>>
+  const items = selectionSet.slice(0, -1) as Array<SelectionField>
 
   const selects: SelectionObject<Var> = {}
-  const addField = (field: SelectionField<Var>) => {
-    if (typeof field === 'function') {
-      const context = field(initFieldDollar())
-      selects[context.content] = () =>
-        new DollarContext<SelectionContext<Var>>(
-          true,
-          context.args,
-          context.directives,
-        )
-    }
-    else {
-      selects[field] = true
-    }
-  }
 
-  items.forEach(item => addField(item))
+  items.forEach(item => selects[item] = true)
   if (typeof last === 'object') {
     Object.assign(selects, last)
   }
   else {
-    addField(last)
+    selects[last] = true
   }
 
   Object.keys(selects).forEach((key) => {

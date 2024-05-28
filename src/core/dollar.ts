@@ -3,20 +3,6 @@ import type { DirectiveInput } from './directive'
 import type { SelectionContext } from './select'
 import { Variable } from './variable'
 
-export interface FieldDollarFunction {
-  <T extends string>(enumValue: T): DollarEnum<T>
-
-  (
-    field: string,
-    directive: Array<DirectiveInput>
-  ): DollarContext<string>
-
-  (
-    arg: Argument,
-    field: string,
-    directive?: Array<DirectiveInput>
-  ): DollarContext<string>
-}
 export interface SelectionDollarFunction<Var extends DollarPayload> {
   <T extends string>(enumValue: T): DollarEnum<T>
 
@@ -44,7 +30,6 @@ export interface VariableDollarFunction {
 
 export type DollarPayload = Record<string, Variable<string>>
 
-export type FieldDollar<Var extends DollarPayload> = FieldDollarFunction & Var
 export type SelectionDollar<Var extends DollarPayload> = SelectionDollarFunction<Var> & Var
 export type DirectiveDollar<Var extends DollarPayload> = DirectiveDollarFunction & Var
 export type VariableDollar = VariableDollarFunction
@@ -68,9 +53,6 @@ export class DollarContext<T> {
   }
 }
 
-export function initFieldDollar<T extends DollarPayload>(): FieldDollar<T> {
-  return initDollar() as FieldDollar<T>
-}
 export function initSelectionDollar<T extends DollarPayload>(): SelectionDollar<T> {
   return initDollar() as SelectionDollar<T>
 }
