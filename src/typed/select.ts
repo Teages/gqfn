@@ -116,9 +116,3 @@ type WithAlias<
     ? `${AliasName}:${FieldName}` | FieldName
     : never
   : never
-
-// type DecodeAlias<
-//   T extends string,
-// > = T extends `${infer Alias}:${infer Field}`
-//   ? { alias: Trim<Alias>, field: Trim<Field> }
-//   : { alias: T, field: T }
