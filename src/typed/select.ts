@@ -1,6 +1,5 @@
 import type { Field, TypeObject } from '../schema'
 import type { ArrayMayFollowItem, EmptyRecord, MaybeArray, RecordAssign } from '../utils/object'
-import type { Trim } from '../utils/string'
 import type { ProvideSelectionArgument } from './argument'
 import type { DollarContext, InlineFragmentDollar, SelectionDollar } from './dollar'
 
@@ -103,10 +102,6 @@ export type IsNonTypeObjectKeys<T extends Field<string, any, any>> =
   T['Return'] extends MaybeArray<TypeObject<string, any, any>>
     ? false
     : true
-
-// export type ParseSelection<
-//   Selection,
-// > = unknown
 
 type WithAlias<
   FieldName,

@@ -38,9 +38,9 @@ const i0 = gqf('mutation AddSaying', {
   ['@operator', { userId: $.ownerId }],
   ['@cors', { host: 'teages.xyz' }],
 ])
+console.log(print(i0))
 
 const UserPart = gqp('fragment', 'on User', ['name'])
-
 const i1 = gqf([
   'hello',
   {
@@ -59,5 +59,5 @@ const i1 = gqf([
 ])
 console.log(print(i1))
 
-type I1Res = ResultOf<typeof i1>
-type UserReq = RequireQueryPart<typeof UserPart>
+type _I1Res = ResultOf<typeof i1>
+type _UserReq = RequireQueryPart<typeof UserPart>

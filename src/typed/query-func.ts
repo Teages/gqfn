@@ -1,6 +1,6 @@
 import type { UserSchemaTypes } from '../schema'
 import type { EmptyRecord, Exact } from '../utils/object'
-import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
+import type { DirectiveInput } from './directive'
 import type { TypedQueryDocumentNode } from './document-node'
 import type { DirectiveDollar } from './dollar'
 import type { GetOperationType, OperationName } from './operation'

@@ -4,9 +4,11 @@ import type { DollarContext } from '../dollar'
 
 type ParseSelection<T, SelectionField> =
   SelectionField extends (...args: any) => DollarContext<infer Context, infer WithSkip>
-    ? ParseSelectionFieldContext<T, Context> | (
-      true extends WithSkip ? undefined | null : never
-    )
+    ?
+    | ParseSelectionFieldContext<T, Context>
+    | (
+        true extends WithSkip ? undefined | null : never
+      )
     : ParseSelectionFieldContext<T, SelectionField>
 
 type ParseSelectionFieldContext<T, SelectionField> =
