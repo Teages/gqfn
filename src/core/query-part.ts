@@ -1,11 +1,11 @@
 import type { SelectionDollar as Dollar } from './dollar'
-import type { SelectionObject } from './select'
+import type { SelectionObject, TypeSelection } from './select'
 import type { PrepareVariables, ProvideVariable } from './variable'
 
 export function gqp(
   name: 'fragment' | `fragment ${string}`,
   base: `on ${string}`,
-  selection: () => SelectionObject<any>,
+  selection: TypeSelection<any>,
 ): ($: Dollar<any>) => SelectionObject<any>
 export function gqp<
   Variables extends ProvideVariable<VariablesInputs>,
@@ -14,7 +14,7 @@ export function gqp<
   name: 'fragment' | `fragment ${string}`,
   base: `on ${string}`,
   vars: Variables,
-  selection: () => SelectionObject<PrepareVariables<Variables>>,
+  selection: TypeSelection<PrepareVariables<Variables>>,
 ): <TVars extends PrepareVariables<Variables>>($: Dollar<TVars>) => SelectionObject<any>
 export function gqp(
   ...args: any[]
@@ -37,7 +37,16 @@ function graphQueryPartial<
   _name: 'fragment' | `fragment ${string}`,
   _base: `on ${string}`,
   _vars: Variables,
-  selection: () => SelectionObject<PrepareVariables<Variables>>,
+  selection: TypeSelection<PrepareVariables<Variables>>,
 ): <TVars extends PrepareVariables<Variables>>($: Dollar<TVars>) => SelectionObject<PrepareVariables<Variables>> {
-  return () => selection()
+  const last = selection[selection.length - 1]
+  const items = selection.slice(0, selection.length - 1) as Array<string>
+
+  const ret: SelectionObject<PrepareVariables<Variables>>
+    = typeof last === 'string'
+      ? { last: true }
+      : { ...last }
+  items.forEach(item => ret[item] = true)
+
+  return () => ret
 }

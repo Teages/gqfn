@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { $enum, gqf, gqp } from '../../src'
+import { $enum, gqf, gqp } from '../../src/core'
 import { coreFixture as fixture } from '../utils'
 
 describe('@teages/gqf/core', () => {
@@ -145,11 +145,13 @@ describe('@teages/gqf/core', () => {
 
   const userFragment = gqp('fragment UserFields', 'on User', {
     withFriendsEmail: 'Boolean! = false',
-  }, () => ({
-    id: true,
-    name: true,
-    email: $ => $(true, [['@include', { if: $.withFriendsEmail }]]),
-  }))
+  }, [
+    'id',
+    'name',
+    {
+      email: $ => $(true, [['@include', { if: $.withFriendsEmail }]]),
+    },
+  ])
   it('fragment / partial', fixture(
     gql => gql(`
       query FetchUser($userId: ID!, $withFriendsEmail: Boolean! = false) {

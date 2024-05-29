@@ -104,3 +104,8 @@ type _Exact<Shape, T extends Shape> = {
     ? Exact<Shape[Key], T[Key]>
     : never
 }
+
+export type ExactRecord<
+  Shape extends Record<string, any>,
+  T extends Shape,
+> = { [Key in keyof T]: Key extends keyof Shape ? T[Key] : never }
