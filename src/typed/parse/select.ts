@@ -37,7 +37,7 @@ type ParseTypeSelectionObject<
 > = Extract<keyof SelectionObject, `... on ${string}` | '...'> extends never
   ? ParseSelectionInlineField<T, SelectionObject>
   : ParseSelectionInlineField<T, Omit<SelectionObject, `... on ${string}` | '...'>>
-  & ParseInlineFragment<T, Pick<SelectionObject, `... on ${string}` | '...'>>
+  & ParseInlineFragment<T, SelectionObject>
 
 type ParseSelectionInlineField<
   T extends TypeObject<string, any, any>,
@@ -45,7 +45,7 @@ type ParseSelectionInlineField<
 > = {
   [K in Exclude<
       keyof SelectionObject,
-      `... on ${string}`
+      `... on ${string}` | '...'
     > as ParseSelectionName<K>['Name']
   ]: ParseSelectionName<K>['Field'] extends '__typename'
     ? T['Types'] extends EmptyRecord ? T['Name'] : keyof T['Types']
@@ -59,10 +59,15 @@ type ParseInlineFragment<
   T extends TypeObject<string, any, any>,
   SelectionObject,
 > = Values<{
-  [K in keyof SelectionObject]: K extends '...'
-    ? ParseInlineFragmentSelection<T, SelectionObject[K]>
+  [K in ('...' | `... on ${string & keyof T['Types']}`)]:
+  K extends '...'
+    ? K extends keyof SelectionObject
+      ? ParseInlineFragmentSelection<T, SelectionObject[K]>
+      : never
     : K extends `... on ${infer Type}`
-      ? ParseInlineFragmentSelection<T['Types'][Type], SelectionObject[K]>
+      ? K extends keyof SelectionObject
+        ? { __typename?: Type } & ParseInlineFragmentSelection<T['Types'][Type], SelectionObject[K]>
+        : { __typename?: Type }
       : never
 }>
 

@@ -72,9 +72,13 @@ export type ProvideTypeSelectionObject<
 export type ProvideTypeSelectionObjectFields<
   T extends TypeObject<string, any, any>,
   Vars extends Record<string, any>,
-> = {
-  [K in keyof T['Fields'] as WithAlias<K>]?: ProvideSelectionField<T['Fields'][K], Vars>
-}
+> = T['Fields'] extends EmptyRecord
+  ? { [K in '__typename' as WithAlias<K>]?: true }
+  : RecordAssign<{
+    [K in '__typename' as WithAlias<K>]?: true
+  }, {
+    [K in keyof T['Fields'] as WithAlias<K>]?: ProvideSelectionField<T['Fields'][K], Vars>
+  }>
 
 export type ProvideTypeSelectionObjectInlineFragment<
   T extends TypeObject<string, any, any>,
