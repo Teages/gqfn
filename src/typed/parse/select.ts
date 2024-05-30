@@ -1,4 +1,4 @@
-import type { Enum, Field, Scalar, TypeObject } from '../../schema'
+import type { EnumType, Field, ScalarType, TypeObject } from '../../schema'
 import type { EmptyRecord, Nullable, Values } from '../../utils/object'
 import type { DollarContext } from '../dollar'
 
@@ -48,7 +48,7 @@ type ParseSelectionInlineField<
       `... on ${string}` | '...'
     > as ParseSelectionName<K>['Name']
   ]: ParseSelectionName<K>['Field'] extends '__typename'
-    ? T['Types'] extends EmptyRecord ? T['Name'] : keyof T['Types']
+    ? ParseTypename<T>
     : ParseSelectionField<
         T['Fields'][ParseSelectionName<K>['Field']],
         SelectionObject[K]
@@ -66,8 +66,8 @@ type ParseInlineFragment<
       : never
     : K extends `... on ${infer Type}`
       ? K extends keyof SelectionObject
-        ? { __typename?: Type } & ParseInlineFragmentSelection<T['Types'][Type], SelectionObject[K]>
-        : { __typename?: Type }
+        ? { __typename?: ParseTypename<T['Types'][Type]> } & ParseInlineFragmentSelection<T['Types'][Type], SelectionObject[K]>
+        : { __typename?: ParseTypename<T['Types'][Type]> }
       : never
 }>
 
@@ -100,11 +100,14 @@ type ParseSelectionReturn<Ret, SelectionField> =
         : ParseSelection<Ret, SelectionField>
 
 type ParseOutput<T> =
-  T extends Scalar<string, any, any>
+  T extends ScalarType<string, any, any>
     ? T['Output']
-    : T extends Enum<string, any>
+    : T extends EnumType<string, any>
       ? T['Output']
       : unknown
+
+type ParseTypename<T extends TypeObject<string, any, any>> =
+  T['Types'] extends EmptyRecord ? T['Name'] : keyof T['Types']
 
 type MaybeEmpty<T extends Record<string, any>> = T | {
   [K in keyof T]: null | undefined

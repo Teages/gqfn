@@ -1,12 +1,12 @@
 import type {
   ArgOf,
   DefineSchema,
-  Enum,
+  EnumType,
   Field,
   InputObject,
   InterfaceObject,
   ResOf,
-  Scalar,
+  ScalarType,
   TypeObject,
   Union,
 } from '../src/schema'
@@ -83,10 +83,10 @@ type Subscription = TypeObject<'Subscription', {
 
 export type Schema = DefineSchema<{
   Scalars: {
-    Date: Scalar<'Date', string>
+    Date: ScalarType<'Date', string>
   }
   Enums: {
-    CategoryEnum: Enum<'CategoryEnum', CategoryEnum>
+    CategoryEnum: EnumType<'CategoryEnum', CategoryEnum>
   }
   Inputs: {
     SayingDataInput: SayingDataInput

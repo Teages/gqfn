@@ -53,7 +53,7 @@ export interface InputObject<
   Output: never
 }
 
-export interface Scalar<
+export interface ScalarType<
   Name extends string,
   Input = unknown,
   Output = Input,
@@ -62,7 +62,7 @@ export interface Scalar<
   Output: Output
 }
 
-export interface Enum<
+export interface EnumType<
   Name extends string,
   Values extends string,
 > extends BaseType<'Enum', Name> {

@@ -48,11 +48,19 @@ const i1 = gqf([
     'users': $ => $([
       'id',
       {
-        'email': $ => $(true, [['@skip', { if: true }]]),
+        '__typename': true,
+        // 'email': $ => $(true, [['@skip', { if: true }]]),
         '...': $ => $([
           'email',
+          'name',
         ], [['@skip', { if: true }]]),
         ...UserPart($),
+      },
+    ]),
+    'all': $ => $([
+      '__typename',
+      {
+        '... on User': $ => $(['id']),
       },
     ]),
   },
@@ -61,3 +69,5 @@ console.log(print(i1))
 
 type _I1Res = ResultOf<typeof i1>
 type _UserReq = RequireQueryPart<typeof UserPart>
+
+const res: _I1Res = null as any

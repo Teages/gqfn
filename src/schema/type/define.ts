@@ -1,5 +1,5 @@
 import type { EmptyRecord } from '../../utils/object'
-import type { Enum, InputObject, InterfaceObject, Scalar, TypeObject, Union } from './types'
+import type { EnumType, InputObject, InterfaceObject, ScalarType, TypeObject, Union } from './types'
 
 export interface DefineSchema<
   PartialTypes extends Partial<UserSchemaTypes>,
@@ -20,11 +20,11 @@ type Merge<T, U> = T extends undefined ? U : T
 
 export interface DefaultSchemaTypes extends UserSchemaTypes {
   Scalars: {
-    ID: Scalar<'ID', string>
-    String: Scalar<'String', string>
-    Int: Scalar<'Int', number>
-    Float: Scalar<'Float', number>
-    Boolean: Scalar<'Boolean', boolean>
+    ID: ScalarType<'ID', string>
+    String: ScalarType<'String', string>
+    Int: ScalarType<'Int', number>
+    Float: ScalarType<'Float', number>
+    Boolean: ScalarType<'Boolean', boolean>
   }
   Enums: EmptyRecord
   Inputs: EmptyRecord
@@ -40,8 +40,8 @@ export interface DefaultSchemaTypes extends UserSchemaTypes {
 }
 
 export interface UserSchemaTypes {
-  Scalars: Record<string, Scalar<string, unknown, unknown>>
-  Enums: Record<string, Enum<string, string>>
+  Scalars: Record<string, ScalarType<string, unknown, unknown>>
+  Enums: Record<string, EnumType<string, string>>
 
   Inputs: Record<string, InputObject<string, any>>
 
