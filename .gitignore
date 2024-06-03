@@ -5,3 +5,6 @@ dist
 .eslintcache
 *.log*
 *.env*
+
+docs/.vitepress/cache
+docs/.vitepress/dist

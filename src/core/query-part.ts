@@ -44,7 +44,7 @@ function graphQueryPartial<
 
   const ret: SelectionObject<PrepareVariables<Variables>>
     = typeof last === 'string'
-      ? { last: true }
+      ? { [last]: true }
       : { ...last }
   items.forEach(item => ret[item] = true)
 
