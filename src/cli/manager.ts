@@ -1,45 +1,66 @@
 import { resolve } from 'pathe'
+import type { Config } from './config'
 import { loadConfig, updateConfig } from './config'
 import { useLogger } from './logger'
 import { sync } from './sync'
 
-export async function addClient(url: string) {
-  const config = await loadConfig()
+export async function addClient(
+  urls: Array<string>,
+  configOverride?: Partial<Config>,
+) {
+  const config = {
+    ...await loadConfig(),
+    ...configOverride,
+  }
   const logger = useLogger(config)
 
-  logger.log(`Adding client: ${url}`)
+  logger.log(`Add client: ${urls.join(', ')}`)
 
   const clientsSet = new Set(config.clients)
-  clientsSet.add(url)
+  urls.forEach(url => clientsSet.add(url))
 
-  updateConfig({
+  const newConfig = await updateConfig({
     clients: Array.from(clientsSet),
   })
-  return await syncClient()
+  return await syncClient(newConfig)
 }
 
-export async function removeClient(url: string) {
-  const config = await loadConfig()
+export async function removeClient(
+  urls: Array<string>,
+  configOverride?: Partial<Config>,
+) {
+  const config = {
+    ...await loadConfig(),
+    ...configOverride,
+  }
   const logger = useLogger(config)
 
-  logger.log(`Removing client: ${url}`)
+  logger.log(`Removing client: ${urls.join(', ')}`)
 
-  updateConfig({
-    clients: config.clients.filter(client => client !== url),
+  const newConfig = await updateConfig({
+    clients: config.clients.filter(client =>
+      !urls.includes(typeof client === 'string' ? client : client.url),
+    ),
   })
-  return await syncClient()
+  return await syncClient(newConfig)
 }
 
-export async function syncClient() {
-  const config = await loadConfig()
+export async function syncClient(
+  configOverride?: Partial<Config>,
+) {
+  const config = {
+    ...await loadConfig(),
+    ...configOverride,
+  }
   const logger = useLogger(config)
-
-  logger.start('Syncing clients schema')
 
   const { clients, output } = config
   if (clients.length === 0) {
     logger.warn('No clients found.')
     return
+  }
+  else {
+    logger.start(`Syncing schema from ${clients.length} clients`)
   }
 
   const fs = await import('node:fs/promises')
@@ -62,5 +83,13 @@ export async function syncClient() {
     }
   }))
 
-  logger.success(`Synced schema from ${clients.length} ${clients.length > 1 ? 'clients' : 'client'}`)
+  const success = files.length
+  const failure = files.length - success
+
+  if (success > 0) {
+    logger.success(`Synced schema from ${success} ${success > 1 ? 'clients' : 'client'}`)
+  }
+  if (failure > 0) {
+    logger.error(`Failed to sync schema from ${failure} ${failure > 1 ? 'clients' : 'client'}`)
+  }
 }

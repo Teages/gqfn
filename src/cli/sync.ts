@@ -17,8 +17,6 @@ export async function sync(config: Config): Promise<Output[]> {
   const logger = useLogger(config)
   const { clients } = config
 
-  logger.start('Syncing clients schema')
-
   if (clients.length === 0) {
     logger.warn('No clients found.')
   }

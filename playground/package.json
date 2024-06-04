@@ -3,7 +3,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "play": "tsx src"
+    "play": "tsx src",
+    "gqf": "tsx ../src/main.ts"
   },
   "devDependencies": {
     "@teages/gqf": "file:../src"

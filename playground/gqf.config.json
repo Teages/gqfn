@@ -1,6 +1,8 @@
 {
   "clients": [
-    "https://graphql-test.teages.xyz/graphql-user"
+    "https://graphql-test.teages.xyz/graphql-user",
+    "https://services.cytoid.io/graphql"
   ],
-  "output": "src/gqf"
+  "output": "src/gqf",
+  "silent": false
 }

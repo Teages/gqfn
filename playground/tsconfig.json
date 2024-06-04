@@ -6,6 +6,9 @@
     "paths": {
       "@teages/gqf/*": [
         "../src/*"
+      ],
+      "@teages/gqf": [
+        "../src"
       ]
     },
     "strict": true,

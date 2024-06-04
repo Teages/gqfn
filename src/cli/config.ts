@@ -52,10 +52,19 @@ export async function loadConfig(): Promise<Config> {
   return state.data
 }
 
-export async function updateConfig(modify: Partial<Config>): Promise<void> {
+export async function updateConfig(
+  modify: Partial<Config>,
+): Promise<Config> {
   const { config, configFile } = await read<Config>({
     ...loadConfigOptions,
   })
+
+  const state = configSchema.safeParse(config)
+  if (!state.success) {
+    throw new Error(
+      'Failed to update config: Invalid config.',
+    )
+  }
 
   const fs = await import('node:fs/promises')
 
@@ -69,10 +78,17 @@ export async function updateConfig(modify: Partial<Config>): Promise<void> {
     )
   }
 
-  await fs.writeFile(resolve(defaultConfigPath), JSON.stringify({
+  const newConfig: Config = {
+    ...state.data,
     ...modify,
-    ...config,
-  }, null, 2))
+  }
+
+  await fs.writeFile(
+    resolve(configFile ?? defaultConfigPath),
+    JSON.stringify(newConfig, null, 2),
+  )
+
+  return newConfig
 }
 
 async function exists(filePath: string): Promise<boolean> {
