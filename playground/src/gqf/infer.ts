@@ -9,7 +9,7 @@ import type {
   ScalarType,
   TypeObject,
   Union,
-} from '../src/schema'
+} from '@teages/gqf/schema'
 
 export type CategoryEnum =
   | 'funny'
@@ -111,3 +111,9 @@ export type Schema = DefineSchema<{
 
 type Arg<T extends string> = ArgOf<Schema, T>
 type Res<T extends string> = ResOf<Schema, T>
+
+declare module '@teages/gqf/cli' {
+  interface Schemas {
+    '/graphql': Schema
+  }
+}

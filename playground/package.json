@@ -1,0 +1,11 @@
+{
+  "name": "playground",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "play": "tsx src"
+  },
+  "devDependencies": {
+    "@teages/gqf": "file:../src"
+  }
+}

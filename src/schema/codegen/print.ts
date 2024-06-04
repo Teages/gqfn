@@ -1,12 +1,16 @@
 import type { SchemaData } from './parse'
 
-export function print(schemaData: SchemaData): string {
+export interface PrintOptions {
+  url?: string
+}
+
+export function print(schemaData: SchemaData, { url }: PrintOptions = {}): string {
   const lines: Array<string> = []
   const push = (...str: Array<string>) => lines.push(...str, '')
   // ignores and import type utils
   push(
     `/* eslint-ignore */`,
-    `import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from 'gqf/schema'`,
+    `import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@teages/gqf/schema'`,
   )
 
   // scalars
@@ -160,5 +164,17 @@ export function print(schemaData: SchemaData): string {
     `type Arg<T extends string> = ArgOf<Schema, T>`,
     `type Res<T extends string> = ResOf<Schema, T>`,
   )
+
+  // declare
+  if (url) {
+    push(
+      `declare module '@teages/gqf/cli' {`,
+      `  interface Schemas {`,
+      `    '${url}': Schema`,
+      `  }`,
+      `}`,
+    )
+  }
+
   return lines.join('\n')
 }

@@ -19,17 +19,19 @@ type ParseSelectionFieldContext<T, SelectionField> =
       : never
 
 export type ParseTypeSelection<
-  T extends TypeObject<string, any, any>,
+  T extends TypeObject<string, any, any> | undefined,
   Selection,
-> = Selection extends []
-  ? EmptyRecord
-  : Selection extends Array<infer Item extends string>
-    ? ParseTypeSelectionObject<T, { [K in Item]: true }>
-    : Selection extends [infer Follow extends Record<string, any>]
-      ? ParseTypeSelectionObject<T, Follow>
-      : Selection extends [...Array<infer Item extends string>, infer Follow]
-        ? ParseTypeSelectionObject<T, { [K in Item]: true } & Follow>
-        : never
+> = T extends TypeObject<string, any, any>
+  ? Selection extends []
+    ? EmptyRecord
+    : Selection extends Array<infer Item extends string>
+      ? ParseTypeSelectionObject<T, { [K in Item]: true }>
+      : Selection extends [infer Follow extends Record<string, any>]
+        ? ParseTypeSelectionObject<T, Follow>
+        : Selection extends [...Array<infer Item extends string>, infer Follow]
+          ? ParseTypeSelectionObject<T, { [K in Item]: true } & Follow>
+          : never
+  : never
 
 type ParseTypeSelectionObject<
   T extends TypeObject<string, any, any>,

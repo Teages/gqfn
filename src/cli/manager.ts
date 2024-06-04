@@ -1,13 +1,13 @@
-import { ofetch } from 'ofetch'
 import { resolve } from 'pathe'
-import { murmurHash } from 'ohash'
-import type { IntrospectionQuery } from 'graphql'
-import { buildClientSchema, getIntrospectionQuery, printSchema } from 'graphql'
-import { generate } from '../schema/codegen'
 import { loadConfig, updateConfig } from './config'
+import { useLogger } from './logger'
+import { sync } from './sync'
 
 export async function addClient(url: string) {
-  const config = loadConfig()
+  const config = await loadConfig()
+  const logger = useLogger(config)
+
+  logger.log(`Adding client: ${url}`)
 
   const clientsSet = new Set(config.clients)
   clientsSet.add(url)
@@ -15,45 +15,52 @@ export async function addClient(url: string) {
   updateConfig({
     clients: Array.from(clientsSet),
   })
-  return await sync()
+  return await syncClient()
 }
 
 export async function removeClient(url: string) {
-  const config = loadConfig()
+  const config = await loadConfig()
+  const logger = useLogger(config)
+
+  logger.log(`Removing client: ${url}`)
+
   updateConfig({
     clients: config.clients.filter(client => client !== url),
   })
-  return await sync()
+  return await syncClient()
 }
 
-export async function sync() {
-  const { clients, output } = loadConfig()
+export async function syncClient() {
+  const config = await loadConfig()
+  const logger = useLogger(config)
+
+  logger.start('Syncing clients schema')
+
+  const { clients, output } = config
+  if (clients.length === 0) {
+    logger.warn('No clients found.')
+    return
+  }
+
   const fs = await import('node:fs/promises')
   const outputResolve = (...paths: string[]) => resolve(output, ...paths)
 
-  const result = new Map<string, string>()
-  Promise.all(clients.map(async (url) => {
-    // load graphql schema sdl
-    const { data } = await ofetch<{ data: IntrospectionQuery }>(url, {
-      method: 'POST',
-      body: { query: getIntrospectionQuery() },
-    })
-    const sdl = printSchema(buildClientSchema(data))
-
-    // generate code
-    const code = generate(sdl)
-
-    result.set(url, code)
-  }))
-
-  // make sure output directory exists
-  await fs.mkdir(outputResolve(), { recursive: true })
-  console.log(`Output directory: ${outputResolve()}`)
+  const files = await sync(config)
 
   // write code to files
-  Promise.all([...result.entries()].map(async ([url, code]) => {
-    const filename = `${murmurHash(url).toString(32)}.ts`
-    console.log(`Writing code to ${filename}`)
-    await fs.writeFile(outputResolve(filename), code, 'utf-8')
+  await Promise.all(files.map(async ({ filename, content }) => {
+    try {
+      await fs.writeFile(outputResolve(filename), content, 'utf-8')
+    }
+    catch (error) {
+      if (error instanceof Error) {
+        logger.error(`Failed to write code to ${filename}:\n  ${error.message}`)
+      }
+      else {
+        logger.error(`Failed to write code to ${filename}: Unknown error.`)
+      }
+    }
   }))
+
+  logger.success(`Synced schema from ${clients.length} ${clients.length > 1 ? 'clients' : 'client'}`)
 }

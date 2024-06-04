@@ -49,9 +49,9 @@ export interface UserSchemaTypes {
 
   Interfaces: Record<string, InterfaceObject<string, any, any>>
   Objects: {
-    Query: TypeObject<'Query', any>
-    Mutation: TypeObject<'Mutation', any>
-    Subscription: TypeObject<'Subscription', any>
+    Query?: TypeObject<'Query', any>
+    Mutation?: TypeObject<'Mutation', any>
+    Subscription?: TypeObject<'Subscription', any>
   } & Record<string, TypeObject<string, any>>
 
   Config: Record<string, unknown>

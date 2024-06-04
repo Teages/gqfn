@@ -3,9 +3,14 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "resolveJsonModule": true,
+    "paths": {
+      "@teages/gqf/*": [
+        "../src/*"
+      ]
+    },
     "strict": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
   "include": ["src"]

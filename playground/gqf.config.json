@@ -1,0 +1,6 @@
+{
+  "clients": [
+    "https://graphql-test.teages.xyz/graphql-user"
+  ],
+  "output": "src/gqf"
+}
