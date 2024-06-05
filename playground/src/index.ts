@@ -1,10 +1,16 @@
 /* eslint-disable no-console */
+
 import { print } from 'graphql'
-import { addClient, removeClient, syncClient } from '@teages/gqf/cli/manager'
+// import { sync } from '@teages/gqf/cli'
 import { useSchema } from '@teages/gqf'
 
 console.log('working...')
 
-;(async () => {
-  await syncClient()
-})()
+const { gqf } = useSchema('https://services.cytoid.io/graphql')
+
+const query = gqf('query', [{
+  levels: $ => $({}, [
+    'id',
+    'title',
+  ]),
+}])

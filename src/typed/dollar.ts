@@ -47,6 +47,14 @@ export interface SelectionDollarFunctionWithoutArgs<
     U extends Array<DirectiveInput>,
   >(
     selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
+  ): DollarContext<T, IsSkipDirective<U>>
+
+  <
+    T extends ProvideSelectionFieldContext<F, Vars>,
+    U extends Array<DirectiveInput>,
+  >(
+    args: EmptyRecord,
+    selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
     directive?: U,
   ): DollarContext<T, IsSkipDirective<U>>
 }
@@ -58,7 +66,7 @@ export interface SelectionDollarFunctionWithArgs<
     T extends ProvideSelectionFieldContext<F, Vars>,
     U extends Array<DirectiveInput>,
   >(
-    arg: ProvideSelectionArgument<F['Argument']>,
+    args: ProvideSelectionArgument<F['Argument']>,
     selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
     directive?: U,
   ): DollarContext<T, IsSkipDirective<U>>
