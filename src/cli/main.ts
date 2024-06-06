@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Command } from '@commander-js/extra-typings'
 import { addClient, init, removeClient, syncClient } from './manager'
 
