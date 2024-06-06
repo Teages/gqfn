@@ -2,15 +2,31 @@
 
 import { print } from 'graphql'
 // import { sync } from '@teages/gqf/cli'
+import type { ResultOf } from '@teages/gqf'
 import { useSchema } from '@teages/gqf'
+import { request } from 'graphql-request'
 
 console.log('working...')
 
-const { gqf } = useSchema('https://services.cytoid.io/graphql')
+const endpoint = 'https://graphql.anilist.co'
+const { gqf, $enum } = useSchema(endpoint)
 
-const query = gqf('query', [{
-  levels: $ => $({}, [
+const query = gqf('query FetchAnime', {
+  id: 'Int = 127549',
+}, [{
+  Media: $ => $({ id: $.id, type: $enum('ANIME') }, [
     'id',
-    'title',
+    {
+      title: $ => $([
+        'romaji',
+        'english',
+        'native',
+      ]),
+    },
   ]),
 }])
+
+console.log(print(query))
+
+const res = await request(endpoint, query, { })
+console.log(JSON.stringify(res, null, 2))

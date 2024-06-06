@@ -1,7 +1,9 @@
 {
   "clients": [
     "https://graphql-test.teages.xyz/graphql-user",
-    "https://services.cytoid.io/graphql"
+    "https://services.cytoid.io/graphql",
+    "https://graphql.anilist.co",
+    "https://countries.trevorblades.com"
   ],
   "output": "src/gqf",
   "silent": false

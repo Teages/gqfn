@@ -82,6 +82,7 @@
     "@vitest/coverage-v8": "^1.6.0",
     "changelogen": "^0.5.5",
     "eslint": "^9.3.0",
+    "graphql-request": "^7.0.1",
     "tsx": "^4.11.2",
     "typescript": "^5.4.5",
     "unbuild": "^2.0.0",

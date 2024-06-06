@@ -12,7 +12,6 @@ const clientConfigSchema = z.union([
       .default('POST'),
 
     headers: z.record(z.string())
-      .optional()
       .default({}),
 
     schemaOverride: z.string()
@@ -25,7 +24,7 @@ const configSchema = z.object({
     .default([]),
 
   output: z.string()
-    .default('.gqf'),
+    .default('gqf'),
 
   silent: z.boolean()
     .default(false),
@@ -50,6 +49,19 @@ export async function loadConfig(): Promise<Config> {
   }
 
   return state.data
+}
+
+export async function initConfig() {
+  const { configFile } = await read<Config>({
+    ...loadConfigOptions,
+  })
+
+  if (configFile && await exists(configFile)) {
+    return false
+  }
+
+  await updateConfig({})
+  return true
 }
 
 export async function updateConfig(

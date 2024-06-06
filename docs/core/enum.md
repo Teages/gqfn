@@ -2,7 +2,7 @@
 
 You need to use `$enum` if you want to define an enum in GQF. [Learn about enum](https://graphql.org/learn/schema/#enumeration-types)
 
-## Example
+## Specification
 
 To use enum, you need to warp the value with `$enum` function.
 
@@ -102,7 +102,5 @@ query ($unit: UnitEnum! = MB, $value: Int!) {
 
 ```ts
 export type EnumPackage<T extends string> = () => T
-export function $enum<T extends string>(content: T): EnumPackage<T> {
-  return () => content
-}
+export function $enum<T extends string>(content: T): EnumPackage<T>
 ```

@@ -38,11 +38,17 @@ export async function sync(config: Config): Promise<Output[]> {
       : opt
 
     if (schemaOverride) {
-      const fs = await import('node:fs/promises')
-      const sdl = await fs.readFile(resolve(schemaOverride), 'utf-8')
-      const code = generate(sdl, { url })
-      result.set(url, code)
-      return
+      try {
+        const fs = await import('node:fs/promises')
+        const sdl = await fs.readFile(resolve(schemaOverride), 'utf-8')
+        const code = generate(sdl, { url })
+        result.set(url, code)
+        return
+      }
+      catch (e) {
+        logger.error(`Failed to load schema from file: ${schemaOverride}`)
+        return
+      }
     }
 
     // load graphql schema sdl from remote

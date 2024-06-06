@@ -2,7 +2,7 @@
 
 The way to add extra directive. [Learn about Directives](https://graphql.org/learn/queries/#directives)
 
-## Example
+## Specification
 
 There are three places where you can add directives:
   1. on operation root

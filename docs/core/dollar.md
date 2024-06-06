@@ -2,7 +2,7 @@
 
 The `$` is used to define variables with directives, select type objects and visit variables in the query builder.
 
-## Example
+## Specification
 
 ### `$` in Selection
 

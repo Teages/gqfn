@@ -1,4 +1,4 @@
-import type { Field, TypeObject } from '../schema'
+import type { Field, ResOf, TypeObject } from '../schema'
 import type { ArrayMayFollowItem, EmptyRecord, MaybeArray, RecordAssign } from '../utils/object'
 import type { ProvideSelectionArgument } from './argument'
 import type { DollarContext, InlineFragmentDollar, SelectionDollar } from './dollar'
@@ -32,7 +32,7 @@ export type ProvideSimpleSelectionKeys<
 type CanFieldBeSimplySelected<
   T extends Field<string, any, any>,
 > = EmptyRecord extends ProvideSelectionArgument<T['Argument']>
-  ? T['Return'] extends MaybeArray<TypeObject<string, any, any>>
+  ? ResTypeOf<T['Return']> extends TypeObject<string, any, any>
     ? never
     : true
   : never
@@ -57,8 +57,8 @@ export type ProvideSelectionFieldContext<
   Vars extends Record<string, any>,
 > = IsNonTypeObjectKeys<T> extends true
   ? true
-  : T['Return'] extends MaybeArray<infer U extends TypeObject<string, any, any>>
-    ? ProvideTypeSelection<U, Vars>
+  : ResTypeOf<T['Return']> extends TypeObject<string, any, any>
+    ? ProvideTypeSelection<ResTypeOf<T['Return']>, Vars>
     : never
 
 export type ProvideTypeSelectionObject<
@@ -103,9 +103,14 @@ type ProvideInlineFragment<
 ) => DollarContext<ProvideTypeSelection<T, Vars>, boolean>
 
 export type IsNonTypeObjectKeys<T extends Field<string, any, any>> =
-  T['Return'] extends MaybeArray<TypeObject<string, any, any>>
+  ResTypeOf<T['Return']> extends TypeObject<string, any, any>
     ? false
     : true
+
+type ResTypeOf<T extends ResOf<any, string>> =
+  NonNullable<T> extends Array<infer U>
+    ? ResTypeOf<U>
+    : NonNullable<T>
 
 type WithAlias<
   FieldName,
