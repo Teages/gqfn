@@ -6,7 +6,7 @@ In this guide, our goal is to gradually build a slightly complex query.
 
 ## Prepare the Schema
 
-Before writing a query, you need to prepare the schema. Follow the guide in [Getting Started](../getting-started) to generate the schema types. and use `useSchema` to get the `gqf` function. Here we use the endpoint from [AniList](https://anilist.gitbook.io/anilist-apiv2-docs/).
+Before writing a query, you need to prepare the schema. Follow the guide in [Getting Started](./) to generate the schema types. and use `useSchema` to get the `gqf` function. Here we use the endpoint from [AniList](https://anilist.gitbook.io/anilist-apiv2-docs/).
 
 If you haven't install `gqf` yet, you can do it by running the following command:
 ```bash
