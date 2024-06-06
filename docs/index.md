@@ -16,10 +16,16 @@ hero:
       target: _blank
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Type safe
+    icon: 🔒
+    details: Write queries with type safety and type hit.
+  - title: No HMR side effect
+    icon: 🚀
+    details: No need to scan your source code, no code generation during HMR.
+  - title: Similar to plain GraphQL
+    icon: ❤️
+    details: The experience of using gqf is very similar to writing plain GraphQL queries.
+  - title: Compatible with most client.
+    icon: 🌐
+    details: Working for most clients with TypedDocumentNode.
 ---
