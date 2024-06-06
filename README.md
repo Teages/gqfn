@@ -6,7 +6,7 @@
 <!-- [![bundle][bundle-src]][bundle-href] -->
 <!-- [![Codecov][codecov-src]][codecov-href] -->
 
-Writing GraphQL queries with type safety and type hit, power by TypeScript.
+Writing GraphQL queries with type safety and type hints, power by TypeScript.
 
 ## Usage
 

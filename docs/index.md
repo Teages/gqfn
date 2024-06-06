@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "GQF"
   text: "GraphQL Queries with Function"
-  tagline: Writing GraphQL queries with type safety and type hit, power by TypeScript.
+  tagline: Writing GraphQL queries with type safety and type hints, power by TypeScript.
   actions:
     - theme: brand
       text: Getting Started
@@ -18,7 +18,7 @@ hero:
 features:
   - title: Type safe
     icon: 🔒
-    details: Write queries with type safety and type hit.
+    details: Write queries with type safety and type hints.
   - title: No HMR side effect
     icon: 🚀
     details: No need to scan your source code, no code generation during HMR.
