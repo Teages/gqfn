@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.1
+
+[compare changes](https://github.com/Teages/gqf/compare/v0.1.0...v0.1.1)
+
+### 🩹 Fixes
+
+- **cli:** Remove crlf line ([37ffa1e](https://github.com/Teages/gqf/commit/37ffa1e))
+
+### 🏡 Chore
+
+- **release:** V0.1.0 ([b5b4af0](https://github.com/Teages/gqf/commit/b5b4af0))
+
+### ❤️ Contributors
+
+- Teages ([@Teages](http://github.com/Teages))
+
 ## v0.1.0
 
 [compare changes](https://github.com/Teages/gqf/compare/v0.0.1...v0.1.0)
