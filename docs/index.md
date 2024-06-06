@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "GQF"
   text: "GraphQL Queries with Function"
-  tagline: Make your GraphQL queries type-safe.
+  tagline: Writing GraphQL queries with type safety and type hit, power by TypeScript.
   actions:
     - theme: brand
       text: Getting Started

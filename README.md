@@ -6,7 +6,7 @@
 <!-- [![bundle][bundle-src]][bundle-href] -->
 <!-- [![Codecov][codecov-src]][codecov-href] -->
 
-This is my package description.
+Writing GraphQL queries with type safety and type hit, power by TypeScript.
 
 ## Usage
 
@@ -30,11 +30,13 @@ Import:
 
 ```js
 // ESM
-import { test } from '@teages/gqf'
+import { useSchema } from '@teages/gqf'
 
 // CommonJS
-const { test } = require('@teages/gqf')
+const { useSchema } = require('@teages/gqf')
 ```
+
+- [Documentation](https://gqf.teages.xyz)
 
 ## Development
 

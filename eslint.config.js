@@ -6,6 +6,8 @@ export default antfu({
     'node_modules',
     'coverage',
     'dist',
+    'playground/gqf.config.json',
+    'playground/src/gqf',
   ],
 }, {
   rules: {

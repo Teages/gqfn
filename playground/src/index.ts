@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 
 import { print } from 'graphql'
-// import { sync } from '@teages/gqf/cli'
-import type { ResultOf } from '@teages/gqf'
 import { useSchema } from '@teages/gqf'
 import { request } from 'graphql-request'
 
