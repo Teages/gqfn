@@ -5,7 +5,10 @@
   "packageManager": "pnpm@9.1.1",
   "description": "Writing GraphQL queries with type safety and type hints, power by TypeScript.",
   "license": "MIT",
-  "repository": "Teages/gqf",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Teages/gqf.git"
+  },
   "sideEffects": false,
   "exports": {
     ".": {
@@ -43,7 +46,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "bin": {
-    "gqf": "./dist/cli/main.mjs"
+    "gqf": "dist/cli/main.mjs"
   },
   "files": [
     "dist"
