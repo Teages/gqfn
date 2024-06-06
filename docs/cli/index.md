@@ -69,7 +69,7 @@ export type Schema = DefineSchema<{
   // Your schema type
 }>
 
-declare module '@teages/gqf/cli' {
+declare module '@teages/gqf/schema' {
   interface Schemas {
     'https://your-endpoint-url': Schema
   }

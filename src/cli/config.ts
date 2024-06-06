@@ -51,7 +51,9 @@ export async function loadConfig(): Promise<Config> {
   return state.data
 }
 
-export async function initConfig() {
+export async function initConfig(
+  modify: Partial<Config> = {},
+) {
   const { configFile } = await read<Config>({
     ...loadConfigOptions,
   })
@@ -60,7 +62,7 @@ export async function initConfig() {
     return false
   }
 
-  await updateConfig({})
+  await updateConfig(modify)
   return true
 }
 
@@ -96,7 +98,11 @@ export async function updateConfig(
   }
 
   await fs.writeFile(
-    resolve(configFile ?? defaultConfigPath),
+    resolve(
+      configFile?.endsWith('.json')
+        ? configFile
+        : defaultConfigPath
+    ),
     JSON.stringify(newConfig, null, 2),
   )
 

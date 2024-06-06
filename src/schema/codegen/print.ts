@@ -168,7 +168,7 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
   // declare
   if (url) {
     push(
-      `declare module '@teages/gqf/cli' {`,
+      `declare module '@teages/gqf/schema' {`,
       `  interface Schemas {`,
       `    '${url}': Schema`,
       `  }`,

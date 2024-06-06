@@ -76,7 +76,7 @@ export async function sync(config: Config): Promise<Output[]> {
 
   // write to output file
   return [...result.entries()].map(([url, content]) => {
-    const filename = `${murmurHash(url).toString(32)}.ts`
+    const filename = `${murmurHash(url).toString(32)}.d.ts`
     return {
       filename,
       url,

@@ -112,7 +112,7 @@ export type Schema = DefineSchema<{
 type Arg<T extends string> = ArgOf<Schema, T>
 type Res<T extends string> = ResOf<Schema, T>
 
-declare module '@teages/gqf/cli' {
+declare module '@teages/gqf/schema' {
   interface Schemas {
     '/graphql': Schema
   }

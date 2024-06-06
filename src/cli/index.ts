@@ -1,11 +1,11 @@
-import type { DefineSchema, UserSchemaTypes } from '../schema'
+import type { DefineSchema, Schemas, UserSchemaTypes } from '../schema'
 import type { GqfPackage } from '../utils/package'
 import { $enum, gqf, gqp } from '../core'
 
+export type { Schemas }
+
 export { sync } from './sync'
 export type { Config } from './config'
-
-export interface Schemas {}
 
 export type LoadFromUrl<T extends string> =
   T extends keyof Schemas

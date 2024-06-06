@@ -13,7 +13,8 @@ export function main() {
   program.command('init')
     .description('Initialize the @teages/gqf configuration.')
     .option('-s, --silent', 'Disable all output', false)
-    .action(({ silent }) => init(silent))
+    .option('--set-output <dir>', 'Set the output dir for generated schema type.')
+    .action(({ silent, setOutput }) => init({ output: setOutput }, silent))
 
   program.command('add')
     .description('Add a new GraphQL schema to @teages/gqf.')

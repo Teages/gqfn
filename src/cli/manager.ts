@@ -4,9 +4,9 @@ import { initConfig, loadConfig, updateConfig } from './config'
 import { useLogger } from './logger'
 import { sync } from './sync'
 
-export async function init(silent: boolean) {
+export async function init(modify: Partial<Config>, silent: boolean) {
   const logger = useLogger({ silent })
-  const notExist = await initConfig()
+  const notExist = await initConfig(modify)
 
   if (notExist) {
     logger.success('Initialized configuration for @teages/gqf.')
