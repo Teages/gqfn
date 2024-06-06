@@ -101,7 +101,7 @@ export async function updateConfig(
     resolve(
       configFile?.endsWith('.json')
         ? configFile
-        : defaultConfigPath
+        : defaultConfigPath,
     ),
     JSON.stringify(newConfig, null, 2),
   )
