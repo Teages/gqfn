@@ -18,6 +18,14 @@ const clientConfigSchema = z.union([
       .optional(),
   }),
 ])
+export type ClientConfig =
+  | string
+  | {
+    url: string
+    method?: 'GET' | 'POST'
+    headers?: Record<string, string>
+    schemaOverride?: string
+  }
 
 const configSchema = z.object({
   clients: z.array(clientConfigSchema)
@@ -29,7 +37,11 @@ const configSchema = z.object({
   silent: z.boolean()
     .default(false),
 })
-export type Config = z.output<typeof configSchema>
+export interface Config {
+  clients: ClientConfig[]
+  output: string
+  silent: boolean
+}
 
 const defaultConfigPath = 'gqf.config.json'
 const loadConfigOptions: LoadConfigOptions<Config> = {

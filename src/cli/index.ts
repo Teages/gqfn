@@ -4,8 +4,8 @@ import { $enum, gqf, gqp } from '../core'
 
 export type { Schemas }
 
-export { sync } from './sync'
-export type { Config } from './config'
+export { sync, type Output } from './sync'
+export type { Config, ClientConfig } from './config'
 
 export type LoadFromUrl<T extends string> =
   T extends keyof Schemas
@@ -19,3 +19,4 @@ export function useSchema<T extends string>(
 ): GqfPackage<LoadFromUrl<T>> {
   return { gqf, gqp, $enum } as any
 }
+export type { GqfPackage }
