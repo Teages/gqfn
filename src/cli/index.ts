@@ -2,8 +2,6 @@ import type { DefineSchema, Schemas, UserSchemaTypes } from '../schema'
 import type { GqfPackage } from '../utils/package'
 import { $enum, gqf, gqp } from '../core'
 
-export type { Schemas }
-
 export { sync, type Output } from './sync'
 export type { Config, ClientConfig } from './config'
 

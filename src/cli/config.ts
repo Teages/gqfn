@@ -3,10 +3,24 @@ import type { LoadConfigOptions } from 'c12'
 import { z } from 'zod'
 import { resolve } from 'pathe'
 
-const clientConfigSchema = z.union([
-  z.string(),
+const schemaConfig = z.discriminatedUnion('type', [
   z.object({
-    url: z.string(),
+    type: z.literal('path'),
+
+    value: z.string(),
+  }),
+  z.object({
+    type: z.literal('sdl'),
+
+    value: z.string(),
+  }),
+  z.object({
+    type: z.literal('json'),
+
+    value: z.string(),
+  }),
+  z.object({
+    type: z.literal('url'),
 
     method: z.enum(['GET', 'POST'])
       .default('POST'),
@@ -14,7 +28,28 @@ const clientConfigSchema = z.union([
     headers: z.record(z.string())
       .default({}),
 
-    schemaOverride: z.string()
+    override: z.string()
+      .optional(),
+  }),
+])
+
+export type SchemaConfig =
+  | {
+    type: 'path' | 'sdl' | 'json'
+    value: string
+  } | {
+    type: 'url'
+    method?: 'GET' | 'POST'
+    headers?: Record<string, string>
+    override?: string
+  }
+
+const clientConfig = z.union([
+  z.string(),
+  z.object({
+    url: z.string(),
+
+    schema: schemaConfig
       .optional(),
   }),
 ])
@@ -22,13 +57,11 @@ export type ClientConfig =
   | string
   | {
     url: string
-    method?: 'GET' | 'POST'
-    headers?: Record<string, string>
-    schemaOverride?: string
+    schema?: SchemaConfig
   }
 
 const configSchema = z.object({
-  clients: z.array(clientConfigSchema)
+  clients: z.array(clientConfig)
     .default([]),
 
   output: z.string()

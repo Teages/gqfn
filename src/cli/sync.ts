@@ -1,10 +1,10 @@
-import type { IntrospectionQuery } from 'graphql'
+import type { DocumentNode, IntrospectionQuery } from 'graphql'
 import { buildClientSchema, getIntrospectionQuery, printSchema } from 'graphql'
 import { ofetch } from 'ofetch'
 import { murmurHash } from 'ohash'
 import { resolve } from 'pathe'
 import { generate } from '../schema/codegen'
-import type { Config } from './config'
+import type { ClientConfig, Config, SchemaConfig } from './config'
 import { useLogger } from './logger'
 
 export interface Output {
@@ -22,46 +22,18 @@ export async function sync(config: Config): Promise<Output[]> {
   }
 
   const result = new Map<string, string>()
-  await Promise.all(clients.map(async (opt) => {
-    const {
-      url,
-      method,
-      headers,
-      schemaOverride,
-    } = typeof opt === 'string'
-      ? {
-          url: opt,
-          method: 'POST' as const,
-          headers: {},
-          schemaOverride: undefined,
-        }
-      : opt
+  await Promise.all(clients.map(async (clientConfig) => {
+    const { url, schema } = resolveClient(clientConfig)
 
-    if (schemaOverride) {
-      try {
-        const fs = await import('node:fs/promises')
-        const sdl = await fs.readFile(resolve(schemaOverride), 'utf-8')
-        const code = generate(sdl, { url })
-        result.set(url, code)
-        return
-      }
-      catch (e) {
-        logger.error(`Failed to load schema from file: ${schemaOverride}`)
-        return
-      }
+    if (result.has(url)) {
+      logger.warn(`Client ${url} duplicate, skipping.`)
+      return
     }
 
     // load graphql schema sdl from remote
     try {
-      const { data } = await ofetch<{ data: IntrospectionQuery }>(url, {
-        method,
-        headers,
-        body: { query: getIntrospectionQuery() },
-      })
-      const sdl = printSchema(buildClientSchema(data))
-      // generate code
+      const sdl = await resolveSchemaOverride(url, schema)
       const code = generate(sdl, { url })
-
       result.set(url, code)
     }
     catch (error) {
@@ -83,4 +55,47 @@ export async function sync(config: Config): Promise<Output[]> {
       content,
     }
   })
+}
+
+function resolveClient(
+  client: ClientConfig,
+): Exclude<ClientConfig, string> {
+  return typeof client === 'string'
+    ? { url: client }
+    : client
+}
+
+async function resolveSchemaOverride(
+  url: string,
+  opts?: SchemaConfig,
+): Promise<string | DocumentNode> {
+  if (!opts || opts.type === 'url') {
+    const { method, headers } = opts ?? { }
+    const override = opts?.override
+    const { data } = await ofetch<{ data: IntrospectionQuery }>(
+      override ?? url,
+      {
+        method: method ?? 'POST',
+        headers,
+        body: { query: getIntrospectionQuery() },
+      },
+    )
+    return printSchema(buildClientSchema(data))
+  }
+
+  if (opts.type === 'path') {
+    const path = resolve(opts.value)
+    try {
+      const fs = await import('node:fs/promises')
+      return await fs.readFile(path, 'utf-8')
+    }
+    catch (e) {
+      throw new Error(`Failed to read ${path}: ${e}`)
+    }
+  }
+  if (opts.type === 'json') {
+    return JSON.parse(opts.value)
+  }
+
+  return opts.value
 }
