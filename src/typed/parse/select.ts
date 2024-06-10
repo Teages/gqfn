@@ -93,20 +93,22 @@ type ParseSelectionField<
   : never
 
 type ParseSelectionReturn<Ret, SelectionField> =
-  Ret extends never
-    ? never
+  null | undefined extends Ret
+    ? Nullable<ParseSelectionReturn<NonNullable<Ret>, SelectionField>>
     : Ret extends Array<infer T>
       ? Array<ParseSelectionReturn<T, SelectionField>>
-      : null extends Ret
-        ? Nullable<ParseSelectionReturn<NonNullable<Ret>, SelectionField>>
-        : ParseSelection<Ret, SelectionField>
+      : ParseSelection<Ret, SelectionField>
 
 type ParseOutput<T> =
-  T extends ScalarType<string, any, any>
-    ? T['Output']
-    : T extends EnumType<string, any>
-      ? T['Output']
-      : unknown
+  null | undefined extends T
+    ? Nullable<ParseOutput<NonNullable<T>>>
+    : T extends Array<infer U>
+      ? Array<ParseOutput<U>>
+      : T extends ScalarType<string, any, any>
+        ? T['Output']
+        : T extends EnumType<string, any>
+          ? T['Output']
+          : unknown
 
 type ParseTypename<T extends TypeObject<string, any, any>> =
   T['Types'] extends EmptyRecord ? T['Name'] : keyof T['Types']
