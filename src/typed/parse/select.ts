@@ -104,11 +104,14 @@ type ParseOutput<T> =
     ? Nullable<ParseOutput<NonNullable<T>>>
     : T extends Array<infer U>
       ? Array<ParseOutput<U>>
-      : T extends ScalarType<string, any, any>
-        ? T['Output']
-        : T extends EnumType<string, any>
-          ? T['Output']
-          : unknown
+      : _ParseOutput<T>
+
+type _ParseOutput<T> =
+  T extends ScalarType<string, any, any>
+    ? T['Output']
+    : T extends EnumType<string, any>
+      ? T['Output']
+      : unknown
 
 type ParseTypename<T extends TypeObject<string, any, any>> =
   T['Types'] extends EmptyRecord ? T['Name'] : keyof T['Types']

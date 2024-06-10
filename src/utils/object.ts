@@ -4,11 +4,6 @@
 export type EmptyRecord = Record<string, never>
 
 /**
- * A EmptyRecord, a alias for `Record<never, never>`
- */
-export type Empty = Record<never, never>
-
-/**
  * Get the keys of a record. Excludes keys with `never` type.
  */
 export type RecordKeys<T extends Record<string, unknown>> = keyof {
@@ -21,7 +16,7 @@ export type RecordKeys<T extends Record<string, unknown>> = keyof {
  * type A = string
  * type B = Nullable<A> // string | null | undefined
  */
-export type Nullable<T> = T extends never ? never : T | null | undefined
+export type Nullable<T> = T | null | undefined
 
 /**
  * Flatten record type.

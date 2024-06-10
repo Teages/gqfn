@@ -3,7 +3,7 @@ import type { Nullable } from '../../utils/object'
 import type { DefineSchema } from './define'
 import type { BaseType } from './types'
 
-export type FindInput<
+type FindInput<
   Schema extends DefineSchema<any>,
   TKey extends keyof (
     & Schema['Scalars']
@@ -15,7 +15,9 @@ export type FindInput<
     & Schema['Enums']
     & Schema['Inputs']
   )[TKey],
-> = TInput extends BaseType<any, string> ? TInput : never
+> = TInput extends BaseType<any, string>
+  ? Nullable<TInput>
+  : never
 
 export type ArgOf<
   Schema extends DefineSchema<any>,
@@ -26,7 +28,7 @@ export type ArgOf<
     ? ArgOf<Schema, F> extends never
       ? never
       : Nullable<Array<ArgOf<Schema, F>>>
-    : Nullable<FindInput<Schema, TKey>>
+    : FindInput<Schema, TKey>
 
 export type ParseArg<
   T extends ArgOf<any, string>,
@@ -45,12 +47,12 @@ export type ParseArg<
           : ParseGqfType<T['Input']>
       : T
 
-export type ParseGqfType<T> =
+type ParseGqfType<T> =
   T extends EnumPackage<infer U>
     ? U
     : T
 
-export type FindOutput<
+type FindOutput<
   Schema extends DefineSchema<any>,
   TKey extends keyof (
     & Schema['Scalars']
@@ -66,7 +68,9 @@ export type FindOutput<
     & Schema['Interfaces']
     & Schema['Unions']
   )[TKey],
-> = TOutput extends BaseType<any, string> ? TOutput : never
+> = TOutput extends BaseType<any, string>
+  ? Nullable<TOutput>
+  : never
 
 export type ResOf<
   Schema extends DefineSchema<any>,
@@ -77,18 +81,4 @@ export type ResOf<
     ? ResOf<Schema, F> extends never
       ? never
       : Nullable<Array<ResOf<Schema, F>>>
-    : Nullable<FindOutput<Schema, TKey>>
-
-export type ParseRes<
-  T extends ResOf<any, string>,
-> = T extends never
-  ? never
-  : T extends Array<infer U>
-    ? Array<ParseRes<U>>
-    : T extends BaseType<any, string>
-      ? T['Output'] extends Record<string, unknown>
-        ? {
-            [K in keyof T['Output']]: ParseRes<T['Output'][K]>
-          }
-        : T['Output']
-      : never
+    : FindOutput<Schema, TKey>
