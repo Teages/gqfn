@@ -1,9 +1,7 @@
-import type { EmptyRecord } from '../../utils/object'
+import type { EmptyRecord, HiddenSymbol } from '../../utils/object'
 
-const TypeSymbol = Symbol('Type')
-
-export interface QueryPartType<_Type> {
-  [TypeSymbol]: _Type
+export interface QueryPartType<T> {
+  [HiddenSymbol]?: () => T
 }
 
 export type RequireQueryPart<T extends QueryPartType<any>> =

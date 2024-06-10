@@ -1,9 +1,7 @@
 import type { ArgOf, BaseType, ParseArg, UserSchemaTypes } from '../schema'
-import type { Nullable, RelaxedOptional, Values } from '../utils/object'
+import type { HiddenSymbol, Nullable, RelaxedOptional, Values } from '../utils/object'
 import type { Trim } from '../utils/string'
 import type { DollarContext, VariableDollar } from './dollar'
-
-const VariableTypeSymbol = Symbol('VariableType')
 
 export type ProvideVariable<T extends string> =
   Record<string, T | (($: VariableDollar) => DollarContext<T, boolean>)>
@@ -24,7 +22,7 @@ export type ParseVariables<
 export interface Variable<
   U extends string,
 > {
-  [VariableTypeSymbol]?: U
+  [HiddenSymbol]?: () => U
 }
 
 export type AcceptVariables<

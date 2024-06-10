@@ -3,7 +3,7 @@ import type { DocumentNode } from 'graphql'
 import { parse } from 'graphql'
 import { hash, murmurHash } from 'ohash'
 
-export function coreFixture(
+export function fixture(
   expectedGetter: (gql: typeof gqlFunc) => DocumentNode,
   data: DocumentNode,
 ) {

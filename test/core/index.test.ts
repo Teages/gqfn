@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 import { $enum, gqf, gqp } from '../../src/core'
-import { coreFixture as fixture } from '../utils'
+import { fixture } from './utils'
 
 describe('@teages/gqf/core', () => {
   it('works', fixture(

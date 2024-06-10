@@ -1,10 +1,8 @@
 import type { Field, TypeObject } from '../schema'
-import type { EmptyRecord, Exact } from '../utils/object'
+import type { EmptyRecord, Exact, HiddenSymbol } from '../utils/object'
 import type { Argument, ProvideSelectionArgument } from './argument'
 import type { DirectiveInput, IsSkipDirective } from './directive'
 import type { ProvideSelectionFieldContext, ProvideTypeSelection } from './select'
-
-const DollarContextWithSkipSymbol = Symbol('')
 
 export interface DollarContext<T, WithSkip extends boolean = false> {
   content: T
@@ -12,7 +10,7 @@ export interface DollarContext<T, WithSkip extends boolean = false> {
   directives: Array<DirectiveInput>
 
   // The method is never actually implemented
-  [DollarContextWithSkipSymbol]?: () => WithSkip
+  [HiddenSymbol]?: () => WithSkip
 }
 
 export type DollarPayload = Record<string, unknown>

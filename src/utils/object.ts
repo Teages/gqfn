@@ -109,3 +109,9 @@ export type ExactRecord<
   Shape extends Record<string, any>,
   T extends Shape,
 > = { [Key in keyof T]: Key extends keyof Shape ? T[Key] : never }
+
+/**
+ * Hide type definition in record, so that it will not be shown in type hint.
+ * @example interface Var<T> { [HiddenSymbol]: T }
+ */
+export declare const HiddenSymbol: unique symbol

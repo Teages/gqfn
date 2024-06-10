@@ -1,3 +1,3 @@
-export * from './type'
+export type * from './type'
 
 export interface Schemas {}

@@ -1,3 +1,3 @@
-export * from './define'
-export * from './types'
-export * from './utils'
+export type * from './define'
+export type * from './types'
+export type * from './utils'
