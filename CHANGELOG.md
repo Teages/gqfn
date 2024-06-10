@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.2.1
+
+[compare changes](https://github.com/Teages/gqf/compare/v0.2.0...v0.2.1)
+
+### 🩹 Fixes
+
+- **typed:** Nullable or array output parser ([cb1ae43](https://github.com/Teages/gqf/commit/cb1ae43))
+
+### 🏡 Chore
+
+- Clean up types ([76a6e15](https://github.com/Teages/gqf/commit/76a6e15))
+
+### ❤️ Contributors
+
+- Teages ([@Teages](http://github.com/Teages))
+
 ## v0.2.0
 
 [compare changes](https://github.com/Teages/gqf/compare/v0.1.1...v0.2.0)
