@@ -1,6 +1,38 @@
 # Changelog
 
 
+## v0.2.0
+
+[compare changes](https://github.com/Teages/gqf/compare/v0.1.1...v0.2.0)
+
+### 🩹 Fixes
+
+- **docs:** Remove dead link ([3951997](https://github.com/Teages/gqf/commit/3951997))
+- **cli:** Silent not work ([c967436](https://github.com/Teages/gqf/commit/c967436))
+
+### 📖 Documentation
+
+- **cli:** Update type ([8c52c6e](https://github.com/Teages/gqf/commit/8c52c6e))
+
+### 🏡 Chore
+
+- Update playground link ([48fa538](https://github.com/Teages/gqf/commit/48fa538))
+- **typed:** Export typed node ([679170e](https://github.com/Teages/gqf/commit/679170e))
+- **cli:** Improve type export ([c164a5b](https://github.com/Teages/gqf/commit/c164a5b))
+- ⚠️  Improve config file ([21f9453](https://github.com/Teages/gqf/commit/21f9453))
+
+### ✅ Tests
+
+- Improve test coverage ([9f53e34](https://github.com/Teages/gqf/commit/9f53e34))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Improve config file ([21f9453](https://github.com/Teages/gqf/commit/21f9453))
+
+### ❤️ Contributors
+
+- Teages ([@Teages](http://github.com/Teages))
+
 ## v0.1.1
 
 [compare changes](https://github.com/Teages/gqf/compare/v0.1.0...v0.1.1)
