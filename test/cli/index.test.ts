@@ -3,19 +3,21 @@ import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 import { resolve } from 'pathe'
 
-import { sync } from '../../src/cli'
+import { type SchemaConfig, sync } from '../../src/cli'
 
 describe('@teages/gqf/cli', () => {
   const fixtures = [
-    { name: 'cytoid-io', url: 'https://services.cytoid.io/graphql' },
-    { name: 'star-wars', url: 'https://swapi-graphql.netlify.app/.netlify/functions/index' },
+    { name: 'cytoid-io', type: 'sdl', url: 'https://services.cytoid.io/graphql' },
+    { name: 'cytoid-io', type: 'json', url: 'https://services.cytoid.io/graphql' },
+    { name: 'star-wars', type: 'sdl', url: 'https://swapi-graphql.netlify.app/.netlify/functions/index' },
+    { name: 'local', type: 'def', url: '/graphql' },
   ] as const
 
-  fixtures.forEach(({ name, url }) => {
-    it(name, async () => {
-      const file = await loadFixture(name)
+  fixtures.forEach(({ name, url, type }) => {
+    it(`${name} ${type}`, async () => {
+      const schemaConfig = await loadFixture(name, type)
       const output = await sync({
-        clients: [{ url, schema: { type: 'sdl', value: file } }],
+        clients: [{ url, schema: schemaConfig }],
         output: 'gqf',
         silent: true,
       })
@@ -31,11 +33,11 @@ describe('@teages/gqf/cli', () => {
 
   it('duplicate', async () => {
     const { url, name } = fixtures[0]
-    const file = await loadFixture(name)
+    const schemaConfig = await loadFixture(name, 'sdl')
     const output = await sync({
       clients: [
-        { url, schema: { type: 'sdl', value: file } },
-        { url, schema: { type: 'sdl', value: file } },
+        { url, schema: schemaConfig },
+        { url, schema: schemaConfig },
       ],
       output: 'gqf',
       silent: true,
@@ -45,10 +47,10 @@ describe('@teages/gqf/cli', () => {
 
   it('failed', async () => {
     const { url, name } = fixtures[0]
-    const file = await loadFixture(name)
+    const schemaConfig = await loadFixture(name, 'sdl')
     const output = await sync({
       clients: [
-        { url, schema: { type: 'sdl', value: file } },
+        { url, schema: schemaConfig },
         { url: 'https://0.0.0.0:1234' },
       ],
       output: 'gqf',
@@ -58,11 +60,30 @@ describe('@teages/gqf/cli', () => {
   })
 })
 
-async function loadFixture(name: string) {
+async function loadFixture(
+  name: string,
+  type: 'sdl' | 'json' | 'def',
+): Promise<SchemaConfig> {
   const root = fileURLToPath(new URL('./fixtures', import.meta.url))
 
-  const path = resolve(root, name, 'schema.graphql')
-  const file = await fs.readFile(path, 'utf-8')
+  if (type === 'sdl') {
+    const path = resolve(root, name, 'schema.graphql')
+    const file = await fs.readFile(path, 'utf-8')
 
-  return file
+    return { type: 'sdl', value: file }
+  }
+
+  if (type === 'json') {
+    const path = resolve(root, name, 'schema.json')
+    const file = await fs.readFile(path, 'utf-8')
+
+    return { type: 'json', value: file }
+  }
+
+  if (type === 'def') {
+    const path = resolve(root, name, 'schema.ts')
+    return { type: 'path', value: path }
+  }
+
+  throw new Error('Unknown fixture type')
 }

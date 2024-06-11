@@ -3,7 +3,7 @@ import type { GqfPackage } from '../utils/package'
 import { $enum, gqf, gqp } from '../core'
 
 export { sync, type Output } from './sync'
-export type { Config, ClientConfig } from './config'
+export type { Config, ClientConfig, SchemaConfig } from './config'
 
 export type LoadFromUrl<T extends string> =
   T extends keyof Schemas

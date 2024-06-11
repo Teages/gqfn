@@ -1,8 +1,11 @@
+import { pathToFileURL } from 'node:url'
 import type { DocumentNode, IntrospectionQuery } from 'graphql'
-import { buildClientSchema, getIntrospectionQuery, printSchema } from 'graphql'
+import { GraphQLSchema, buildClientSchema, getIntrospectionQuery, printSchema } from 'graphql'
 import { ofetch } from 'ofetch'
 import { murmurHash } from 'ohash'
-import { resolve } from 'pathe'
+import { extname, relative, resolve } from 'pathe'
+import { tsImport } from 'tsx/esm/api'
+
 import { generate } from '../schema/codegen'
 import type { ClientConfig, Config, SchemaConfig } from './config'
 import { useLogger } from './logger'
@@ -30,7 +33,7 @@ export async function sync(config: Config): Promise<Output[]> {
       return
     }
 
-    // load graphql schema sdl from remote
+    // load graphql schema sdl
     try {
       const sdl = await resolveSchemaOverride(url, schema)
       const code = generate(sdl, { url })
@@ -85,16 +88,60 @@ async function resolveSchemaOverride(
 
   if (opts.type === 'path') {
     const path = resolve(opts.value)
-    try {
-      const fs = await import('node:fs/promises')
-      return await fs.readFile(path, 'utf-8')
+    const ext = extname(path)
+
+    if (ext === '.graphql' || ext === '.gql') {
+      try {
+        const fs = await import('node:fs/promises')
+        return await fs.readFile(path, 'utf-8')
+      }
+      catch (e) {
+        throw new Error(`Failed to read SDL form ${path}: ${e}`)
+      }
     }
-    catch (e) {
-      throw new Error(`Failed to read ${path}: ${e}`)
+
+    if (ext === '.json') {
+      try {
+        const fs = await import('node:fs/promises')
+        return printSchema(buildClientSchema(JSON.parse(await fs.readFile(path, 'utf-8'))))
+      }
+      catch (e) {
+        throw new Error(`Failed to read JSON form ${path}: ${e}`)
+      }
     }
+
+    if (ext === '.ts' || ext === '.js') {
+      try {
+        const cwd = (await import('node:process')).cwd()
+
+        const relativePath = relative(cwd, path)
+        const baseUrl = pathToFileURL(resolve(cwd, 'index.ts')).toString()
+
+        const file = await tsImport(relativePath, baseUrl)
+        const names = opts.export ? [opts.export] : ['schema', 'default']
+        for (const name of names) {
+          if (file[name]) {
+            const schema = file[name]
+            if (schema instanceof GraphQLSchema) {
+              return printSchema(schema)
+            }
+            if (typeof schema === 'string') {
+              return schema
+            }
+          }
+        }
+        throw new Error('Schema not found')
+      }
+      catch (e) {
+        throw new Error(`Failed to read GraphQLSchema form ${path}: ${e}`)
+      }
+    }
+
+    throw new Error(`Unknown schema file type ${ext}: ${path}`)
   }
+
   if (opts.type === 'json') {
-    return JSON.parse(opts.value)
+    return printSchema(buildClientSchema(JSON.parse(opts.value)))
   }
 
   return opts.value

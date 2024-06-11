@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, test } from 'vitest'
-import { defineGqf } from '@teages/gqf'
-import type { RequireQueryPart } from '@teages/gqf'
-import type { TypedQueryDocumentNode } from '@teages/gqf/typed'
+import { defineGqf } from '../../src'
+import type { RequireQueryPart } from '../../src'
+import type { TypedQueryDocumentNode } from '../../src/typed'
 import type { CategoryEnum, Schema } from './fixture/schema'
 
 describe('type', () => {
