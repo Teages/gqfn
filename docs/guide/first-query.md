@@ -17,8 +17,12 @@ npm run gqf add https://graphql.anilist.co
 
 Then, you can import the `gqf` function from `@teages/gqf` package and use it to create a query.
 
-```ts
+```ts twoslash
 import { useSchema } from '@teages/gqf'
+// ---cut-start---
+import '#schema/10n5kr7'
+// ---cut-end---
+import { request } from 'graphql-request' // or you favorite GraphQL client
 const endpoint = 'https://graphql.anilist.co'
 const { gqf, gqp, $enum } = useSchema(endpoint)
 ```
@@ -27,7 +31,12 @@ const { gqf, gqp, $enum } = useSchema(endpoint)
 
 To build a selection on the `Query` type, you can pass the selection as the only argument of the `gqf` function.
 
-```ts
+```ts twoslash
+import { useSchema } from '@teages/gqf'
+import '#schema/10n5kr7'
+const endpoint = 'https://graphql.anilist.co'
+const { gqf, gqp, $enum } = useSchema(endpoint)
+// ---cut---
 const query = gqf([])
 ```
 
@@ -36,14 +45,21 @@ Ok let's add the first field to the selection. We want to get the title of the A
 Pass the arguments as the first argument of the `$`, and the selection as the second argument. Now we got this:
 
 ::: code-group
-```ts [Query Builder]
+```ts twoslash [Query Builder]
+import { useSchema } from '@teages/gqf'
+import { request } from 'graphql-request'
+import '#schema/10n5kr7'
+const endpoint = 'https://graphql.anilist.co'
+const { gqf, gqp, $enum } = useSchema(endpoint)
+// ---cut---
 const query = gqf([{
   Media: $ => $({ id: 127549 }, [
     'id',
   ]),
 }])
 
-await request(endpoint, query)
+const data = await request(endpoint, query)
+const id = data.Media?.id // it is typed!
 ```
 
 ```graphql [GraphQL Query]
@@ -65,12 +81,43 @@ await request(endpoint, query)
 
 But we want to get the title of the Anime. We can add the `title` field to the selection. We have no need to pass any arguments to the `title` field so we can use the shorthand syntax, pass the selection as the only argument.
 
+You can get the type hint when writing the query.
+
+```ts twoslash [Query Builder]
+/* eslint-disable eslint-comments/no-unlimited-disable */
+/* eslint-disable */
+import { useSchema } from '@teages/gqf'
+import { request } from 'graphql-request'
+import '#schema/10n5kr7'
+const endpoint = 'https://graphql.anilist.co'
+const { gqf, gqp, $enum } = useSchema(endpoint)
+// ---cut---
+const query = gqf([{
+  Media: $ => $({ id: 127549 }, [
+    'id',
+    {
+      title: $ => $([
+// @noErrors
+        '',
+//       ^|
+      ]),
+    },
+  ]),
+}])
+```
+
 The media we want to get is an anime, so we can also add the type argument to the selection.
 
 The full code is here, you can intuitively see that the writing experience is similar to GraphQL.
 
 ::: code-group
-```ts [Query Builder]
+```ts twoslash [Query Builder]
+import { useSchema } from '@teages/gqf'
+import { request } from 'graphql-request'
+import '#schema/10n5kr7'
+const endpoint = 'https://graphql.anilist.co'
+const { gqf, gqp, $enum } = useSchema(endpoint)
+// ---cut---
 const query = gqf([{
   Media: $ => $({ id: 127549, type: $enum('ANIME') }, [
     'id',
@@ -84,7 +131,9 @@ const query = gqf([{
   ]),
 }])
 
-await request(endpoint, query)
+const data = await request(endpoint, query)
+const id = data.Media?.id
+const nativeTitle = data.Media?.title?.native
 ```
 
 ```graphql [GraphQL Query]
@@ -121,7 +170,13 @@ await request(endpoint, query)
 Operation names are useful to make the code less ambiguous. The operation name should be always be the first argument of the `gqf` function.
 
 ::: code-group
-```ts [Query Builder]
+```ts twoslash [Query Builder]
+import { useSchema } from '@teages/gqf'
+import { request } from 'graphql-request'
+import '#schema/10n5kr7'
+const endpoint = 'https://graphql.anilist.co'
+const { gqf, gqp, $enum } = useSchema(endpoint)
+// ---cut---
 const query = gqf('query FetchAnime', [{
   Media: $ => $({ id: 127549, type: $enum('ANIME') }, [
     'id',
@@ -174,7 +229,13 @@ Variables are helpful if we want to query for other anime. You can pass the vari
 Writing variables is similar to writing a GraphQL query and you can use the `$` to visit you variables.
 
 ::: code-group
-```ts [Query Builder]
+```ts twoslash [Query Builder]
+import { useSchema } from '@teages/gqf'
+import { request } from 'graphql-request'
+import '#schema/10n5kr7'
+const endpoint = 'https://graphql.anilist.co'
+const { gqf, gqp, $enum } = useSchema(endpoint)
+// ---cut---
 const query = gqf('query FetchAnime', {
   id: 'Int!',
 }, [{
@@ -223,7 +284,13 @@ query FetchAnime($id: Int!) {
 Default values can be set as follows:
 
 ::: code-group
-```ts [Query Builder]
+```ts twoslash [Query Builder]
+import { useSchema } from '@teages/gqf'
+import { request } from 'graphql-request'
+import '#schema/10n5kr7'
+const endpoint = 'https://graphql.anilist.co'
+const { gqf, gqp, $enum } = useSchema(endpoint)
+// ---cut---
 const query = gqf('query FetchAnime', {
   id: 'Int = 127549',
 }, [{

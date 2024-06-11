@@ -26,11 +26,12 @@ Learn more about the [Command Line](./command.md).
 
 You can import the generator if you want to control the schema types generation.
 
-```ts
+```ts twoslash
 import { sync } from '@teages/gqf/cli'
 
 const output = await sync({
   clients: ['https://graphql.anilist.co'],
+  output: 'src/gqf',
   silent: true, // disable logger
 })
 
@@ -43,7 +44,10 @@ Learn more about the [Programmatic Usage](./programmatic.md).
 
 After generating the schema types, you can use the `useSchema` to get the typed `gqf` or `gqp`.
 
-```ts
+```ts twoslash
+import { useSchema } from '@teages/gqf'
+import '#schema/10n5kr7'
+// ---cut---
 const { gqf, gqp, $enum } = useSchema('https://graphql.anilist.co')
 
 const query = gqf('query FetchAnime', {

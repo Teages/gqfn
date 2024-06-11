@@ -10,7 +10,7 @@ This page is written for those who want to manually write the schema type.
 
 Here is a empty schema type, you can get start with it:
 
-```ts
+```ts twoslash
 import type {
   ArgOf,
   DefineSchema,
@@ -41,7 +41,20 @@ Most custom scalar types uses `string` as input and output type in client-side.
 :::
 
 ::: code-group
-```ts [schema.ts]
+```ts twoslash [schema.ts]
+import type {
+  ArgOf,
+  DefineSchema,
+  EnumType,
+  Field,
+  InputObject,
+  InterfaceObject,
+  ResOf,
+  ScalarType,
+  TypeObject,
+  Union,
+} from '@teages/gqf/schema'
+// ---cut---
 export type Schema = DefineSchema<{
   Scalars: {
     Date: ScalarType<'Date', string>
@@ -63,7 +76,20 @@ scalar Date
 ### Enum
 
 ::: code-group
-```ts [schema.ts]
+```ts twoslash [schema.ts]
+import type {
+  ArgOf,
+  DefineSchema,
+  EnumType,
+  Field,
+  InputObject,
+  InterfaceObject,
+  ResOf,
+  ScalarType,
+  TypeObject,
+  Union,
+} from '@teages/gqf/schema'
+// ---cut---
 export type RoleEnum =
   | 'ADMIN'
   | 'USER'
@@ -88,7 +114,22 @@ enum RoleEnum {
 ### Input Object
 
 ::: code-group
-```ts [schema.ts]
+```ts twoslash [schema.ts]
+import type {
+  ArgOf,
+  DefineSchema,
+  EnumType,
+  Field,
+  InputObject,
+  InterfaceObject,
+  ResOf,
+  ScalarType,
+  TypeObject,
+  Union,
+} from '@teages/gqf/schema'
+type Arg<T extends string> = ArgOf<Schema, T>
+type Res<T extends string> = ResOf<Schema, T>
+// ---cut---
 type UserInput = InputObject<'UserInput', {
   name: Arg<'String!'>
   role: Arg<'RoleEnum!'>
@@ -114,7 +155,22 @@ input UserInput {
 ### Interface, ObjectType and Union
 
 ::: code-group
-```ts [schema.ts]
+```ts twoslash [schema.ts]
+import type {
+  ArgOf,
+  DefineSchema,
+  EnumType,
+  Field,
+  InputObject,
+  InterfaceObject,
+  ResOf,
+  ScalarType,
+  TypeObject,
+  Union,
+} from '@teages/gqf/schema'
+type Arg<T extends string> = ArgOf<Schema, T>
+type Res<T extends string> = ResOf<Schema, T>
+// ---cut---
 type Query = TypeObject<'Query', {
   users: Field<'users', Res<'User!'>>
   todo: Field<'todo', Res<'Todo!'>, {
@@ -124,13 +180,13 @@ type Query = TypeObject<'Query', {
   allData: Field<'allData', Res<'[Data!]!'>>
 }>
 
-type Mutation = TypeObject<'Query', {
+type Mutation = TypeObject<'Mutation', {
   addTodo: Field<'addTodo', Res<'Todo!'>, {
     content: Arg<'string!'>
   }>
 }>
 
-type Subscription = TypeObject<'Query', {
+type Subscription = TypeObject<'Subscription', {
   watchTodo: Field<'watchTodo', Res<'Todo'>, {
     id: Arg<'ID!'>
   }>
@@ -148,14 +204,14 @@ type Data = Union<'Data', {
   Todo: Todo
 }>
 
-type User = TypeObject<'Query', {
+type User = TypeObject<'User', {
   id: Field<'id', Res<'ID!'>>
   name: Field<'name', Res<'String!'>>
   email: Field<'email', Res<'String'>>
   todo: Field<'todo', Res<'[Todo!]!'>>
 }>
 
-type Todo = TypeObject<'Query', {
+type Todo = TypeObject<'Todo', {
   id: Field<'id', Res<'ID!'>>
   title: Field<'title', Res<'String'>>
   content: Field<'content', Res<'String!'>>

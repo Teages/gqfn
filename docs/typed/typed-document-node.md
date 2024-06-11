@@ -10,7 +10,7 @@ This library use Typed Document Node to provide type safety for your GraphQL que
 
 Different with `@graphql-typed-document-node/core`, we make a wrapper of it and make it compatible with `TypedQueryDocumentNode` from `graphql`.
 
-```ts
+```ts twoslash
 import type {
   DocumentTypeDecoration,
 } from '@graphql-typed-document-node/core'
