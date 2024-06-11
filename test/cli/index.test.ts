@@ -49,7 +49,7 @@ describe('@teages/gqf/cli', () => {
     const output = await sync({
       clients: [
         { url, schema: { type: 'sdl', value: file } },
-        { url: 'https://invalid-url' },
+        { url: 'https://0.0.0.0:1234' },
       ],
       output: 'gqf',
       silent: true,
