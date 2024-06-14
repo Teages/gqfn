@@ -8,6 +8,9 @@ const schemaConfig = z.discriminatedUnion('type', [
     type: z.literal('path'),
 
     value: z.string(),
+
+    export: z.string()
+      .optional(),
   }),
   z.object({
     type: z.literal('sdl'),
