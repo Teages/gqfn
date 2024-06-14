@@ -3,18 +3,10 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "paths": {
-      "@teages/gqf/*": [
-        "../src/*"
-      ],
-      "@teages/gqf": [
-        "../src"
-      ]
-    },
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["./**/*"]
+  "include": ["**/*"]
 }

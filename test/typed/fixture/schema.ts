@@ -9,7 +9,7 @@ import type {
   ScalarType,
   TypeObject,
   Union,
-} from '@teages/gqf/schema'
+} from '../../../src/schema'
 
 export type CategoryEnum =
   | 'funny'

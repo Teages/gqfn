@@ -57,7 +57,6 @@
     "lint": "eslint --cache .",
     "lint:fix": "eslint --cache --fix .",
     "prepack": "pnpm build",
-    "play:prepare": "cd playground && pnpm i",
     "play": "cd playground && pnpm play",
     "play:gqf": "cd playground && pnpm gqf",
     "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",

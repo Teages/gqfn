@@ -5,6 +5,6 @@
     "https://graphql.anilist.co",
     "https://countries.trevorblades.com"
   ],
-  "output": "src/gqf",
+  "output": "gqf",
   "silent": false
 }

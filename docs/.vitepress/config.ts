@@ -105,7 +105,7 @@ export default defineConfig({
             paths: {
               '@teages/gqf/*': ['./src/*'],
               '@teages/gqf': ['./src'],
-              '#schema/*': ['./playground/src/gqf/*'],
+              '#schema/*': ['./playground/gqf/*'],
             },
           },
         },
