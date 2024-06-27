@@ -6,6 +6,12 @@
 <!-- [![bundle][bundle-src]][bundle-href] -->
 <!-- [![Codecov][codecov-src]][codecov-href] -->
 
+> [!WARNING]
+> WIP!
+> 
+> The package is fully completed, but unit tests, export names, and some non-major functions may have break change.
+
+
 Writing GraphQL queries with type safety and type hints, power by TypeScript.
 
 - ✨ [Stackblitz Playground](https://stackblitz.com/~/github.com/Teages/gqf-playground?file=src/index.ts)
