@@ -8,9 +8,8 @@
 
 > [!WARNING]
 > WIP!
-> 
+>
 > The package is fully completed, but unit tests, export names, and some non-major functions may have break change.
-
 
 Writing GraphQL queries with type safety and type hints, power by TypeScript.
 
