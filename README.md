@@ -39,7 +39,9 @@ Import:
 ```js
 // ESM
 import { useSchema } from '@teages/gqf'
+```
 
+```js
 // CommonJS
 const { useSchema } = require('@teages/gqf')
 ```

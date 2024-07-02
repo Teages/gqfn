@@ -46,15 +46,15 @@ type ParseSelectionInlineField<
   SelectionObject extends Record<string, any>,
 > = {
   [K in Exclude<
-      keyof SelectionObject,
+    keyof SelectionObject,
       `... on ${string}` | '...'
-    > as ParseSelectionName<K>['Name']
+  > as ParseSelectionName<K>['Name']
   ]: ParseSelectionName<K>['Field'] extends '__typename'
     ? ParseTypename<T>
     : ParseSelectionField<
-        T['Fields'][ParseSelectionName<K>['Field']],
-        SelectionObject[K]
-      >
+      T['Fields'][ParseSelectionName<K>['Field']],
+      SelectionObject[K]
+    >
 }
 
 type ParseInlineFragment<
