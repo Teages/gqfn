@@ -1,11 +1,11 @@
 import { describe, expectTypeOf, test } from 'vitest'
-import { defineGqf } from '../../src'
+import { createGqf } from '../../src'
 import type { RequireQueryPart } from '../../src'
 import type { TypedQueryDocumentNode } from '../../src/typed'
 import type { CategoryEnum, Schema } from './fixture/schema'
 
 describe('type', () => {
-  const { gqf, gqp, $enum } = defineGqf<Schema>()
+  const { gqf, gqp, $enum } = createGqf<Schema>()
 
   test('simple', () => {
     const query = gqf(['__typename'])

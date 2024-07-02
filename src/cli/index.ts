@@ -1,5 +1,5 @@
 import type { DefineSchema, Schemas, UserSchemaTypes } from '../schema'
-import type { GqfPackage } from '../utils/package'
+import type { Package } from '../utils/package'
 import { $enum, gqf, gqp } from '../core'
 
 export { sync, type Output } from './sync'
@@ -14,7 +14,7 @@ export type LoadFromUrl<T extends string> =
 
 export function useSchema<T extends string>(
   _url?: T,
-): GqfPackage<LoadFromUrl<T>> {
+): Package<LoadFromUrl<T>> {
   return { gqf, gqp, $enum } as any
 }
-export type { GqfPackage }
+export type { Package as GqfPackage }

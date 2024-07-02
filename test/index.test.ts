@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { $enum, defineGqf } from '../src'
+import { $enum, createGqf } from '../src'
 
 describe('@teages/gqf', () => {
   it('works', () => {
-    const p = defineGqf()
+    const p = createGqf()
     expect(typeof p.gqf).toBe('function')
     expect(typeof p.gqp).toBe('function')
     expect(typeof p.$enum).toBe('function')
