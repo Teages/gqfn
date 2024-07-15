@@ -11,7 +11,10 @@ function createSchema() {
     Scalars: {
       Date: { Input: Date, Output: Date }
     }
-  }>({})
+    DefaultFieldNullability: false
+  }>({
+    defaultFieldNullability: false,
+  })
   builder.addScalarType('Date', DateTimeResolver)
 
   const CategoryEnum = builder.enumType('CategoryEnum', {

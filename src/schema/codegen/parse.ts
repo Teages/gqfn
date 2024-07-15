@@ -172,18 +172,18 @@ export function parseSchema(schema: string | DocumentNode): SchemaData {
     try {
       documentNode = parse(schema, { noLocation: true })
     }
-    catch (e) {
+    catch {
       try {
         documentNode = parse(print(JSON.parse(schema)), { noLocation: true })
       }
-      catch (e) { /* ignore */ }
+      catch { /* ignore */ }
     }
   }
   else {
     try {
       documentNode = parse(print(schema), { noLocation: true })
     }
-    catch (e) { /* ignore */ }
+    catch { /* ignore */ }
   }
 
   if (!documentNode) {

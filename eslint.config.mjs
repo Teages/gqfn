@@ -20,4 +20,10 @@ export default antfu({
   rules: {
     'style/eol-last': ['error', 'never'],
   },
+}, {
+  // disable unnecessary rules for markdown files
+  files: ['**/*.md/*.ts', '**/*.md/*.js'],
+  rules: {
+    'ts/no-empty-object-type': 'off',
+  },
 })
