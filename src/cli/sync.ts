@@ -1,10 +1,9 @@
-import { pathToFileURL } from 'node:url'
 import type { DocumentNode, IntrospectionQuery } from 'graphql'
 import { GraphQLSchema, buildClientSchema, getIntrospectionQuery, printSchema } from 'graphql'
 import { ofetch } from 'ofetch'
 import { murmurHash } from 'ohash'
-import { extname, relative, resolve } from 'pathe'
-import { tsImport } from 'tsx/esm/api'
+import { extname, resolve } from 'pathe'
+import { createJiti } from 'jiti'
 
 import { generate } from '../schema/codegen'
 import type { ClientConfig, Config, SchemaConfig } from './config'
@@ -112,21 +111,18 @@ async function resolveSchemaOverride(
 
     if (ext === '.ts' || ext === '.js') {
       try {
-        const cwd = (await import('node:process')).cwd()
+        const jiti = createJiti(import.meta.url)
+        const file = await jiti.import(path) as any
 
-        const relativePath = relative(cwd, path)
-        const baseUrl = pathToFileURL(resolve(cwd, 'index.ts')).toString()
-
-        const file = await tsImport(relativePath, baseUrl)
         const names = opts.export ? [opts.export] : ['schema', 'default']
         for (const name of names) {
-          if (file[name]) {
+          if (name in file && file[name]) {
             const schema = file[name]
-            if (schema instanceof GraphQLSchema) {
-              return printSchema(schema)
-            }
             if (typeof schema === 'string') {
               return schema
+            }
+            if (schema instanceof GraphQLSchema) {
+              return printSchema(schema)
             }
           }
         }
