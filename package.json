@@ -14,7 +14,7 @@
     "lint:fix": "eslint --cache --fix . && pnpm --filter ./packages/** lint:fix",
     "test": "pnpm --filter ./packages/** test",
     "test:types": "pnpm --filter ./packages/** test:types",
-    "build": "pnpm docs:preview && pnpm --filter ./packages/** build",
+    "build": "pnpm docs:build && pnpm --filter ./packages/** build",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
