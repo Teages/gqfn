@@ -1,0 +1,66 @@
+{
+  "name": "@teages/nuxt-gqf",
+  "type": "module",
+  "version": "0.0.2",
+  "description": "A Nuxt binding for @teages/gqf",
+  "license": "MIT",
+  "repository": "Teages/nuxt-gqf",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build build",
+    "dev": "nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test:prepare": "pnpm dev:prepare",
+    "test": "pnpm test:prepare && vitest run && playwright test",
+    "test:watch": "pnpm test:prepare && vitest watch",
+    "test:types": "pnpm test:prepare && vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.12.0",
+    "@teages/gqf": "workspace:*",
+    "destr": "^2.0.3",
+    "graphql": "^16.8.1",
+    "graphql-ws": "^5.16.0",
+    "ohash": "^1.1.3"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.21.0",
+    "@nuxt/devtools": "^1.3.2",
+    "@nuxt/eslint-config": "^0.3.13",
+    "@nuxt/module-builder": "^0.7.0",
+    "@nuxt/schema": "^3.12.0",
+    "@nuxt/test-utils": "^3.13.1",
+    "@playwright/test": "^1.44.1",
+    "@pothos/core": "^3.41.1",
+    "@types/node": "^20.14.1",
+    "@types/ws": "^8.5.10",
+    "changelogen": "^0.5.5",
+    "eslint": "^9.4.0",
+    "get-port-please": "^3.1.2",
+    "graphql-yoga": "^5.3.1",
+    "nuxt": "^3.12.0",
+    "tsx": "^4.15.2",
+    "typescript": "latest",
+    "vitest": "^1.6.0",
+    "vue-tsc": "^2.0.21",
+    "ws": "^8.17.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
