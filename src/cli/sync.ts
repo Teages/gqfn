@@ -3,7 +3,6 @@ import { GraphQLSchema, buildClientSchema, getIntrospectionQuery, printSchema } 
 import { ofetch } from 'ofetch'
 import { murmurHash } from 'ohash'
 import { extname, resolve } from 'pathe'
-import { createJiti } from 'jiti'
 
 import { generate } from '../schema/codegen'
 import type { ClientConfig, Config, SchemaConfig } from './config'
@@ -111,13 +110,13 @@ async function resolveSchemaOverride(
 
     if (ext === '.ts' || ext === '.js') {
       try {
-        const jiti = createJiti(import.meta.url)
-        const file = await jiti.import(path) as any
+        const module = await import('importx')
+          .then(x => x.import(path, import.meta.url))
 
         const names = opts.export ? [opts.export] : ['schema', 'default']
         for (const name of names) {
-          if (name in file && file[name]) {
-            const schema = file[name]
+          if (name in module && module[name]) {
+            const schema = module[name]
             if (typeof schema === 'string') {
               return schema
             }

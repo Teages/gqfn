@@ -3,7 +3,14 @@
     "https://graphql-test.teages.xyz/graphql-user",
     "https://services.cytoid.io/graphql",
     "https://graphql.anilist.co",
-    "https://countries.trevorblades.com"
+    "https://countries.trevorblades.com",
+    {
+      "url": "/test-fixtures/graphql",
+      "schema": {
+        "type": "path",
+        "value": "../test/cli/fixtures/local/schema.ts"
+      }
+    }
   ],
   "output": "gqf",
   "silent": false

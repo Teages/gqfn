@@ -10,4 +10,9 @@ export default defineConfig({
       tsconfig: 'test/tsconfig.json',
     },
   },
+  resolve: {
+    alias: {
+      graphql: 'graphql/index.js',
+    },
+  },
 })

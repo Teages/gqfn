@@ -1,10 +1,9 @@
 import SchemaBuilder from '@pothos/core'
 import { DateTimeResolver } from 'graphql-scalars'
-import { printSchema } from 'graphql'
 
 import { type Saying, type User, friendships, sayings, users } from './data'
 
-export const schema = printSchema(createSchema())
+export const schema = createSchema()
 
 function createSchema() {
   const builder = new SchemaBuilder<{

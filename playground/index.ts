@@ -1,13 +1,12 @@
 /* eslint-disable no-console */
-
 import { print } from 'graphql'
 import { useSchema } from '@teages/gqf'
-import { request } from 'graphql-request'
-
-console.log('working...')
+import { createClient } from '@teages/oh-my-graphql'
 
 const endpoint = 'https://graphql.anilist.co'
 const { gqf, $enum } = useSchema(endpoint)
+
+const client = createClient(endpoint)
 
 const query = gqf('query FetchAnime', {
   id: 'Int = 127549',
@@ -24,7 +23,7 @@ const query = gqf('query FetchAnime', {
   ]),
 }])
 
-console.log(print(query))
+console.log('query:', print(query))
 
-const res = await request(endpoint, query, { })
-console.log(JSON.stringify(res, null, 2))
+const res = await client.request(print(query), { })
+console.log('result:', JSON.stringify(res, null, 2))
