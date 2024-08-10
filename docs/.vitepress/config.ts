@@ -103,9 +103,9 @@ export default defineConfig({
           compilerOptions: {
             moduleResolution: ts.ModuleResolutionKind.Bundler,
             paths: {
-              '@teages/gqf/*': ['./src/*'],
-              '@teages/gqf': ['./src'],
-              '#schema/*': ['./playground/gqf/*'],
+              '@teages/gqf/*': ['./packages/core/src/*'],
+              '@teages/gqf': ['./packages/core/src'],
+              '#schema/*': ['./packages/core/playground/gqf/*'],
             },
           },
         },
