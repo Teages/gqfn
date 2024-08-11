@@ -1,6 +1,6 @@
 # Enum
 
-You need to use `$enum` if you want to define an enum in GQF. [Learn about enum](https://graphql.org/learn/schema/#enumeration-types)
+You need to use `$enum` if you want to define an enum in GQFn. [Learn about enum](https://graphql.org/learn/schema/#enumeration-types)
 
 ## Specification
 
@@ -8,7 +8,7 @@ To use enum, you need to warp the value with `$enum` function.
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf([
+const query = gqfn([
   {
     toBytes: $ => $({ unit: $enum('MB'), value: 1000 }, true),
   },
@@ -42,7 +42,7 @@ type Query {
 And make a query with query builder:
 
 ```ts
-const query = gqf([
+const query = gqfn([
   {
     toBytes: $ => $({ unit: 'MB', value: 1000 }, true),
   },
@@ -54,7 +54,7 @@ In GraphQL, enums have a different syntax than strings, and they are not compati
 We need to make some different. As input object has used object, we can only use function or class, we choose function to wrap the enum value.
 
 ```ts
-const query = gqf([
+const query = gqfn([
   {
     toBytes: $ => $({ unit: () => 'MB', value: 1000 }, true),
   },
@@ -64,7 +64,7 @@ const query = gqf([
 Passing a function directly may lose type hints, so we provide a `$enum` wrapper.
 
 ```ts
-const query = gqf([
+const query = gqfn([
   {
     toBytes: $ => $({ unit: $enum('MB'), value: 1000 }, true),
   },
@@ -76,7 +76,7 @@ You can use enum in variables without `$enum` wrapper.
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('query', {
+const query = gqfn('query', {
   unit: 'UnitEnum! = MB',
   value: 'Int!',
 }, [

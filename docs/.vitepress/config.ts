@@ -4,7 +4,7 @@ import ts from 'typescript'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: '@teages/gqf',
+  title: 'GQFn',
   description: 'GraphQL Queries with Function',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
@@ -22,7 +22,7 @@ export default defineConfig({
           link: '/',
           items: [
             { text: 'Getting Started', link: '/' },
-            // { text: 'Why GQF?', link: '/why' },
+            // { text: 'Why GQFn?', link: '/why' },
             { text: 'First Query', link: '/first-query' },
           ],
         },
@@ -76,13 +76,13 @@ export default defineConfig({
         {
           collapsed: false,
           base: '/ecosystem/nuxt',
-          text: 'Nuxt GQF',
+          text: 'GQFn with Nuxt',
           link: '/',
           items: [
             { text: 'Installation', link: '/' },
-            { text: 'useGqfSchema', link: '/schema' },
+            { text: 'useGQFnSchema', link: '/schema' },
             { text: 'Type Utils', link: '/types' },
-            { text: 'withGqfClient', link: '/with-client' },
+            { text: 'withGQFnClient', link: '/with-client' },
             { text: 'Nitro Server', link: '/server' },
           ],
         },
@@ -90,7 +90,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/teages/gqf' },
+      { icon: 'github', link: 'https://github.com/teages/gqfn' },
     ],
 
     search: { provider: 'local' },
@@ -103,9 +103,9 @@ export default defineConfig({
           compilerOptions: {
             moduleResolution: ts.ModuleResolutionKind.Bundler,
             paths: {
-              '@teages/gqf/*': ['./packages/core/src/*'],
-              '@teages/gqf': ['./packages/core/src'],
-              '#schema/*': ['./packages/core/playground/gqf/*'],
+              '@gqfn/core/*': ['./packages/core/src/*'],
+              '@gqfn/core': ['./packages/core/src'],
+              '#schema/*': ['./packages/core/playground/gqfn/*'],
             },
           },
         },

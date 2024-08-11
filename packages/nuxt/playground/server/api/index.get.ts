@@ -1,11 +1,11 @@
 import { print } from 'graphql'
-import type { ResultOf } from '#gqf'
+import type { ResultOf } from '#gqfn'
 
 export default defineLazyEventHandler(() => {
   const endpoint = 'https://graphql-test.teages.xyz/graphql-user'
 
-  const { gqf } = useGqfSchema(endpoint)
-  const query = gqf('query FetchUser', [{
+  const { gqfn } = useGQFnSchema(endpoint)
+  const query = gqfn('query FetchUser', [{
     users: $ => $([
       'id',
       'name',

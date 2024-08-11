@@ -1,5 +1,5 @@
 /* eslint-ignore */
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@teages/gqf/schema'
+import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
 
 export type CategoryEnum =
   | 'funny'
@@ -101,7 +101,7 @@ export type Schema = DefineSchema<{
 type Arg<T extends string> = ArgOf<Schema, T>
 type Res<T extends string> = ResOf<Schema, T>
 
-declare module '@teages/gqf/schema' {
+declare module '@gqfn/core/schema' {
   interface Schemas {
     '/test-fixtures/graphql': Schema
   }

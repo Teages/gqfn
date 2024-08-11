@@ -2,7 +2,7 @@
 
 GQFn provides a *typed* way to write GraphQL queries with the help of TypeScript.
 
-- ✨ [Stackblitz Playground](https://stackblitz.com/~/github.com/Teages/gqf-playground?file=src/index.ts)
+<!-- - ✨ [Stackblitz Playground](#) TODO: new playground -->
 - 📖 [Documentation](https://gqfn.teages.xyz)
 
 ## Usage

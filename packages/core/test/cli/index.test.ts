@@ -5,7 +5,7 @@ import { resolve } from 'pathe'
 
 import { type SchemaConfig, sync } from '../../src/cli'
 
-describe('@teages/gqf/cli', () => {
+describe('@gqfn/core/cli', () => {
   const fixtures = [
     { name: 'cytoid-io', type: 'sdl', url: 'https://services.cytoid.io/graphql' },
     { name: 'cytoid-io', type: 'json', url: 'https://services.cytoid.io/graphql' },
@@ -18,7 +18,7 @@ describe('@teages/gqf/cli', () => {
       const schemaConfig = await loadFixture(name, type)
       const output = await sync({
         clients: [{ url, schema: schemaConfig }],
-        output: 'gqf',
+        output: 'gqfn',
         silent: true,
       })
       expect(output.length).toBe(1)
@@ -27,7 +27,7 @@ describe('@teages/gqf/cli', () => {
   })
 
   it('empty', async () => {
-    const output = await sync({ clients: [], output: 'gqf', silent: true })
+    const output = await sync({ clients: [], output: 'gqfn', silent: true })
     expect(output.length).toBe(0)
   })
 
@@ -39,7 +39,7 @@ describe('@teages/gqf/cli', () => {
         { url, schema: schemaConfig },
         { url, schema: schemaConfig },
       ],
-      output: 'gqf',
+      output: 'gqfn',
       silent: true,
     })
     expect(output.length).toBe(1)
@@ -53,7 +53,7 @@ describe('@teages/gqf/cli', () => {
         { url, schema: schemaConfig },
         { url: 'https://0.0.0.0:1234' },
       ],
-      output: 'gqf',
+      output: 'gqfn',
       silent: true,
     })
     expect(output.length).toBe(1)

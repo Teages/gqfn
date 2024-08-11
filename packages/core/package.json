@@ -1,12 +1,12 @@
 {
-  "name": "@teages/gqf",
+  "name": "@gqfn/core",
   "type": "module",
   "version": "0.2.1",
   "description": "Writing GraphQL queries with type safety and type hints, power by TypeScript.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Teages/gqf.git"
+    "url": "git+https://github.com/Teages/gqfn.git"
   },
   "sideEffects": false,
   "exports": {
@@ -45,7 +45,7 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "bin": {
-    "gqf": "./dist/cli/main.mjs"
+    "gqfn": "./dist/cli/main.mjs"
   },
   "files": [
     "dist"
@@ -57,7 +57,7 @@
     "lint:fix": "eslint --cache --fix .",
     "prepack": "pnpm build",
     "play": "cd playground && pnpm play",
-    "play:gqf": "cd playground && pnpm gqf",
+    "play:gqfn": "cd playground && pnpm gqfn",
     "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
     "test": "pnpm lint && pnpm test:types && vitest run --coverage",
     "test:dev": "vitest run",

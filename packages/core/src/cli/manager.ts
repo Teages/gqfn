@@ -9,7 +9,7 @@ export async function init(modify: Partial<Config>, silent: boolean) {
   const notExist = await initConfig(modify)
 
   if (notExist) {
-    logger.success('Initialized configuration for @teages/gqf.')
+    logger.success('Initialized configuration for @gqfn/core.')
   }
   else {
     logger.warn('Configuration file already exists. Nothing to do.')

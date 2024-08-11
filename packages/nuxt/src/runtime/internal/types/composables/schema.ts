@@ -1,21 +1,21 @@
-import type { $enum } from '@teages/gqf'
-import type { Endpoints, LoadGQF, LoadGQP } from '../../utils/schema'
+import type { $enum } from '@gqfn/core'
+import type { Endpoints, LoadGQFn, LoadGQP } from '../../utils/schema'
 
-export interface UseGqfSchema<
+export interface UseGQFnSchema<
   TEndpoint extends Endpoints,
 > {
   endpoint?: TEndpoint
-  gqf: LoadGQF<TEndpoint>
+  gqfn: LoadGQFn<TEndpoint>
   gqp: LoadGQP<TEndpoint>
   $enum: typeof $enum
 }
 
-export interface UseGqfSchemaWithWarning {
+export interface UseGQFnSchemaWithWarning {
   endpoint?: string
   /**
    * @deprecated The schema is not typed.
    */
-  gqf: LoadGQF<string>
+  gqfn: LoadGQFn<string>
   /**
    * @deprecated The schema is not typed.
    */

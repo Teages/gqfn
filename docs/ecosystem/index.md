@@ -1,3 +1,3 @@
 # Ecosystem
 
-- **Nuxt**: [Nuxt GQF](./nuxt/)
+- **Nuxt**: [GQFn Nuxt module](./nuxt/)

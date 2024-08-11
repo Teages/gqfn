@@ -15,7 +15,7 @@ const userFields = gqp(
   ],
 )
 
-const query = gqf([
+const query = gqfn([
   {
     user: $ => $({ id: 1 }, [{
       ...userFields($),
@@ -82,7 +82,7 @@ const comparisonFields = gqp(
   ],
 )
 
-const query = gqf([
+const query = gqfn([
   {
     'leftComparison:hero': $ => $({
       episode: $enum('EMPIRE'),

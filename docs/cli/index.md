@@ -8,16 +8,16 @@ There are two ways to generate schema types: command line and programmatic.
 
 For most cases you just need to run the command line tool to generate the schema types.
 
-The config will save at `gqf.config.json`.
+The config will save at `gqfn.config.json`.
 
 ```sh
-pnpm run gqf add https://graphql.anilist.co
+pnpm run gqfn add https://graphql.anilist.co
 ```
 
 If the schema updated, you can use the `sync` command to reload all schema.
 
 ```sh
-pnpm run gqf sync
+pnpm run gqfn sync
 ```
 
 Learn more about the [Command Line](./command.md).
@@ -27,11 +27,11 @@ Learn more about the [Command Line](./command.md).
 You can import the generator if you want to control the schema types generation.
 
 ```ts twoslash
-import { sync } from '@teages/gqf/cli'
+import { sync } from '@gqfn/core/cli'
 
 const output = await sync({
   clients: ['https://graphql.anilist.co'],
-  output: 'src/gqf',
+  output: 'src/gqfn',
   silent: true, // disable logger
 })
 
@@ -42,15 +42,15 @@ Learn more about the [Programmatic Usage](./programmatic.md).
 
 ## `useSchema`
 
-After generating the schema types, you can use the `useSchema` to get the typed `gqf` or `gqp`.
+After generating the schema types, you can use the `useSchema` to get the typed `gqfn` or `gqp`.
 
 ```ts twoslash
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 import '#schema/10n5kr7'
 // ---cut---
-const { gqf, gqp, $enum } = useSchema('https://graphql.anilist.co')
+const { gqfn, gqp, $enum } = useSchema('https://graphql.anilist.co')
 
-const query = gqf('query FetchAnime', {
+const query = gqfn('query FetchAnime', {
   id: 'Int!',
 }, [{
   Media: $ => $({ id: $.id, type: $enum('ANIME') }, [
@@ -73,7 +73,7 @@ export type Schema = DefineSchema<{
   // Your schema type
 }>
 
-declare module '@teages/gqf/schema' {
+declare module '@gqfn/core/schema' {
   interface Schemas {
     'https://your-endpoint-url': Schema
   }

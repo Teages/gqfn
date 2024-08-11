@@ -36,22 +36,22 @@ export type ParseArg<
 > = T extends never
   ? never
   : T extends Array<infer U>
-    ? Array<ParseGqfType<ParseArg<U>>>
+    ? Array<ParseGQFnType<ParseArg<U>>>
     : T extends BaseType<any, string>
       ? T['Input']extends Record<string, unknown>
         ? {
-            [K in keyof T['Input']]: ParseGqfType<ParseArg<T['Input'][K]>>
+            [K in keyof T['Input']]: ParseGQFnType<ParseArg<T['Input'][K]>>
           }
         : Inline extends true
           ? T['Input']
-          : ParseGqfType<T['Input']>
+          : ParseGQFnType<T['Input']>
       : T
 
-type ParseGqfType<T> =
+type ParseGQFnType<T> =
   T extends EnumPackage<infer U>
     ? U
     : T extends Record<string, unknown>
-      ? { [K in keyof T]: ParseGqfType<T[K]> }
+      ? { [K in keyof T]: ParseGQFnType<T[K]> }
       : T
 
 type FindOutput<

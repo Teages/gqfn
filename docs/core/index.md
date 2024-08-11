@@ -5,7 +5,7 @@ The query builder is a tool to build GraphQL query.
 ## Full Spread
 
 ```ts
-export function gqf(
+export function gqfn(
   name: OperationName,
   variables: Variables,
   selection: TypeSelection,
@@ -27,7 +27,7 @@ The name of the operation. Could be:
 The variables delineation of the operation.
 
 ```ts
-const query = gqf('query FetchData', {
+const query = gqfn('query FetchData', {
   str: 'String!',
   strNullable: 'String',
   strWithDefault: 'String! = "default"',
@@ -41,7 +41,7 @@ You can visit these variables in the selection under `$`, see [dollar function](
 Example:
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('query FetchHello', {
+const query = gqfn('query FetchHello', {
   name: 'String!',
 }, [{
   hello: $ => $({ name: $.name }, true)
@@ -67,7 +67,7 @@ The directives of the operation, see [directive](./directive).
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('query FetchData', {
+const query = gqfn('query FetchData', {
   userId: 'ID!',
   withGreeting: 'Boolean! = true'
 }, [
@@ -122,8 +122,8 @@ You need to use full spread if you want to use `directives`.
 :::
 
 ```ts
-export function gqf(selection: TypeSelection): DocumentNode
-export function gqf(
+export function gqfn(selection: TypeSelection): DocumentNode
+export function gqfn(
   name: OperationName,
   selection: TypeSelection
 ): DocumentNode
@@ -133,7 +133,7 @@ export function gqf(
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf([
+const query = gqfn([
   'hello',
 ])
 ```
@@ -149,7 +149,7 @@ With `name`:
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('mutation', [
+const query = gqfn('mutation', [
   'hello',
 ])
 ```

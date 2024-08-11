@@ -1,4 +1,4 @@
-# @teages/gqf
+# @gqfn/core
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
@@ -13,8 +13,8 @@
 
 GQFn provides a *typed* way to write GraphQL queries with the help of TypeScript.
 
-- ✨ [Stackblitz Playground](https://stackblitz.com/~/github.com/Teages/gqf-playground?file=src/index.ts)
-- 📖 [Documentation](https://gqf.teages.xyz)
+- ✨ [Stackblitz Playground](https://stackblitz.com/~/github.com/Teages/gqfn-playground?file=src/index.ts)
+- 📖 [Documentation](https://gqfn.teages.xyz)
 
 ## Usage
 
@@ -22,28 +22,28 @@ Install package:
 
 ```sh
 # npm
-npm install @teages/gqf
+npm install @gqfn/core
 
 # yarn
-yarn add @teages/gqf
+yarn add @gqfn/core
 
 # pnpm
-pnpm install @teages/gqf
+pnpm install @gqfn/core
 
 # bun
-bun install @teages/gqf
+bun install @gqfn/core
 ```
 
 Import:
 
 ```js
 // ESM
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 ```
 
 ```js
 // CommonJS
-const { useSchema } = require('@teages/gqf')
+const { useSchema } = require('@gqfn/core')
 ```
 
 ## Development
@@ -60,13 +60,13 @@ Published under [MIT License](./LICENSE).
 
 <!-- Badges -->
 
-[npm-version-src]: https://img.shields.io/npm/v/@teages/gqf?style=flat&color=blue
-[npm-version-href]: https://npmjs.com/package/@teages/gqf
-[npm-downloads-src]: https://img.shields.io/npm/dm/@teages/gqf?style=flat&color=blue
-[npm-downloads-href]: https://npmjs.com/package/@teages/gqf
+[npm-version-src]: https://img.shields.io/npm/v/@gqfn/core?style=flat&color=blue
+[npm-version-href]: https://npmjs.com/package/@gqfn/core
+[npm-downloads-src]: https://img.shields.io/npm/dm/@gqfn/core?style=flat&color=blue
+[npm-downloads-href]: https://npmjs.com/package/@gqfn/core
 
-<!-- [codecov-src]: https://img.shields.io/codecov/c/gh/Teages/gqf/main?style=flat&color=blue
-[codecov-href]: https://codecov.io/gh/Teages/gqf
+<!-- [codecov-src]: https://img.shields.io/codecov/c/gh/Teages/gqfn/main?style=flat&color=blue
+[codecov-href]: https://codecov.io/gh/Teages/gqfn
 
-[bundle-src]: https://img.shields.io/bundlephobia/minzip/@teages/gqf?style=flat&color=blue
-[bundle-href]: https://bundlephobia.com/result?p=@teages/gqf -->
+[bundle-src]: https://img.shields.io/bundlephobia/minzip/@gqfn/core?style=flat&color=blue
+[bundle-href]: https://bundlephobia.com/result?p=@gqfn/core -->

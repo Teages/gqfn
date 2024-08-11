@@ -4,10 +4,10 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
-      "@teages/gqf/*": [
+      "@gqfn/core/*": [
         "../src/*"
       ],
-      "@teages/gqf": [
+      "@gqfn/core": [
         "../src"
       ]
     },

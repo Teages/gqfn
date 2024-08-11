@@ -12,14 +12,14 @@ Depends on the field type, the selection can be `true` or `TypeSelection`.
 At the beginning you need select the fields from the type object `Query`, `Mutation` or `Subscription`. It means it required a `TypeSelection` on root of the query.
 
 ```ts
-const query = gqf([])
+const query = gqfn([])
 ```
 
 TypeSelection is an array, it can contain the list of names of fields to select, and the last item can be a record for these fields which are type object or you need to pass arguments.
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf([
+const query = gqfn([
   'a',
   'b',
   {
@@ -29,7 +29,7 @@ const query = gqf([
 ```
 
 ```ts [Another]
-const query = gqf([{
+const query = gqfn([{
   a: true,
   b: true,
   c: true,
@@ -49,7 +49,7 @@ You can use `{alias}:{field}` to select a field with an alias.
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf([
+const query = gqfn([
   'hi:hello',
 ])
 ```
@@ -65,7 +65,7 @@ If you want to pass arguments to a field, you can use the `$` function.
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf([
+const query = gqfn([
   {
     hello: $ => $({ name: 'Tom' }, true)
   }
@@ -83,7 +83,7 @@ In the previous example, the selected fields returns a scalar value, but if you 
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf([
+const query = gqfn([
   {
     user: $ => $({ id: 1 }, [
       'id',
@@ -109,7 +109,7 @@ Or for simplify you can pass the `TypeSelection` as the only argument.
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf([
+const query = gqfn([
   {
     users: $ => $([
       'id',

@@ -1,8 +1,8 @@
-import { $enum, gqf, gqp } from './core'
-import type { CreateGqf } from './utils/package'
+import { $enum, gqfn, gqp } from './core'
+import type { CreateGQFn } from './utils/package'
 
 export { $enum } from './core'
 export type { RequireQueryPart, ResultOf, VariablesOf } from './typed'
 
-export const createGqf: CreateGqf = () => ({ gqf, gqp, $enum }) as any
+export const createGQFn: CreateGQFn = () => ({ gqfn, gqp, $enum }) as any
 export { useSchema } from './cli'

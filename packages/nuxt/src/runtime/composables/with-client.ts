@@ -1,11 +1,11 @@
-import type { ResultOf, VariablesOf } from '@teages/gqf/typed'
+import type { ResultOf, VariablesOf } from '@gqfn/core/typed'
 import { hash } from 'ohash'
 import { type DocumentNode, Kind } from 'graphql'
 import type { ComputedRef } from 'vue'
 import type { Endpoints } from '../internal/utils/schema'
 import { type HandlerOptions, type SSEOptions, type WSOptions, createHandler, createSubscriptionHandler } from '../internal/utils/client'
-import type { UseGqfSchema } from '../internal/types/composables/schema'
-import type { WithGqfClient, WithGqfClientOptions } from '../internal/types/composables/with-client'
+import type { UseGQFnSchema } from '../internal/types/composables/schema'
+import type { WithGQFnClient, WithGQFnClientOptions } from '../internal/types/composables/with-client'
 import { useAsyncData } from '#app/composables/asyncData'
 import { useState } from '#app'
 import { type MaybeRefOrGetter, readonly, toValue, watch } from '#imports'
@@ -13,14 +13,14 @@ import { type MaybeRefOrGetter, readonly, toValue, watch } from '#imports'
 type DefaultSubscriptionHandlerOptions = WSOptions & SSEOptions
 type DefaultHandlerOptions = Omit<HandlerOptions, ''>
 
-export function withGqfClient<
+export function withGQFnClient<
   Context = DefaultHandlerOptions,
   SubscriptionContext = DefaultSubscriptionHandlerOptions,
   Endpoint extends Endpoints = string,
 >(
-  schema: UseGqfSchema<Endpoint>,
-  options?: WithGqfClientOptions<Context, SubscriptionContext>,
-): WithGqfClient<Context, Endpoint> {
+  schema: UseGQFnSchema<Endpoint>,
+  options?: WithGQFnClientOptions<Context, SubscriptionContext>,
+): WithGQFnClient<Context, Endpoint> {
   const url = schema.endpoint
 
   if (!url) {
@@ -37,7 +37,7 @@ export function withGqfClient<
 
   return {
     defineOperation: (def, context) => {
-      const document = typeof def === 'function' ? def(schema.gqf, schema.$enum) : def
+      const document = typeof def === 'function' ? def(schema.gqfn, schema.$enum) : def
       const type = getDocumentType(document)
       if (type === 'subscription') {
         throw new Error('Subscriptions are not supported')
@@ -52,7 +52,7 @@ export function withGqfClient<
       )
     },
     defineAsyncQuery: (def, context) => {
-      const document = typeof def === 'function' ? def(schema.gqf, schema.$enum) : def
+      const document = typeof def === 'function' ? def(schema.gqfn, schema.$enum) : def
       const type = getDocumentType(document)
       if (type !== 'query') {
         throw new Error('Operation is not a query.')
@@ -83,7 +83,7 @@ export function withGqfClient<
       }
     },
     defineLazyAsyncQuery: (def, context) => {
-      const document = typeof def === 'function' ? def(schema.gqf, schema.$enum) : def
+      const document = typeof def === 'function' ? def(schema.gqfn, schema.$enum) : def
       const type = getDocumentType(document)
       if (type !== 'query') {
         throw new Error('Operation is not a query.')
@@ -117,7 +117,7 @@ export function withGqfClient<
       }
     },
     defineSubscription: (def, context) => {
-      const document = typeof def === 'function' ? def(schema.gqf, schema.$enum) : def
+      const document = typeof def === 'function' ? def(schema.gqfn, schema.$enum) : def
       const type = getDocumentType(document)
       if (type !== 'subscription') {
         throw new Error('Operation is not a subscription')

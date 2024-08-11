@@ -1,15 +1,15 @@
-import type { TypedQueryDocumentNode } from '@teages/gqf/typed'
+import type { TypedQueryDocumentNode } from '@gqfn/core/typed'
 import type { ComputedRef } from 'vue'
 import type { Endpoints } from '../../utils/schema'
 import type { HandlerOptions, SSEOptions, WSOptions } from '../../utils/client'
-import type { UseGqfSchema } from './schema'
+import type { UseGQFnSchema } from './schema'
 import type { AsyncData, AsyncDataOptions, KeysOf, PickFrom } from '#app/composables/asyncData'
 import type { Ref } from '#imports'
 
 // rename the type
 export type DefaultHandlerOptions = Omit<HandlerOptions, ''>
 
-export interface WithGqfClientOptions<
+export interface WithGQFnClientOptions<
   Context,
   SubscriptionContext,
 > {
@@ -78,7 +78,7 @@ export type SubscriptionHandler<Context> = <
   context?: Context
 ) => void
 
-export interface WithGqfClient<
+export interface WithGQFnClient<
   Context,
   Endpoint extends Endpoints = string,
 > {
@@ -95,8 +95,8 @@ export interface DefineOperation<
   <TData, TVars extends Record<string, unknown>>(
     def: (
       | ((
-        gqf: UseGqfSchema<Endpoint>['gqf'],
-        $enum: UseGqfSchema<Endpoint>['$enum'],
+        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
+        $enum: UseGQFnSchema<Endpoint>['$enum'],
       ) => TypedQueryDocumentNode<TData, TVars>)
       | TypedQueryDocumentNode<TData, TVars>
     ),
@@ -117,8 +117,8 @@ export interface DefineAsyncQuery<
   > (
     def: (
       | ((
-        gqf: UseGqfSchema<Endpoint>['gqf'],
-        $enum: UseGqfSchema<Endpoint>['$enum'],
+        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
+        $enum: UseGQFnSchema<Endpoint>['$enum'],
       ) => TypedQueryDocumentNode<TData, TVars>)
       | TypedQueryDocumentNode<TData, TVars>
     ),
@@ -138,8 +138,8 @@ export interface DefineAsyncQuery<
   > (
     def: (
       | ((
-        gqf: UseGqfSchema<Endpoint>['gqf'],
-        $enum: UseGqfSchema<Endpoint>['$enum'],
+        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
+        $enum: UseGQFnSchema<Endpoint>['$enum'],
       ) => TypedQueryDocumentNode<TData, TVars>)
       | TypedQueryDocumentNode<TData, TVars>
     ),
@@ -158,8 +158,8 @@ export interface DefineSubscription<
   <TData, TVars extends Record<string, unknown>>(
     def: (
       | ((
-        gqf: UseGqfSchema<Endpoint>['gqf'],
-        $enum: UseGqfSchema<Endpoint>['$enum'],
+        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
+        $enum: UseGQFnSchema<Endpoint>['$enum'],
       ) => TypedQueryDocumentNode<TData, TVars>)
       | TypedQueryDocumentNode<TData, TVars>
     ),

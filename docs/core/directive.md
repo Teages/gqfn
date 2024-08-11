@@ -17,7 +17,7 @@ You need to use full spread query builder if you want to use `directives`. It me
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('query', {}, [
+const query = gqfn('query', {}, [
   'time'
 ], $ => [
   ['@cache', { rule: 'cache-first', maxAge: 3600 }],
@@ -35,7 +35,7 @@ Some times you need to use variables in the directive, for example:
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('query', {
+const query = gqfn('query', {
   maxAge: 'Int!',
 }, [
   'time'
@@ -55,7 +55,7 @@ query ($maxAge: Int!) @cache(rule: "cache-first", maxAge: $maxAge) {
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('query', {}, [
+const query = gqfn('query', {}, [
   {
     now: $ => $(true, [
       ['@skip', { if: false }],
@@ -75,7 +75,7 @@ Also you can use variables in the directive:
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('query', { withTime: 'Boolean!' }, [
+const query = gqfn('query', { withTime: 'Boolean!' }, [
   {
     now: $ => $(true, [
       ['@include', { if: $.withTime }],
@@ -97,7 +97,7 @@ It is same to field, for example:
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('query', { withDate: 'Boolean!' }, [
+const query = gqfn('query', { withDate: 'Boolean!' }, [
   {
     users: $ => $([
       'id',

@@ -9,16 +9,16 @@ import type { DirectivesInputWithDollar } from './directive'
 import { parseDirective } from './directive'
 import { initDirectiveDollar } from './dollar'
 
-export function gqf(
+export function gqfn(
   selection: TypeSelection<EmptyRecord>,
   directives?: Array<DirectivesInputWithDollar<EmptyRecord>>
 ): DocumentNode
-export function gqf(
+export function gqfn(
   name: OperationName,
   selection: TypeSelection<EmptyRecord>,
   directives?: DirectivesInputWithDollar<EmptyRecord>
 ): DocumentNode
-export function gqf<
+export function gqfn<
   Variables extends ProvideVariable<VariablesInputs>,
   VariablesInputs extends string,
 >(
@@ -27,7 +27,7 @@ export function gqf<
   selection: TypeSelection<PrepareVariables<NoInfer<Variables>>>,
   directives?: DirectivesInputWithDollar<PrepareVariables<Variables>>
 ): DocumentNode
-export function gqf(...args: any[]): DocumentNode {
+export function gqfn(...args: any[]): DocumentNode {
   if (args.length === 4) {
     const [name, vars, selection, directives] = args
     return graphQueryFunction(name, vars, selection, directives)

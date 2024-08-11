@@ -1,9 +1,9 @@
-import type { RequireQueryPart } from '#gqf'
+import type { RequireQueryPart } from '#gqfn'
 
 const endpoint = 'https://graphql-test.teages.xyz/graphql-user'
 
-const schema = useGqfSchema(endpoint)
-const { defineAsyncQuery } = withGqfClient(
+const schema = useGQFnSchema(endpoint)
+const { defineAsyncQuery } = withGQFnClient(
   schema,
 )
 
@@ -15,7 +15,7 @@ export const userFragment = schema
 export type RequireUserFragment = RequireQueryPart<typeof userFragment>
 
 export const useAsyncUser = defineAsyncQuery(
-  gqf => gqf('query QueryUser', {
+  gqfn => gqfn('query QueryUser', {
     id: 'ID',
   }, [{
     user: $ => $({ id: $.id }, [{ ...userFragment($) }]),

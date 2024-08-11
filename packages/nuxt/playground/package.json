@@ -1,5 +1,5 @@
 {
-  "name": "@teages/nuxt-gqf-playground",
+  "name": "@gqfn/nuxt-playground",
   "type": "module",
   "private": true,
   "scripts": {

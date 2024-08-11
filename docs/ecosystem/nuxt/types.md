@@ -1,6 +1,6 @@
 # Type Utils
 
-You can import useful type tools from `@teages/gqf` by import `#gqf`.
+You can import useful type tools from `@gqfn/core` by import `#gqfn`.
 
 ```ts
 import {
@@ -10,13 +10,13 @@ import {
   Schemas,
   TypedQueryDocumentNode,
   VariablesOf
-} from '#gqf'
+} from '#gqfn'
 ```
 
 ## Type Definitions
 
 ```ts twoslash
-export type { Schemas } from '@teages/gqf/schema'
-export type { LoadFromUrl } from '@teages/gqf/cli'
-export type { ResultOf, VariablesOf, TypedQueryDocumentNode, RequireQueryPart } from '@teages/gqf/typed'
+export type { Schemas } from '@gqfn/core/schema'
+export type { LoadFromUrl } from '@gqfn/core/cli'
+export type { ResultOf, VariablesOf, TypedQueryDocumentNode, RequireQueryPart } from '@gqfn/core/typed'
 ```

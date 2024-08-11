@@ -1,14 +1,14 @@
 import { describe, expectTypeOf, test } from 'vitest'
-import { createGqf } from '../../src'
+import { createGQFn } from '../../src'
 import type { RequireQueryPart } from '../../src'
 import type { TypedQueryDocumentNode } from '../../src/typed'
 import type { CategoryEnum, Schema } from './fixture/schema'
 
 describe('type', () => {
-  const { gqf, gqp, $enum } = createGqf<Schema>()
+  const { gqfn, gqp, $enum } = createGQFn<Schema>()
 
   test('simple', () => {
-    const query = gqf(['__typename'])
+    const query = gqfn(['__typename'])
     const { vars, res } = parse(query)
 
     expectTypeOf(vars).toEqualTypeOf<Empty>()
@@ -16,7 +16,7 @@ describe('type', () => {
   })
 
   test('variables', () => {
-    const query = gqf('query', {
+    const query = gqfn('query', {
       int: 'Int!',
       float: 'Float!',
       str: 'String!',
@@ -47,7 +47,7 @@ describe('type', () => {
   })
 
   test('enum', () => {
-    const query = gqf([{
+    const query = gqfn([{
       sayings: $ => $({ category: [$enum('funny')] }, ['content']),
     }])
     const { vars, res } = parse(query)
@@ -57,7 +57,7 @@ describe('type', () => {
   })
 
   test('alias', () => {
-    const query = gqf(['type:__typename'])
+    const query = gqfn(['type:__typename'])
     const { vars, res } = parse(query)
 
     expectTypeOf(vars).toEqualTypeOf<Empty>()
@@ -65,7 +65,7 @@ describe('type', () => {
   })
 
   test('nested', () => {
-    const query = gqf([{
+    const query = gqfn([{
       user: $ => $({ id: 1 }, [
         'id',
         'name',
@@ -89,7 +89,7 @@ describe('type', () => {
   })
 
   test('complex', () => {
-    const query = gqf([{
+    const query = gqfn([{
       complex: $ => $([
         '__typename',
         'nullable',
@@ -132,7 +132,7 @@ describe('type', () => {
   })
 
   test('inline fragment', () => {
-    const query = gqf([{
+    const query = gqfn([{
       user: $ => $({ id: 1 }, [
         'name',
         {
@@ -188,7 +188,7 @@ describe('type', () => {
   })
 
   test('skip / include', () => {
-    const query = gqf([{
+    const query = gqfn([{
       user: $ => $({ id: 1 }, [
         {
           'email': $ => $({}, true, [['@include', { if: true }]]),
@@ -222,7 +222,7 @@ describe('type', () => {
       id: number
     }>()
 
-    const query = gqf([{
+    const query = gqfn([{
       user: $ => $({ id: 1 }, [userFragment($)]),
     }])
     const { vars, res } = parse(query)
@@ -243,7 +243,7 @@ describe('type', () => {
 
     expectTypeOf(req.saying[0]).toEqualTypeOf<{ content: string }>()
 
-    const query = gqf('query', {
+    const query = gqfn('query', {
       category: 'CategoryEnum!',
     }, [{
       user: $ => $({ id: 1 }, [userFragment($)]),

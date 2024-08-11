@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { $enum, createGqf } from '../src'
+import { $enum, createGQFn } from '../src'
 
-describe('@teages/gqf', () => {
+describe('@gqfn/core', () => {
   it('works', () => {
-    const p = createGqf()
-    expect(typeof p.gqf).toBe('function')
+    const p = createGQFn()
+    expect(typeof p.gqfn).toBe('function')
     expect(typeof p.gqp).toBe('function')
     expect(typeof p.$enum).toBe('function')
     expect(typeof $enum).toBe('function')

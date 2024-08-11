@@ -1,12 +1,12 @@
-# withGqfClient
+# withGQFnClient
 
-You can set up your favorite client with nuxt-gqf.
+You can set up your favorite client with @gqfn/nuxt.
 
 ## Setup Schema
 
 ```ts
 const endpoint = 'https://your-graphql-endpoint'
-const schema = useGqfSchema(endpoint)
+const schema = useGQFnSchema(endpoint)
 ```
 
 ## Setup Client
@@ -20,13 +20,13 @@ The build-in client use `$fetch` to send request.
 ```ts
 const endpoint = 'https://your-graphql-endpoint'
 
-const schema = useGqfSchema(endpoint)
+const schema = useGQFnSchema(endpoint)
 const {
   defineOperation,
   defineAsyncQuery,
   defineLazyAsyncQuery,
   defineSubscription,
-} = withGqfClient(schema, {
+} = withGQFnClient(schema, {
   fetchOptions: () => ({
     headers: {
       Authorization: `Bearer ${getToken()}`,
@@ -67,7 +67,7 @@ import { GraphQLClient } from 'graphql-request'
 
 const endpoint = 'https://your-graphql-endpoint'
 
-const schema = useGqfSchema(endpoint)
+const schema = useGQFnSchema(endpoint)
 const client = new GraphQLClient(endpoint, {
   // we suggest to use build-in fetch if have a internal graphql server
   // so that you can save network cost
@@ -86,7 +86,7 @@ const {
   defineAsyncQuery,
   defineLazyAsyncQuery,
   defineSubscription,
-} = withGqfClient(
+} = withGQFnClient(
   schema,
   ({ url, document, variables }, _context) => {
     if (type === 'subscription') {
@@ -144,12 +144,12 @@ const client = new Client({
   ),
 })
 
-const schema = useGqfSchema(endpoint)
+const schema = useGQFnSchema(endpoint)
 const {
   defineOperation,
   defineAsyncQuery,
   defineLazyAsyncQuery,
-} = withGqfClient<Partial<OperationContext>>(
+} = withGQFnClient<Partial<OperationContext>>(
   schema,
   ({ document, variables, type }, context) => {
     if (type === 'query') {
@@ -165,21 +165,21 @@ const {
 
 ### Other Clients
 
-You can use any other GraphQL client with `nuxt-gqf`.
+You can use any other GraphQL client with `@gqfn/nuxt`.
 
 ## Setup Subscription Client
 
-By default we provide two kinds of subscription client: `websocket` by `graphql-ws` and a simple `event-source` client for `sse`. For the vast majority of cases, they are enough. But if you need to customize them, you can use the `subscription` option in `withGqfClient`
+By default we provide two kinds of subscription client: `websocket` by `graphql-ws` and a simple `event-source` client for `sse`. For the vast majority of cases, they are enough. But if you need to customize them, you can use the `subscription` option in `withGQFnClient`
 
 ### Build-in Subscription Client
 
 `event-source` is the default subscription client. You can switch to `graphql-ws` by setting `handler: 'ws'`.
 
 ```ts
-const schema = useGqfSchema(endpoint)
+const schema = useGQFnSchema(endpoint)
 const {
   defineSubscription,
-} = withGqfClient(schema, {
+} = withGQFnClient(schema, {
   subscription: { handler: 'ws' }
 })
 ```
@@ -198,13 +198,13 @@ See [Type Definitions](#type-definitions) to implement your own subscription cli
 
 ## Define Operation
 
-`withGqfClient` provides some methods for you to define operations composables.
+`withGQFnClient` provides some methods for you to define operations composables.
 
 ### `defineOperation`
 
 ```ts
 export const useUser = defineOperation(
-  gqf => gqf('query QueryUser', {
+  gqfn => gqfn('query QueryUser', {
     id: 'ID',
   }, [{
     user: $ => $({ id: $.id }, ['id', 'name']),
@@ -224,7 +224,7 @@ It only works on `query` and will throw an error if received a `mutation` or `su
 
 ```ts
 export const useAsyncUser = defineAsyncQuery(
-  gqf => gqf('query QueryUser', {
+  gqfn => gqfn('query QueryUser', {
     id: 'ID',
   }, [{
     user: $ => $({ id: $.id }, ['id', 'name']),
@@ -252,7 +252,7 @@ Same to `defineAsyncQuery` but with `lazy:true` by default.
 
 ```ts
 export const useLazyAsyncUser = defineLazyAsyncQuery(
-  gqf => gqf('query QueryUser', {
+  gqfn => gqfn('query QueryUser', {
     id: 'ID',
   }, [{
     user: $ => $({ id: $.id }, ['id', 'name']),
@@ -270,7 +270,7 @@ Create a composable for your subscription. This composable only works in client-
 
 ```ts
 const useCountdown = defineSubscription(
-  gqf => gqf('subscription', [{
+  gqfn => gqfn('subscription', [{
     countdown: $ => $({ from: 3 }, true),
   }]),
 )
@@ -299,19 +299,19 @@ async function reset() {
 ## Type Definitions
 
 ```ts
-export function withGqfClient<
+export function withGQFnClient<
   Context = DefaultHandlerOptions,
   SubscriptionContext = DefaultSubscriptionHandlerOptions,
   Endpoint extends Endpoints = string,
 >(
-  schema: UseGqfSchema<Endpoint>,
-  options?: WithGqfClientOptions<Context, SubscriptionContext>,
-): WithGqfClient<Context, Endpoint>
+  schema: UseGQFnSchema<Endpoint>,
+  options?: WithGQFnClientOptions<Context, SubscriptionContext>,
+): WithGQFnClient<Context, Endpoint>
 ```
 
 ::: details More
 ```ts
-export interface WithGqfClientOptions<
+export interface WithGQFnClientOptions<
   Context,
   SubscriptionContext,
 > {
@@ -380,7 +380,7 @@ export type SubscriptionHandler<Context> = <
   context?: Context
 ) => void
 
-export interface WithGqfClient<
+export interface WithGQFnClient<
   Context,
   Endpoint extends Endpoints = string,
 > {
@@ -397,8 +397,8 @@ export interface DefineOperation<
   <TData, TVars extends Record<string, unknown>>(
     def: (
       | ((
-        gqf: UseGqfSchema<Endpoint>['gqf'],
-        $enum: UseGqfSchema<Endpoint>['$enum'],
+        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
+        $enum: UseGQFnSchema<Endpoint>['$enum'],
       ) => TypedQueryDocumentNode<TData, TVars>)
       | TypedQueryDocumentNode<TData, TVars>
     ),
@@ -419,8 +419,8 @@ export interface DefineAsyncQuery<
   > (
     def: (
       | ((
-        gqf: UseGqfSchema<Endpoint>['gqf'],
-        $enum: UseGqfSchema<Endpoint>['$enum'],
+        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
+        $enum: UseGQFnSchema<Endpoint>['$enum'],
       ) => TypedQueryDocumentNode<TData, TVars>)
       | TypedQueryDocumentNode<TData, TVars>
     ),
@@ -440,8 +440,8 @@ export interface DefineAsyncQuery<
   > (
     def: (
       | ((
-        gqf: UseGqfSchema<Endpoint>['gqf'],
-        $enum: UseGqfSchema<Endpoint>['$enum'],
+        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
+        $enum: UseGQFnSchema<Endpoint>['$enum'],
       ) => TypedQueryDocumentNode<TData, TVars>)
       | TypedQueryDocumentNode<TData, TVars>
     ),
@@ -460,8 +460,8 @@ export interface DefineSubscription<
   <TData, TVars extends Record<string, unknown>>(
     def: (
       | ((
-        gqf: UseGqfSchema<Endpoint>['gqf'],
-        $enum: UseGqfSchema<Endpoint>['$enum'],
+        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
+        $enum: UseGQFnSchema<Endpoint>['$enum'],
       ) => TypedQueryDocumentNode<TData, TVars>)
       | TypedQueryDocumentNode<TData, TVars>
     ),

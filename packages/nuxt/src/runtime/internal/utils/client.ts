@@ -1,4 +1,4 @@
-import type { ResultOf, TypedQueryDocumentNode, VariablesOf } from '@teages/gqf/typed'
+import type { ResultOf, TypedQueryDocumentNode, VariablesOf } from '@gqfn/core/typed'
 import { print } from 'graphql'
 import { type ClientOptions as WSClientOptions, createClient as createWSClient } from 'graphql-ws'
 import { destr } from 'destr'

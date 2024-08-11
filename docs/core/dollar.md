@@ -10,7 +10,7 @@ Use `$` to visit your variables, select type objects and use directives.
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('query FetchUser', {
+const query = gqfn('query FetchUser', {
   id: 'ID!',
   withFriends: 'Boolean! = true',
 }, [
@@ -53,7 +53,7 @@ Use `$` to define variables with directives.
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('query', {
+const query = gqfn('query', {
   varWithDirective: $ => $('String!', [
     ['@exampleDirective', { arg: 'value' }],
   ]),
@@ -73,7 +73,7 @@ Use `$` to define directives in root of query operation with variables.
 
 ::: code-group
 ```ts [Query Builder]
-const query = gqf('query', {
+const query = gqfn('query', {
   someVar: 'String!',
 }, [
   'hello',

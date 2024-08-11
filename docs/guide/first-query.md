@@ -1,43 +1,43 @@
-# First Query with GQF
+# First Query with GQFn
 
-The experience of using gqf is very similar to writing plain GraphQL queries. The following content assumes that you already know [how to write a GraphQL query](https://graphql.org/learn/queries/).
+The experience of using gqfn is very similar to writing plain GraphQL queries. The following content assumes that you already know [how to write a GraphQL query](https://graphql.org/learn/queries/).
 
 In this guide, our goal is to gradually build a slightly complex query.
 
 ## Prepare the Schema
 
-Before writing a query, you need to prepare the schema. Follow the guide in [Getting Started](./) to generate the schema types. and use `useSchema` to get the `gqf` function. Here we use the endpoint from [AniList](https://anilist.gitbook.io/anilist-apiv2-docs/).
+Before writing a query, you need to prepare the schema. Follow the guide in [Getting Started](./) to generate the schema types. and use `useSchema` to get the `gqfn` function. Here we use the endpoint from [AniList](https://anilist.gitbook.io/anilist-apiv2-docs/).
 
-If you haven't install `gqf` yet, you can do it by running the following command:
+If you haven't install `gqfn` yet, you can do it by running the following command:
 ```bash
 # ✨ Auto-detect package manager
-npx nypm install @teages/gqf
-npm run gqf add https://graphql.anilist.co
+npx nypm install @gqfn/core
+npm run gqfn add https://graphql.anilist.co
 ```
 
-Then, you can import the `gqf` function from `@teages/gqf` package and use it to create a query.
+Then, you can import the `gqfn` function from `@gqfn/core` package and use it to create a query.
 
 ```ts twoslash
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 // ---cut-start---
 import '#schema/10n5kr7'
 // ---cut-end---
 import { request } from 'graphql-request' // or you favorite GraphQL client
 const endpoint = 'https://graphql.anilist.co'
-const { gqf, gqp, $enum } = useSchema(endpoint)
+const { gqfn, gqp, $enum } = useSchema(endpoint)
 ```
 
 ## Selection and Arguments
 
-To build a selection on the `Query` type, you can pass the selection as the only argument of the `gqf` function.
+To build a selection on the `Query` type, you can pass the selection as the only argument of the `gqfn` function.
 
 ```ts twoslash
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
-const { gqf, gqp, $enum } = useSchema(endpoint)
+const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
-const query = gqf([])
+const query = gqfn([])
 ```
 
 Ok let's add the first field to the selection. We want to get the title of the Anime with the id `127549`. We need to add the `Media` field to the selection with the `id` argument.
@@ -46,13 +46,13 @@ Pass the arguments as the first argument of the `$`, and the selection as the se
 
 ::: code-group
 ```ts twoslash [Query Builder]
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
 import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
-const { gqf, gqp, $enum } = useSchema(endpoint)
+const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
-const query = gqf([{
+const query = gqfn([{
   Media: $ => $({ id: 127549 }, [
     'id',
   ]),
@@ -86,13 +86,13 @@ You can get the type hint when writing the query.
 ```ts twoslash [Query Builder]
 /* eslint-disable eslint-comments/no-unlimited-disable */
 /* eslint-disable */
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
 import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
-const { gqf, gqp, $enum } = useSchema(endpoint)
+const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
-const query = gqf([{
+const query = gqfn([{
   Media: $ => $({ id: 127549 }, [
     'id',
     {
@@ -112,13 +112,13 @@ The full code is here, you can intuitively see that the writing experience is si
 
 ::: code-group
 ```ts twoslash [Query Builder]
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
 import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
-const { gqf, gqp, $enum } = useSchema(endpoint)
+const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
-const query = gqf([{
+const query = gqfn([{
   Media: $ => $({ id: 127549, type: $enum('ANIME') }, [
     'id',
     {
@@ -167,17 +167,17 @@ const nativeTitle = data.Media?.title?.native
 
 ## Operation Name
 
-Operation names are useful to make the code less ambiguous. The operation name should be always be the first argument of the `gqf` function.
+Operation names are useful to make the code less ambiguous. The operation name should be always be the first argument of the `gqfn` function.
 
 ::: code-group
 ```ts twoslash [Query Builder]
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
 import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
-const { gqf, gqp, $enum } = useSchema(endpoint)
+const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
-const query = gqf('query FetchAnime', [{
+const query = gqfn('query FetchAnime', [{
   Media: $ => $({ id: 127549, type: $enum('ANIME') }, [
     'id',
     {
@@ -224,19 +224,19 @@ query FetchAnime {
 
 ## Variables
 
-Variables are helpful if we want to query for other anime. You can pass the variables definition as the second argument of the `gqf` function.
+Variables are helpful if we want to query for other anime. You can pass the variables definition as the second argument of the `gqfn` function.
 
 Writing variables is similar to writing a GraphQL query and you can use the `$` to visit you variables.
 
 ::: code-group
 ```ts twoslash [Query Builder]
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
 import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
-const { gqf, gqp, $enum } = useSchema(endpoint)
+const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
-const query = gqf('query FetchAnime', {
+const query = gqfn('query FetchAnime', {
   id: 'Int!',
 }, [{
   Media: $ => $({ id: $.id, type: $enum('ANIME') }, [
@@ -285,13 +285,13 @@ Default values can be set as follows:
 
 ::: code-group
 ```ts twoslash [Query Builder]
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
 import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
-const { gqf, gqp, $enum } = useSchema(endpoint)
+const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
-const query = gqf('query FetchAnime', {
+const query = gqfn('query FetchAnime', {
   id: 'Int = 127549',
 }, [{
   Media: $ => $({ id: $.id, type: $enum('ANIME') }, [

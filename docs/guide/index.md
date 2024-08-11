@@ -7,37 +7,37 @@ Install package:
 ::: code-group
 ```bash [nypm]
 # ✨ Auto-detect
-npx nypm install @teages/gqf
+npx nypm install @gqfn/core
 ```
 ```bash [npm]
-npm install @teages/gqf
+npm install @gqfn/core
 ```
 ```bash [yarn]
-yarn add @teages/gqf
+yarn add @gqfn/core
 ```
 ```bash [pnpm]
-pnpm install @teages/gqf
+pnpm install @gqfn/core
 ```
 ```bash [bun]
-bun install @teages/gqf
+bun install @gqfn/core
 ```
 :::
 
 Generate Types from GraphQL Schema:
 
 ```bash
-npm run gqf add https://your-graphql-endpoint
+npm run gqfn add https://your-graphql-endpoint
 ```
 
 Import and use:
 
 ```ts
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request' // or any other GraphQL client
 
-const { gqf, gqp, $enum } = useSchema('https://your-graphql-endpoint')
+const { gqfn, gqp, $enum } = useSchema('https://your-graphql-endpoint')
 
-const query = gqf([
+const query = gqfn([
   'hello',
 ])
 

@@ -1,5 +1,5 @@
-import type { ClientConfig } from '@teages/gqf/cli'
-import { sync } from '@teages/gqf/cli'
+import type { ClientConfig } from '@gqfn/core/cli'
+import { sync } from '@gqfn/core/cli'
 
 interface SyncResult {
   output: Array<{

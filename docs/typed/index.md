@@ -13,7 +13,7 @@ Typed query build is based on query build, this means that they have a completel
 In non-typed query builder, these are allowed:
 
 ```ts
-gqf([
+gqfn([
   {
     users: $ => $([ // you can omit the arguments if you don't need it
       'id',
@@ -21,7 +21,7 @@ gqf([
   }
 ])
 
-gqf([
+gqfn([
   {
     users: $ => $({}, [ // or pass a empty object
       'id',
@@ -33,7 +33,7 @@ gqf([
 But in typed query builder, you need to pass the arguments if the field can accept arguments, if you don't need it, you can pass a empty object:
 
 ```ts
-gqf([
+gqfn([
   {
     users: $ => $({}, [
       'id',
@@ -45,7 +45,7 @@ gqf([
 If you need to add directives, you need to pass a empty object even the field don't accept arguments:
 
 ```ts
-gqf([
+gqfn([
   {
     allUsers: $ => $({}, [
       'id',

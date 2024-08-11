@@ -105,7 +105,7 @@ const configSchema = z.object({
     .default([]),
 
   output: z.string()
-    .default('gqf'),
+    .default('gqfn'),
 
   silent: z.boolean()
     .default(false),
@@ -125,9 +125,9 @@ export interface Config {
   silent: boolean
 }
 
-const defaultConfigPath = 'gqf.config.json'
+const defaultConfigPath = 'gqfn.config.json'
 const loadConfigOptions: LoadConfigOptions<Config> = {
-  name: 'gqf',
+  name: 'gqfn',
 }
 
 export async function loadConfig(): Promise<Config> {

@@ -1,5 +1,5 @@
 import { addImportsDir, addServerImportsDir, createResolver, defineNuxtModule, updateRuntimeConfig, useLogger } from '@nuxt/kit'
-import type { ClientConfig } from '@teages/gqf/cli'
+import type { ClientConfig } from '@gqfn/core/cli'
 import { useTypeVfs } from './utils/vfs'
 import { syncSchema } from './utils/sync'
 
@@ -16,8 +16,8 @@ export interface ModuleOptions {
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: '@teages/nuxt-gqf',
-    configKey: 'gqf',
+    name: '@gqfn/nuxt',
+    configKey: 'gqfn',
   },
   defaults: {
     clients: [],
@@ -26,22 +26,22 @@ export default defineNuxtModule<ModuleOptions>({
   },
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
-    const logger = useLogger('nuxt-gqf', { level: options.silent ? 999 : undefined })
+    const logger = useLogger('@gqfn/nuxt', { level: options.silent ? 999 : undefined })
 
     addImportsDir(resolver.resolve('./runtime/composables'))
     // addImportsDir(resolver.resolve('./runtime/utils'))
     addServerImportsDir(resolver.resolve('./runtime/server/utils'))
 
-    const vfs = useTypeVfs('types/gqf-schema')
+    const vfs = useTypeVfs('types/gqfn-schema')
     // add type imports for server
     nuxt.options.nitro.typescript = nuxt.options.nitro.typescript ?? {}
     nuxt.options.nitro.typescript.tsConfig = nuxt.options.nitro.typescript.tsConfig ?? {}
     nuxt.options.nitro.typescript.tsConfig.include = [
       ...nuxt.options.nitro.typescript.tsConfig.include ?? [],
-      './types/gqf-schema/**/*',
+      './types/gqfn-schema/**/*',
     ]
 
-    nuxt.options.alias['#gqf'] = resolver.resolve('./runtime')
+    nuxt.options.alias['#gqfn'] = resolver.resolve('./runtime')
 
     if (options.clients && options.clients.length > 0) {
       logger.start('Syncing GraphQL schema')
@@ -58,12 +58,12 @@ export default defineNuxtModule<ModuleOptions>({
       }
     }
     else {
-      logger.warn('nuxt-gqf is installed but no clients were configured.')
+      logger.warn('@gqfn/nuxt is installed but no clients were configured.')
     }
 
     updateRuntimeConfig({
       public: {
-        gqf: {
+        gqfn: {
           clientList: nuxt.options.dev
             ? options.clients?.map(c => typeof c === 'object' ? c.url : c) ?? []
             : undefined,
@@ -75,7 +75,7 @@ export default defineNuxtModule<ModuleOptions>({
 
 export interface ModuleRuntimeConfig {
   public: {
-    gqf: {
+    gqfn: {
       clientList?: string[]
     }
   }

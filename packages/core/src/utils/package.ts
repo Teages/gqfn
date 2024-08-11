@@ -1,8 +1,8 @@
-import type { $enum, gqf, gqp } from '../core'
+import type { $enum, gqfn, gqp } from '../core'
 import type { DefineSchema, UserSchemaTypes } from '../schema'
 import type { GraphQueryFunction, GraphQueryPartial } from '../typed'
 
-export interface CreateGqf {
+export interface CreateGQFn {
   <Schema extends UserSchemaTypes | undefined = undefined>(): Package<Schema>
 }
 
@@ -10,11 +10,11 @@ export type Package<Schema extends UserSchemaTypes | DefineSchema<any> | undefin
   Schema extends UserSchemaTypes | DefineSchema<any>
     ? {
         $enum: typeof $enum
-        gqf: GraphQueryFunction<Schema>
+        gqfn: GraphQueryFunction<Schema>
         gqp: GraphQueryPartial<Schema>
       }
     : {
         $enum: typeof $enum
-        gqf: typeof gqf
+        gqfn: typeof gqfn
         gqp: typeof gqp
       }

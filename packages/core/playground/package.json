@@ -4,6 +4,6 @@
   "private": true,
   "scripts": {
     "play": "tsx .",
-    "gqf": "tsx ../src/cli/main.ts"
+    "gqfn": "tsx ../src/cli/main.ts"
   }
 }

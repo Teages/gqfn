@@ -1,8 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@teages/gqf/cli > cytoid-io json 1`] = `
+exports[`@gqfn/core/cli > cytoid-io json 1`] = `
 "/* eslint-ignore */
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@teages/gqf/schema'
+import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
 
 export type ResourceState =
   | 'PRIVATE'
@@ -832,7 +832,7 @@ export type Schema = DefineSchema<{
 type Arg<T extends string> = ArgOf<Schema, T>
 type Res<T extends string> = ResOf<Schema, T>
 
-declare module '@teages/gqf/schema' {
+declare module '@gqfn/core/schema' {
   interface Schemas {
     'https://services.cytoid.io/graphql': Schema
   }
@@ -840,9 +840,9 @@ declare module '@teages/gqf/schema' {
 "
 `;
 
-exports[`@teages/gqf/cli > cytoid-io sdl 1`] = `
+exports[`@gqfn/core/cli > cytoid-io sdl 1`] = `
 "/* eslint-ignore */
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@teages/gqf/schema'
+import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
 
 export type GameplayMods =
   | 'FC'
@@ -1672,7 +1672,7 @@ export type Schema = DefineSchema<{
 type Arg<T extends string> = ArgOf<Schema, T>
 type Res<T extends string> = ResOf<Schema, T>
 
-declare module '@teages/gqf/schema' {
+declare module '@gqfn/core/schema' {
   interface Schemas {
     'https://services.cytoid.io/graphql': Schema
   }
@@ -1680,9 +1680,9 @@ declare module '@teages/gqf/schema' {
 "
 `;
 
-exports[`@teages/gqf/cli > local def 1`] = `
+exports[`@gqfn/core/cli > local def 1`] = `
 "/* eslint-ignore */
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@teages/gqf/schema'
+import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
 
 export type CategoryEnum =
   | 'funny'
@@ -1784,7 +1784,7 @@ export type Schema = DefineSchema<{
 type Arg<T extends string> = ArgOf<Schema, T>
 type Res<T extends string> = ResOf<Schema, T>
 
-declare module '@teages/gqf/schema' {
+declare module '@gqfn/core/schema' {
   interface Schemas {
     '/graphql': Schema
   }
@@ -1792,9 +1792,9 @@ declare module '@teages/gqf/schema' {
 "
 `;
 
-exports[`@teages/gqf/cli > star-wars sdl 1`] = `
+exports[`@gqfn/core/cli > star-wars sdl 1`] = `
 "/* eslint-ignore */
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@teages/gqf/schema'
+import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
 
 type Node = InterfaceObject<'Node', {
   id: Res<'ID!'>
@@ -2398,7 +2398,7 @@ export type Schema = DefineSchema<{
 type Arg<T extends string> = ArgOf<Schema, T>
 type Res<T extends string> = ResOf<Schema, T>
 
-declare module '@teages/gqf/schema' {
+declare module '@gqfn/core/schema' {
   interface Schemas {
     'https://swapi-graphql.netlify.app/.netlify/functions/index': Schema
   }

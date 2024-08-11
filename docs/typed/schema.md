@@ -22,7 +22,7 @@ import type {
   ScalarType,
   TypeObject,
   Union,
-} from '@teages/gqf/schema'
+} from '@gqfn/core/schema'
 
 export type Schema = DefineSchema<{
   // Define your schema here
@@ -53,7 +53,7 @@ import type {
   ScalarType,
   TypeObject,
   Union,
-} from '@teages/gqf/schema'
+} from '@gqfn/core/schema'
 // ---cut---
 export type Schema = DefineSchema<{
   Scalars: {
@@ -88,7 +88,7 @@ import type {
   ScalarType,
   TypeObject,
   Union,
-} from '@teages/gqf/schema'
+} from '@gqfn/core/schema'
 // ---cut---
 export type RoleEnum =
   | 'ADMIN'
@@ -126,7 +126,7 @@ import type {
   ScalarType,
   TypeObject,
   Union,
-} from '@teages/gqf/schema'
+} from '@gqfn/core/schema'
 type Arg<T extends string> = ArgOf<Schema, T>
 type Res<T extends string> = ResOf<Schema, T>
 // ---cut---
@@ -167,7 +167,7 @@ import type {
   ScalarType,
   TypeObject,
   Union,
-} from '@teages/gqf/schema'
+} from '@gqfn/core/schema'
 type Arg<T extends string> = ArgOf<Schema, T>
 type Res<T extends string> = ResOf<Schema, T>
 // ---cut---

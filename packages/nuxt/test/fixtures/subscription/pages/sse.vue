@@ -1,13 +1,13 @@
 <script setup lang="ts">
 const endpoint = 'http://localhost:64961/graphql'
-const schema = useGqfSchema(endpoint)
+const schema = useGQFnSchema(endpoint)
 
 const {
   defineSubscription,
-} = withGqfClient(schema, { subscription: { handler: 'sse' } })
+} = withGQFnClient(schema, { subscription: { handler: 'sse' } })
 
 const useCountdown = defineSubscription(
-  gqf => gqf('subscription', [{
+  gqfn => gqfn('subscription', [{
     countdown: $ => $({ from: 3 }, true),
   }]),
 )

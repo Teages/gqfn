@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   modules: ['../src/module'],
-  gqf: {
+  gqfn: {
     clients: [
       'https://graphql-test.teages.xyz/graphql-user',
     ],

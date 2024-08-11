@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 import { print } from 'graphql'
-import { useSchema } from '@teages/gqf'
+import { useSchema } from '@gqfn/core'
 import { createClient } from '@teages/oh-my-graphql'
 
 const endpoint = 'https://graphql.anilist.co'
-const { gqf, $enum } = useSchema(endpoint)
+const { gqfn, $enum } = useSchema(endpoint)
 
 const client = createClient(endpoint)
 
-const query = gqf('query FetchAnime', {
+const query = gqfn('query FetchAnime', {
   id: 'Int = 127549',
 }, [{
   Media: $ => $({ id: $.id, type: $enum('ANIME') }, [

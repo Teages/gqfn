@@ -2,33 +2,33 @@
 
 ## Commands
 
-### `gqf init`
+### `gqfn init`
 
 Create the config file if it doesn't exist.
 
 ```sh
-npm run gqf init
+npm run gqfn init
 ```
 
-If the config file not exists, it will write a empty record to `gqf.config.json`.
+If the config file not exists, it will write a empty record to `gqfn.config.json`.
 
-### `gqf sync`
+### `gqfn sync`
 
 Sync the schema and generate types from the endpoint.
 
 ```sh
-npm run gqf sync
+npm run gqfn sync
 ```
 
 Options:
   - `-s`, `--silent`: Disable console output, default `false`
 
-### `gqf add`
+### `gqfn add`
 
 Add a new GraphQL schema and sync all schemas.
 
 ```sh
-npm run gqf add https://graphql.anilist.co
+npm run gqfn add https://graphql.anilist.co
 ```
 
 Arguments:
@@ -37,12 +37,12 @@ Arguments:
 Options:
   - `-s`, `--silent`: Disable console output, default `false`
 
-### `gqf remove`
+### `gqfn remove`
 
 Remove a GraphQL schema and sync all schemas.
 
 ```sh
-npm run gqf remove https://graphql.anilist.co
+npm run gqfn remove https://graphql.anilist.co
 ```
 
 Arguments:

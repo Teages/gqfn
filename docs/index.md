@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "GQF"
+  name: "GQFn"
   text: "GraphQL Queries with Function"
   tagline: Writing GraphQL queries with type safety and type hints, power by TypeScript.
   actions:
@@ -12,7 +12,7 @@ hero:
       link: /guide/
     - theme: alt
       text: GitHub
-      link: https://github.com/teages/gqf
+      link: https://github.com/teages/gqfn
       target: _blank
 
 features:
@@ -24,7 +24,7 @@ features:
     details: No need to scan your source code, no code generation during HMR.
   - title: Similar to plain GraphQL
     icon: ❤️
-    details: The experience of using gqf is very similar to writing plain GraphQL queries.
+    details: The experience of using GQFn is very similar to writing plain GraphQL queries.
   - title: Compatible with most client.
     icon: 🌐
     details: Working for most clients with TypedDocumentNode.

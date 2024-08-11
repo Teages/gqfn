@@ -1,8 +1,8 @@
 import { describe, it } from 'vitest'
-import { $enum, gqf, gqp } from '../../src/core'
+import { $enum, gqfn, gqp } from '../../src/core'
 import { fixture } from './utils'
 
-describe('@teages/gqf/core', () => {
+describe('@gqfn/core/core', () => {
   it('works', fixture(
     gql => gql(`
       query FetchHelloWorld ($userId: ID!, $category: CategoryEnum! = Blog) {
@@ -32,7 +32,7 @@ describe('@teages/gqf/core', () => {
         }
       }
     `),
-    gqf('query FetchHelloWorld', {
+    gqfn('query FetchHelloWorld', {
       userId: 'ID!',
       category: 'CategoryEnum! = Blog',
     }, [
@@ -86,7 +86,7 @@ describe('@teages/gqf/core', () => {
         }
       }
     `),
-    gqf('mutation Login', {
+    gqfn('mutation Login', {
       username: 'String!',
       password: $ => $('String!', [
         ['@check', { rule: $enum('password') }],
@@ -128,7 +128,7 @@ describe('@teages/gqf/core', () => {
         )
       }
     `),
-    gqf('query FetchString', [{
+    gqfn('query FetchString', [{
       getStr: $ => $({
         data: {
           int: 42,
@@ -172,7 +172,7 @@ describe('@teages/gqf/core', () => {
         }
       }
     `),
-    gqf('query FetchUser', {
+    gqfn('query FetchUser', {
       userId: 'ID!',
       withFriendsEmail: 'Boolean! = false',
     }, [{

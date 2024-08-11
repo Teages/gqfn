@@ -10,7 +10,7 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
   // ignores and import type utils
   push(
     `/* eslint-ignore */`,
-    `import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@teages/gqf/schema'`,
+    `import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'`,
   )
 
   // scalars
@@ -168,7 +168,7 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
   // declare
   if (url) {
     push(
-      `declare module '@teages/gqf/schema' {`,
+      `declare module '@gqfn/core/schema' {`,
       `  interface Schemas {`,
       `    '${url}': Schema`,
       `  }`,
