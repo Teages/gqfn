@@ -11,7 +11,7 @@
 >
 > The package is fully completed, but unit tests, export names, and some non-major functions may have break change.
 
-Writing GraphQL queries with type safety and type hints, power by TypeScript.
+GQFn provides a *typed* way to write GraphQL queries with the help of TypeScript.
 
 - ✨ [Stackblitz Playground](https://stackblitz.com/~/github.com/Teages/gqf-playground?file=src/index.ts)
 - 📖 [Documentation](https://gqf.teages.xyz)
