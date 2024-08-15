@@ -1,0 +1,25 @@
+{
+  "name": "@gqfn/docs",
+  "type": "module",
+  "version": "",
+  "description": "Documentation for GQFn",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "@gqfn/core": "workspace:*",
+    "@gqfn/nuxt": "workspace:*",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@shikijs/vitepress-twoslash": "^1.12.1",
+    "@teages/oh-my-graphql": "^0.0.2",
+    "@tsconfig/recommended": "^1.0.7",
+    "@types/node": "^20.14.10",
+    "graphql": "^16.9.0",
+    "graphql-request": "^7.1.0",
+    "graphql-scalars": "^1.23.0",
+    "typescript": "^5.5.4",
+    "vitepress": "^1.3.2"
+  }
+}
