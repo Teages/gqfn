@@ -4,7 +4,7 @@ import { ofetch } from 'ofetch'
 import { murmurHash } from 'ohash'
 import { extname, resolve } from 'pathe'
 
-import { generate } from '../schema/codegen'
+import { generate } from './codegen'
 import type { ClientConfig, Config, SchemaConfig } from './config'
 import { useLogger } from './logger'
 

@@ -1,5 +1,5 @@
-import type { EnumPackage } from '../../core/enum'
-import type { Nullable } from '../../utils/object'
+import type { EnumPackage } from '../runtime/enum'
+import type { Nullable } from '../utils/object'
 import type { DefineSchema } from './define'
 import type { BaseType } from './types'
 

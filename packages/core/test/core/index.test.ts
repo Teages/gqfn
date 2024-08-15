@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { $enum, gqfn, gqp } from '../../src/core'
+import { $enum, gqfn, gqp } from '../../src/runtime'
 import { fixture } from './utils'
 
 describe('@gqfn/core/core', () => {

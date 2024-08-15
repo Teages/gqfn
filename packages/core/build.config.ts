@@ -7,11 +7,10 @@ export default defineBuildConfig({
   },
   entries: [
     'src/index.ts',
-    'src/core/index.ts',
-    'src/typed/index.ts',
+    'src/runtime/index.ts',
+    'src/types/index.ts',
     'src/cli/index.ts',
     'src/schema/index.ts',
-    'src/schema/codegen/index.ts',
 
     // cli commands
     'src/cli/main.ts',

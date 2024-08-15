@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, test } from 'vitest'
 import { createGQFn } from '../../src'
 import type { RequireQueryPart } from '../../src'
-import type { TypedQueryDocumentNode } from '../../src/typed'
+import type { TypedQueryDocumentNode } from '../../src/types'
 import type { CategoryEnum, Schema } from './fixture/schema'
 
 describe('type', () => {

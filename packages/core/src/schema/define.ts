@@ -1,4 +1,4 @@
-import type { EmptyRecord } from '../../utils/object'
+import type { EmptyRecord } from '../utils/object'
 import type { EnumType, InputObject, InterfaceObject, ScalarType, TypeObject, Union } from './types'
 
 export interface DefineSchema<

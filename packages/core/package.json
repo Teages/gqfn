@@ -15,15 +15,15 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
-    "./core": {
-      "types": "./dist/core/index.d.ts",
-      "import": "./dist/core/index.mjs",
-      "require": "./dist/core/index.cjs"
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "import": "./dist/runtime/index.mjs",
+      "require": "./dist/runtime/index.cjs"
     },
-    "./typed": {
-      "types": "./dist/typed/index.d.ts",
-      "import": "./dist/typed/index.mjs",
-      "require": "./dist/typed/index.cjs"
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.mjs",
+      "require": "./dist/types/index.cjs"
     },
     "./cli": {
       "types": "./dist/cli/index.d.ts",
@@ -34,11 +34,6 @@
       "types": "./dist/schema/index.d.ts",
       "import": "./dist/schema/index.mjs",
       "require": "./dist/schema/index.cjs"
-    },
-    "./schema/codegen": {
-      "types": "./dist/schema/codegen/index.d.ts",
-      "import": "./dist/schema/codegen/index.mjs",
-      "require": "./dist/schema/codegen/index.cjs"
     }
   },
   "main": "./dist/index.cjs",
