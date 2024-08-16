@@ -4,8 +4,10 @@
   "version": "",
   "description": "Documentation for GQFn",
   "scripts": {
-    "dev": "vitepress dev",
     "build": "vitepress build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "dev": "vitepress dev",
     "preview": "vitepress preview"
   },
   "devDependencies": {

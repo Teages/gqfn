@@ -1,16 +1,9 @@
-import antfu from '@antfu/eslint-config'
+// @ts-check
+import { shared } from '../../eslint.config.mjs'
 
-export default antfu({
+export default shared.append({
   ignores: [
-    '__generated__',
-    'node_modules',
-    'coverage',
-    'dist',
     'playground/gqfn.config.json',
     'playground/gqfn',
   ],
-}, {
-  rules: {
-    curly: ['error', 'all'],
-  },
 })

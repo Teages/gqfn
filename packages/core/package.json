@@ -15,25 +15,25 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
-    "./runtime": {
-      "types": "./dist/runtime/index.d.ts",
-      "import": "./dist/runtime/index.mjs",
-      "require": "./dist/runtime/index.cjs"
-    },
-    "./types": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/types/index.mjs",
-      "require": "./dist/types/index.cjs"
-    },
     "./cli": {
       "types": "./dist/cli/index.d.ts",
       "import": "./dist/cli/index.mjs",
       "require": "./dist/cli/index.cjs"
     },
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "import": "./dist/runtime/index.mjs",
+      "require": "./dist/runtime/index.cjs"
+    },
     "./schema": {
       "types": "./dist/schema/index.d.ts",
       "import": "./dist/schema/index.mjs",
       "require": "./dist/schema/index.cjs"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.mjs",
+      "require": "./dist/types/index.cjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -46,20 +46,17 @@
     "dist"
   ],
   "scripts": {
-    "build": "unbuild",
-    "dev": "vitest dev",
+    "prepack": "pnpm build",
     "lint": "eslint --cache .",
     "lint:fix": "eslint --cache --fix .",
-    "prepack": "pnpm build",
+    "dev": "vitest dev",
+    "build": "unbuild",
     "play": "cd playground && pnpm play",
     "play:gqfn": "cd playground && pnpm gqfn",
-    "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
-    "test": "pnpm lint && pnpm test:types && vitest run --coverage",
-    "test:dev": "vitest run",
+    "test": "vitest run --coverage",
+    "test:full": "pnpm test:types && pnpm test",
     "test:types": "tsc --noEmit --skipLibCheck",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "test:dev": "vitest run"
   },
   "dependencies": {
     "@commander-js/extra-typings": "^12.1.0",

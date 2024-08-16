@@ -1,7 +1,7 @@
 {
   "name": "gqfn",
   "type": "module",
-  "version": "",
+  "version": "0.2.1",
   "packageManager": "pnpm@9.7.0",
   "license": "MIT",
   "repository": {
@@ -10,11 +10,13 @@
   },
   "scripts": {
     "postinstall": "pnpm -C packages/core build",
-    "lint": "eslint --cache . && pnpm --filter ./packages/** lint",
-    "lint:fix": "eslint --cache --fix . && pnpm --filter ./packages/** lint:fix",
+    "lint": "eslint --cache . && pnpm --filter=!. lint",
+    "lint:fix": "eslint --cache --fix . && pnpm --filter=!. lint",
     "test": "pnpm --filter ./packages/** test",
+    "test:full": "pnpm --filter ./packages/** test:full",
     "test:types": "pnpm --filter ./packages/** test:types",
-    "build": "pnpm docs:build && pnpm --filter ./packages/** build",
+    "build": "pnpm docs:build && pnpm prepack",
+    "prepack": "pnpm --filter ./packages/** build",
     "docs:dev": "pnpm -C docs dev",
     "docs:build": "pnpm -C docs build",
     "docs:preview": "pnpm -C docs preview"

@@ -1,15 +1,11 @@
 import antfu from '@antfu/eslint-config'
 
-export default antfu({
-  ignores: ['packages'], // use packages's own eslint config
-}, {
+export const shared = antfu({
   rules: {
     curly: ['error', 'all'],
   },
-}, {
-  // disable unnecessary rules for markdown files
-  files: ['docs/**/*.md/*.ts', 'docs/**/*.md/*.js'],
-  rules: {
-    'ts/no-empty-object-type': 'off',
-  },
+})
+
+export default shared.append({
+  ignores: ['packages', 'docs'], // use packages's own eslint config
 })

@@ -1,7 +1,7 @@
 {
   "name": "@gqfn/nuxt",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.2.1",
   "description": "A Nuxt binding for @gqfn/core",
   "license": "MIT",
   "repository": {
@@ -22,16 +22,15 @@
   ],
   "scripts": {
     "prepack": "nuxt-module-build build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
-    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "test:prepare": "pnpm dev:prepare",
-    "test": "pnpm test:prepare && vitest run && playwright test",
-    "test:watch": "pnpm test:prepare && vitest watch",
-    "test:types": "pnpm test:prepare && vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+    "test": "vitest run && playwright test",
+    "test:full": "pnpm test:prepare && pnpm test:types && pnpm test",
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit",
+    "test:prepare": "pnpm dev:prepare"
   },
   "dependencies": {
     "@gqfn/core": "workspace:*",
