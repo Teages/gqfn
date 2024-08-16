@@ -1,4 +1,4 @@
-import type { TypedQueryDocumentNode } from '@gqfn/core/typed'
+import type { TypedQueryDocumentNode } from '@gqfn/core/types'
 import type { ComputedRef } from 'vue'
 import type { Endpoints } from '../../utils/schema'
 import type { HandlerOptions, SSEOptions, WSOptions } from '../../utils/client'
