@@ -103,8 +103,6 @@ export default defineConfig({
           compilerOptions: {
             moduleResolution: ts.ModuleResolutionKind.Bundler,
             paths: {
-              '@gqfn/core/*': ['./packages/core/src/*'],
-              '@gqfn/core': ['./packages/core/src'],
               '#schema/*': ['./packages/core/playground/gqfn/*'],
             },
           },

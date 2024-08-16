@@ -1,5 +1,5 @@
 import { $enum, gqfn, gqp } from './runtime'
-import type { CreateGQFn, Package } from './utils/package'
+import type { CreateGQFn, Package } from './types/utils/package'
 import type { DefineSchema, Schemas, UserSchemaTypes } from './schema'
 
 export { $enum } from './runtime'

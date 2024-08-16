@@ -1,4 +1,4 @@
-import type { EmptyRecord, HiddenSymbol } from '../../utils/object'
+import type { EmptyRecord, HiddenSymbol } from '../utils/object'
 
 export interface QueryPartType<T> {
   [HiddenSymbol]?: () => T

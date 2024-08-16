@@ -1,6 +1,6 @@
 import type { ArgOf, BaseType, ParseArg, UserSchemaTypes } from '../schema'
-import type { HiddenSymbol, Nullable, RelaxedOptional, Values } from '../utils/object'
-import type { Trim } from '../utils/string'
+import type { HiddenSymbol, Nullable, RelaxedOptional, Values } from './utils/object'
+import type { Trim } from './utils/string'
 import type { DollarContext, VariableDollar } from './dollar'
 
 export type ProvideVariable<T extends string> =

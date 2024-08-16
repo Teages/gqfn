@@ -1,5 +1,5 @@
 import { type DocumentNode, Kind, OperationTypeNode } from 'graphql'
-import type { EmptyRecord } from '../utils/object'
+import type { EmptyRecord } from '../types/utils/object'
 import { type OperationName, parseOperation } from './operation'
 import { parseTypeSelection } from './select'
 import type { TypeSelection } from './select'

@@ -1,10 +1,10 @@
-import type { UserSchemaTypes } from '../schema'
+import type { UserSchemaTypes } from '../../schema'
 import type { EmptyRecord, Exact } from '../utils/object'
-import type { SelectionDollar } from './dollar'
-import type { ParseQueryPart, QueryPartType } from './parse/part'
-import type { ParseTypeSelection } from './parse/select'
-import type { ProvideTypeSelection } from './select'
-import type { PrepareVariables, ProvideVariable } from './variable'
+import type { SelectionDollar } from '../dollar'
+import type { ParseQueryPart, QueryPartType } from '../parser/part'
+import type { ParseTypeSelection } from '../parser/select'
+import type { ProvideTypeSelection } from '../select'
+import type { PrepareVariables, ProvideVariable } from '../variable'
 
 export interface GraphQueryPartial<
   Schema extends UserSchemaTypes,

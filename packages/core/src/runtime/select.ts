@@ -1,6 +1,6 @@
 import type { FieldNode, InlineFragmentNode, SelectionNode, SelectionSetNode } from 'graphql'
 import { Kind } from 'graphql'
-import type { ArrayMayFollowItem } from '../utils/object'
+import type { ArrayMayFollowItem } from '../types/utils/object'
 import type { DollarContext, DollarPayload, SelectionDollar } from './dollar'
 import { initSelectionDollar } from './dollar'
 import { parseArgs } from './arg'

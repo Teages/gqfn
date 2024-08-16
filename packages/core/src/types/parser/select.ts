@@ -1,5 +1,5 @@
 import type { EnumType, Field, ScalarType, TypeObject } from '../../schema'
-import type { EmptyRecord, Nullable, Values } from '../../utils/object'
+import type { EmptyRecord, Nullable, Values } from '../utils/object'
 import type { DollarContext } from '../dollar'
 
 type ParseSelection<T, SelectionField> =

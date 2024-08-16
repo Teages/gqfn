@@ -1,5 +1,5 @@
 import type { DollarEnum } from '../types/dollar'
-import type { EmptyRecord } from '../utils/object'
+import type { EmptyRecord } from '../types/utils/object'
 import type { ArgOf, ResOf } from './utils'
 
 export interface Field<

@@ -1,5 +1,5 @@
 import type { ArgOf } from '../schema'
-import type { RelaxedOptional } from '../utils/object'
+import type { RelaxedOptional } from './utils/object'
 import type { AcceptVariables } from './variable'
 
 export type Argument = Record<string, unknown>
