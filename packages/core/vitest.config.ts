@@ -3,7 +3,10 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     coverage: {
-      include: ['src/**/*'],
+      include: [
+        'src/runtime/**/*',
+        'src/cli/codegen/**/*',
+      ],
     },
     typecheck: {
       enabled: true,
