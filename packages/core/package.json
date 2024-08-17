@@ -73,11 +73,11 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.25.0",
+    "@antfu/eslint-config": "^2.26.0",
     "@pothos/core": "^4.1.0",
-    "@shikijs/vitepress-twoslash": "^1.12.1",
+    "@shikijs/vitepress-twoslash": "^1.13.0",
     "@teages/oh-my-graphql": "0.0.2",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20",
     "@vitest/coverage-v8": "^2.0.5",
     "changelogen": "^0.5.5",
     "eslint": "^9.9.0",
