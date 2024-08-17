@@ -2,28 +2,9 @@
 
 GQFn provides a *typed* way to write GraphQL queries with the help of TypeScript.
 
-<!-- - ✨ [Stackblitz Playground](#) TODO: new playground -->
 - 📖 [Documentation](https://gqfn.teages.xyz)
 
-## Usage
+## Packages
 
-Install package:
-
-```sh
-# ✨ Auto-detect
-npx nypm i @gqfn/core
-
-# npm
-npm install @gqfn/core
-
-# yarn
-yarn add @gqfn/core
-
-# pnpm
-pnpm install @gqfn/core
-
-# bun
-bun install @gqfn/core
-```
-
-- Nuxt module is available: [@gqfn/nuxt](https://gqfn.teages.xyz/ecosystem/nuxt/)
+- [`@gqfn/core`](./packages/core/) - The core of GQFn.
+- [`@gqfn/nuxt`](./packages/nuxt/) - The Nuxt module of @gqfn/core.

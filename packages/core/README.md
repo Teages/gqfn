@@ -6,14 +6,9 @@
 <!-- [![bundle][bundle-src]][bundle-href] -->
 <!-- [![Codecov][codecov-src]][codecov-href] -->
 
-> [!WARNING]
-> WIP!
->
-> The package is fully completed, but unit tests, export names, and some non-major functions may have break change.
-
 GQFn provides a *typed* way to write GraphQL queries with the help of TypeScript.
 
-- ✨ [Stackblitz Playground](https://stackblitz.com/~/github.com/Teages/gqfn-playground?file=src/index.ts)
+<!-- - ✨ [Stackblitz Playground](#) TODO: new playground -->
 - 📖 [Documentation](https://gqfn.teages.xyz)
 
 ## Usage
@@ -21,6 +16,9 @@ GQFn provides a *typed* way to write GraphQL queries with the help of TypeScript
 Install package:
 
 ```sh
+# ✨ Auto-detect
+npx nypm i @gqfn/core
+
 # npm
 npm install @gqfn/core
 

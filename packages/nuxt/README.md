@@ -7,9 +7,8 @@
 
 The Nuxt binding for @gqfn/core.
 
-- [✨ &nbsp;Release Notes](/CHANGELOG.md)
-<!-- - [🏀 Online playground](#) TODO: new playground -->
-- [📖 &nbsp;Documentation](https://gqfn.teages.xyz/ecosystem/nuxt)
+<!-- - 🏀 [Online playground](#) TODO: new playground -->
+- 📖 [&nbsp;Documentation](https://gqfn.teages.xyz/ecosystem/nuxt)
 
 ## Features
 
