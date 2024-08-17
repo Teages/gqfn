@@ -13,11 +13,11 @@ export interface UseGQFnSchema<
 export interface UseGQFnSchemaWithWarning {
   endpoint?: string
   /**
-   * @deprecated The schema is not typed.
+   * @deprecated It's not really deprecated. This deprecated is just a warning to let you know that the schema is not typed.
    */
   gqfn: LoadGQFn<string>
   /**
-   * @deprecated The schema is not typed.
+   * @deprecated It's not really deprecated. This deprecated is just a warning to let you know that the schema is not typed.
    */
   gqp: LoadGQP<string>
   $enum: typeof $enum

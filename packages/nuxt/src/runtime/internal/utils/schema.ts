@@ -1,8 +1,7 @@
 import type { Schemas } from '@gqfn/core/schema'
-import type { $enum } from '@gqfn/core'
-import type { LoadFromUrl } from '@gqfn/core/cli'
-import type { GraphQueryFunction, GraphQueryPartial } from '@gqfn/core/typed'
-import type { gqfn, gqp } from '@gqfn/core/core'
+import type { $enum, gqfn, gqp } from '@gqfn/core/runtime'
+import type { LoadFromUrl } from '@gqfn/core'
+import type { GraphQueryFunction, GraphQueryPartial } from '@gqfn/core/types'
 
 export type ExactEndpoints = keyof Schemas
 export type Endpoints = string | ExactEndpoints

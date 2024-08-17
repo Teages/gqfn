@@ -1,15 +1,9 @@
 <script setup lang="ts">
 const nameList = ['Alice', 'Bob', 'Charlie', 'Teages']
-const name = ref(nameList[0])
-function changeName() {
-  const index = nameList.indexOf(name.value)
-  name.value = nameList[(index + 1) % nameList.length]
-}
+const index = ref(0)
 
-const { data: msg } = await useAsyncHello(
-  () => ({ name: name.value }),
-  { watch: [name] },
-)
+const params = computed(() => ({ name: nameList[index.value % nameList.length] }))
+const { data: msg } = await useAsyncHello(params, { watch: [params] })
 
 const { data, error } = await useAsyncUser({ id: '1' })
 </script>
@@ -17,7 +11,7 @@ const { data, error } = await useAsyncUser({ id: '1' })
 <template>
   <div>
     {{ msg?.hello }}
-    <button @click="changeName">
+    <button @click="index += 1">
       Change
     </button>
   </div>

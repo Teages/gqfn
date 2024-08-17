@@ -22,7 +22,6 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     clients: [],
     silent: false,
-    // autoLoad: true,
   },
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
@@ -60,23 +59,5 @@ export default defineNuxtModule<ModuleOptions>({
     else {
       logger.warn('@gqfn/nuxt is installed but no clients were configured.')
     }
-
-    updateRuntimeConfig({
-      public: {
-        gqfn: {
-          clientList: nuxt.options.dev
-            ? options.clients?.map(c => typeof c === 'object' ? c.url : c) ?? []
-            : undefined,
-        },
-      },
-    } satisfies ModuleRuntimeConfig)
   },
 })
-
-export interface ModuleRuntimeConfig {
-  public: {
-    gqfn: {
-      clientList?: string[]
-    }
-  }
-}

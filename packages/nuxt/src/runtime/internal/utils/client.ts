@@ -1,8 +1,8 @@
-import type { ResultOf, TypedQueryDocumentNode, VariablesOf } from '@gqfn/core/typed'
+import type { ResultOf, TypedQueryDocumentNode, VariablesOf } from '@gqfn/core/types'
+import { type ClientOptions, createClient } from '@teages/oh-my-graphql'
 import { print } from 'graphql'
 import { type ClientOptions as WSClientOptions, createClient as createWSClient } from 'graphql-ws'
 import { destr } from 'destr'
-import type { FetchOptions } from 'ofetch'
 import { type MaybeRefOrGetter, toValue } from '#imports'
 
 export function createHandler(options?: HandlerOptions) {
@@ -18,35 +18,24 @@ export function createHandler(options?: HandlerOptions) {
     },
     context?: HandlerOptions,
   ) => {
-    const opts = toValue(options?.fetchOptions)
-    const ctx = toValue(context?.fetchOptions)
+    const opts = toValue(options)
+    const ctx = toValue(context)
 
     const headers = {
       ...opts?.headers,
       ...ctx?.headers,
-      'Content-Type': 'application/json',
     }
 
     const preferMethod = ctx?.preferMethod ?? opts?.preferMethod ?? 'POST'
-    const method = query.type === 'query'
-      ? preferMethod
-      : 'POST'
 
-    const body = {
-      query: print(query.document),
-      variables: query.variables,
-    }
-
-    const res = await $fetch<{ data: TData }>(query.url, {
-      ...opts,
-      ...ctx,
-      method,
-      headers,
-      ...(
-        method === 'POST' ? { body } : { query: body }
-      ),
-    })
-    return res.data
+    const res = await createClient(query.url)
+      .request(query.document, query.variables, {
+        ...opts,
+        ...ctx,
+        headers,
+        preferMethod,
+      })
+    return res
   }
 }
 
@@ -127,21 +116,7 @@ export type CreateSubscriptionHandlerOptions = {
   options?: WSOptions
 }
 
-export interface HandlerOptions {
-  /**
-   * Options of `$fetch`
-   */
-  fetchOptions?: MaybeRefOrGetter<
-    Omit<FetchOptions, 'url' | 'method'> & {
-      /**
-       * Default method to use for queries.
-       * Only effective when `type` is `'query'`.
-       * @default 'POST'
-       */
-      preferMethod?: 'POST' | 'GET'
-    }
-  >
-}
+export type HandlerOptions = ClientOptions
 
 export interface SSEOptions {
   sseOptions?: MaybeRefOrGetter<EventSourceInit>

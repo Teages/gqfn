@@ -4,9 +4,7 @@ const endpoint = 'https://graphql-test.teages.xyz/graphql-user'
 const schema = useGQFnSchema(endpoint)
 const { defineAsyncQuery } = withGQFnClient(schema, {
   handler: {
-    fetchOptions: {
-      preferMethod: 'GET',
-    },
+    preferMethod: 'GET',
   },
 })
 
