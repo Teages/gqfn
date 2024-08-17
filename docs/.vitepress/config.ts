@@ -39,7 +39,7 @@ export default defineConfig({
         },
         {
           collapsed: false,
-          base: '/core/',
+          base: '/runtime/',
           text: 'Query Builder',
           link: '/',
           items: [
@@ -103,7 +103,7 @@ export default defineConfig({
           compilerOptions: {
             moduleResolution: ts.ModuleResolutionKind.Bundler,
             paths: {
-              '#schema/*': ['./packages/core/playground/gqfn/*'],
+              '#schema/*': ['../packages/core/playground/gqfn/*'],
             },
           },
         },

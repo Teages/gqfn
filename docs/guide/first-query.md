@@ -163,7 +163,7 @@ const nativeTitle = data.Media?.title?.native
 ```
 :::
 
-[Learn more about selection](/core/selection).
+[Learn more about selection](/runtime/selection).
 
 ## Operation Name
 
@@ -220,7 +220,7 @@ query FetchAnime {
 ```
 :::
 
-[Learn more about operation name](/core/#name).
+[Learn more about operation name](/runtime/#name).
 
 ## Variables
 
@@ -336,10 +336,10 @@ query FetchAnime($id: Int = 127549) {
 ```
 :::
 
-[Learn more about variables](/core/#variables).
+[Learn more about variables](/runtime/#variables).
 
-[Learn more about `$` and dollar function](/core/dollar).
+[Learn more about `$` and dollar function](/runtime/dollar).
 
 ## Going Further
 
-- [Directives](/core/directive)
+- [Directives](/runtime/directive)

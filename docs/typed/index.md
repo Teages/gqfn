@@ -1,8 +1,8 @@
 # Typed Query Builder
 
-Typed query builder is based on [Query Builder](../core/), it has the same runtime behavior but you can benefit from type safety and better type hints by TypeScript.
+Typed query builder is based on [Query Builder](../runtime/), it has the same runtime behavior but you can benefit from type safety and better type hints by TypeScript.
 
-Usage same to [Query Builder](../core/).
+Usage same to [Query Builder](../runtime/).
 
 ## Differences from non-typed query builder
 
