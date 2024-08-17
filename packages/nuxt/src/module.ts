@@ -1,4 +1,4 @@
-import { addImportsDir, addServerImportsDir, createResolver, defineNuxtModule, updateRuntimeConfig, useLogger } from '@nuxt/kit'
+import { addImportsDir, addServerImportsDir, createResolver, defineNuxtModule, useLogger } from '@nuxt/kit'
 import type { ClientConfig } from '@gqfn/core/cli'
 import { useTypeVfs } from './utils/vfs'
 import { syncSchema } from './utils/sync'

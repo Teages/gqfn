@@ -11,7 +11,7 @@
   "scripts": {
     "postinstall": "pnpm -C packages/core build",
     "lint": "eslint --cache . && pnpm --filter=!. lint",
-    "lint:fix": "eslint --cache --fix . && pnpm --filter=!. lint",
+    "lint:fix": "eslint --cache --fix . && pnpm --filter=!. lint:fix",
     "test": "pnpm --filter ./packages/** test",
     "test:full": "pnpm --filter ./packages/** test:full",
     "test:types": "pnpm --filter ./packages/** test:types",
