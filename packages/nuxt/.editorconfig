@@ -10,7 +10,3 @@ insert_final_newline = true
 
 [*.md]
 trim_trailing_whitespace = false
-
-[package.json]
-# remove after https://github.com/unjs/changelogen/issues/170
-insert_final_newline = false
