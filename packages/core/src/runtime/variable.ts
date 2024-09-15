@@ -1,6 +1,5 @@
 import { Kind, parseConstValue, parseType } from 'graphql'
 import type { VariableDefinitionNode } from 'graphql'
-import type { DirectiveInput } from './directive'
 import { parseDirective } from './directive'
 import { type DollarContext, type VariableDollar, initVariableDollar } from './dollar'
 
@@ -39,7 +38,7 @@ export function parseVariables(
       ? def(initVariableDollar())
       : {
           content: def,
-          directives: [] as Array<DirectiveInput>,
+          directives: [],
         }
 
     const [type, defaultValue] = content.split('=').map(s => s.trim())
@@ -58,6 +57,6 @@ export function parseVariables(
         ? parseConstValue(defaultValue, { noLocation: true })
         : undefined,
       directives: parseDirective(directives, true),
-    } satisfies VariableDefinitionNode
+    }
   })
 }

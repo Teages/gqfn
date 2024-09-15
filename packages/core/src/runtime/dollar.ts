@@ -60,28 +60,31 @@ export function initVariableDollar(): VariableDollar {
 function initFuncDollar() {
   return new Proxy(
     (...args: any[]) => {
-      if (args.length === 1) {
-        const [content] = args
-        return new DollarContext(content, {}, [])
-      }
-      if (args.length === 2) {
-        if (
-          typeof args[0] === 'string'
-          || typeof args[0] === 'boolean'
-          || typeof args[0] === 'function'
-          || Array.isArray(args[0])
-        ) {
-          const [content, directive] = args
-          return new DollarContext(content, {}, directive)
+      switch (args.length) {
+        case 1: {
+          const [content] = args
+          return new DollarContext(content, {}, [])
         }
-        // arg, content
-        const [arg, content] = args
-        return new DollarContext(content, arg, [])
+        case 2: {
+          if (
+            typeof args[0] === 'string'
+            || typeof args[0] === 'boolean'
+            || typeof args[0] === 'function'
+            || Array.isArray(args[0])
+          ) {
+            const [content, directive] = args
+            return new DollarContext(content, {}, directive)
+          }
+          // arg, content
+          const [arg, content] = args
+          return new DollarContext(content, arg, [])
+        }
+        case 3: {
+          const [arg, content, directive] = args
+          return new DollarContext(content, arg, directive)
+        }
       }
-      if (args.length === 3) {
-        const [arg, content, directive] = args
-        return new DollarContext(content, arg, directive)
-      }
+
       throw new Error('Invalid arguments length')
     },
     {
