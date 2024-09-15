@@ -27,8 +27,9 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url)
     const logger = useLogger('@gqfn/nuxt', { level: options.silent ? 999 : undefined })
 
-    addImportsDir(resolver.resolve('./runtime/composables'))
-    // addImportsDir(resolver.resolve('./runtime/utils'))
+    addImportsDir(resolver.resolve('./runtime/app/composables'))
+    // addImportsDir(resolver.resolve('./runtime/app/utils'))
+
     addServerImportsDir(resolver.resolve('./runtime/server/utils'))
 
     const vfs = useTypeVfs('types/gqfn-schema')

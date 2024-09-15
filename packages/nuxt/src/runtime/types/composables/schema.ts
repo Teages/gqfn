@@ -13,11 +13,11 @@ export interface UseGQFnSchema<
 export interface UseGQFnSchemaWithWarning {
   endpoint?: string
   /**
-   * @deprecated It's not really deprecated. This deprecated is just a warning to let you know that the schema is not typed.
+   * @deprecated It's not really deprecated. The schema is not typed, maybe you input a wrong endpoint or forget to add it to nuxt config.
    */
   gqfn: LoadGQFn<string>
   /**
-   * @deprecated It's not really deprecated. This deprecated is just a warning to let you know that the schema is not typed.
+   * @deprecated It's not really deprecated. The schema is not typed, maybe you input a wrong endpoint or forget to add it to nuxt config.
    */
   gqp: LoadGQP<string>
   $enum: typeof $enum

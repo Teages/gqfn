@@ -1,6 +1,6 @@
 import type { $enum } from '@gqfn/core'
 import { useSchema } from '@gqfn/core'
-import type { DollarEnum, Endpoints, ExactEndpoints, LoadGQFn, LoadGQP } from '../../internal/utils/schema'
+import type { DollarEnum, Endpoints, ExactEndpoints, LoadGQFn, LoadGQP } from '../../utils/schema'
 
 export interface ServerUseSchema<
   TEndpoint extends Endpoints,
@@ -14,11 +14,11 @@ export interface ServerUseSchema<
 export interface ServerUseSchemaWithWarning {
   endpoint?: string
   /**
-   * @deprecated It's not really deprecated. This deprecated is just a warning to let you know that the schema is not typed.
+   * @deprecated It's not really deprecated. The schema is not typed, maybe you input a wrong endpoint or forget to add it to nuxt config.
    */
   gqfn: LoadGQFn<string>
   /**
-   * @deprecated It's not really deprecated. This deprecated is just a warning to let you know that the schema is not typed.
+   * @deprecated It's not really deprecated. The schema is not typed, maybe you input a wrong endpoint or forget to add it to nuxt config.
    */
   gqp: LoadGQP<string>
   $enum: typeof $enum
@@ -27,7 +27,7 @@ export interface ServerUseSchemaWithWarning {
 export function useGQFnSchema(): ServerUseSchema<string>
 export function useGQFnSchema<T extends ExactEndpoints>(endpoint: T): ServerUseSchema<T>
 /**
- * @deprecated It's not really deprecated. This deprecated is just a warning to let you know that the schema is not typed.
+ * @deprecated It's not really deprecated. The schema is not typed, maybe you input a wrong endpoint or forget to add it to nuxt config.
  */
 export function useGQFnSchema(endpoint: string): ServerUseSchemaWithWarning
 export function useGQFnSchema<T extends Endpoints>(endpoint?: T): ServerUseSchema<T> {
