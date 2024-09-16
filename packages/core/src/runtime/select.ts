@@ -4,7 +4,6 @@ import type { DollarContext, DollarPayload, SelectionDollar } from './dollar'
 import { initSelectionDollar } from './dollar'
 import { parseArgs } from './arg'
 import { parseDirective } from './directive'
-import type { Context } from './context'
 
 export type TypeSelection<Vars extends DollarPayload> = Array<
   | SelectionField
@@ -30,7 +29,6 @@ export function parseTypeSelection<
   Vars extends DollarPayload,
 >(
   selectionSet: TypeSelection<Vars>,
-  ctx: Context,
 ): SelectionSetNode {
   const selects: SelectionObject<Vars> = {}
   selectionSet.forEach((item) => {
@@ -49,7 +47,7 @@ export function parseTypeSelection<
 
   const selections: Array<SelectionNode> = Object
     .entries(selects)
-    .map(([key, select]) => parseSelectionSet(key, select, ctx))
+    .map(([key, select]) => parseSelectionSet(key, select))
 
   // Empty selection set is not allowed
   if (selections.length === 0) {
@@ -77,10 +75,9 @@ export function parseSelectionSet<
 >(
   key: string,
   selection: SelectionSet<Vars>,
-  ctx: Context,
 ): SelectionNode {
   const { args, directives, content } = parseSelectionFunc(selection)
-  const childNode = parseSelectionContext(content, ctx)
+  const childNode = parseSelectionContext(content)
   const argNodes = parseArgs(args)
   const directiveNodes = parseDirective(directives)
 
@@ -161,11 +158,10 @@ export function parseSelectionContext<
   Vars extends DollarPayload,
 >(
   selectionSet: SelectionContext<Vars>,
-  context: Context,
 ): SelectionSetNode | undefined {
   if (selectionSet === true) {
     return undefined
   }
 
-  return parseTypeSelection(selectionSet, context)
+  return parseTypeSelection(selectionSet)
 }
