@@ -1,7 +1,7 @@
-import { Kind, parseConstValue, parseType } from 'graphql'
 import type { VariableDefinitionNode } from 'graphql'
+import { Kind, parseConstValue, parseType } from 'graphql'
 import { parseDirective } from './directive'
-import { type DollarContext, type VariableDollar, initVariableDollar } from './dollar'
+import { type DollarContext, initVariableDollar, type VariableDollar } from './dollar'
 
 const VariableDefineSymbol = Symbol('VariableType')
 

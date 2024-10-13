@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
-import { print } from 'graphql'
+/* eslint-disable antfu/no-top-level-await */
 import { useSchema } from '@gqfn/core'
 import { createClient } from '@teages/oh-my-graphql'
+import { print } from 'graphql'
 
 const endpoint = 'https://graphql.anilist.co'
 const { gqfn, $enum } = useSchema(endpoint)

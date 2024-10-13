@@ -1,11 +1,11 @@
 import type { DocumentNode, IntrospectionQuery } from 'graphql'
-import { GraphQLSchema, buildClientSchema, getIntrospectionQuery, printSchema } from 'graphql'
+import type { ClientConfig, Config, SchemaConfig } from './config'
+import { buildClientSchema, getIntrospectionQuery, GraphQLSchema, printSchema } from 'graphql'
 import { ofetch } from 'ofetch'
 import { murmurHash } from 'ohash'
-import { extname, resolve } from 'pathe'
 
+import { extname, resolve } from 'pathe'
 import { generate } from './codegen'
-import type { ClientConfig, Config, SchemaConfig } from './config'
 import { useLogger } from './logger'
 
 export interface Output {

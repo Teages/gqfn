@@ -1,7 +1,7 @@
 import { command } from '@drizzle-team/brocli'
-import { readPackageJSON, writePackageJSON } from 'pkg-types'
 import fg from 'fast-glob'
 import { resolve } from 'pathe'
+import { readPackageJSON, writePackageJSON } from 'pkg-types'
 import { logger } from './utils'
 
 export const postBump = command({

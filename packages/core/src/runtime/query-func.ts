@@ -1,15 +1,15 @@
 import type { DefinitionNode, DocumentNode } from 'graphql'
-import { Kind, OperationTypeNode } from 'graphql'
-
 import type { EmptyRecord } from '../types/utils/object'
-import { type OperationName, parseOperation } from './operation'
-import { parseTypeSelection } from './select'
+
+import type { DirectivesInputWithDollar } from './directive'
 import type { TypeSelection } from './select'
 import type { PrepareVariables, ProvideVariable } from './variable'
-import { parseVariables } from './variable'
-import type { DirectivesInputWithDollar } from './directive'
+import { Kind, OperationTypeNode } from 'graphql'
 import { parseDirective } from './directive'
 import { initDirectiveDollar } from './dollar'
+import { type OperationName, parseOperation } from './operation'
+import { parseTypeSelection } from './select'
+import { parseVariables } from './variable'
 
 export function gqfn(
   selection: TypeSelection<EmptyRecord>,

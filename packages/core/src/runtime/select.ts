@@ -1,9 +1,9 @@
 import type { ArgumentNode, DirectiveNode, FieldNode, InlineFragmentNode, SelectionNode, SelectionSetNode } from 'graphql'
-import { Kind } from 'graphql'
 import type { DollarContext, DollarPayload, SelectionDollar } from './dollar'
-import { initSelectionDollar } from './dollar'
+import { Kind } from 'graphql'
 import { parseArgs } from './arg'
 import { parseDirective } from './directive'
+import { initSelectionDollar } from './dollar'
 
 export type TypeSelection<Vars extends DollarPayload> = Array<
   | SelectionField

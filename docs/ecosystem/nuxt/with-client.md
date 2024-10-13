@@ -125,8 +125,8 @@ bun install @urql/core
 Then setup your client.
 
 ```ts
-import { Client, cacheExchange, fetchExchange } from '@urql/core'
 import type { OperationContext } from '@urql/core'
+import { cacheExchange, Client, fetchExchange } from '@urql/core'
 
 const endpoint = 'https://your-graphql-endpoint'
 

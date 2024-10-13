@@ -1,6 +1,6 @@
-import { useSchema } from '@gqfn/core'
-import type { DollarEnum, Endpoints, ExactEndpoints, LoadGQFn, LoadGQP } from '../../utils/schema'
 import type { UseGQFnSchema, UseGQFnSchemaWithWarning } from '../../types/composables/schema'
+import type { DollarEnum, Endpoints, ExactEndpoints, LoadGQFn, LoadGQP } from '../../utils/schema'
+import { useSchema } from '@gqfn/core'
 
 export function useGQFnSchema(): UseGQFnSchema<string>
 export function useGQFnSchema<T extends ExactEndpoints>(endpoint: T): UseGQFnSchema<T>

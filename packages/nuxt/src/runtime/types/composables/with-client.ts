@@ -1,10 +1,10 @@
-import type { TypedQueryDocumentNode } from '@gqfn/core/types'
-import type { ComputedRef } from 'vue'
-import type { Endpoints } from '../../utils/schema'
-import type { HandlerOptions, SSEOptions, WSOptions } from '../../utils/client'
-import type { UseGQFnSchema } from './schema'
 import type { AsyncData, AsyncDataOptions, KeysOf, PickFrom } from '#app/composables/asyncData'
 import type { Ref } from '#imports'
+import type { TypedQueryDocumentNode } from '@gqfn/core/types'
+import type { ComputedRef } from 'vue'
+import type { HandlerOptions, SSEOptions, WSOptions } from '../../utils/client'
+import type { Endpoints } from '../../utils/schema'
+import type { UseGQFnSchema } from './schema'
 
 // rename the type
 export type DefaultHandlerOptions = Omit<HandlerOptions, ''>

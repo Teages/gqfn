@@ -1,14 +1,14 @@
 import type { ResultOf, VariablesOf } from '@gqfn/core'
-import { hash } from 'ohash'
-import { type DocumentNode, Kind } from 'graphql'
 import type { ComputedRef } from 'vue'
-import type { Endpoints } from '../../utils/schema'
-import { type HandlerOptions, type SSEOptions, type WSOptions, createHandler, createSubscriptionHandler } from '../../utils/client'
 import type { UseGQFnSchema } from '../../types/composables/schema'
 import type { DefineAsyncQuery, DefineOperation, DefineSubscription, WithGQFnClient, WithGQFnClientOptions } from '../../types/composables/with-client'
-import { useAsyncData } from '#app/composables/asyncData'
+import type { Endpoints } from '../../utils/schema'
 import { useState } from '#app'
+import { useAsyncData } from '#app/composables/asyncData'
 import { type MaybeRefOrGetter, readonly, toValue, watch } from '#imports'
+import { type DocumentNode, Kind } from 'graphql'
+import { hash } from 'ohash'
+import { createHandler, createSubscriptionHandler, type HandlerOptions, type SSEOptions, type WSOptions } from '../../utils/client'
 
 type DefaultSubscriptionHandlerOptions = WSOptions & SSEOptions
 type DefaultHandlerOptions = Omit<HandlerOptions, ''>

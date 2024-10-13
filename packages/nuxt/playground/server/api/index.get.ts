@@ -1,5 +1,5 @@
-import { print } from 'graphql'
 import type { ResultOf } from '#gqfn'
+import { print } from 'graphql'
 
 export default defineLazyEventHandler(() => {
   const endpoint = 'https://graphql-test.teages.xyz/graphql-user'

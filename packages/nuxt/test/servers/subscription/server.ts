@@ -1,9 +1,9 @@
-import { createServer } from 'node:http'
 import type { Socket } from 'node:net'
+import { createServer } from 'node:http'
+import { checkPort, waitForPort } from 'get-port-please'
 import { useServer } from 'graphql-ws/lib/use/ws'
 import { createYoga } from 'graphql-yoga'
 import { WebSocketServer } from 'ws'
-import { checkPort, waitForPort } from 'get-port-please'
 import { schema } from './schema'
 
 const port = 64961

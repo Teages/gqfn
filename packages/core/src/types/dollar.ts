@@ -1,8 +1,8 @@
 import type { Field, TypeObject } from '../schema'
-import type { EmptyRecord, Exact, HiddenSymbol } from './utils/object'
 import type { Argument, ProvideSelectionArgument } from './argument'
 import type { DirectiveInput, IsSkipDirective } from './directive'
 import type { ProvideSelectionFieldContext, ProvideTypeSelection } from './select'
+import type { EmptyRecord, Exact, HiddenSymbol } from './utils/object'
 
 export interface DollarContext<T, WithSkip extends boolean = false> {
   content: T

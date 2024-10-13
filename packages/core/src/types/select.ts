@@ -1,7 +1,7 @@
 import type { Field, ResOf, TypeObject } from '../schema'
-import type { ArrayMayFollowItem, EmptyRecord, RecordAssign } from './utils/object'
 import type { ProvideSelectionArgument } from './argument'
 import type { DollarContext, InlineFragmentDollar, SelectionDollar } from './dollar'
+import type { ArrayMayFollowItem, EmptyRecord, RecordAssign } from './utils/object'
 
 export type ProvideOperationSelection<
   T extends TypeObject<string, any, any> | undefined,

@@ -1,7 +1,7 @@
-import { expect } from 'vitest'
 import type { DocumentNode } from 'graphql'
 import { parse } from 'graphql'
 import { hash, murmurHash } from 'ohash'
+import { expect } from 'vitest'
 
 export function fixture(
   expectedGetter: (gql: typeof gqlFunc) => DocumentNode,

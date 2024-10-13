@@ -1,7 +1,7 @@
-import { Kind } from 'graphql'
 import type { ConstDirectiveNode, DirectiveNode, ValueNode } from 'graphql'
-import { type Argument, parseArgs } from './arg'
 import type { DirectiveDollar, DollarPayload } from './dollar'
+import { Kind } from 'graphql'
+import { type Argument, parseArgs } from './arg'
 
 const directivesSymbol = Symbol('directives')
 const nodeSymbol = Symbol('node')

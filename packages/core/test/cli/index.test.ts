@@ -1,7 +1,7 @@
-import { fileURLToPath } from 'node:url'
 import fs from 'node:fs/promises'
-import { describe, expect, it } from 'vitest'
+import { fileURLToPath } from 'node:url'
 import { resolve } from 'pathe'
+import { describe, expect, it } from 'vitest'
 
 import { type SchemaConfig, sync } from '../../src/cli'
 

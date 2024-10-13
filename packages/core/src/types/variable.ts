@@ -1,7 +1,7 @@
 import type { ArgOf, BaseType, ParseArg, UserSchemaTypes } from '../schema'
+import type { DollarContext, VariableDollar } from './dollar'
 import type { HiddenSymbol, Nullable, RelaxedOptional, Values } from './utils/object'
 import type { Trim } from './utils/string'
-import type { DollarContext, VariableDollar } from './dollar'
 
 export type ProvideVariable<T extends string> =
   Record<string, T | (($: VariableDollar) => DollarContext<T, boolean>)>

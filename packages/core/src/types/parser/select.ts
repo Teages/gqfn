@@ -1,6 +1,6 @@
 import type { EnumType, Field, ScalarType, TypeObject } from '../../schema'
-import type { EmptyRecord, Nullable, Values } from '../utils/object'
 import type { DollarContext } from '../dollar'
+import type { EmptyRecord, Nullable, Values } from '../utils/object'
 
 type ParseSelection<T, SelectionField> =
   SelectionField extends (...args: any) => DollarContext<infer Context, infer WithSkip>
@@ -39,7 +39,7 @@ type ParseTypeSelectionObject<
 > = Extract<keyof SelectionObject, `... on ${string}` | '...'> extends never
   ? ParseSelectionInlineField<T, SelectionObject>
   : ParseSelectionInlineField<T, Omit<SelectionObject, `... on ${string}` | '...'>>
-  & ParseInlineFragment<T, SelectionObject>
+    & ParseInlineFragment<T, SelectionObject>
 
 type ParseSelectionInlineField<
   T extends TypeObject<string, any, any>,

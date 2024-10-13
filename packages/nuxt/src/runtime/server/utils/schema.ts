@@ -1,6 +1,6 @@
 import type { $enum } from '@gqfn/core'
-import { useSchema } from '@gqfn/core'
 import type { DollarEnum, Endpoints, ExactEndpoints, LoadGQFn, LoadGQP } from '../../utils/schema'
+import { useSchema } from '@gqfn/core'
 
 export interface ServerUseSchema<
   TEndpoint extends Endpoints,

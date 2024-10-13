@@ -1,3 +1,3 @@
-export type { Schemas } from '@gqfn/core/schema'
 export type { LoadFromUrl } from '@gqfn/core'
-export type { ResultOf, VariablesOf, TypedQueryDocumentNode, RequireQueryPart } from '@gqfn/core/types'
+export type { Schemas } from '@gqfn/core/schema'
+export type { RequireQueryPart, ResultOf, TypedQueryDocumentNode, VariablesOf } from '@gqfn/core/types'

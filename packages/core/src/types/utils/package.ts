@@ -1,6 +1,6 @@
+import type { GraphQueryFunction, GraphQueryPartial } from '..'
 import type { $enum, gqfn, gqp } from '../../runtime'
 import type { DefineSchema, UserSchemaTypes } from '../../schema'
-import type { GraphQueryFunction, GraphQueryPartial } from '..'
 
 export interface CreateGQFn {
   <Schema extends UserSchemaTypes | undefined = undefined>(): Package<Schema>

@@ -1,7 +1,7 @@
-import { loadConfig as read } from 'c12'
 import type { LoadConfigOptions } from 'c12'
-import { z } from 'zod'
+import { loadConfig as read } from 'c12'
 import { resolve } from 'pathe'
+import { z } from 'zod'
 
 const schemaConfig = z.discriminatedUnion('type', [
   z.object({

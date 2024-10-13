@@ -1,2 +1,2 @@
-export { sync, type Output } from './sync'
-export type { Config, ClientConfig, SchemaConfig } from './config'
+export type { ClientConfig, Config, SchemaConfig } from './config'
+export { type Output, sync } from './sync'

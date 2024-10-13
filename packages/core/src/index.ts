@@ -1,6 +1,6 @@
-import { $enum, gqfn, gqp } from './runtime'
-import type { CreateGQFn, Package } from './types/utils/package'
 import type { DefineSchema, Schemas, UserSchemaTypes } from './schema'
+import type { CreateGQFn, Package } from './types/utils/package'
+import { $enum, gqfn, gqp } from './runtime'
 
 export { $enum } from './runtime'
 export type { RequireQueryPart, ResultOf, VariablesOf } from './types'

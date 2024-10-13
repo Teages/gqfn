@@ -1,5 +1,5 @@
-import { resolve } from 'pathe'
 import type { Config } from './config'
+import { resolve } from 'pathe'
 import { initConfig, loadConfig, updateConfig } from './config'
 import { useLogger } from './logger'
 import { sync } from './sync'
