@@ -46,7 +46,6 @@ After generating the schema types, you can use the `useSchema` to get the typed 
 
 ```ts twoslash
 import { useSchema } from '@gqfn/core'
-import '#schema/10n5kr7'
 // ---cut---
 const { gqfn, gqp, $enum } = useSchema('https://graphql.anilist.co')
 

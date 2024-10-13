@@ -19,9 +19,6 @@ Then, you can import the `gqfn` function from `@gqfn/core` package and use it to
 
 ```ts twoslash
 import { useSchema } from '@gqfn/core'
-// ---cut-start---
-import '#schema/10n5kr7'
-// ---cut-end---
 import { request } from 'graphql-request' // or you favorite GraphQL client
 const endpoint = 'https://graphql.anilist.co'
 const { gqfn, gqp, $enum } = useSchema(endpoint)
@@ -33,7 +30,6 @@ To build a selection on the `Query` type, you can pass the selection as the only
 
 ```ts twoslash
 import { useSchema } from '@gqfn/core'
-import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
 const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
@@ -48,7 +44,6 @@ Pass the arguments as the first argument of the `$`, and the selection as the se
 ```ts twoslash [Query Builder]
 import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
-import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
 const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
@@ -88,7 +83,6 @@ You can get the type hint when writing the query.
 /* eslint-disable */
 import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
-import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
 const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
@@ -114,7 +108,6 @@ The full code is here, you can intuitively see that the writing experience is si
 ```ts twoslash [Query Builder]
 import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
-import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
 const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
@@ -173,7 +166,6 @@ Operation names are useful to make the code less ambiguous. The operation name s
 ```ts twoslash [Query Builder]
 import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
-import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
 const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
@@ -232,7 +224,6 @@ Writing variables is similar to writing a GraphQL query and you can use the `$` 
 ```ts twoslash [Query Builder]
 import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
-import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
 const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---
@@ -287,7 +278,6 @@ Default values can be set as follows:
 ```ts twoslash [Query Builder]
 import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
-import '#schema/10n5kr7'
 const endpoint = 'https://graphql.anilist.co'
 const { gqfn, gqp, $enum } = useSchema(endpoint)
 // ---cut---

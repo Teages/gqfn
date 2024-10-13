@@ -1,4 +1,7 @@
+import fs from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { transformerTwoslash } from '@shikijs/vitepress-twoslash'
+import { dirname, resolve } from 'pathe'
 import ts from 'typescript'
 import { defineConfig } from 'vitepress'
 
@@ -102,12 +105,22 @@ export default defineConfig({
         twoslashOptions: {
           compilerOptions: {
             moduleResolution: ts.ModuleResolutionKind.Bundler,
-            paths: {
-              '#schema/*': ['../packages/core/playground/gqfn/*'],
-            },
           },
+          extraFiles: getSchemaFiles(),
         },
       }),
     ],
   },
 })
+
+// scan files from ~/packages/core/playground/gqfn
+function getSchemaFiles(): Record<string, string> {
+  const schemaDir = resolve(dirname(fileURLToPath(import.meta.url)), '../../packages/core/playground/gqfn')
+  const schemaPaths = fs.readdirSync(schemaDir).map(file => `${schemaDir}/${file}`)
+  return Object.fromEntries(
+    schemaPaths.map((path) => {
+      const content = fs.readFileSync(path, 'utf-8')
+      return [path, content]
+    }),
+  )
+}
