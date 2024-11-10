@@ -4,6 +4,7 @@ import { Kind } from 'graphql'
 import { parseArgs } from './arg'
 import { parseDirective } from './directive'
 import { initSelectionDollar } from './dollar'
+import type { Context } from './context'
 
 export type TypeSelection<Vars extends DollarPayload> = Array<
   | SelectionField
@@ -29,6 +30,7 @@ export function parseTypeSelection<
   Vars extends DollarPayload,
 >(
   selectionSet: TypeSelection<Vars>,
+  ctx: Context,
 ): SelectionSetNode {
   const selects: SelectionObject<Vars> = {}
   selectionSet.forEach((item) => {
@@ -47,7 +49,7 @@ export function parseTypeSelection<
 
   const selections: Array<SelectionNode> = Object
     .entries(selects)
-    .map(([key, select]) => parseSelectionSet(key, select))
+    .map(([key, select]) => parseSelectionSet(key, select, ctx))
 
   // Empty selection set is not allowed
   if (selections.length === 0) {
@@ -75,9 +77,10 @@ export function parseSelectionSet<
 >(
   key: string,
   selection: SelectionSet<Vars>,
+  ctx: Context,
 ): SelectionNode {
   const { args, directives, content } = parseSelectionFunc(selection)
-  const childNode = parseSelectionContext(content)
+  const childNode = parseSelectionContext(content, ctx)
   const argNodes = parseArgs(args)
   const directiveNodes = parseDirective(directives)
 
@@ -158,10 +161,11 @@ export function parseSelectionContext<
   Vars extends DollarPayload,
 >(
   selectionSet: SelectionContext<Vars>,
+  context: Context,
 ): SelectionSetNode | undefined {
   if (selectionSet === true) {
     return undefined
   }
 
-  return parseTypeSelection(selectionSet)
+  return parseTypeSelection(selectionSet, context)
 }

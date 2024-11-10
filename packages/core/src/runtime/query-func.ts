@@ -10,6 +10,7 @@ import { initDirectiveDollar } from './dollar'
 import { type OperationName, parseOperation } from './operation'
 import { parseTypeSelection } from './select'
 import { parseVariables } from './variable'
+import type { Context } from './context'
 
 export function gqfn(
   selection: TypeSelection<EmptyRecord>,
@@ -81,8 +82,11 @@ function graphQueryFunction<
   const directivesNodes = parseDirective(directives(initDirectiveDollar()))
 
   const definitions: DefinitionNode[] = []
+  const ctx: Context = {
+    pushDefinitionNode: node => definitions.push(node),
+  }
 
-  definitions.push({
+  ctx.pushDefinitionNode({
     kind: Kind.OPERATION_DEFINITION,
     directives: directivesNodes,
     operation: {
@@ -97,7 +101,7 @@ function graphQueryFunction<
           value: operationName,
         }
       : undefined,
-    selectionSet: parseTypeSelection(selection),
+    selectionSet: parseTypeSelection(selection, ctx),
   })
 
   return {
