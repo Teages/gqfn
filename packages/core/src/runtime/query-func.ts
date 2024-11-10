@@ -1,6 +1,6 @@
 import type { DefinitionNode, DocumentNode } from 'graphql'
 import type { EmptyRecord } from '../types/utils/object'
-
+import type { Context } from './context'
 import type { DirectivesInputWithDollar } from './directive'
 import type { TypeSelection } from './select'
 import type { PrepareVariables, ProvideVariable } from './variable'
@@ -10,7 +10,6 @@ import { initDirectiveDollar } from './dollar'
 import { type OperationName, parseOperation } from './operation'
 import { parseTypeSelection } from './select'
 import { parseVariables } from './variable'
-import type { Context } from './context'
 
 export function gqfn(
   selection: TypeSelection<EmptyRecord>,

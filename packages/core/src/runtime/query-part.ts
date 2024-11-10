@@ -1,12 +1,26 @@
-import type { SelectionDollar as Dollar } from './dollar'
-import type { SelectionObject, TypeSelection } from './select'
+import type { SelectionDollar as Dollar, DollarPayload } from './dollar'
+import type { SelectionField, SelectionObject } from './select'
 import type { PrepareVariables, ProvideVariable } from './variable'
 
+/**
+ * @deprecated
+ */
+export type LegacyTypeSelection<Vars extends DollarPayload> = Array<
+  | SelectionField
+  | SelectionObject<Vars>
+>
+
+/**
+ * @deprecated
+ */
 export function gqp(
   name: 'fragment' | `fragment ${string}`,
   base: `on ${string}`,
-  selection: TypeSelection<any>,
+  selection: LegacyTypeSelection<any>,
 ): ($: Dollar<any>) => SelectionObject<any>
+/**
+ * @deprecated
+ */
 export function gqp<
   Variables extends ProvideVariable<VariablesInputs>,
   VariablesInputs extends string,
@@ -14,8 +28,11 @@ export function gqp<
   name: 'fragment' | `fragment ${string}`,
   base: `on ${string}`,
   vars: Variables,
-  selection: TypeSelection<PrepareVariables<Variables>>,
+  selection: LegacyTypeSelection<PrepareVariables<Variables>>,
 ): <TVars extends PrepareVariables<Variables>>($: Dollar<TVars>) => SelectionObject<any>
+/**
+ * @deprecated
+ */
 export function gqp(
   ...args: any[]
 ) {
@@ -37,7 +54,7 @@ function graphQueryPartial<
   _name: 'fragment' | `fragment ${string}`,
   _base: `on ${string}`,
   _vars: Variables,
-  selection: TypeSelection<PrepareVariables<Variables>>,
+  selection: LegacyTypeSelection<PrepareVariables<Variables>>,
 ): <TVars extends PrepareVariables<Variables>>($: Dollar<TVars>) => SelectionObject<PrepareVariables<Variables>> {
   const last = selection[selection.length - 1]
   const items = selection.slice(0, selection.length - 1) as Array<string>

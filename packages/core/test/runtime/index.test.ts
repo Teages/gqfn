@@ -1,3 +1,4 @@
+import { parse } from 'graphql'
 import { describe, it } from 'vitest'
 import { $enum, gqfn, gqp } from '../../src/runtime'
 import { fixture } from './utils'
@@ -152,7 +153,7 @@ describe('@gqfn/core/core', () => {
       email: $ => $(true, [['@include', { if: $.withFriendsEmail }]]),
     },
   ])
-  it('fragment / partial', fixture(
+  it('partial', fixture(
     gql => gql(`
       query FetchUser($userId: ID!, $withFriendsEmail: Boolean! = false) {
         user(id: $userId) {
@@ -191,4 +192,42 @@ describe('@gqfn/core/core', () => {
       users: $ => $([userFragment($)]),
     }]),
   ))
+
+  const MediaFields = parse('fragment MediaFields on Media { id title { romaji english native } }', { noLocation: true })
+  it('fragment', fixture(gql => gql(`
+    fragment MediaFields on Media {
+      id
+      title {
+        romaji
+        english
+        native
+      }
+    }
+
+    query FetchAnime($id: Int = 127549) {
+      Media(id: $id, type: ANIME) {
+        id
+        title {
+          romaji
+          english
+          native
+        }
+        ...MediaFields
+      }
+    }
+  `), gqfn('query FetchAnime', {
+    id: 'Int = 127549',
+  }, [{
+    Media: $ => $({ id: $.id, type: $enum('ANIME') }, [
+      'id',
+      MediaFields,
+      {
+        title: $ => $([
+          'romaji',
+          'english',
+          'native',
+        ]),
+      },
+    ]),
+  }])))
 })
