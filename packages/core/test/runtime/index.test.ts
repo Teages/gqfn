@@ -3,7 +3,7 @@ import { describe, it } from 'vitest'
 import { $enum, gqfn, gqp } from '../../src/runtime'
 import { fixture } from './utils'
 
-describe('@gqfn/core/core', () => {
+describe('@gqfn/core/runtime', () => {
   it('works', fixture(
     gql => gql(`
       query FetchHelloWorld ($userId: ID!, $category: CategoryEnum! = Blog) {
@@ -194,40 +194,43 @@ describe('@gqfn/core/core', () => {
   ))
 
   const MediaFields = parse('fragment MediaFields on Media { id title { romaji english native } }', { noLocation: true })
-  it('fragment', fixture(gql => gql(`
-    fragment MediaFields on Media {
-      id
-      title {
-        romaji
-        english
-        native
+  it('fragment', fixture(
+    gql => gql(`
+      query FetchAnime($id: Int = 127549) {
+        Media(id: $id, type: ANIME) {
+          id
+          title {
+            romaji
+            english
+            native
+          }
+          ...MediaFields
+        }
       }
-    }
 
-    query FetchAnime($id: Int = 127549) {
-      Media(id: $id, type: ANIME) {
+      fragment MediaFields on Media {
         id
         title {
           romaji
           english
           native
         }
-        ...MediaFields
       }
-    }
-  `), gqfn('query FetchAnime', {
-    id: 'Int = 127549',
-  }, [{
-    Media: $ => $({ id: $.id, type: $enum('ANIME') }, [
-      'id',
-      MediaFields,
-      {
-        title: $ => $([
-          'romaji',
-          'english',
-          'native',
-        ]),
-      },
-    ]),
-  }])))
+    `),
+    gqfn('query FetchAnime', {
+      id: 'Int = 127549',
+    }, [{
+      Media: $ => $({ id: $.id, type: $enum('ANIME') }, [
+        'id',
+        {
+          title: $ => $([
+            'romaji',
+            'english',
+            'native',
+          ]),
+        },
+        MediaFields,
+      ]),
+    }]),
+  ))
 })

@@ -1,4 +1,4 @@
-import type { ArgumentNode, DirectiveNode, DocumentNode, FieldNode, FragmentSpreadNode, InlineFragmentNode, SelectionNode, SelectionSetNode } from 'graphql'
+import type { ArgumentNode, DirectiveNode, DocumentNode, FieldNode, FragmentDefinitionNode, FragmentSpreadNode, InlineFragmentNode, SelectionNode, SelectionSetNode } from 'graphql'
 import type { Context } from './context'
 import type { DollarContext, DollarPayload, SelectionDollar } from './dollar'
 import { Kind } from 'graphql'
@@ -33,52 +33,41 @@ export function parseTypeSelection<
   selectionSet: TypeSelection<Vars>,
   ctx: Context,
 ): SelectionSetNode {
-  const selects: SelectionObject<Vars> = {}
-  const externalFragments: string[] = []
+  const selections: Array<SelectionNode> = []
 
   selectionSet.forEach((item) => {
     switch (true) {
       case typeof item === 'string': {
-        selects[item] = true
+        selections.push(parseSelectionSet(item, true, ctx))
         break
       }
-      /**
-       * DocumentNode with a single FragmentDefinition
-       */
+
+      // DocumentNode with one or more FragmentDefinition
       case typeof item === 'object' && item.kind === Kind.DOCUMENT: {
         const node = item as DocumentNode
-        if (node.definitions.length !== 1 || node.definitions[0].kind !== Kind.FRAGMENT_DEFINITION) {
-          throw new Error('Unexpected definitions, expected single fragment definition')
+        if (node.definitions.some(d => d.kind !== Kind.FRAGMENT_DEFINITION)) {
+          throw new Error('Unexpected definitions, expected a DocumentNode with one or more fragment definition')
         }
 
-        const name = node.definitions[0].name.value
-        externalFragments.push(name)
+        // select the first fragment
+        const name = (node.definitions as FragmentDefinitionNode[])[0].name.value
+
+        selections.push({
+          kind: Kind.FRAGMENT_SPREAD,
+          name: { kind: Kind.NAME, value: name },
+        } satisfies FragmentSpreadNode)
         ctx.pushDefinitionNode(node.definitions[0])
         break
       }
-      /**
-       * SelectionObject<Vars>
-       */
+
+      // SelectionObject<Vars>
       default: {
-        Object.assign(selects, item)
+        Object.entries(item).forEach(([key, select]) =>
+          selections.push(parseSelectionSet(key, select, ctx)),
+        )
         break
       }
     }
-  })
-
-  const selections: Array<SelectionNode> = Object
-    .entries(selects)
-    .map(([key, select]) => parseSelectionSet(key, select, ctx))
-
-  // push external fragments
-  externalFragments.forEach((name) => {
-    selections.push({
-      kind: Kind.FRAGMENT_SPREAD,
-      name: {
-        kind: Kind.NAME,
-        value: name,
-      },
-    } satisfies FragmentSpreadNode)
   })
 
   // Empty selection set is not allowed
