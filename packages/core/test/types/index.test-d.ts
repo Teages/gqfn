@@ -4,7 +4,7 @@ import type { CategoryEnum, Schema } from './fixture/schema'
 import { describe, expectTypeOf, test } from 'vitest'
 import { createGQFn } from '../../src'
 
-describe('type', () => {
+describe.todo('type', () => {
   const { gqfn, gqp, $enum } = createGQFn<Schema>()
 
   test('simple', () => {

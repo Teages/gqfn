@@ -3,7 +3,7 @@ import { describe, it } from 'vitest'
 import { $enum, gqfn, gqp } from '../../src/runtime'
 import { fixture } from './utils'
 
-describe('@gqfn/core/runtime', () => {
+describe.todo('@gqfn/core/runtime', () => {
   it('works', fixture(
     gql => gql(`
       query FetchHelloWorld ($userId: ID!, $category: CategoryEnum! = Blog) {

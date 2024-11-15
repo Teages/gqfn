@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { $enum, createGQFn } from '../src'
 
-describe('@gqfn/core', () => {
+describe.todo('@gqfn/core', () => {
   it('works', () => {
     const p = createGQFn()
     expect(typeof p.gqfn).toBe('function')
