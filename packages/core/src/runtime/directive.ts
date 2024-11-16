@@ -1,69 +1,63 @@
-import type { ConstDirectiveNode, DirectiveNode, ValueNode } from 'graphql'
-import type { DirectiveDollar, DollarPayload } from './dollar'
+import type { ConstDirectiveNode, DirectiveNode, DocumentNode, ValueNode } from 'graphql'
 import { Kind } from 'graphql'
-import { type Argument, parseArgs } from './arg'
+import { type Argument, parseArgument } from './argument'
+import { type DirectiveDollar, type DollarPackage, type DollarPayload, initDirectiveDollar } from './dollar'
+import { Variable } from './variable'
 
-const directivesSymbol = Symbol('directives')
-const nodeSymbol = Symbol('node')
-
-export class DirectivePackage<T> {
-  [directivesSymbol]: Array<Directive>
-  [nodeSymbol]: T
-  constructor(directives: Array<Directive>, node: T) {
-    this[directivesSymbol] = directives
-    this[nodeSymbol] = node
-  }
-
-  get value(): T {
-    return this[nodeSymbol]
-  }
-
-  get directives(): ReadonlyArray<DirectiveNode> {
-    return this[directivesSymbol].map(directive => ({
-      kind: Kind.DIRECTIVE,
-      name: {
-        kind: Kind.NAME,
-        value: directive.name.split('@')[1],
-      },
-      arguments: parseArgs(directive.args ?? {}),
-    }))
-  }
-
-  get rawDirectives(): Array<Directive> {
-    return this[directivesSymbol]
-  }
-}
+export const DirectivesSymbol = Symbol('@gqfn/core:Directives')
 
 export type DirectiveInput = [
-  `@${string}`,
-  Argument,
+  def: `@${string}`,
+  argument: Argument,
 ]
-export type DirectivesInputWithDollar<Var extends DollarPayload> =
-  ($: DirectiveDollar<Var>) => Array<DirectiveInput>
 
-export interface Directive {
-  name: `@${string}`
-  args: Argument
+export type WithDirective<T extends DollarPackage<any> | DocumentNode> = T & {
+  [DirectivesSymbol]: DirectiveInput[]
+}
+export type MaybeWithDirective<T extends DollarPackage<any> | DocumentNode> = T | WithDirective<T>
+
+export type DirectivesInputWithDollar<Variables extends DollarPayload> =
+  ($: DirectiveDollar<Variables>) => Array<DirectiveInput>
+
+export interface WithDirectivesFunction<Variables extends DollarPayload> {
+  <T extends DollarPackage<any> | DocumentNode>(
+    target: T,
+    directives: DirectiveInput[] | DirectivesInputWithDollar<Variables>,
+  ): WithDirective<T>
+}
+export function createWithDirectives<Variables extends DollarPayload>(): WithDirectivesFunction<Variables> {
+  return (target, directives) => Object.assign({ ...target }, {
+    [DirectivesSymbol]: typeof directives === 'function'
+      ? directives(initDirectiveDollar())
+      : directives,
+  })
 }
 
 export function parseDirective(
-  directivesInput: Array<DirectiveInput>,
+  directivesInput: Array<DirectiveInput> | undefined,
   constOnly?: false,
 ): ReadonlyArray<DirectiveNode>
 export function parseDirective(
-  directivesInput: Array<DirectiveInput>,
+  directivesInput: Array<DirectiveInput> | undefined,
   constOnly: true,
 ): ReadonlyArray<ConstDirectiveNode>
 export function parseDirective(
-  directivesInput: Array<DirectiveInput>,
+  directivesInput: Array<DirectiveInput> | undefined,
   constOnly: boolean = false,
 ): ReadonlyArray<DirectiveNode> | ReadonlyArray<ConstDirectiveNode> {
-  const directivePackage = new DirectivePackage(directivesInput.map((item) => {
-    const [name, args] = item
-    return { name, args }
-  }), {})
+  if (!directivesInput) {
+    return []
+  }
 
-  const directives = directivePackage.directives
+  const directives = directivesInput.map(([def, argument]) => ({
+    kind: Kind.DIRECTIVE,
+    name: {
+      kind: Kind.NAME,
+      value: def.split('@')[1],
+    },
+    arguments: parseArgument(argument),
+  })) satisfies ReadonlyArray<DirectiveNode>
+
   if (constOnly) {
     // check if all directives are const node
     if (
@@ -73,7 +67,7 @@ export function parseDirective(
         ),
       )
     ) {
-      throw new Error('Not all directives are const node')
+      throw new Error('Expected all directives to be const node')
     }
   }
 
@@ -91,4 +85,113 @@ function isConstNode(node: ValueNode): boolean {
     return node.fields.every(field => isConstNode(field.value))
   }
   return true
+}
+
+if (import.meta.vitest) {
+  const { it, expect } = import.meta.vitest
+
+  it('parseDirective', () => {
+    expect(parseDirective([
+      ['@foo', { a: 1, b: 2.3 }],
+      ['@auth', { quux: new Variable('username') }],
+    ])).toMatchObject([
+      {
+        kind: Kind.DIRECTIVE,
+        name: { kind: Kind.NAME, value: 'foo' },
+        arguments: [
+          {
+            kind: Kind.ARGUMENT,
+            value: { kind: Kind.INT, value: '1' },
+          },
+          {
+            kind: Kind.ARGUMENT,
+            value: { kind: Kind.FLOAT, value: '2.3' },
+          },
+        ],
+      },
+      {
+        kind: Kind.DIRECTIVE,
+        name: {
+          kind: Kind.NAME,
+          value: 'auth',
+        },
+        arguments: [
+          {
+            kind: Kind.ARGUMENT,
+            value: {
+              kind: Kind.VARIABLE,
+              name: { kind: Kind.NAME, value: 'username' },
+            },
+          },
+        ],
+      },
+    ])
+
+    expect(parseDirective([
+      ['@foo', { a: '1' }],
+    ], true)).toMatchObject([
+      {
+        kind: Kind.DIRECTIVE,
+        name: { kind: Kind.NAME, value: 'foo' },
+        arguments: [{
+          kind: Kind.ARGUMENT,
+          value: { kind: Kind.STRING, value: '1' },
+        }],
+      },
+    ])
+
+    expect(() => parseDirective([
+      ['@foo', { bar: 123 }],
+      ['@auth', { user: new Variable('username') }],
+    ], true)).toThrow('Expected all directives to be const node')
+
+    expect(() => parseDirective([
+      ['@foo', { bar: 123 }],
+      ['@auth', { user: { username: new Variable('username') } }],
+    ], true)).toThrow('Expected all directives to be const node')
+
+    expect(() => parseDirective([
+      ['@foo', { bar: 123 }],
+      ['@auth', { users: [new Variable('username')] }],
+    ], true)).toThrow('Expected all directives to be const node')
+  })
+
+  it('withDirectives', () => {
+    const fragment = {
+      kind: Kind.DOCUMENT,
+      definitions: [{
+        kind: Kind.FRAGMENT_DEFINITION,
+        name: { kind: Kind.NAME, value: 'fragment' },
+        typeCondition: {
+          kind: Kind.NAMED_TYPE,
+          name: { kind: Kind.NAME, value: 'Type' },
+        },
+        selectionSet: {
+          kind: Kind.SELECTION_SET,
+          selections: [
+            {
+              kind: Kind.FIELD,
+              name: { kind: Kind.NAME, value: 'a' },
+              selectionSet: undefined,
+              arguments: [],
+              directives: [],
+            },
+          ],
+        },
+      }],
+    } satisfies DocumentNode
+
+    const withDirectives = createWithDirectives<{ username: Variable<'String!'> }>()
+    expect(withDirectives(fragment, [
+      ['@foo', { a: 1, b: 2.3 }],
+    ])[DirectivesSymbol]).toMatchObject([
+      ['@foo', { a: 1, b: 2.3 }],
+    ])
+
+    expect(withDirectives(fragment, $ => [
+      ['@foo', { a: $.username }],
+    ])[DirectivesSymbol]).toMatchObject([
+      ['@foo', { a: new Variable('username') }],
+    ])
+  })
 }

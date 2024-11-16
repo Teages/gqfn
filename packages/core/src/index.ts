@@ -1,16 +1,15 @@
 import type { DefineSchema, Schemas, UserSchemaTypes } from './schema'
 import type { CreateGQFn, Package } from './types/utils/package'
-import { $enum, gqfn, gqp } from './runtime'
+import { gqfn } from './runtime'
 
-export { $enum } from './runtime'
 export type { RequireQueryPart, ResultOf, VariablesOf } from './types'
 
-export const createGQFn: CreateGQFn = () => ({ gqfn, gqp, $enum }) as any
+export const createGQFn: CreateGQFn = () => ({ gqfn }) as any
 
 export function useSchema<T extends string>(
   _url?: T,
 ): Package<LoadFromUrl<T>> {
-  return { gqfn, gqp, $enum } as any
+  return { gqfn } as any
 }
 
 export type LoadFromUrl<T extends string> =

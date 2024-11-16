@@ -1,6 +1,6 @@
 import { parse } from 'graphql'
 import { describe, it } from 'vitest'
-import { $enum, gqfn, gqp } from '../../src/runtime'
+import { gqfn } from '../../src/runtime'
 import { fixture } from './utils'
 
 describe.todo('@gqfn/core/runtime', () => {
@@ -53,7 +53,7 @@ describe.todo('@gqfn/core/runtime', () => {
             friends: $ => $(['id']),
           },
         ]),
-        'posts': $ => $({ category: $enum('Announcement') }, [
+        'posts': $ => $({ category: gqfn.enum('Announcement') }, [
           'id',
           'title',
           'content',
@@ -89,9 +89,8 @@ describe.todo('@gqfn/core/runtime', () => {
     `),
     gqfn('mutation Login', {
       username: 'String!',
-      password: $ => $('String!', [
-        ['@check', { rule: $enum('password') }],
-      ]),
+      password: $ => $('String!')
+        .withDirective(['@check', { rule: gqfn.enum('password') }]),
       withUserData: 'Boolean! = true',
       skipToken: 'Boolean! = false',
       captchaType: 'CaptchaEnum! = google',
@@ -100,12 +99,12 @@ describe.todo('@gqfn/core/runtime', () => {
         username: $.username,
         password: $.password,
       }, [{
-        'token': $ => $(true, [['@skip', { if: $.skipToken }]]),
+        'token': $ => $(true).withDirective(['@skip', { if: $.skipToken }]),
         '...': $ => $([
           'id',
           'name',
           'email',
-        ], [['@include', { if: $.withUserData }]]),
+        ]).withDirective(['@include', { if: $.withUserData }]),
       }]),
     }], $ => [
       ['@captcha', { provider: $.captchaType }],
@@ -144,55 +143,6 @@ describe.todo('@gqfn/core/runtime', () => {
     }]),
   ))
 
-  const userFragment = gqp('fragment UserFields', 'on User', {
-    withFriendsEmail: 'Boolean! = false',
-  }, [
-    'id',
-    'name',
-    {
-      email: $ => $(true, [['@include', { if: $.withFriendsEmail }]]),
-    },
-  ])
-  it('partial', fixture(
-    gql => gql(`
-      query FetchUser($userId: ID!, $withFriendsEmail: Boolean! = false) {
-        user(id: $userId) {
-          id
-          name
-          email
-          friends {
-            id
-            name
-            email @include(if: $withFriendsEmail)
-          }
-        }
-        users {
-          id
-          name
-          email @include(if: $withFriendsEmail)
-        }
-      }
-    `),
-    gqfn('query FetchUser', {
-      userId: 'ID!',
-      withFriendsEmail: 'Boolean! = false',
-    }, [{
-      user: $ => $({
-        id: $.userId,
-      }, [
-        'id',
-        'name',
-        'email',
-        {
-          friends: $ => $([{
-            ...userFragment($),
-          }]),
-        },
-      ]),
-      users: $ => $([userFragment($)]),
-    }]),
-  ))
-
   const MediaFields = parse('fragment MediaFields on Media { id title { romaji english native } }', { noLocation: true })
   it('fragment', fixture(
     gql => gql(`
@@ -220,7 +170,7 @@ describe.todo('@gqfn/core/runtime', () => {
     gqfn('query FetchAnime', {
       id: 'Int = 127549',
     }, [{
-      Media: $ => $({ id: $.id, type: $enum('ANIME') }, [
+      Media: $ => $({ id: $.id, type: gqfn.enum('ANIME') }, [
         'id',
         {
           title: $ => $([
