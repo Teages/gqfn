@@ -1,9 +1,8 @@
-import { parse } from 'graphql'
 import { describe, it } from 'vitest'
 import { gqfn } from '../../src/runtime'
 import { fixture } from './utils'
 
-describe.todo('@gqfn/core/runtime', () => {
+describe('@gqfn/core/runtime', () => {
   it('works', fixture(
     gql => gql(`
       query FetchHelloWorld ($userId: ID!, $category: CategoryEnum! = Blog) {
@@ -143,17 +142,13 @@ describe.todo('@gqfn/core/runtime', () => {
     }]),
   ))
 
-  const MediaFields = parse('fragment MediaFields on Media { id title { romaji english native } }', { noLocation: true })
-  it('fragment', fixture(
+  // fragment MediaFields on Media { id title { romaji english native } }
+  const MediaFields = gqfn.partial('fragment MediaFields', 'on Media', ['id', { title: $ => $(['romaji', 'english', 'native']) }])
+  it('partial', fixture(
     gql => gql(`
       query FetchAnime($id: Int = 127549) {
         Media(id: $id, type: ANIME) {
           id
-          title {
-            romaji
-            english
-            native
-          }
           ...MediaFields
         }
       }
@@ -173,13 +168,8 @@ describe.todo('@gqfn/core/runtime', () => {
       Media: $ => $({ id: $.id, type: gqfn.enum('ANIME') }, [
         'id',
         {
-          title: $ => $([
-            'romaji',
-            'english',
-            'native',
-          ]),
+          ...MediaFields($),
         },
-        MediaFields,
       ]),
     }]),
   ))

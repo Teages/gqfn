@@ -4,7 +4,7 @@ import { type Argument, parseArgument } from './argument'
 import { type DirectiveDollar, type DollarPackage, type DollarPayload, initDirectiveDollar } from './dollar'
 import { Variable } from './variable'
 
-export const DirectivesSymbol = Symbol('@gqfn/core:Directives')
+export const DirectivesSymbol = Symbol.for('@gqfn/core:Directives')
 
 export type DirectiveInput = [
   def: `@${string}`,

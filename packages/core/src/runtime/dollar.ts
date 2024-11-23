@@ -1,5 +1,5 @@
 import type { Argument } from './argument'
-import type { DirectiveInput, WithDirective } from './directive'
+import type { DirectiveInput } from './directive'
 import type { SelectionSetDollarPackage, SelectionSetDollarPackageInput } from './selection'
 import { DirectivesSymbol } from './directive'
 import { Variable } from './variable'
@@ -7,7 +7,7 @@ import { Variable } from './variable'
 export type DollarPayload = Record<string, Variable<string>>
 
 export type SelectionSetDollar<Variables extends DollarPayload> = SelectionSetDollarFunction<Variables> & Variables
-export interface SelectionSetDollarFunction<Variables extends DollarPayload> {
+interface SelectionSetDollarFunction<Variables extends DollarPayload> {
   (
     selection: SelectionSetDollarPackageInput<Variables>
   ): SelectionSetDollarPackage<Variables>
@@ -19,12 +19,12 @@ export interface SelectionSetDollarFunction<Variables extends DollarPayload> {
 }
 
 export type DirectiveDollar<Variables extends DollarPayload> = DirectiveDollarFunction & Variables
-export interface DirectiveDollarFunction {
+interface DirectiveDollarFunction {
   (): void
 }
 
 export type VariableDefinitionDollar = VariableDefinitionDollarFunction
-export interface VariableDefinitionDollarFunction {
+interface VariableDefinitionDollarFunction {
   (
     def: string
   ): DollarPackage<string>
@@ -39,10 +39,10 @@ export class DollarPackage<T> {
     this.args = args
   }
 
-  withDirective(...directives: DirectiveInput[]): WithDirective<DollarPackage<T>> {
+  withDirective(...directives: DirectiveInput[]): DollarPackage<T> {
     this[DirectivesSymbol] = this[DirectivesSymbol] || []
     this[DirectivesSymbol].push(...directives)
-    return this as WithDirective<DollarPackage<T>>
+    return this
   }
 }
 

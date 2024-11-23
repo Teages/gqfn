@@ -1,8 +1,8 @@
 import { Kind, parseConstValue, parseType, type VariableDefinitionNode } from 'graphql'
 import { DirectivesSymbol, parseDirective } from './directive'
-import { type DollarPackage, initVariableDefinitionDollar, type VariableDefinitionDollarFunction } from './dollar'
+import { type DollarPackage, initVariableDefinitionDollar, type VariableDefinitionDollar } from './dollar'
 
-export type VariableDefinitionDollarPackage<T extends string> = ($: VariableDefinitionDollarFunction) => DollarPackage<T>
+export type VariableDefinitionDollarPackage<T extends string> = ($: VariableDefinitionDollar) => DollarPackage<T>
 export type VariableDefinition<T extends string> = Record<string, T | VariableDefinitionDollarPackage<T>>
 
 const VariableTypeSymbol = Symbol.for('@gqfn/core:VariableType')

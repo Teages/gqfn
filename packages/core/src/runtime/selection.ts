@@ -1,23 +1,25 @@
-import type { ArgumentNode, DirectiveNode, DocumentNode, FieldNode, FragmentDefinitionNode, FragmentSpreadNode, InlineFragmentNode, SelectionNode, SelectionSetNode } from 'graphql'
+import type { ArgumentNode, DirectiveNode, FieldNode, FragmentDefinitionNode, FragmentSpreadNode, InlineFragmentNode, SelectionNode, SelectionSetNode } from 'graphql'
 import type { Argument } from './argument'
-import type { DirectiveInput, MaybeWithDirective, WithDirectivesFunction } from './directive'
+import type { DirectiveInput } from './directive'
 import type { DollarPackage, DollarPayload, SelectionSetDollar } from './dollar'
-import { Kind, OperationTypeNode } from 'graphql'
+import type { PartialResult } from './partial'
+import { Kind } from 'graphql'
 import { parseArgument } from './argument'
 import { createDocumentNodeContext, type DocumentNodeContext } from './context'
-import { createWithDirectives, DirectivesSymbol, parseDirective } from './directive'
+import { DirectivesSymbol, parseDirective } from './directive'
 import { initSelectionDollar } from './dollar'
+import { parsePartialResult } from './partial'
 
 export type SelectionField = string
 export type SelectionObject<Variables extends DollarPayload> =
   Record<string, SelectionSet<Variables>>
+  & Record<symbol, PartialResult>
 
 export type SelectionSetSimple = true
 export type SelectionSetComplex<Variables extends DollarPayload> =
   Array<
     | SelectionField
     | SelectionObject<Variables>
-    | MaybeWithDirective<DocumentNode> // Fragment
   >
 
 export type SelectionSetDollarPackageInput<Variables extends DollarPayload> =
@@ -28,7 +30,7 @@ export type SelectionSetDollarPackage<Variables extends DollarPayload> =
 
 export type SelectionSet<Variables extends DollarPayload> =
   | SelectionSetSimple
-  | (($: SelectionSetDollar<Variables>, withDirectives: WithDirectivesFunction<Variables>) => SelectionSetDollarPackage<Variables>)
+  | (($: SelectionSetDollar<Variables>) => SelectionSetDollarPackage<Variables>)
 
 export function parseSelectionSet<Variables extends DollarPayload>(
   key: string,
@@ -40,16 +42,15 @@ export function parseSelectionSet<Variables extends DollarPayload>(
   const argNodes = parseArgument(args)
   const directiveNodes = parseDirective(directives)
 
-  return key.startsWith('...')
-    // Inline fragment
-    ? buildInlineFragment(key, childNodes, argNodes, directiveNodes)
-    // Field
-    : buildField(key, childNodes, argNodes, directiveNodes)
+  if (key.startsWith('...')) {
+    return buildInlineFragment(key, childNodes, argNodes, directiveNodes)
+  }
+  return buildField(key, childNodes, argNodes, directiveNodes)
 
   function unpack(selection: SelectionSet<Variables>) {
     const parsed = selection === true
       ? { content: true as const, args: {}, [DirectivesSymbol]: undefined }
-      : selection(initSelectionDollar(), createWithDirectives())
+      : selection(initSelectionDollar())
 
     return {
       content: parsed.content as SelectionSetDollarPackageInput<Variables>,
@@ -140,42 +141,23 @@ export function parseSelectionSetComplex<Variables extends DollarPayload>(
   const selectionNodes: Array<SelectionNode> = []
 
   selectionSet.forEach((item) => {
-    switch (true) {
-      case typeof item === 'string': {
-        selectionNodes.push(parseSelectionSet(item, true, ctx))
-        break
-      }
-
-      // DocumentNode with one or more FragmentDefinition
-      case typeof item === 'object' && item.kind === Kind.DOCUMENT: {
-        const node = item as MaybeWithDirective<DocumentNode>
-
-        // select the first fragment
-        if (node.definitions.some(d => d.kind !== Kind.FRAGMENT_DEFINITION)) {
-          throw new Error('Unexpected definitions, expected a DocumentNode with one or more fragment definition')
-        }
-        const fragmentDefinitionNodes = node.definitions as FragmentDefinitionNode[]
-        const name = fragmentDefinitionNodes[0].name.value
-
-        selectionNodes.push({
-          kind: Kind.FRAGMENT_SPREAD,
-          name: { kind: Kind.NAME, value: name },
-          directives: DirectivesSymbol in node
-            ? parseDirective(node[DirectivesSymbol])
-            : [],
-        } satisfies FragmentSpreadNode)
-        ctx.pushDefinitionNode(...fragmentDefinitionNodes)
-        break
-      }
-
-      // SelectionObject<Variables>
-      default: {
-        Object.entries(item as SelectionObject<Variables>).forEach(([key, select]) =>
-          selectionNodes.push(parseSelectionSet(key, select, ctx)),
-        )
-        break
-      }
+    if (typeof item === 'string') {
+      selectionNodes.push(parseSelectionSet(item, true, ctx))
+      return
     }
+
+    // non-symbol key is field name
+    Object.entries(item as SelectionObject<Variables>).forEach(([key, select]) =>
+      selectionNodes.push(parseSelectionSet(key, select, ctx)),
+    )
+
+    // symbol key is partial result
+    Reflect.ownKeys(item as SelectionObject<Variables>)
+      .filter(key => typeof key === 'symbol')
+      .forEach((key) => {
+        const partial = item[key] as PartialResult
+        selectionNodes.push(parsePartial(partial, ctx))
+      })
   })
 
   // Empty selection set is not allowed
@@ -185,6 +167,21 @@ export function parseSelectionSetComplex<Variables extends DollarPayload>(
   return {
     kind: Kind.SELECTION_SET,
     selections: selectionNodes,
+  }
+}
+function parsePartial(
+  partial: PartialResult,
+  ctx: DocumentNodeContext,
+): FragmentSpreadNode {
+  const { name, document, directives } = parsePartialResult(partial)
+
+  const fragmentDefinitionNodes = document.definitions as FragmentDefinitionNode[]
+
+  ctx.pushDefinitionNode(...fragmentDefinitionNodes)
+  return {
+    kind: Kind.FRAGMENT_SPREAD,
+    name: { kind: Kind.NAME, value: name },
+    directives: parseDirective(directives),
   }
 }
 
@@ -388,159 +385,9 @@ if (import.meta.vitest) {
       ],
     })
 
-    withContext((ctx) => {
-      const fragment = {
-        kind: Kind.DOCUMENT,
-        definitions: [{
-          kind: Kind.FRAGMENT_DEFINITION,
-          name: { kind: Kind.NAME, value: 'fragment' },
-          typeCondition: {
-            kind: Kind.NAMED_TYPE,
-            name: { kind: Kind.NAME, value: 'Type' },
-          },
-          selectionSet: {
-            kind: Kind.SELECTION_SET,
-            selections: [
-              {
-                kind: Kind.FIELD,
-                name: { kind: Kind.NAME, value: 'a' },
-                selectionSet: undefined,
-                arguments: [],
-                directives: [],
-              },
-            ],
-          },
-        }],
-      } satisfies DocumentNode
-      expect(parseSelectionSetComplex([fragment], ctx())).toMatchObject({
-        kind: Kind.SELECTION_SET,
-        selections: [
-          {
-            kind: Kind.FRAGMENT_SPREAD,
-            name: { kind: Kind.NAME, value: 'fragment' },
-            directives: [],
-          },
-        ],
-      })
-
-      expect(ctx().definitions).toMatchObject([{
-        kind: Kind.FRAGMENT_DEFINITION,
-        name: { kind: Kind.NAME, value: 'fragment' },
-        typeCondition: {
-          kind: Kind.NAMED_TYPE,
-          name: { kind: Kind.NAME, value: 'Type' },
-        },
-        selectionSet: {
-          kind: Kind.SELECTION_SET,
-          selections: [
-            {
-              kind: Kind.FIELD,
-              name: { kind: Kind.NAME, value: 'a' },
-              selectionSet: undefined,
-              arguments: [],
-              directives: [],
-            },
-          ],
-        },
-      }])
-    })
-
-    withContext((ctx) => {
-      const fragment = {
-        kind: Kind.DOCUMENT,
-        definitions: [{
-          kind: Kind.FRAGMENT_DEFINITION,
-          name: { kind: Kind.NAME, value: 'fragment' },
-          typeCondition: {
-            kind: Kind.NAMED_TYPE,
-            name: { kind: Kind.NAME, value: 'Type' },
-          },
-          selectionSet: {
-            kind: Kind.SELECTION_SET,
-            selections: [
-              {
-                kind: Kind.FIELD,
-                name: { kind: Kind.NAME, value: 'a' },
-                selectionSet: undefined,
-                arguments: [],
-                directives: [],
-              },
-            ],
-          },
-        }],
-      } satisfies DocumentNode
-      const withDirectives = createWithDirectives()
-      expect(parseSelectionSetComplex([withDirectives(fragment, [
-        ['@foo', { a: '1' }],
-      ])], ctx())).toMatchObject({
-        kind: Kind.SELECTION_SET,
-        selections: [
-          {
-            kind: Kind.FRAGMENT_SPREAD,
-            name: { kind: Kind.NAME, value: 'fragment' },
-            directives: [{
-              kind: Kind.DIRECTIVE,
-              name: { kind: Kind.NAME, value: 'foo' },
-              arguments: [{
-                kind: Kind.ARGUMENT,
-                value: { kind: Kind.STRING, value: '1' },
-              }],
-            }],
-          },
-        ],
-      })
-
-      expect(ctx().definitions).toMatchObject([{
-        kind: Kind.FRAGMENT_DEFINITION,
-        name: { kind: Kind.NAME, value: 'fragment' },
-        typeCondition: {
-          kind: Kind.NAMED_TYPE,
-          name: { kind: Kind.NAME, value: 'Type' },
-        },
-        selectionSet: {
-          kind: Kind.SELECTION_SET,
-          selections: [
-            {
-              kind: Kind.FIELD,
-              name: { kind: Kind.NAME, value: 'a' },
-              selectionSet: undefined,
-              arguments: [],
-              directives: [],
-            },
-          ],
-        },
-      }])
-    })
-
-    expect(() => parseSelectionSetComplex([], ctx())).toThrow('Empty selection set')
-
-    const query = {
-      kind: Kind.DOCUMENT,
-      definitions: [{
-        kind: Kind.OPERATION_DEFINITION,
-        operation: OperationTypeNode.QUERY,
-        selectionSet: {
-          kind: Kind.SELECTION_SET,
-          selections: [
-            {
-              kind: Kind.FIELD,
-              name: { kind: Kind.NAME, value: 'a' },
-              selectionSet: undefined,
-              arguments: [],
-              directives: [],
-            },
-          ],
-        },
-      }],
-    } satisfies DocumentNode
-    expect(() => parseSelectionSetComplex([query], ctx()))
-      .toThrow('Unexpected definitions, expected a DocumentNode with one or more fragment definition')
+    expect(() => parseSelectionSetComplex([], ctx()))
+      .toThrow('Empty selection set')
   })
-
-  function withContext(fn: (ctx: () => DocumentNodeContext) => void) {
-    const context = ctx()
-    fn(() => context)
-  }
 
   function ctx(): DocumentNodeContext {
     return createDocumentNodeContext()
