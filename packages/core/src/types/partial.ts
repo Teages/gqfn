@@ -8,9 +8,13 @@ import type { PrepareOperationSelectionSet } from './selection'
 import type { PrepareVariables, VariablesDefinition } from './variable'
 
 const OperationPartialBaseSymbol = Symbol('@gqfn/core:OperationPartialBase')
-export interface OperationPartial<T extends TypeObject<string, any, any>, P, Variables extends DollarPayload> {
+export interface OperationPartial<
+  T extends TypeObject<string, any, any>,
+  P,
+  Variables extends DollarPayload,
+> {
   [OperationPartialBaseSymbol]: T
-  ($: SelectionSetDollar<any, Variables>): P
+  ($: Variables): P
 }
 
 export type RequireOperationPartialData<
@@ -43,7 +47,7 @@ export interface GraphQueryFunctionPartial<
   ): OperationPartial<
     FragmentBase<Schema>[Type],
     AnalyzedSelectionSetComplex<Selection>,
-    Record<string, never>
+    Record<string, any>
   >
 
   <
