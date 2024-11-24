@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable antfu/no-top-level-await */
 import { useGQFnSchema } from '@gqfn/core'
 import { createClient } from '@teages/oh-my-graphql'
 import { print } from 'graphql'
