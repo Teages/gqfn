@@ -1,11 +1,10 @@
-import type { DollarEnum } from '../types/dollar'
-import type { EmptyRecord } from '../types/utils/object'
+import type { EnumPackage } from '../runtime/enum'
 import type { ArgOf, ResOf } from './utils'
 
 export interface Field<
   Name extends string,
   Return extends ResOf<any, string>,
-  Argument extends Record<string, ArgOf<any, string>> = EmptyRecord,
+  Argument extends Record<string, ArgOf<any, string>> = Record<string, never>,
 > {
   Name: Name
   Argument: Argument
@@ -15,7 +14,7 @@ export interface Field<
 export interface Union<
   Name extends string,
   Types extends Record<string, TypeObject<string, any>>,
-> extends TypeObject<Name, EmptyRecord, Types> {}
+> extends TypeObject<Name, Record<string, never>, Types> {}
 
 export interface InterfaceObject<
   Name extends string,
@@ -32,7 +31,7 @@ export interface TypeObject<
     string,
     Field<string, any, any>
   >,
-  Types extends Record<string, TypeObject<string, any>> = EmptyRecord,
+  Types extends Record<string, TypeObject<string, any>> = Record<string, never>,
 > extends BaseType<'TypeObject', Name> {
   Input: never
   Output: {
@@ -66,7 +65,7 @@ export interface EnumType<
   Name extends string,
   Values extends string,
 > extends BaseType<'Enum', Name> {
-  Input: DollarEnum<Values>
+  Input: EnumPackage<Values>
   Output: Values
 }
 

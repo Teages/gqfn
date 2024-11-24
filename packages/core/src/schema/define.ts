@@ -1,4 +1,3 @@
-import type { EmptyRecord } from '../types/utils/object'
 import type { EnumType, InputObject, InterfaceObject, ScalarType, TypeObject, Union } from './types'
 
 export interface DefineSchema<
@@ -26,17 +25,16 @@ export interface DefaultSchemaTypes extends UserSchemaTypes {
     Float: ScalarType<'Float', number>
     Boolean: ScalarType<'Boolean', boolean>
   }
-  Enums: EmptyRecord
-  Inputs: EmptyRecord
-  Interfaces: EmptyRecord
-  Unions: EmptyRecord
+  Enums: Record<string, never>
+  Inputs: Record<string, never>
+  Interfaces: Record<string, never>
+  Unions: Record<string, never>
   Objects: {
-    Query: TypeObject<'Query', EmptyRecord>
-    Mutation: TypeObject<'Mutation', EmptyRecord>
-    Subscription: TypeObject<'Subscription', EmptyRecord>
+    Query: TypeObject<'Query', Record<string, never>>
+    Mutation: TypeObject<'Mutation', Record<string, never>>
+    Subscription: TypeObject<'Subscription', Record<string, never>>
   }
-
-  Config: EmptyRecord
+  Config: Record<string, never>
 }
 
 export interface UserSchemaTypes {

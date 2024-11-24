@@ -6,6 +6,7 @@ import { createGraphQueryFunctionCore } from './operation'
 import { createGraphQueryPartial, type GraphQueryPartial } from './partial'
 
 export interface GraphQueryFunction extends GraphQueryFunctionCore {
+  gqfn: GraphQueryFunctionCore
   enum: EnumFunction
   fragment: GraphQueryFunctionFragment
   partial: GraphQueryPartial
@@ -16,6 +17,7 @@ export const gqfn: GraphQueryFunction = init()
 function init() {
   const core = createGraphQueryFunctionCore()
   return Object.assign(core, {
+    gqfn: core,
     enum: createEnumFunction(),
     fragment: createGraphQueryFunctionFragment(),
     partial: createGraphQueryPartial(),
@@ -27,6 +29,7 @@ if (import.meta.vitest) {
 
   it('gqfn', () => {
     expect(typeof gqfn).toBe('function')
+    expect(typeof gqfn.gqfn).toBe('function')
     expect(typeof gqfn.enum).toBe('function')
     expect(typeof gqfn.fragment).toBe('function')
     expect(typeof gqfn.partial).toBe('function')

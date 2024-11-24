@@ -3,12 +3,10 @@ import type { SelectionSetDollar } from './dollar'
 import type { SelectionSetComplex } from './selection'
 import type { PrepareVariables, Variable, VariableDefinition } from './variable'
 import { type DocumentNode, Kind } from 'graphql'
-import { DirectivesSymbol } from './directive'
+import { DirectivesSymbol, PartialContentDocumentNodeSymbol, PartialContentFragmentNameSymbol } from '../internal/symbol'
 import { createGraphQueryFunctionFragment, type FragmentBaseDefinition, type FragmentName } from './fragment'
 
 const PartialContentSymbolLabel = '@gqfn/core:PartialContent'
-const PartialContentFragmentNameSymbol = Symbol.for('@gqfn/core:PartialContentFragmentName')
-const PartialContentDocumentNodeSymbol = Symbol.for('@gqfn/core:PartialContentDocumentNode')
 export type PartialContent = Record<symbol, PartialResult>
 
 export interface PartialResult {

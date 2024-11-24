@@ -1,7 +1,7 @@
 import type { Argument } from './argument'
 import type { DirectiveInput } from './directive'
 import type { SelectionSetDollarPackage, SelectionSetDollarPackageInput } from './selection'
-import { DirectivesSymbol } from './directive'
+import { DirectivesSymbol } from '../internal/symbol'
 import { Variable } from './variable'
 
 export type DollarPayload = Record<string, Variable<string>>
