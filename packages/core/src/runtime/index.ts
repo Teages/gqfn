@@ -12,9 +12,9 @@ export interface GraphQueryFunction extends GraphQueryFunctionCore {
   partial: GraphQueryPartial
 }
 
-export const gqfn: GraphQueryFunction = init()
+export const gqfn: GraphQueryFunction = createGQFn()
 
-function init() {
+export function createGQFn() {
   const core = createGraphQueryFunctionCore()
   return Object.assign(core, {
     gqfn: core,
