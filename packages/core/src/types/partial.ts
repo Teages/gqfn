@@ -1,7 +1,7 @@
 import type { Exact } from '../internal/utils'
 import type { TypeObject, UserSchemaTypes } from '../schema'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
-import type { DollarPayload, SelectionSetDollar } from './dollar'
+import type { DollarPayload } from './dollar'
 import type { FragmentBase, FragmentName } from './fragment'
 import type { AnalyzedSelectionSetComplex, ParseSelectionObject } from './parser/selection'
 import type { PrepareOperationSelectionSet } from './selection'
