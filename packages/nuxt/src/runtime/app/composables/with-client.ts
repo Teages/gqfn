@@ -36,7 +36,7 @@ export function withGQFnClient<
     : createSubscriptionHandler(options?.subscription ?? {})
 
   const defineOperation: DefineOperation<Context, Endpoint> = (def, context) => {
-    const document = typeof def === 'function' ? def(schema.gqfn, schema.$enum) : def
+    const document = typeof def === 'function' ? def(schema) : def
     const type = getDocumentType(document)
     if (type === 'subscription') {
       throw new Error('Subscriptions are not supported')
@@ -52,7 +52,7 @@ export function withGQFnClient<
   }
 
   const defineAsyncQuery: DefineAsyncQuery<Context, Endpoint> = (def, context) => {
-    const document = typeof def === 'function' ? def(schema.gqfn, schema.$enum) : def
+    const document = typeof def === 'function' ? def(schema) : def
     const type = getDocumentType(document)
     if (type !== 'query') {
       throw new Error('Operation is not a query.')
@@ -84,7 +84,7 @@ export function withGQFnClient<
   }
 
   const defineLazyAsyncQuery: DefineAsyncQuery<Context, Endpoint> = (def, context) => {
-    const document = typeof def === 'function' ? def(schema.gqfn, schema.$enum) : def
+    const document = typeof def === 'function' ? def(schema) : def
     const type = getDocumentType(document)
     if (type !== 'query') {
       throw new Error('Operation is not a query.')
@@ -119,7 +119,7 @@ export function withGQFnClient<
   }
 
   const defineSubscription: DefineSubscription<Context, Endpoint> = (def, context) => {
-    const document = typeof def === 'function' ? def(schema.gqfn, schema.$enum) : def
+    const document = typeof def === 'function' ? def(schema) : def
     const type = getDocumentType(document)
     if (type !== 'subscription') {
       throw new Error('Operation is not a subscription')

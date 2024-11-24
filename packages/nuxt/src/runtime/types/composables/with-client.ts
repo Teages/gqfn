@@ -1,6 +1,6 @@
 import type { AsyncData, AsyncDataOptions, KeysOf, PickFrom } from '#app/composables/asyncData'
 import type { Ref } from '#imports'
-import type { TypedQueryDocumentNode } from '@gqfn/core/types'
+import type { TypedDocumentNode } from '@gqfn/core/types'
 import type { ComputedRef } from 'vue'
 import type { HandlerOptions, SSEOptions, WSOptions } from '../../utils/client'
 import type { Endpoints } from '../../utils/schema'
@@ -52,7 +52,7 @@ export type RequestHandler<Context> = <
   TVars extends Record<string, unknown>,
 > (
   query: {
-    document: TypedQueryDocumentNode<TData, TVars>
+    document: TypedDocumentNode<TData, TVars>
     variables: NoInfer<TVars>
     type: 'query' | 'mutation'
     url: string
@@ -70,7 +70,7 @@ export type SubscriptionHandler<Context> = <
     onUnsubscribe: (fn: () => void) => void
   },
   query: {
-    document: TypedQueryDocumentNode<TData, TVars>
+    document: TypedDocumentNode<TData, TVars>
     variables: NoInfer<TVars>
     type: 'subscription'
     url: string
@@ -95,10 +95,9 @@ export interface DefineOperation<
   <TData, TVars extends Record<string, unknown>>(
     def: (
       | ((
-        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
-        $enum: UseGQFnSchema<Endpoint>['$enum'],
-      ) => TypedQueryDocumentNode<TData, TVars>)
-      | TypedQueryDocumentNode<TData, TVars>
+        gqfn: UseGQFnSchema<Endpoint>,
+      ) => TypedDocumentNode<TData, TVars>)
+      | TypedDocumentNode<TData, TVars>
     ),
     context?: Context,
   ): DefineOperationReturn<Promise<TData>, TVars, Context>
@@ -117,10 +116,9 @@ export interface DefineAsyncQuery<
   > (
     def: (
       | ((
-        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
-        $enum: UseGQFnSchema<Endpoint>['$enum'],
-      ) => TypedQueryDocumentNode<TData, TVars>)
-      | TypedQueryDocumentNode<TData, TVars>
+        gqfn: UseGQFnSchema<Endpoint>,
+      ) => TypedDocumentNode<TData, TVars>)
+      | TypedDocumentNode<TData, TVars>
     ),
     context?: Context,
   ): DefineAsyncQueryReturn<
@@ -138,10 +136,9 @@ export interface DefineAsyncQuery<
   > (
     def: (
       | ((
-        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
-        $enum: UseGQFnSchema<Endpoint>['$enum'],
-      ) => TypedQueryDocumentNode<TData, TVars>)
-      | TypedQueryDocumentNode<TData, TVars>
+        gqfn: UseGQFnSchema<Endpoint>,
+      ) => TypedDocumentNode<TData, TVars>)
+      | TypedDocumentNode<TData, TVars>
     ),
     context?: Context,
   ): DefineAsyncQueryReturn<
@@ -158,10 +155,9 @@ export interface DefineSubscription<
   <TData, TVars extends Record<string, unknown>>(
     def: (
       | ((
-        gqfn: UseGQFnSchema<Endpoint>['gqfn'],
-        $enum: UseGQFnSchema<Endpoint>['$enum'],
-      ) => TypedQueryDocumentNode<TData, TVars>)
-      | TypedQueryDocumentNode<TData, TVars>
+        gqfn: UseGQFnSchema<Endpoint>,
+      ) => TypedDocumentNode<TData, TVars>)
+      | TypedDocumentNode<TData, TVars>
     ),
     context?: Context,
   ): DefineSubscriptionReturn<TData, TVars, Context>

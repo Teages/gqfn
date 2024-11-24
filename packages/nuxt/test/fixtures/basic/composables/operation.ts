@@ -1,4 +1,4 @@
-import type { RequireQueryPart } from '#gqfn'
+import type { RequireOperationPartialData } from '#gqfn'
 
 const endpoint = 'https://graphql-test.teages.xyz/graphql-user'
 
@@ -8,11 +8,11 @@ const { defineAsyncQuery } = withGQFnClient(
 )
 
 export const userFragment = schema
-  .gqp('fragment UserFragment', 'on User', [
+  .partial('fragment UserFragment', 'on User', [
     'name',
     'id',
   ])
-export type RequireUserFragment = RequireQueryPart<typeof userFragment>
+export type RequireUserFragment = RequireOperationPartialData<typeof userFragment>
 
 export const useAsyncUser = defineAsyncQuery(
   gqfn => gqfn('query QueryUser', {
