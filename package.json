@@ -2,7 +2,8 @@
   "name": "gqfn",
   "type": "module",
   "version": "0.3.0",
-  "packageManager": "pnpm@9.7.0",
+  "private": true,
+  "packageManager": "pnpm@9.14.2",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -26,16 +27,16 @@
     "release": "pnpm test:full && pnpm prepack && pnpm changelog:bump && pnpm cli pre-release && git push --follow-tags && pnpm --filter ./packages/** publish"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.7.3",
-    "@drizzle-team/brocli": "^0.10.1",
+    "@antfu/eslint-config": "^3.9.2",
+    "@drizzle-team/brocli": "^0.11.0",
     "changelogen": "^0.5.5",
     "consola": "^3.2.3",
-    "eslint": "^9.9.0",
+    "eslint": "^9.15.0",
     "fast-glob": "^3.3.2",
     "pathe": "^1.1.2",
     "pkg-types": "^1.1.3",
     "simple-git": "^3.25.0",
-    "tsx": "^4.17.0"
+    "tsx": "^4.19.2"
   },
   "resolutions": {
     "@gqfn/core": "workspace:*",
