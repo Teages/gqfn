@@ -32,10 +32,10 @@ npm run gqfn add https://your-graphql-endpoint
 Import and use:
 
 ```ts
-import { useSchema } from '@gqfn/core'
+import { useTypedSchema } from '@gqfn/core'
 import { request } from 'graphql-request' // or any other GraphQL client
 
-const { gqfn, gqp, $enum } = useSchema('https://your-graphql-endpoint')
+const gqfn = useTypedSchema('https://your-graphql-endpoint')
 
 const query = gqfn([
   'hello',

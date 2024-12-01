@@ -7,4 +7,11 @@ export default shared.append({
   rules: {
     'ts/no-empty-object-type': 'off',
   },
+}, {
+  files: ['snippets/**/*'],
+  rules: {
+    'unused-imports/no-unused-vars': 'off',
+    'unused-imports/no-unused-imports': 'off',
+    'antfu/no-top-level-await': 'off',
+  },
 })

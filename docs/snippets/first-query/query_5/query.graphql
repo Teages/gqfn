@@ -1,0 +1,10 @@
+query FetchAnime($id: Int = 127549) {
+  Media(id: $id, type: ANIME) {
+    id
+    title {
+      romaji
+      english
+      native
+    }
+  }
+}
