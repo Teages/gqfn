@@ -9,8 +9,8 @@ export function createGQFn<T extends UserSchemaTypes>(): GraphQueryFunction<T> {
   return gqfn as any
 }
 
-export function useGQFnSchema<T extends string & keyof Schemas>(url: T): LoadGQFnFromUrl<T>
-export function useGQFnSchema<T extends string & keyof Schemas>(_url: T) {
+export function useGQFnSchema<T extends string | (keyof Schemas & string)>(url: T): LoadGQFnFromUrl<T>
+export function useGQFnSchema<T extends string>(_url: T) {
   return gqfn as any
 }
 
