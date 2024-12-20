@@ -1,11 +1,9 @@
-import type { RequireQueryPart } from '../../src'
-import type { TypedQueryDocumentNode } from '../../src/types'
+import type { GraphQueryFunction, RequireOperationPartialData, TypedDocumentNode } from '../../src/types'
 import type { CategoryEnum, Schema } from './fixture/schema'
 import { describe, expectTypeOf, test } from 'vitest'
-import { createGQFn } from '../../src'
 
 describe('type', () => {
-  const { gqfn, gqp, $enum } = createGQFn<Schema>()
+  const gqfn: GraphQueryFunction<Schema> = null as any
 
   test('simple', () => {
     const query = gqfn(['__typename'])
@@ -48,7 +46,7 @@ describe('type', () => {
 
   test('enum', () => {
     const query = gqfn([{
-      sayings: $ => $({ category: [$enum('funny')] }, ['content']),
+      sayings: $ => $({ category: [gqfn.enum('funny')] }, ['content']),
     }])
     const { vars, res } = parse(query)
 
@@ -71,7 +69,7 @@ describe('type', () => {
         'name',
         'email',
         {
-          friends: $ => $({ }, ['id']),
+          friends: $ => $(['id']),
           saying: $ => $({ }, ['content']),
         },
       ]),
@@ -191,11 +189,11 @@ describe('type', () => {
     const query = gqfn([{
       user: $ => $({ id: 1 }, [
         {
-          'email': $ => $({}, true, [['@include', { if: true }]]),
+          'email': $ => $(true).withDirective(['@include', { if: true }]),
           '...': $ => $([
             'id',
             'name',
-          ], [['@skip', { if: false }]]),
+          ]).withDirective(['@skip', { if: false }]),
         },
       ]),
     }])
@@ -213,10 +211,10 @@ describe('type', () => {
   })
 
   test('partial', () => {
-    const userFragment = gqp('fragment', 'on User', [
+    const userFragment = gqfn.partial('fragment A', 'on User', [
       'id',
     ])
-    const req: RequireQueryPart<typeof userFragment> = {} as any
+    const req: RequireOperationPartialData<typeof userFragment> = {} as any
 
     expectTypeOf(req).toEqualTypeOf<{
       id: number
@@ -234,12 +232,12 @@ describe('type', () => {
   })
 
   test('partial with args', () => {
-    const userFragment = gqp('fragment', 'on User', {
+    const userFragment = gqfn.partial('fragment A', 'on User', {
       category: 'CategoryEnum!',
     }, [{
       saying: $ => $({ category: $.category }, ['content']),
     }])
-    const req: RequireQueryPart<typeof userFragment> = {} as any
+    const req: RequireOperationPartialData<typeof userFragment> = {} as any
 
     expectTypeOf(req.saying[0]).toEqualTypeOf<{ content: string }>()
 
@@ -255,7 +253,7 @@ describe('type', () => {
   })
 })
 
-function parse<T, U>(_doc: TypedQueryDocumentNode<T, U>): { vars: U, res: T } {
+function parse<T, U>(_doc: TypedDocumentNode<T, U>): { vars: U, res: T } {
   return {} as any
 }
 

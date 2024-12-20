@@ -17,61 +17,22 @@ npm run gqfn add https://graphql.anilist.co
 
 Then, you can import the `gqfn` function from `@gqfn/core` package and use it to create a query.
 
-```ts twoslash
-import { useSchema } from '@gqfn/core'
-import { request } from 'graphql-request' // or you favorite GraphQL client
-const endpoint = 'https://graphql.anilist.co'
-const { gqfn, gqp, $enum } = useSchema(endpoint)
-```
+<<< @/snippets/first-query/query-init.ts{ts twoslash}
 
 ## Selection and Arguments
 
 To build a selection on the `Query` type, you can pass the selection as the only argument of the `gqfn` function.
 
-```ts twoslash
-import { useSchema } from '@gqfn/core'
-const endpoint = 'https://graphql.anilist.co'
-const { gqfn, gqp, $enum } = useSchema(endpoint)
-// ---cut---
-const query = gqfn([])
-```
+<<< @/snippets/first-query/init.ts{ts twoslash}
 
 Ok let's add the first field to the selection. We want to get the title of the Anime with the id `127549`. We need to add the `Media` field to the selection with the `id` argument.
 
 Pass the arguments as the first argument of the `$`, and the selection as the second argument. Now we got this:
 
 ::: code-group
-```ts twoslash [Query Builder]
-import { useSchema } from '@gqfn/core'
-import { request } from 'graphql-request'
-const endpoint = 'https://graphql.anilist.co'
-const { gqfn, gqp, $enum } = useSchema(endpoint)
-// ---cut---
-const query = gqfn([{
-  Media: $ => $({ id: 127549 }, [
-    'id',
-  ]),
-}])
-
-const data = await request(endpoint, query)
-const id = data.Media?.id // it is typed!
-```
-
-```graphql [GraphQL Query]
-{
-  Media {
-    id
-  }
-}
-```
-
-```json [Response]
-{
-  "Media": {
-    "id": 127549
-  }
-}
-```
+<<< @/snippets/first-query/query_1/query.ts{ts twoslash} [GQFn]
+<<< @/snippets/first-query/query_1/query.graphql [GraphQL]
+<<< @/snippets/first-query/query_1/response.json [Response]
 :::
 
 But we want to get the title of the Anime. We can add the `title` field to the selection. We have no need to pass any arguments to the `title` field so we can use the shorthand syntax, pass the selection as the only argument.
@@ -81,10 +42,11 @@ You can get the type hint when writing the query.
 ```ts twoslash [Query Builder]
 /* eslint-disable eslint-comments/no-unlimited-disable */
 /* eslint-disable */
-import { useSchema } from '@gqfn/core'
+import { useGQFnSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
+
 const endpoint = 'https://graphql.anilist.co'
-const { gqfn, gqp, $enum } = useSchema(endpoint)
+const gqfn = useGQFnSchema(endpoint)
 // ---cut---
 const query = gqfn([{
   Media: $ => $({ id: 127549 }, [
@@ -105,111 +67,21 @@ The media we want to get is an anime, so we can also add the type argument to th
 The full code is here, you can intuitively see that the writing experience is similar to GraphQL.
 
 ::: code-group
-```ts twoslash [Query Builder]
-import { useSchema } from '@gqfn/core'
-import { request } from 'graphql-request'
-const endpoint = 'https://graphql.anilist.co'
-const { gqfn, gqp, $enum } = useSchema(endpoint)
-// ---cut---
-const query = gqfn([{
-  Media: $ => $({ id: 127549, type: $enum('ANIME') }, [
-    'id',
-    {
-      title: $ => $([
-        'romaji',
-        'english',
-        'native',
-      ]),
-    },
-  ]),
-}])
-
-const data = await request(endpoint, query)
-const id = data.Media?.id
-const nativeTitle = data.Media?.title?.native
-```
-
-```graphql [GraphQL Query]
-{
-  Media(id: 127549, type: ANIME) {
-    id
-    title {
-      romaji
-      english
-      native
-    }
-  }
-}
-```
-
-```json [Response]
-{
-  "Media": {
-    "id": 127549,
-    "title": {
-      "romaji": "Slow Loop",
-      "english": "Slow Loop",
-      "native": "スローループ"
-    }
-  }
-}
-```
+<<< @/snippets/first-query/query_2/query.ts{ts twoslash} [GQFn]
+<<< @/snippets/first-query/query_2/query.graphql [GraphQL]
+<<< @/snippets/first-query/query_2/response.json [Response]
 :::
 
 [Learn more about selection](/runtime/selection).
 
 ## Operation Name
 
-Operation names are useful to make the code less ambiguous. The operation name should be always be the first argument of the `gqfn` function.
+The operation name should be always be the first argument of the `gqfn` function.
 
 ::: code-group
-```ts twoslash [Query Builder]
-import { useSchema } from '@gqfn/core'
-import { request } from 'graphql-request'
-const endpoint = 'https://graphql.anilist.co'
-const { gqfn, gqp, $enum } = useSchema(endpoint)
-// ---cut---
-const query = gqfn('query FetchAnime', [{
-  Media: $ => $({ id: 127549, type: $enum('ANIME') }, [
-    'id',
-    {
-      title: $ => $([
-        'romaji',
-        'english',
-        'native',
-      ]),
-    },
-  ]),
-}])
-
-await request(endpoint, query)
-```
-
-```graphql [GraphQL Query]
-query FetchAnime {
-  Media(id: 127549, type: ANIME) {
-    id
-    title {
-      romaji
-      english
-      native
-    }
-  }
-}
-```
-
-```json [Response]
-{
-  "Media": {
-    "id": 127549,
-    "title": {
-      "romaji": "Slow Loop",
-      "english": "Slow Loop",
-      "native": "スローループ"
-    }
-  }
-}
-```
+<<< @/snippets/first-query/query_3/query.ts{ts twoslash} [GQFn]
+<<< @/snippets/first-query/query_3/query.graphql [GraphQL]
+<<< @/snippets/first-query/query_3/response.json [Response]
 :::
 
 [Learn more about operation name](/runtime/#name).
@@ -221,109 +93,17 @@ Variables are helpful if we want to query for other anime. You can pass the vari
 Writing variables is similar to writing a GraphQL query and you can use the `$` to visit you variables.
 
 ::: code-group
-```ts twoslash [Query Builder]
-import { useSchema } from '@gqfn/core'
-import { request } from 'graphql-request'
-const endpoint = 'https://graphql.anilist.co'
-const { gqfn, gqp, $enum } = useSchema(endpoint)
-// ---cut---
-const query = gqfn('query FetchAnime', {
-  id: 'Int!',
-}, [{
-  Media: $ => $({ id: $.id, type: $enum('ANIME') }, [
-    'id',
-    {
-      title: $ => $([
-        'romaji',
-        'english',
-        'native',
-      ]),
-    },
-  ]),
-}])
-
-await request(endpoint, query, { id: 127549 })
-```
-
-```graphql [GraphQL Query]
-query FetchAnime($id: Int!) {
-  Media(id: $id, type: ANIME) {
-    id
-    title {
-      romaji
-      english
-      native
-    }
-  }
-}
-```
-
-```json [Response]
-{
-  "Media": {
-    "id": 127549,
-    "title": {
-      "romaji": "Slow Loop",
-      "english": "Slow Loop",
-      "native": "スローループ"
-    }
-  }
-}
-```
+<<< @/snippets/first-query/query_4/query.ts{ts twoslash} [GQFn]
+<<< @/snippets/first-query/query_4/query.graphql [GraphQL]
+<<< @/snippets/first-query/query_4/response.json [Response]
 :::
 
 Default values can be set as follows:
 
 ::: code-group
-```ts twoslash [Query Builder]
-import { useSchema } from '@gqfn/core'
-import { request } from 'graphql-request'
-const endpoint = 'https://graphql.anilist.co'
-const { gqfn, gqp, $enum } = useSchema(endpoint)
-// ---cut---
-const query = gqfn('query FetchAnime', {
-  id: 'Int = 127549',
-}, [{
-  Media: $ => $({ id: $.id, type: $enum('ANIME') }, [
-    'id',
-    {
-      title: $ => $([
-        'romaji',
-        'english',
-        'native',
-      ]),
-    },
-  ]),
-}])
-
-await request(endpoint, query, {})
-```
-
-```graphql [GraphQL Query]
-query FetchAnime($id: Int = 127549) {
-  Media(id: $id, type: ANIME) {
-    id
-    title {
-      romaji
-      english
-      native
-    }
-  }
-}
-```
-
-```json [Response]
-{
-  "Media": {
-    "id": 127549,
-    "title": {
-      "romaji": "Slow Loop",
-      "english": "Slow Loop",
-      "native": "スローループ"
-    }
-  }
-}
-```
+<<< @/snippets/first-query/query_5/query.ts{ts twoslash} [GQFn]
+<<< @/snippets/first-query/query_5/query.graphql [GraphQL]
+<<< @/snippets/first-query/query_5/response.json [Response]
 :::
 
 [Learn more about variables](/runtime/#variables).

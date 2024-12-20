@@ -1,95 +1,69 @@
+import type { DollarPackageContentSymbol, DollarPackageIsOptionalSymbol } from '../internal/symbol'
+import type { Exact } from '../internal/utils'
 import type { Field, TypeObject } from '../schema'
-import type { Argument, ProvideSelectionArgument } from './argument'
-import type { DirectiveInput, IsSkipDirective } from './directive'
-import type { ProvideSelectionFieldContext, ProvideTypeSelection } from './select'
-import type { EmptyRecord, Exact, HiddenSymbol } from './utils/object'
-
-export interface DollarContext<T, WithSkip extends boolean = false> {
-  content: T
-  args: Argument
-  directives: Array<DirectiveInput>
-
-  // The method is never actually implemented
-  [HiddenSymbol]?: () => WithSkip
-}
+import type { PrepareSelectionArgument } from './argument'
+import type { DirectiveInput, HasSkipDirective } from './directive'
+import type { IsHasArguments, PrepareFieldResult, PrepareSelectionSetComplex } from './selection'
 
 export type DollarPayload = Record<string, unknown>
-export type DollarEnum<T extends string> = () => T
 
-type SelectionDollarFunction<
+export type SelectionSetDollar<
   T extends Field<string, any, any>,
-  Vars extends DollarPayload,
-> = ProvideSelectionArgument<T['Argument']> extends EmptyRecord
-  ? SelectionDollarFunctionWithoutArgs<T, Vars>
-  : SelectionDollarFunctionWithArgs<T, Vars>
-
-interface InlineFragmentDollarFunction<
-  TO extends TypeObject<string, any, any>,
-  Vars extends DollarPayload,
-> {
-  <
-    T extends ProvideTypeSelection<TO, Vars>,
-    U extends Array<DirectiveInput>,
-  >(
-    selection: Exact<ProvideTypeSelection<TO, Vars>, T>,
-    directive?: U,
-  ): DollarContext<T, IsSkipDirective<U>>
-}
-
-export interface SelectionDollarFunctionWithoutArgs<
-  F extends Field<string, any, any>,
-  Vars extends DollarPayload,
-> {
-  <
-    T extends ProvideSelectionFieldContext<F, Vars>,
-    U extends Array<DirectiveInput>,
-  >(
-    selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
-  ): DollarContext<T, IsSkipDirective<U>>
-
-  <
-    T extends ProvideSelectionFieldContext<F, Vars>,
-    U extends Array<DirectiveInput>,
-  >(
-    args: EmptyRecord,
-    selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
-    directive?: U,
-  ): DollarContext<T, IsSkipDirective<U>>
-}
-export interface SelectionDollarFunctionWithArgs<
-  F extends Field<string, any, any>,
-  Vars extends DollarPayload,
-> {
-  <
-    T extends ProvideSelectionFieldContext<F, Vars>,
-    U extends Array<DirectiveInput>,
-  >(
-    args: ProvideSelectionArgument<F['Argument']>,
-    selection: Exact<ProvideSelectionFieldContext<F, Vars>, T>,
-    directive?: U,
-  ): DollarContext<T, IsSkipDirective<U>>
-}
-
-interface VariableDollarFunction {
-  <T extends string>(enumValue: T): DollarEnum<T>
-
-  <T extends string>(
-    args: T,
-    directive: Array<DirectiveInput>
-  ): DollarContext<T>
-}
-
-interface DirectiveDollarFunction {
-  <T extends string>(enumValue: T): DollarEnum<T>
-}
-
-export type SelectionDollar<
+  Variables extends DollarPayload,
+> = SelectionSetDollarFunction<T, Variables> & Variables
+type SelectionSetDollarFunction<
   T extends Field<string, any, any>,
-  Vars extends DollarPayload,
-> = SelectionDollarFunction<T, Vars> & Vars
+  Variables extends DollarPayload,
+> = IsHasArguments<T> extends true
+  ? SelectionSetDollarFunctionWithArguments<T, Variables>
+  : SelectionSetDollarFunctionWithoutArguments<T, Variables>
+interface SelectionSetDollarFunctionWithArguments<
+  T extends Field<string, any, any>,
+  Variables extends DollarPayload,
+> {
+  <U extends PrepareFieldResult<T, Variables>>(
+    arg: PrepareSelectionArgument<T['Argument']>,
+    selection: Exact<PrepareFieldResult<T, Variables>, U>
+  ): DollarPackage<U>
+}
+interface SelectionSetDollarFunctionWithoutArguments<
+  T extends Field<string, any, any>,
+  Variables extends DollarPayload,
+> {
+  <U extends PrepareFieldResult<T, Variables>>(
+    selection: Exact<PrepareFieldResult<T, Variables>, U>
+  ): DollarPackage<U>
+}
+
 export type InlineFragmentDollar<
   T extends TypeObject<string, any, any>,
-  Vars extends DollarPayload,
-> = InlineFragmentDollarFunction<T, Vars> & Vars
-export type VariableDollar = VariableDollarFunction
-export type DirectiveDollar<Var extends DollarPayload> = DirectiveDollarFunction & Var
+  Variables extends DollarPayload,
+> = InlineFragmentDollarFunction<T, Variables> & Variables
+interface InlineFragmentDollarFunction<
+  T extends TypeObject<string, any, any>,
+  Variables extends DollarPayload,
+> {
+  <U extends PrepareSelectionSetComplex<T, Variables>>(
+    selection: Exact<PrepareSelectionSetComplex<T, Variables>, U>
+  ): DollarPackage<U>
+}
+
+export type DirectiveDollar<Variables extends DollarPayload> = DirectiveDollarFunction & Variables
+interface DirectiveDollarFunction {
+  (): void
+}
+
+export type VariablesDefinitionDollar = VariablesDefinitionDollarFunction
+interface VariablesDefinitionDollarFunction {
+  <T extends string>(
+    def: T
+  ): DollarPackage<T>
+}
+
+export interface DollarPackage<T, IsOptional extends boolean = false> {
+  [DollarPackageContentSymbol]?: () => T
+  [DollarPackageIsOptionalSymbol]?: () => IsOptional
+  withDirective: <U extends DirectiveInput[]>(...directives: U) => HasSkipDirective<U> extends true
+    ? DollarPackage<T, true>
+    : DollarPackage<T, IsOptional>
+}

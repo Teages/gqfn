@@ -45,14 +45,15 @@ Learn more about the [Programmatic Usage](./programmatic.md).
 After generating the schema types, you can use the `useSchema` to get the typed `gqfn` or `gqp`.
 
 ```ts twoslash
-import { useSchema } from '@gqfn/core'
+import { useGQFnSchema } from '@gqfn/core'
 // ---cut---
-const { gqfn, gqp, $enum } = useSchema('https://graphql.anilist.co')
+const endpoint = 'https://graphql.anilist.co'
+const gqfn = useGQFnSchema(endpoint)
 
 const query = gqfn('query FetchAnime', {
   id: 'Int!',
 }, [{
-  Media: $ => $({ id: $.id, type: $enum('ANIME') }, [
+  Media: $ => $({ id: $.id, type: gqfn.enum('ANIME') }, [
     'id',
     {
       title: $ => $([

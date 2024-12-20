@@ -2,12 +2,10 @@
 const props = defineProps<{
   user: RequireUserFragment
 }>()
-
-const user = computed(() => props.user)
 </script>
 
 <template>
   <div>
-    user: {{ user.name }} ({{ user.id }})
+    user: {{ props.user.name }} ({{ props.user.id }})
   </div>
 </template>

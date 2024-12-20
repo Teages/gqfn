@@ -1,4 +1,4 @@
-import type { ResultOf, TypedQueryDocumentNode, VariablesOf } from '@gqfn/core/types'
+import type { ResultOf, TypedDocumentNode, VariablesOf } from '@gqfn/core/types'
 import { type MaybeRefOrGetter, toValue } from '#imports'
 import { type ClientOptions, createClient } from '@teages/oh-my-graphql'
 import { destr } from 'destr'
@@ -11,7 +11,7 @@ export function createHandler(options?: HandlerOptions) {
     TVars extends Record<string, unknown>,
   > (
     query: {
-      document: TypedQueryDocumentNode<TData, TVars>
+      document: TypedDocumentNode<TData, TVars>
       variables: TVars
       type: 'query' | 'mutation'
       url: string
@@ -136,7 +136,7 @@ export type SubscriptionHandler = <
     close: (error?: any) => void
   },
   query: {
-    document: TypedQueryDocumentNode<TData, TVars>
+    document: TypedDocumentNode<TData, TVars>
     variables: TVars
     type: 'subscription'
     url: string

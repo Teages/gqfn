@@ -1,21 +1,31 @@
+import type { GraphQueryFunction as RawGraphQueryFunction } from './runtime'
 import type { DefineSchema, Schemas, UserSchemaTypes } from './schema'
-import type { CreateGQFn, Package } from './types/utils/package'
-import { $enum, gqfn, gqp } from './runtime'
+import type { GraphQueryFunction } from './types'
+import { gqfn } from './runtime'
 
-export { $enum } from './runtime'
-export type { RequireQueryPart, ResultOf, VariablesOf } from './types'
+export type { ResultOf, TypedDocumentNode, VariablesOf } from './types'
 
-export const createGQFn: CreateGQFn = () => ({ gqfn, gqp, $enum }) as any
-
-export function useSchema<T extends string>(
-  _url?: T,
-): Package<LoadFromUrl<T>> {
-  return { gqfn, gqp, $enum } as any
+export function createGQFn<T extends UserSchemaTypes>(): GraphQueryFunction<T> {
+  return gqfn as unknown as GraphQueryFunction<T>
 }
 
-export type LoadFromUrl<T extends string> =
+export function useGQFnSchema<T extends string | (keyof Schemas & string)>(url: T): LoadGQFnFromUrl<T>
+export function useGQFnSchema<T extends string>(_url: T) {
+  return gqfn as any
+}
+
+export const rawGQFn = gqfn
+
+export type LoadSchemaFromUrl<T extends string> =
   T extends keyof Schemas
     ? Schemas[T] extends UserSchemaTypes | DefineSchema<any>
       ? Schemas[T]
-      : undefined
-    : undefined
+      : never
+    : never
+
+export type LoadGQFnFromUrl<T extends string> =
+  T extends keyof Schemas
+    ? Schemas[T] extends UserSchemaTypes | DefineSchema<any>
+      ? GraphQueryFunction<Schemas[T]>
+      : RawGraphQueryFunction
+    : RawGraphQueryFunction

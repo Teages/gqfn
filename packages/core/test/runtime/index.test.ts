@@ -1,8 +1,8 @@
 import { describe, it } from 'vitest'
-import { $enum, gqfn, gqp } from '../../src/runtime'
+import { gqfn } from '../../src/runtime'
 import { fixture } from './utils'
 
-describe('@gqfn/core/core', () => {
+describe('@gqfn/core/runtime', () => {
   it('works', fixture(
     gql => gql(`
       query FetchHelloWorld ($userId: ID!, $category: CategoryEnum! = Blog) {
@@ -52,7 +52,7 @@ describe('@gqfn/core/core', () => {
             friends: $ => $(['id']),
           },
         ]),
-        'posts': $ => $({ category: $enum('Announcement') }, [
+        'posts': $ => $({ category: gqfn.enum('Announcement') }, [
           'id',
           'title',
           'content',
@@ -88,9 +88,8 @@ describe('@gqfn/core/core', () => {
     `),
     gqfn('mutation Login', {
       username: 'String!',
-      password: $ => $('String!', [
-        ['@check', { rule: $enum('password') }],
-      ]),
+      password: $ => $('String!')
+        .withDirective(['@check', { rule: gqfn.enum('password') }]),
       withUserData: 'Boolean! = true',
       skipToken: 'Boolean! = false',
       captchaType: 'CaptchaEnum! = google',
@@ -99,12 +98,12 @@ describe('@gqfn/core/core', () => {
         username: $.username,
         password: $.password,
       }, [{
-        'token': $ => $(true, [['@skip', { if: $.skipToken }]]),
+        'token': $ => $(true).withDirective(['@skip', { if: $.skipToken }]),
         '...': $ => $([
           'id',
           'name',
           'email',
-        ], [['@include', { if: $.withUserData }]]),
+        ]).withDirective(['@include', { if: $.withUserData }]),
       }]),
     }], $ => [
       ['@captcha', { provider: $.captchaType }],
@@ -143,52 +142,71 @@ describe('@gqfn/core/core', () => {
     }]),
   ))
 
-  const userFragment = gqp('fragment UserFields', 'on User', {
-    withFriendsEmail: 'Boolean! = false',
-  }, [
-    'id',
-    'name',
-    {
-      email: $ => $(true, [['@include', { if: $.withFriendsEmail }]]),
-    },
-  ])
-  it('fragment / partial', fixture(
+  // fragment MediaFields on Media { id title { romaji english native } }
+  const MediaFields = gqfn.partial('fragment MediaFields', 'on Media', ['id', { title: $ => $(['romaji', 'english', 'native']) }])
+  it('partial', fixture(
     gql => gql(`
-      query FetchUser($userId: ID!, $withFriendsEmail: Boolean! = false) {
-        user(id: $userId) {
+      query FetchAnime($id: Int = 127549) {
+        Media(id: $id, type: ANIME) {
           id
-          name
-          email
-          friends {
-            id
-            name
-            email @include(if: $withFriendsEmail)
-          }
+          ...MediaFields
         }
-        users {
-          id
-          name
-          email @include(if: $withFriendsEmail)
+      }
+
+      fragment MediaFields on Media {
+        id
+        title {
+          romaji
+          english
+          native
         }
       }
     `),
-    gqfn('query FetchUser', {
-      userId: 'ID!',
-      withFriendsEmail: 'Boolean! = false',
+    gqfn('query FetchAnime', {
+      id: 'Int = 127549',
     }, [{
-      user: $ => $({
-        id: $.userId,
-      }, [
+      Media: $ => $({ id: $.id, type: gqfn.enum('ANIME') }, [
         'id',
-        'name',
-        'email',
         {
-          friends: $ => $([{
-            ...userFragment($),
-          }]),
+          ...MediaFields($),
         },
       ]),
-      users: $ => $([userFragment($)]),
+    }]),
+  ))
+
+  // nested fragment
+  const UserBasicFields = gqfn.partial('fragment UserBasicFields', 'on User', ['id', 'name', 'avatar'])
+  const LevelFields = gqfn.partial('fragment LevelFields', 'on Level', ['id', 'name', { user: $ => $([{ ...UserBasicFields($) }]) }])
+  it('nested fragment', fixture(
+    gql => gql(`
+      query FetchLevel($id: Int = 127549) {
+        level(id: $id) {
+         ...LevelFields
+        }
+      }
+
+      fragment UserBasicFields on User {
+        id
+        name
+        avatar
+      }
+
+      fragment LevelFields on Level {
+        id
+        name
+        user {
+         ...UserBasicFields
+        }
+      }
+    `),
+    gqfn('query FetchLevel', {
+      id: 'Int = 127549',
+    }, [{
+      level: $ => $({ id: $.id }, [
+        {
+          ...LevelFields($),
+        },
+      ]),
     }]),
   ))
 })

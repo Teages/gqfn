@@ -15,4 +15,6 @@ export default defineBuildConfig({
     // cli commands
     'src/cli/main.ts',
   ],
+
+  replace: { 'import.meta.vitest': 'undefined' },
 })

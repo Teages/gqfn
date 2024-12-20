@@ -1,0 +1,10 @@
+query FetchAnime {
+  Media(id: 127549, type: ANIME) {
+    id
+    title {
+      romaji
+      english
+      native
+    }
+  }
+}

@@ -1,30 +1,22 @@
+import type { VariableIdentitySymbol } from '../internal/symbol'
+import type { Nullable, RelaxedOptional, Trim, Values } from '../internal/utils'
 import type { ArgOf, BaseType, ParseArg, UserSchemaTypes } from '../schema'
-import type { DollarContext, VariableDollar } from './dollar'
-import type { HiddenSymbol, Nullable, RelaxedOptional, Values } from './utils/object'
-import type { Trim } from './utils/string'
+import type { DollarPackage, VariablesDefinitionDollar } from './dollar'
 
-export type ProvideVariable<T extends string> =
-  Record<string, T | (($: VariableDollar) => DollarContext<T, boolean>)>
+export type VariablesDefinitionDollarPackage<T extends string> =
+  ($: VariablesDefinitionDollar) => DollarPackage<T>
+export type VariablesDefinition<T extends string> =
+  Record<string, T | VariablesDefinitionDollarPackage<T>>
 
-export type ParseVariables<
-  Schema extends UserSchemaTypes,
-  T extends ProvideVariable<string>,
-> = RelaxedOptional<{
-  [K in keyof T]: UnpackDollar<T[K]> extends `${infer Type} = ${infer _Default}`
-    ? ParseArg<ArgOf<Schema, Trim<Type>>, false> extends never
-      ? never
-      : ParseArg<ArgOf<Schema, Type>, false> | undefined
-    : ParseArg<ArgOf<Schema, UnpackDollar<T[K]>>, false> extends never
-      ? never
-      : ParseArg<ArgOf<Schema, UnpackDollar<T[K]>>, false>
-}>
-
-export interface Variable<
-  U extends string,
-> {
-  [HiddenSymbol]?: () => U
+export interface Variable<T extends string> {
+  [VariableIdentitySymbol]?: () => T
 }
 
+export type PrepareVariables<T extends VariablesDefinition<string>> = {
+  [K in keyof T]: UnpackDollar<T[K]> extends `${infer Type} = ${infer _Default}`
+    ? PrepareVariable<Type>
+    : PrepareVariable<UnpackDollar<T[K]>>
+}
 export type AcceptVariables<
   T extends ArgOf<any, string>,
 > = T extends never
@@ -39,25 +31,30 @@ export type AcceptVariables<
         : T['Input'] | Variable<T['Name']>
       : T
 
-export type ExtractVariables<T> = T extends Variable<infer U> ? U : T
-
-export type PrepareVariables<
-  T extends ProvideVariable<string>,
-> = {
+export type RequireVariables<
+  Schema extends UserSchemaTypes,
+  T extends VariablesDefinition<string>,
+> = RelaxedOptional<{
   [K in keyof T]: UnpackDollar<T[K]> extends `${infer Type} = ${infer _Default}`
-    ? Var<Type>
-    : Var<UnpackDollar<T[K]>>
-}
-type UnpackDollar<T extends Values<ProvideVariable<string>>> =
-  T extends (($: VariableDollar) => DollarContext<infer U extends string, boolean>)
-    ? U
-    : T
-type Var<
+    ? ParseArg<ArgOf<Schema, Trim<Type>>, false> extends never
+      ? never
+      : ParseArg<ArgOf<Schema, Type>, false> | undefined
+    : ParseArg<ArgOf<Schema, UnpackDollar<T[K]>>, false> extends never
+      ? never
+      : ParseArg<ArgOf<Schema, UnpackDollar<T[K]>>, false>
+}>
+
+type PrepareVariable<
   TKey extends string,
 > = TKey extends `${infer F}!`
-  ? NonNullable<Var<F>>
+  ? NonNullable<PrepareVariable<F>>
   : TKey extends `[${infer F}]`
-    ? Var<F> extends never
+    ? PrepareVariable<F> extends never
       ? never
-      : Nullable<Array<Var<F>>>
+      : Nullable<Array<PrepareVariable<F>>>
     : Nullable<Variable<TKey>>
+
+type UnpackDollar<T extends Values<VariablesDefinition<string>>> =
+  T extends (($: VariablesDefinitionDollar) => DollarPackage<infer U extends string, boolean>)
+    ? U
+    : T

@@ -1,15 +1,14 @@
-import type { VariableDefinitionNode } from 'graphql'
-import { Kind, parseConstValue, parseType } from 'graphql'
+import { Kind, parseConstValue, parseType, type VariableDefinitionNode } from 'graphql'
+import { DirectivesSymbol, VariableTypeSymbol } from '../internal/symbol'
 import { parseDirective } from './directive'
-import { type DollarContext, initVariableDollar, type VariableDollar } from './dollar'
+import { type DollarPackage, initVariableDefinitionDollar, type VariableDefinitionDollar } from './dollar'
 
-const VariableDefineSymbol = Symbol('VariableType')
-
-export type ProvideVariable<T extends string> =
-  Record<string, T | (($: VariableDollar) => DollarContext<T>)>
+export type VariableDefinitionDollarPackage<T extends string> = ($: VariableDefinitionDollar) => DollarPackage<T>
+export type VariableDefinition<T extends string> = Record<string, T | VariableDefinitionDollarPackage<T>>
 
 export class Variable<T extends string> {
-  [VariableDefineSymbol]?: T
+  [VariableTypeSymbol]?: T
+
   #name: string
   constructor(name: string) {
     this.#name = name
@@ -21,25 +20,28 @@ export class Variable<T extends string> {
 }
 
 export type PrepareVariables<
-  T extends ProvideVariable<string>,
+  T extends VariableDefinition<string>,
 > = {
-  [K in keyof T]: T[K] extends ProvideVariable<infer Value extends string>
-    ? Value extends `${infer Type} = ${infer _Default}`
+  [K in keyof T]: T[K] extends VariableDefinitionDollarPackage<infer U>
+    ? U extends `${infer Type} = ${infer _Default}`
       ? Variable<Type>
-      : Variable<Value>
-    : never
+      : Variable<U>
+    : T[K] extends string
+      ? T[K] extends `${infer Type} = ${infer _Default}`
+        ? Variable<Type>
+        : Variable<T[K]>
+      : never
 }
 
 export function parseVariables(
-  vars: ProvideVariable<string>,
+  defs: VariableDefinition<string>,
 ): VariableDefinitionNode[] {
-  return Object.entries(vars).map(([name, def]) => {
-    const { content, directives } = typeof def === 'function'
-      ? def(initVariableDollar())
-      : {
-          content: def,
-          directives: [],
-        }
+  return Object.entries(defs).map(([name, def]) => {
+    const res = typeof def === 'function'
+      ? def(initVariableDefinitionDollar())
+      : { content: def, [DirectivesSymbol]: undefined }
+    const content = res.content
+    const directives = res[DirectivesSymbol]
 
     const [type, defaultValue] = content.split('=').map(s => s.trim())
 
@@ -47,10 +49,7 @@ export function parseVariables(
       kind: Kind.VARIABLE_DEFINITION,
       variable: {
         kind: Kind.VARIABLE,
-        name: {
-          kind: Kind.NAME,
-          value: name,
-        },
+        name: { kind: Kind.NAME, value: name },
       },
       type: parseType(type, { noLocation: true }),
       defaultValue: defaultValue
@@ -58,5 +57,90 @@ export function parseVariables(
         : undefined,
       directives: parseDirective(directives, true),
     }
+  })
+}
+
+if (import.meta.vitest) {
+  const { it, expect } = import.meta.vitest
+
+  it('Variable', () => {
+    expect(new Variable('hi').name).toBe('hi')
+    expect(new Variable('hi')[VariableTypeSymbol]).toBe(undefined)
+  })
+
+  it('parseVariables', () => {
+    expect(parseVariables({ username: 'String!' })).toMatchObject([{
+      kind: Kind.VARIABLE_DEFINITION,
+      variable: {
+        kind: Kind.VARIABLE,
+        name: { kind: Kind.NAME, value: 'username' },
+      },
+      type: {
+        kind: Kind.NON_NULL_TYPE,
+        type: {
+          kind: Kind.NAMED_TYPE,
+          name: { kind: Kind.NAME, value: 'String' },
+        },
+      },
+      defaultValue: undefined,
+      directives: [],
+    }])
+    expect(parseVariables({ username: 'String = "admin"' })).toMatchObject([{
+      kind: Kind.VARIABLE_DEFINITION,
+      variable: {
+        kind: Kind.VARIABLE,
+        name: { kind: Kind.NAME, value: 'username' },
+      },
+      type: {
+        kind: Kind.NAMED_TYPE,
+        name: { kind: Kind.NAME, value: 'String' },
+      },
+      defaultValue: { kind: Kind.STRING, block: false, value: 'admin' },
+      directives: [],
+    }])
+    expect(parseVariables({ username: $ => $('String!') })).toMatchObject([{
+      kind: Kind.VARIABLE_DEFINITION,
+      variable: {
+        kind: Kind.VARIABLE,
+        name: { kind: Kind.NAME, value: 'username' },
+      },
+      type: {
+        kind: Kind.NON_NULL_TYPE,
+        type: {
+          kind: Kind.NAMED_TYPE,
+          name: { kind: Kind.NAME, value: 'String' },
+        },
+      },
+      defaultValue: undefined,
+      directives: [],
+    }])
+    expect(parseVariables({
+      username: $ => $('String!').withDirective(
+        ['@ignore', { if: true }],
+      ),
+    })).toMatchObject([{
+      kind: Kind.VARIABLE_DEFINITION,
+      variable: {
+        kind: Kind.VARIABLE,
+        name: { kind: Kind.NAME, value: 'username' },
+      },
+      type: {
+        kind: Kind.NON_NULL_TYPE,
+        type: {
+          kind: Kind.NAMED_TYPE,
+          name: { kind: Kind.NAME, value: 'String' },
+        },
+      },
+      defaultValue: undefined,
+      directives: [{
+        kind: Kind.DIRECTIVE,
+        name: { kind: Kind.NAME, value: 'ignore' },
+        arguments: [{
+          kind: Kind.ARGUMENT,
+          value: { kind: Kind.BOOLEAN, value: true },
+          name: { kind: Kind.NAME, value: 'if' },
+        }],
+      }],
+    }])
   })
 }
