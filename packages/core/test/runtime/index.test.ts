@@ -173,4 +173,40 @@ describe('@gqfn/core/runtime', () => {
       ]),
     }]),
   ))
+
+  // nested fragment
+  const UserBasicFields = gqfn.partial('fragment UserBasicFields', 'on User', ['id', 'name', 'avatar'])
+  const LevelFields = gqfn.partial('fragment LevelFields', 'on Level', ['id', 'name', { user: $ => $([{ ...UserBasicFields($) }]) }])
+  it('nested fragment', fixture(
+    gql => gql(`
+      query FetchLevel($id: Int = 127549) {
+        level(id: $id) {
+         ...LevelFields
+        }
+      }
+
+      fragment UserBasicFields on User {
+        id
+        name
+        avatar
+      }
+
+      fragment LevelFields on Level {
+        id
+        name
+        user {
+         ...UserBasicFields
+        }
+      }
+    `),
+    gqfn('query FetchLevel', {
+      id: 'Int = 127549',
+    }, [{
+      level: $ => $({ id: $.id }, [
+        {
+          ...LevelFields($),
+        },
+      ]),
+    }]),
+  ))
 })
