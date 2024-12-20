@@ -6,7 +6,7 @@ import { gqfn } from './runtime'
 export type { ResultOf, TypedDocumentNode, VariablesOf } from './types'
 
 export function createGQFn<T extends UserSchemaTypes>(): GraphQueryFunction<T> {
-  return gqfn as any
+  return gqfn as unknown as GraphQueryFunction<T>
 }
 
 export function useGQFnSchema<T extends string | (keyof Schemas & string)>(url: T): LoadGQFnFromUrl<T>

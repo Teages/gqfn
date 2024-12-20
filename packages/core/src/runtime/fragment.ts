@@ -106,6 +106,10 @@ function parseArgs(...args: any[]): {
 function parseBaseDefinition(
   def: FragmentBaseDefinition,
 ): string {
+  if (!def.startsWith('on ')) {
+    throw new Error(`Invalid fragment base definition: "${def}"`)
+  }
+
   return def.slice(3).trim()
 }
 
@@ -113,10 +117,15 @@ function parseFragmentName(
   def: FragmentName,
 ): { type: FragmentType, name: string } {
   const [type, namePart] = def.split(' ', 2)
+  const name = namePart.trim()
+
+  if (type !== 'fragment' || !name) {
+    throw new Error(`Invalid fragment name definition: "${def}"`)
+  }
 
   return {
     type: type as FragmentType,
-    name: namePart.trim(),
+    name,
   }
 }
 

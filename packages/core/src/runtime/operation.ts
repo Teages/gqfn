@@ -92,7 +92,7 @@ function parseArgs(...args: any[]): {
       const directives = arg_2
       return { nameDef, variables: {}, selection, directives: () => directives }
     }
-    default: { // case 4:
+    case 4: {
       const [nameDef, variables, selection, directives = []] = args
       return {
         nameDef,
@@ -101,6 +101,9 @@ function parseArgs(...args: any[]): {
         directives: typeof directives === 'function' ? directives : () => directives,
       }
     }
+    default:{
+      throw new Error('Invalid arguments')
+    }
   }
 }
 
@@ -108,6 +111,10 @@ function parseOperationName(
   def: OperationName,
 ): { type: OperationTypes, name?: string } {
   const [type, namePart] = def.split(' ', 2)
+
+  if (!['query', 'mutation', 'subscription'].includes(type)) {
+    throw new Error(`Invalid operation type: ${type}`)
+  }
 
   return {
     type: type as OperationTypes,

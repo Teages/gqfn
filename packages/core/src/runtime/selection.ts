@@ -66,8 +66,12 @@ function buildInlineFragment(
   argNodes: ArgumentNode[],
   directiveNodes: readonly DirectiveNode[],
 ): InlineFragmentNode {
-  const type = key.startsWith('... on')
-    ? /... on (\w+)/.exec(key)![1].trim()
+  if (!key.startsWith('... on') && key !== '...') {
+    throw new Error('Unexpected inline fragment type')
+  }
+  const match = /^... on (\w+)$/.exec(key)
+  const type = match
+    ? match[1].trim()
     : undefined // self-referencing
 
   if (!childNode) {
