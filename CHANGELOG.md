@@ -1,6 +1,40 @@
 # Changelog
 
 
+## v0.4.0
+
+[compare changes](https://github.com/Teages/gqfn/compare/v0.3.0...v0.4.0)
+
+### 🚀 Enhancements
+
+- ⚠️  Refactor to support graphql fragment ([fb60031](https://github.com/Teages/gqfn/commit/fb60031))
+
+### 🩹 Fixes
+
+- **docs:** Fix twoslash types ([ab704b2](https://github.com/Teages/gqfn/commit/ab704b2))
+
+### 💅 Refactors
+
+- **core:** Clean up ([f8e6302](https://github.com/Teages/gqfn/commit/f8e6302))
+
+### 🏡 Chore
+
+- **docs:** Fix cloudflare build ([219c79d](https://github.com/Teages/gqfn/commit/219c79d))
+- **nuxt:** Move to nuxt 4 directory structure ([401c4f2](https://github.com/Teages/gqfn/commit/401c4f2))
+- **core:** Remove global context ([1278757](https://github.com/Teages/gqfn/commit/1278757))
+- **lint:** Apply lint fix ([c5ae498](https://github.com/Teages/gqfn/commit/c5ae498))
+- Upgrade dependence ([2dad13a](https://github.com/Teages/gqfn/commit/2dad13a))
+- **nuxt:** Use vue-tsc 3fb59af ([022bc4c](https://github.com/Teages/gqfn/commit/022bc4c))
+- **nuxt:** Downgrade typescript ([5ac60ee](https://github.com/Teages/gqfn/commit/5ac60ee))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Refactor to support graphql fragment ([fb60031](https://github.com/Teages/gqfn/commit/fb60031))
+
+### ❤️ Contributors
+
+- Teages ([@Teages](http://github.com/Teages))
+
 ## v0.3.0
 
 [compare changes](https://github.com/Teages/gqfn/compare/v0.2.1...v0.3.0)
