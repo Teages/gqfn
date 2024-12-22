@@ -50,7 +50,6 @@ export interface GraphQueryFunctionCore<
       >,
       Selection
     >,
-    directives?: Array<DirectiveInput> | DirectivesInputWithDollar<Record<string, never>>,
   ): TypedDocumentNode<
     ParseSelectionSet<Schema['Objects'][GetOperationType<Name>], Selection>,
     Record<string, never>

@@ -31,7 +31,6 @@ export interface GraphQueryFunctionFragment<
       >,
       Selection
     >,
-    directives?: Array<DirectiveInput> | DirectivesInputWithDollar<Record<string, never>>,
   ): TypedDocumentNode<
     ParseSelectionSet<FragmentBase<Schema>[Type], Selection>,
     Record<string, never>
