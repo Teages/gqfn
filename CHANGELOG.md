@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.4.1
+
+[compare changes](https://github.com/Teages/gqfn/compare/v0.4.0...v0.4.1)
+
+### 🏡 Chore
+
+- **core:** Disallow directives input in simply params ([2c5d8ff](https://github.com/Teages/gqfn/commit/2c5d8ff))
+
+### ❤️ Contributors
+
+- Teages ([@Teages](http://github.com/Teages))
+
 ## v0.4.0
 
 [compare changes](https://github.com/Teages/gqfn/compare/v0.3.0...v0.4.0)
