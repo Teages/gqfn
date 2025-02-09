@@ -1,9 +1,10 @@
+import type { SchemaConfig } from '../../src/cli'
 import fs from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'pathe'
-import { describe, expect, it } from 'vitest'
 
-import { type SchemaConfig, sync } from '../../src/cli'
+import { describe, expect, it } from 'vitest'
+import { sync } from '../../src/cli'
 
 describe.todo('@gqfn/core/cli', () => {
   const fixtures = [

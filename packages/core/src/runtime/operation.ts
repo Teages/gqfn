@@ -1,10 +1,13 @@
 import type { DocumentNode } from 'graphql'
+import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
+import type { SelectionSetComplex } from './selection'
+import type { PrepareVariables, VariableDefinition } from './variable'
 import { Kind, OperationTypeNode } from 'graphql'
 import { createDocumentNodeContext } from './context'
-import { type DirectiveInput, type DirectivesInputWithDollar, parseDirective } from './directive'
+import { parseDirective } from './directive'
 import { initDirectiveDollar } from './dollar'
-import { parseSelectionSetComplex, type SelectionSetComplex } from './selection'
-import { parseVariables, type PrepareVariables, type VariableDefinition } from './variable'
+import { parseSelectionSetComplex } from './selection'
+import { parseVariables } from './variable'
 
 export type OperationTypes = 'query' | 'mutation' | 'subscription'
 export type OperationName = OperationTypes | `${OperationTypes} ${string}`

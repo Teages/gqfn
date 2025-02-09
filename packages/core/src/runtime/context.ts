@@ -1,4 +1,5 @@
-import { type ExecutableDefinitionNode, Kind } from 'graphql'
+import type { ExecutableDefinitionNode } from 'graphql'
+import { Kind } from 'graphql'
 
 export interface DocumentNodeContext {
   definitions: ExecutableDefinitionNode[]

@@ -1,7 +1,9 @@
-import { Kind, parseConstValue, parseType, type VariableDefinitionNode } from 'graphql'
+import type { VariableDefinitionNode } from 'graphql'
+import type { DollarPackage, VariableDefinitionDollar } from './dollar'
+import { Kind, parseConstValue, parseType } from 'graphql'
 import { DirectivesSymbol, VariableTypeSymbol } from '../internal/symbol'
 import { parseDirective } from './directive'
-import { type DollarPackage, initVariableDefinitionDollar, type VariableDefinitionDollar } from './dollar'
+import { initVariableDefinitionDollar } from './dollar'
 
 export type VariableDefinitionDollarPackage<T extends string> = ($: VariableDefinitionDollar) => DollarPackage<T>
 export type VariableDefinition<T extends string> = Record<string, T | VariableDefinitionDollarPackage<T>>

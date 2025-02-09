@@ -1,7 +1,8 @@
+import type { Saying, User } from './data'
 import SchemaBuilder from '@pothos/core'
-import { DateTimeResolver } from 'graphql-scalars'
 
-import { friendships, type Saying, sayings, type User, users } from './data'
+import { DateTimeResolver } from 'graphql-scalars'
+import { friendships, sayings, users } from './data'
 
 export const schema = createSchema()
 
@@ -46,7 +47,7 @@ function createSchema() {
         },
         resolve: ({ id }, { category }) => category
           ? sayings.filter(saying => saying.ownerId === id)
-            .filter(saying => saying.category === category)
+              .filter(saying => saying.category === category)
           : sayings.filter(saying => saying.ownerId === id),
       }),
       friends: t.field({

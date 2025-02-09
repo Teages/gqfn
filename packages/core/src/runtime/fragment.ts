@@ -1,11 +1,13 @@
 import type { DocumentNode } from 'graphql'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
+import type { SelectionSetComplex } from './selection'
+import type { PrepareVariables, VariableDefinition } from './variable'
 import { Kind } from 'graphql'
 import { createDocumentNodeContext } from './context'
 import { parseDirective } from './directive'
 import { initDirectiveDollar } from './dollar'
-import { parseSelectionSetComplex, type SelectionSetComplex } from './selection'
-import { parseVariables, type PrepareVariables, type VariableDefinition } from './variable'
+import { parseSelectionSetComplex } from './selection'
+import { parseVariables } from './variable'
 
 export type FragmentType = 'fragment'
 export type FragmentName = `${FragmentType} ${string}`

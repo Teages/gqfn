@@ -1,9 +1,11 @@
+import type { EnumFunction } from './enum'
 import type { GraphQueryFunctionFragment } from './fragment'
 import type { GraphQueryFunctionCore } from './operation'
-import { createEnumFunction, type EnumFunction } from './enum'
+import type { GraphQueryPartial } from './partial'
+import { createEnumFunction } from './enum'
 import { createGraphQueryFunctionFragment } from './fragment'
 import { createGraphQueryFunctionCore } from './operation'
-import { createGraphQueryPartial, type GraphQueryPartial } from './partial'
+import { createGraphQueryPartial } from './partial'
 
 export interface GraphQueryFunction extends GraphQueryFunctionCore {
   gqfn: GraphQueryFunctionCore

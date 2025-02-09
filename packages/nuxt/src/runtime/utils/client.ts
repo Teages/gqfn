@@ -1,9 +1,12 @@
+import type { MaybeRefOrGetter } from '#imports'
 import type { ResultOf, TypedDocumentNode, VariablesOf } from '@gqfn/core/types'
-import { type MaybeRefOrGetter, toValue } from '#imports'
-import { type ClientOptions, createClient } from '@teages/oh-my-graphql'
+import type { ClientOptions } from '@teages/oh-my-graphql'
+import type { ClientOptions as WSClientOptions } from 'graphql-ws'
+import { toValue } from '#imports'
+import { createClient } from '@teages/oh-my-graphql'
 import { destr } from 'destr'
 import { print } from 'graphql'
-import { createClient as createWSClient, type ClientOptions as WSClientOptions } from 'graphql-ws'
+import { createClient as createWSClient } from 'graphql-ws'
 
 export function createHandler(options?: HandlerOptions) {
   return async <
