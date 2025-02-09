@@ -1,7 +1,7 @@
 import type { Socket } from 'node:net'
 import { createServer } from 'node:http'
 import { checkPort, waitForPort } from 'get-port-please'
-import { useServer } from 'graphql-ws/lib/use/ws'
+import { useServer } from 'graphql-ws/use/ws'
 import { createYoga } from 'graphql-yoga'
 import { WebSocketServer } from 'ws'
 import { schema } from './schema'
@@ -25,20 +25,20 @@ function buildApp() {
   useServer({
     execute: (args: any) => args.rootValue.execute(args),
     subscribe: (args: any) => args.rootValue.subscribe(args),
-    onSubscribe: async (ctx, msg) => {
+    onSubscribe: async (ctx, _id, payload) => {
       const { schema, execute, subscribe, contextFactory, parse, validate }
           = yoga.getEnveloped({
             ...ctx,
             req: ctx.extra.request,
             socket: ctx.extra.socket,
-            params: msg.payload,
+            params: payload,
           })
 
       const args = {
         schema,
-        operationName: msg.payload.operationName,
-        document: parse(msg.payload.query),
-        variableValues: msg.payload.variables,
+        operationName: payload.operationName,
+        document: parse(payload.query),
+        variableValues: payload.variables,
         contextValue: await contextFactory(),
         rootValue: {
           execute,

@@ -1,5 +1,5 @@
 // @ts-check
-import { createConfigForNuxt } from '@nuxt/eslint-config/flat'
+import { createConfigForNuxt } from '@nuxt/eslint-config'
 import { shared } from '../../eslint.config.mjs'
 
 // Run `npx @eslint/config-inspector` to inspect the resolved config interactively
