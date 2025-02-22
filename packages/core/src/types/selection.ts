@@ -5,7 +5,7 @@ import type { DollarPackage, DollarPayload, InlineFragmentDollar, SelectionSetDo
 export type PrepareSelectionField<
   T extends TypeObject<string, any, any>,
 > = WithAlias<keyof {
-  [K in keyof T['Fields'] as true extends CanFieldBeSimplySelected<T['Fields'][K]> ? K : never]: true
+  [K in keyof T['Fields'] as true extends PrepareSelectionSetSimple<T['Fields'][K]> ? K : never]: true
 } | '__typename'>
 
 export type PrepareSelectionObject<
@@ -23,11 +23,7 @@ export type PrepareSelectionObjectForFields<
 export type PrepareField<
   T extends Field<string, any, any>,
   Variables extends DollarPayload,
-> = (
-  CanFieldBeSimplySelected<T> extends true
-    ? true
-    : never
-) | ((
+> = PrepareSelectionSetSimple<T> | ((
   $: SelectionSetDollar<T, Variables>
 ) => DollarPackage<PrepareFieldResult<T, Variables>, boolean>)
 export type PrepareFieldResult<
@@ -60,12 +56,6 @@ export type PrepareInlineFragment<
   $: InlineFragmentDollar<T, Variables>
 ) => DollarPackage<PrepareSelectionSetComplex<T, Variables>, boolean>
 
-export type PrepareSelectionSetSimple<
-  T extends Field<string, any, any>,
-> = CanFieldBeSimplySelected<T> extends true
-  ? true
-  : never
-
 export type PrepareSelectionSetComplex<
   T extends TypeObject<string, any, any>,
   Variables extends DollarPayload,
@@ -87,13 +77,14 @@ export type PrepareOperationSelectionSet<
  * 1. It has no arguments (or can be no arguments), and
  * 2. It has no subfields (not a TypeObject)
  */
-export type CanFieldBeSimplySelected<
+export type PrepareSelectionSetSimple<
   T extends Field<string, any, any>,
 > = IsRequiredArguments<T> extends false
   ? IsTypeObjectKeys<T> extends true
     ? never
     : true
   : never
+
 export type IsRequiredArguments<
   T extends Field<string, any, any>,
 > = Record<string, never> extends PrepareSelectionArgument<T['Argument']>

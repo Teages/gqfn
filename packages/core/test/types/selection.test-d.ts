@@ -1,5 +1,5 @@
 import type { Field } from '../../src/schema'
-import type { CanFieldBeSimplySelected, IsHasArguments, IsRequiredArguments, IsTypeObjectKeys, PrepareField, PrepareOperationSelectionSet, PrepareSelectionField, PrepareSelectionObject, PrepareSelectionObjectForFields, PrepareSelectionObjectForInlineFragment, PrepareSelectionSetComplex } from '../../src/types/selection'
+import type { IsHasArguments, IsRequiredArguments, IsTypeObjectKeys, PrepareField, PrepareOperationSelectionSet, PrepareSelectionField, PrepareSelectionObject, PrepareSelectionObjectForFields, PrepareSelectionObjectForInlineFragment, PrepareSelectionSetComplex, PrepareSelectionSetSimple } from '../../src/types/selection'
 import type { Arg, Data, ItemWithId, Mutation, Query, Res, Subscription, User } from './schema'
 import { describe, expectTypeOf, test } from 'vitest'
 
@@ -23,7 +23,8 @@ describe('types/selection', () => {
     tester_0($ => $(true))
 
     const tester_1 = (_selection: PrepareField<Field<'users', Res<'[User!]!'>>, Record<string, never>>) => null
-    tester_1(true) // ???
+    // @ts-expect-error can't be simply select
+    tester_1(true)
   })
   test('PrepareFieldResult', () => { /** equal to `PrepareField` */ })
   test('PrepareSelectionObjectForInlineFragment', () => {
@@ -40,7 +41,6 @@ describe('types/selection', () => {
     tester_2({ '...': $ => $(['email']) })
   })
   test('PrepareInlineFragment', () => { /** tested in `PrepareSelectionObjectForInlineFragment` */ })
-  test('PrepareSelectionSetSimple', () => { /** alias of `CanFieldBeSimplySelected` */ })
   test('PrepareSelectionSetComplex', () => {
     const tester = (_selection: PrepareSelectionSetComplex<User, Record<string, never>>) => null
     tester([])
@@ -78,19 +78,19 @@ describe('types/selection', () => {
   /**
    * Utils
    */
-  test('CanFieldBeSimplySelected', () => {
-    expectTypeOf<CanFieldBeSimplySelected<Field<'users', Res<'[User!]!'>>>>()
+  test('PrepareSelectionSetSimple', () => {
+    expectTypeOf<PrepareSelectionSetSimple<Field<'users', Res<'[User!]!'>>>>()
       .toEqualTypeOf<never>()
-    expectTypeOf<CanFieldBeSimplySelected<Field<'users', Res<'[User!]!'>, { id: Arg<'Int!'> }>>>()
+    expectTypeOf<PrepareSelectionSetSimple<Field<'users', Res<'[User!]!'>, { id: Arg<'Int!'> }>>>()
       .toEqualTypeOf<never>()
-    expectTypeOf<CanFieldBeSimplySelected<Field<'users', Res<'[User!]!'>, { id: Arg<'Int'> }>>>()
+    expectTypeOf<PrepareSelectionSetSimple<Field<'users', Res<'[User!]!'>, { id: Arg<'Int'> }>>>()
       .toEqualTypeOf<never>()
 
-    expectTypeOf<CanFieldBeSimplySelected<Field<'username', Res<'String!'>>>>()
+    expectTypeOf<PrepareSelectionSetSimple<Field<'username', Res<'String!'>>>>()
       .toEqualTypeOf<true>()
-    expectTypeOf<CanFieldBeSimplySelected<Field<'username', Res<'String!'>, { id: Arg<'Int'> }>>>()
+    expectTypeOf<PrepareSelectionSetSimple<Field<'username', Res<'String!'>, { id: Arg<'Int'> }>>>()
       .toEqualTypeOf<true>()
-    expectTypeOf<CanFieldBeSimplySelected<Field<'username', Res<'String!'>, { id: Arg<'Int!'> }>>>()
+    expectTypeOf<PrepareSelectionSetSimple<Field<'username', Res<'String!'>, { id: Arg<'Int!'> }>>>()
       .toEqualTypeOf<never>()
   })
   test('IsRequiredArguments', () => {
