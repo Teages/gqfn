@@ -25,6 +25,13 @@ describe('types/selection', () => {
     const tester_1 = (_selection: PrepareField<Field<'users', Res<'[User!]!'>>, Record<string, never>>) => null
     // @ts-expect-error can't be simply select
     tester_1(true)
+
+    const tester_2 = (_selection: PrepareField<Field<'greeting', Res<'String!'>, { name: Arg<'String'> }>, Record<string, never>>) => null
+    tester_2(true)
+
+    const tester_3 = (_selection: PrepareField<Field<'greeting', Res<'String!'>, { name: Arg<'String!'> }>, Record<string, never>>) => null
+    // @ts-expect-error can't be simply select
+    tester_3(true)
   })
   test('PrepareFieldResult', () => { /** equal to `PrepareField` */ })
   test('PrepareSelectionObjectForInlineFragment', () => {
