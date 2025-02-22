@@ -27,5 +27,5 @@ const query = gqfn('query FetchAnime', {
 
 console.log('query:', print(query))
 
-const res = await client.request(print(query), { })
+const res = await client.request(query, { })
 console.log('result:', JSON.stringify(res, null, 2))
