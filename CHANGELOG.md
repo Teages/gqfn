@@ -1,6 +1,33 @@
 # Changelog
 
 
+## v0.5.0
+
+[compare changes](https://github.com/Teages/gqfn/compare/v0.4.1...v0.5.0)
+
+### 🩹 Fixes
+
+- **ci:** Fix autofix ([0a2cc04](https://github.com/Teages/gqfn/commit/0a2cc04))
+- Type object should not be simply selected ([9ad631e](https://github.com/Teages/gqfn/commit/9ad631e))
+
+### 🏡 Chore
+
+- Upgrade node to 22 ([eefd61a](https://github.com/Teages/gqfn/commit/eefd61a))
+- **lint:** Apply lint fix ([3d8b12f](https://github.com/Teages/gqfn/commit/3d8b12f))
+- ⚠️  Drop cjs support ([b1e7318](https://github.com/Teages/gqfn/commit/b1e7318))
+
+### ✅ Tests
+
+- Add test for PrepareField ([a54086f](https://github.com/Teages/gqfn/commit/a54086f))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Drop cjs support ([b1e7318](https://github.com/Teages/gqfn/commit/b1e7318))
+
+### ❤️ Contributors
+
+- Teages ([@Teages](http://github.com/Teages))
+
 ## v0.4.1
 
 [compare changes](https://github.com/Teages/gqfn/compare/v0.4.0...v0.4.1)
