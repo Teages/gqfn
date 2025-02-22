@@ -1,4 +1,3 @@
-import type { Nullable } from '../internal/utils'
 import type { EnumPackage } from '../runtime/enum'
 import type { DefineSchema } from './define'
 import type { BaseType } from './types'
@@ -16,7 +15,7 @@ type FindInput<
     & Schema['Inputs']
   )[TKey],
 > = TInput extends BaseType<any, string>
-  ? Nullable<TInput>
+  ? TInput | null | undefined
   : never
 
 export type ArgOf<
@@ -27,7 +26,7 @@ export type ArgOf<
   : TKey extends `[${infer F}]`
     ? ArgOf<Schema, F> extends never
       ? never
-      : Nullable<Array<ArgOf<Schema, F>>>
+      : Array<ArgOf<Schema, F>> | null | undefined
     : FindInput<Schema, TKey>
 
 export type ParseArg<
@@ -71,7 +70,7 @@ type FindOutput<
     & Schema['Unions']
   )[TKey],
 > = TOutput extends BaseType<any, string>
-  ? Nullable<TOutput>
+  ? TOutput | null | undefined
   : never
 
 export type ResOf<
@@ -82,5 +81,5 @@ export type ResOf<
   : TKey extends `[${infer F}]`
     ? ResOf<Schema, F> extends never
       ? never
-      : Nullable<Array<ResOf<Schema, F>>>
+      : Array<ResOf<Schema, F>> | null | undefined
     : FindOutput<Schema, TKey>

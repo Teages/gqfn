@@ -1,13 +1,15 @@
-import type { FlatRecord, Nullable, UnionToIntersection, Values } from '../../internal/utils'
+import type { Expand, FlatRecord, UnionToIntersection, Values } from '../../internal/utils'
 import type { EnumType, Field, ScalarType, TypeObject } from '../../schema'
 import type { DollarPackage } from '../dollar'
 
 export type ParseSelectionSet<
   T extends TypeObject<string, any, any> | undefined,
   Selection,
-> = T extends TypeObject<string, any, any>
-  ? ParseSelectionSetComplex<T, Selection>
-  : never
+> = Expand<
+  T extends TypeObject<string, any, any>
+    ? ParseSelectionSetComplex<T, Selection>
+    : never
+>
 
 export type ParseSelectionSetComplex<
   T extends TypeObject<string, any, any>,
@@ -54,7 +56,7 @@ type ParseSelectionObjectForField<T, Selection> =
 
 type ParseFieldReturn<Ret, Selection> =
   null | undefined extends Ret
-    ? Nullable<ParseFieldReturn<NonNullable<Ret>, Selection>>
+    ? ParseFieldReturn<NonNullable<Ret>, Selection> | null | undefined
     : Ret extends Array<infer T>
       ? Array<ParseFieldReturn<T, Selection>>
       : ParseSelectionObjectItem<Ret, Selection>
@@ -114,7 +116,7 @@ export type AnalyzedSelectionSetComplex<
 
 export type ParseOutput<T> =
   null | undefined extends T
-    ? Nullable<ParseOutput<NonNullable<T>>>
+    ? ParseOutput<NonNullable<T>> | null | undefined
     : T extends Array<infer U>
       ? Array<ParseOutput<U>>
       : _ParseOutput<T>

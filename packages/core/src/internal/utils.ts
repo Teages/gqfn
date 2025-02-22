@@ -1,12 +1,4 @@
 /**
- * Make type nullable.
- * @example
- * type A = string
- * type B = Nullable<A> // string | null | undefined
- */
-export type Nullable<T> = T | null | undefined
-
-/**
  * Flatten record type.
  * @example
  * type A = { a: number } & { b: string } & { c: { d: boolean } }
@@ -88,3 +80,11 @@ export type TrimAfter<T, S extends string = DefaultSpaces> =
  */
 export type Trim<T, S extends string = DefaultSpaces> =
   TrimBefore<TrimAfter<T, S>, S>
+
+export type Expand<T> = T extends (...args: infer A) => infer R
+  ? (...args: Expand<A>) => Expand<R>
+  : T extends object
+    ? T extends infer O
+      ? { [K in keyof O]: Expand<O[K]> }
+      : never
+    : T

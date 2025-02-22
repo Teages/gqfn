@@ -1,5 +1,5 @@
 import type { VariableIdentitySymbol } from '../internal/symbol'
-import type { Nullable, RelaxedOptional, Trim, Values } from '../internal/utils'
+import type { RelaxedOptional, Trim, Values } from '../internal/utils'
 import type { ArgOf, BaseType, ParseArg, UserSchemaTypes } from '../schema'
 import type { DollarPackage, VariablesDefinitionDollar } from './dollar'
 
@@ -51,8 +51,8 @@ type PrepareVariable<
   : TKey extends `[${infer F}]`
     ? PrepareVariable<F> extends never
       ? never
-      : Nullable<Array<PrepareVariable<F>>>
-    : Nullable<Variable<TKey>>
+      : Array<PrepareVariable<F>> | null | undefined
+    : Variable<TKey> | null | undefined
 
 type UnpackDollar<T extends Values<VariablesDefinition<string>>> =
   T extends (($: VariablesDefinitionDollar) => DollarPackage<infer U extends string, boolean>)
