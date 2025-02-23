@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.5.1
+
+[compare changes](https://github.com/Teages/gqfn/compare/v0.5.0...v0.5.1)
+
+### 🚀 Enhancements
+
+- **types:** Expand output types ([02dfc1a](https://github.com/Teages/gqfn/commit/02dfc1a))
+
+### 🏡 Chore
+
+- Fix playground types ([51e9154](https://github.com/Teages/gqfn/commit/51e9154))
+
+### ❤️ Contributors
+
+- Teages ([@Teages](http://github.com/Teages))
+
 ## v0.5.0
 
 [compare changes](https://github.com/Teages/gqfn/compare/v0.4.1...v0.5.0)
