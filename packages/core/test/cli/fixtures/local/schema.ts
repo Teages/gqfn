@@ -155,7 +155,7 @@ function createSchema() {
         args: {
           from: t.arg.int({ required: true }),
         },
-        async *subscribe(_p, { from }) {
+        async* subscribe(_p, { from }) {
           for (let i = from; i >= 0; i--) {
             yield i
             if (i !== 0) {
