@@ -31,24 +31,25 @@
     "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit",
     "test:prepare": "pnpm dev:prepare"
   },
+  "peerDependencies": {
+    "@gqfn/core": "workspace:*"
+  },
   "dependencies": {
-    "@gqfn/core": "workspace:*",
     "@nuxt/kit": "^3.16.0"
   },
   "devDependencies": {
+    "@gqfn/core": "workspace:*",
     "@nuxt/devtools": "^2.2.1",
     "@nuxt/eslint-config": "^1.2.0",
     "@nuxt/module-builder": "1.0.0-alpha.1",
     "@nuxt/schema": "^3.16.0",
     "@nuxt/test-utils": "^3.17.2",
-    "@pothos/core": "^4.5.0",
     "@teages/nuxt-simple-graphql-client": "^0.0.1",
     "@types/node": "^22.13.10",
     "@types/ws": "^8.18.0",
     "eslint": "^9.22.0",
     "get-port-please": "^3.1.2",
     "graphql": "^16.10.0",
-    "graphql-yoga": "^5.13.1",
     "nuxt": "^3.16.0",
     "tsx": "^4.19.3",
     "typescript": "~5.8.2",
