@@ -34,14 +34,15 @@ export default defineNuxtModule<ModuleOptions>({
 
     const vfs = useTypeVfs('types/gqfn-schema')
     // add type imports for server
-    nuxt.options.nitro.typescript = nuxt.options.nitro.typescript ?? {}
-    nuxt.options.nitro.typescript.tsConfig = nuxt.options.nitro.typescript.tsConfig ?? {}
-    nuxt.options.nitro.typescript.tsConfig.include = [
-      ...nuxt.options.nitro.typescript.tsConfig.include ?? [],
-      './types/gqfn-schema/**/*',
-    ]
+    nuxt.options.nitro.typescript ??= {}
+    nuxt.options.nitro.typescript.tsConfig ??= {}
+    nuxt.options.nitro.typescript.tsConfig.include ??= []
+    nuxt.options.nitro.typescript.tsConfig.include.push('./types/gqfn-schema')
 
     nuxt.options.alias['#gqfn'] = resolver.resolve('./runtime')
+    nuxt.options.nitro.typescript.tsConfig.compilerOptions ??= {}
+    nuxt.options.nitro.typescript.tsConfig.compilerOptions.paths ??= {}
+    nuxt.options.nitro.typescript.tsConfig.compilerOptions.paths['#gqfn'] = [resolver.resolve('./runtime')]
 
     if (options.clients && options.clients.length > 0) {
       logger.start('Syncing GraphQL schema')
