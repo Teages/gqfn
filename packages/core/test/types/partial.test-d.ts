@@ -44,6 +44,18 @@ describe('types/partial', () => {
     expectTypeOf<Args_1_2>().toEqualTypeOf<{ msg: string }>()
     expectTypeOf<Result_1_2>().toEqualTypeOf<{ user: { id: number } }>()
 
+    const _q1_3 = gqfn(
+      'query Q',
+      { msg: 'String!' },
+      [{
+        users: $ => $([{ ...f1($) }]),
+      }],
+    )
+    type Args_1_3 = VariablesOf<typeof _q1_3>
+    type Result_1_3 = ResultOf<typeof _q1_3>
+    expectTypeOf<Args_1_3>().toEqualTypeOf<{ msg: string }>()
+    expectTypeOf<Result_1_3>().toEqualTypeOf<{ users: { id: number }[] }>()
+
     const f2 = gqfn.partial('fragment A', 'on User', { msg: 'String!' }, ['id'])
     type R2 = RequireOperationPartialData<typeof f2>
     expectTypeOf<R2>().toEqualTypeOf<{ id: number }>()
