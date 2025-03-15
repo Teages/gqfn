@@ -5,11 +5,9 @@ import type { DollarPackage } from '../dollar'
 export type ParseSelectionSet<
   T extends TypeObject<string, any, any> | undefined,
   Selection,
-> = Expand<
-  T extends TypeObject<string, any, any>
-    ? ParseSelectionSetComplex<T, Selection>
-    : never
->
+> = T extends TypeObject<string, any, any>
+  ? Expand<ParseSelectionSetComplex<T, Selection>>
+  : never
 
 export type ParseSelectionSetComplex<
   T extends TypeObject<string, any, any>,
