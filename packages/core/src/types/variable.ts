@@ -22,12 +22,10 @@ export type AcceptVariables<
 > = T extends never
   ? never
   : T extends Array<infer U>
-    ? Array<ParseArg<U>>
+    ? Array<ParseArg<U>> | ParseArg<U>
     : T extends BaseType<any, string>
       ? T['Input']extends Record<string, unknown>
-        ? {
-            [K in keyof T['Input']]: AcceptVariables<T['Input'][K]>
-          }
+        ? { [K in keyof T['Input']]: AcceptVariables<T['Input'][K]> } | Variable<T['Name']>
         : T['Input'] | Variable<T['Name']>
       : T
 
@@ -38,10 +36,8 @@ export type RequireVariables<
   [K in keyof T]: UnpackDollar<T[K]> extends `${infer Type} = ${infer _Default}`
     ? ParseArg<ArgOf<Schema, Trim<Type>>, false> extends never
       ? never
-      : ParseArg<ArgOf<Schema, Type>, false> | undefined
-    : ParseArg<ArgOf<Schema, UnpackDollar<T[K]>>, false> extends never
-      ? never
-      : ParseArg<ArgOf<Schema, UnpackDollar<T[K]>>, false>
+      : ParseArg<ArgOf<Schema, Trim<Type>>, false> | undefined
+    : ParseArg<ArgOf<Schema, UnpackDollar<T[K]>>, false>
 }>
 
 type PrepareVariable<

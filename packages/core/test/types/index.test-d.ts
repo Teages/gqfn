@@ -251,6 +251,17 @@ describe('type', () => {
     expectTypeOf(vars).toEqualTypeOf<{ category: CategoryEnum }>()
     expectTypeOf(res.user.saying[0]).toEqualTypeOf<{ content: string }>()
   })
+
+  test('issues #4', () => {
+    gqfn('mutation AddSaying', {
+      input: 'SayingDataInput!',
+    }, [{
+      addSaying: $ => $(
+        { input: $.input, ownerId: 1 },
+        ['id'],
+      ),
+    }])
+  })
 })
 
 function parse<T, U>(_doc: TypedDocumentNode<T, U>): { vars: U, res: T } {
