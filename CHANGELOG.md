@@ -1,6 +1,40 @@
 # Changelog
 
 
+## v0.6.0
+
+[compare changes](https://github.com/Teages/gqfn/compare/v0.5.1...v0.6.0)
+
+### 🚀 Enhancements
+
+- **types:** Expand output types for partical ([4942338](https://github.com/Teages/gqfn/commit/4942338))
+
+### 🩹 Fixes
+
+- Nitro utils import alias ([d1d66f2](https://github.com/Teages/gqfn/commit/d1d66f2))
+- **ci:** Command not work on unix ([b878f9e](https://github.com/Teages/gqfn/commit/b878f9e))
+- **types:** Accept input variable for input argument ([#8](https://github.com/Teages/gqfn/pull/8))
+
+### 🏡 Chore
+
+- **lint:** Apply automated fixes ([f9b6d72](https://github.com/Teages/gqfn/commit/f9b6d72))
+- ⚠️  Remove client utils from package ([#7](https://github.com/Teages/gqfn/pull/7))
+- **nuxt:** Mark gqfn/core as peer dependency ([acf2dbf](https://github.com/Teages/gqfn/commit/acf2dbf))
+- **ci:** Upgrade node version ([47e8f15](https://github.com/Teages/gqfn/commit/47e8f15))
+
+### ✅ Tests
+
+- Add test for partical with array select ([d1a777f](https://github.com/Teages/gqfn/commit/d1a777f))
+- Update cli snapshots ([b9884db](https://github.com/Teages/gqfn/commit/b9884db))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Remove client utils from package ([#7](https://github.com/Teages/gqfn/pull/7))
+
+### ❤️ Contributors
+
+- Teages ([@Teages](https://github.com/Teages))
+
 ## v0.5.1
 
 [compare changes](https://github.com/Teages/gqfn/compare/v0.5.0...v0.5.1)

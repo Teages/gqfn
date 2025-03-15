@@ -1,7 +1,7 @@
 {
   "name": "gqfn",
   "type": "module",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "private": true,
   "packageManager": "pnpm@10.6.3",
   "license": "MIT",
