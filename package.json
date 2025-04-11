@@ -27,11 +27,11 @@
     "release": "pnpm test:full && pnpm prepack && pnpm changelog:bump && pnpm cli pre-release && git push --follow-tags && pnpm --filter './packages/*' publish"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.10.0",
+    "@antfu/eslint-config": "^4.12.0",
     "@drizzle-team/brocli": "^0.11.0",
     "changelogen": "^0.6.1",
-    "consola": "^3.4.0",
-    "eslint": "^9.22.0",
+    "consola": "^3.4.2",
+    "eslint": "^9.24.0",
     "fast-glob": "^3.3.3",
     "pathe": "^2.0.3",
     "pkg-types": "^2.1.0",
