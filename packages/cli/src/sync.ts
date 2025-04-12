@@ -1,12 +1,11 @@
-import type { DocumentNode, IntrospectionQuery } from 'graphql'
+import type { DocumentNode } from 'graphql'
 import type { ClientConfig, Config, SchemaConfig } from './config'
-import { buildClientSchema, getIntrospectionQuery, GraphQLSchema, printSchema } from 'graphql'
-import { ofetch } from 'ofetch'
 import { murmurHash } from 'ohash'
 
 import { extname, resolve } from 'pathe'
 import { generate } from './codegen'
 import { useLogger } from './logger'
+import { loadSchemaFromJson, loadSchemaFromJsonFile, loadSchemaFromRemote, loadSchemaFromTs } from './utils/schema'
 
 export interface Output {
   filename: string
@@ -72,16 +71,7 @@ async function resolveSchemaOverride(
 ): Promise<string | DocumentNode> {
   if (!opts || opts.type === 'url') {
     const { method, headers } = opts ?? {}
-    const override = opts?.override
-    const { data } = await ofetch<{ data: IntrospectionQuery }>(
-      override ?? url,
-      {
-        method: method ?? 'POST',
-        headers,
-        body: { query: getIntrospectionQuery() },
-      },
-    )
-    return printSchema(buildClientSchema(data))
+    return await loadSchemaFromRemote(opts?.override ?? url, { method, headers })
   }
 
   if (opts.type === 'path') {
@@ -99,44 +89,18 @@ async function resolveSchemaOverride(
     }
 
     if (ext === '.json') {
-      try {
-        const fs = await import('node:fs/promises')
-        return printSchema(buildClientSchema(JSON.parse(await fs.readFile(path, 'utf-8'))))
-      }
-      catch (e) {
-        throw new Error(`Failed to read JSON form ${path}: ${e}`)
-      }
+      return loadSchemaFromJsonFile(path)
     }
 
     if (ext === '.ts' || ext === '.js') {
-      try {
-        const module = await import('importx')
-          .then(x => x.import(path, import.meta.url))
-
-        const names = opts.export ? [opts.export] : ['schema', 'default']
-        for (const name of names) {
-          if (name in module && module[name]) {
-            const schema = module[name]
-            if (typeof schema === 'string') {
-              return schema
-            }
-            if (schema instanceof GraphQLSchema) {
-              return printSchema(schema)
-            }
-          }
-        }
-        throw new Error('Schema not found')
-      }
-      catch (e) {
-        throw new Error(`Failed to read GraphQLSchema form ${path}: ${e}`)
-      }
+      return await loadSchemaFromTs(path, opts.export ? [opts.export] : ['schema', 'default'])
     }
 
     throw new Error(`Unknown schema file type ${ext}: ${path}`)
   }
 
   if (opts.type === 'json') {
-    return printSchema(buildClientSchema(JSON.parse(opts.value)))
+    return loadSchemaFromJson(opts.value)
   }
 
   return opts.value
