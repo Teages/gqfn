@@ -10,7 +10,7 @@
     "url": "git+https://github.com/Teages/gqfn.git"
   },
   "scripts": {
-    "postinstall": "pnpm -C packages/core build",
+    "postinstall": "pnpm -C packages/core build && pnpm -C packages/cli build && pnpm --filter './packages/*' dev:prepare",
     "lint": "eslint --cache . && pnpm --filter=!. lint",
     "lint:fix": "eslint --cache --fix . && pnpm --filter=!. lint:fix",
     "test": "pnpm --filter './packages/*' test",
