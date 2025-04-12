@@ -45,6 +45,9 @@ importers:
 
   docs:
     devDependencies:
+      '@gqfn/cli':
+        specifier: workspace:*
+        version: link:../packages/cli
       '@gqfn/core':
         specifier: workspace:*
         version: link:../packages/core
