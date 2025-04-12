@@ -82,11 +82,14 @@ importers:
         specifier: ^1.6.3
         version: 1.6.3(@algolia/client-search@5.21.0)(@types/node@22.14.1)(change-case@5.4.4)(fuse.js@7.1.0)(postcss@8.5.3)(search-insights@2.17.3)(terser@5.39.0)(typescript@5.8.3)
 
-  packages/core:
+  packages/cli:
     dependencies:
       '@commander-js/extra-typings':
         specifier: ^13.1.0
         version: 13.1.0(commander@13.1.0)
+      '@gqfn/core':
+        specifier: workspace:*
+        version: link:../core
       c12:
         specifier: ^3.0.3
         version: 3.0.3(magicast@0.3.5)
@@ -118,15 +121,43 @@ importers:
         specifier: ^3.24.2
         version: 3.24.2
     devDependencies:
-      '@graphql-typed-document-node/core':
-        specifier: ^3.2.0
-        version: 3.2.0(graphql@16.10.0)
       '@pothos/core':
         specifier: ^4.5.1
         version: 4.5.1(graphql@16.10.0)
-      '@shikijs/vitepress-twoslash':
-        specifier: ^3.2.2
-        version: 3.2.2(@nuxt/kit@3.16.2(magicast@0.3.5))(typescript@5.8.3)
+      '@types/node':
+        specifier: ^22.14.1
+        version: 22.14.1
+      '@vitest/coverage-v8':
+        specifier: ^3.1.1
+        version: 3.1.1(vitest@3.1.1(@types/debug@4.1.12)(@types/node@22.14.1)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(yaml@2.7.1))
+      eslint:
+        specifier: ^9.24.0
+        version: 9.24.0(jiti@2.4.2)
+      graphql-scalars:
+        specifier: ^1.24.2
+        version: 1.24.2(graphql@16.10.0)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+      unbuild:
+        specifier: 3.5.0
+        version: 3.5.0(typescript@5.8.3)(vue-tsc@2.2.8(typescript@5.8.3))(vue@3.5.13(typescript@5.8.3))
+      vitest:
+        specifier: ^3.1.1
+        version: 3.1.1(@types/debug@4.1.12)(@types/node@22.14.1)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(yaml@2.7.1)
+
+  packages/core:
+    dependencies:
+      graphql:
+        specifier: ^16.10.0
+        version: 16.10.0
+    devDependencies:
+      '@gqfn/cli':
+        specifier: workspace:*
+        version: link:../cli
+      '@graphql-typed-document-node/core':
+        specifier: ^3.2.0
+        version: 3.2.0(graphql@16.10.0)
       '@teages/oh-my-graphql':
         specifier: ^0.1.0
         version: 0.1.1(graphql@16.10.0)
@@ -139,34 +170,31 @@ importers:
       eslint:
         specifier: ^9.24.0
         version: 9.24.0(jiti@2.4.2)
-      graphql-request:
-        specifier: ^7.1.2
-        version: 7.1.2(graphql@16.10.0)
-      graphql-scalars:
-        specifier: ^1.24.2
-        version: 1.24.2(graphql@16.10.0)
+      tsx:
+        specifier: ^4.19.3
+        version: 4.19.3
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
       unbuild:
         specifier: 3.5.0
         version: 3.5.0(typescript@5.8.3)(vue-tsc@2.2.8(typescript@5.8.3))(vue@3.5.13(typescript@5.8.3))
-      vitepress:
-        specifier: ^1.6.3
-        version: 1.6.3(@algolia/client-search@5.21.0)(@types/node@22.14.1)(change-case@5.4.4)(fuse.js@7.1.0)(postcss@8.5.3)(search-insights@2.17.3)(terser@5.39.0)(typescript@5.8.3)
       vitest:
         specifier: ^3.1.1
         version: 3.1.1(@types/debug@4.1.12)(@types/node@22.14.1)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(yaml@2.7.1)
 
   packages/nuxt:
     dependencies:
+      '@gqfn/cli':
+        specifier: workspace:*
+        version: link:../cli
+      '@gqfn/core':
+        specifier: workspace:*
+        version: link:../core
       '@nuxt/kit':
         specifier: ^3.16.2
         version: 3.16.2(magicast@0.3.5)
     devDependencies:
-      '@gqfn/core':
-        specifier: workspace:*
-        version: link:../core
       '@nuxt/devtools':
         specifier: ^2.3.2
         version: 2.3.2(vite@6.2.6(@types/node@22.14.1)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(yaml@2.7.1))(vue@3.5.13(typescript@5.8.3))

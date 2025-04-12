@@ -1,8 +1,8 @@
 {
-  "name": "@gqfn/core",
+  "name": "@gqfn/cli",
   "type": "module",
   "version": "0.6.0",
-  "description": "Writing GraphQL queries with type safety and type hints, power by TypeScript.",
+  "description": "The CLI of GQFn",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -13,22 +13,13 @@
     ".": {
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
-    },
-    "./runtime": {
-      "types": "./dist/runtime/index.d.mts",
-      "import": "./dist/runtime/index.mjs"
-    },
-    "./schema": {
-      "types": "./dist/schema/index.d.mts",
-      "import": "./dist/schema/index.mjs"
-    },
-    "./types": {
-      "types": "./dist/types/index.d.mts",
-      "import": "./dist/types/index.mjs"
     }
   },
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
+  "bin": {
+    "gqfn": "./dist/main.mjs"
+  },
   "files": [
     "dist"
   ],
@@ -38,32 +29,38 @@
     "lint:fix": "eslint --cache --fix .",
     "dev": "vitest dev",
     "build": "unbuild",
-    "play": "cd playground && pnpm play",
-    "play:gqfn": "cd playground && pnpm gqfn",
     "test": "vitest run --coverage",
     "test:full": "pnpm test:types && pnpm test",
     "test:types": "tsc --noEmit --skipLibCheck",
     "test:dev": "vitest run"
   },
   "peerDependencies": {
-    "@gqfn/cli": "workspace:*"
+    "@gqfn/core": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@gqfn/cli": {
+    "@gqfn/core": {
       "optional": true
     }
   },
   "dependencies": {
-    "graphql": "^16.10.0"
+    "@commander-js/extra-typings": "^13.1.0",
+    "c12": "^3.0.3",
+    "commander": "^13.1.0",
+    "consola": "^3.4.2",
+    "graphql": "^16.10.0",
+    "importx": "^0.5.2",
+    "ofetch": "^1.4.1",
+    "ohash": "^1.1.4",
+    "pathe": "^2.0.3",
+    "tsx": "^4.19.3",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@gqfn/cli": "workspace:*",
-    "@graphql-typed-document-node/core": "^3.2.0",
-    "@teages/oh-my-graphql": "^0.1.0",
+    "@pothos/core": "^4.5.1",
     "@types/node": "^22.14.1",
     "@vitest/coverage-v8": "^3.1.1",
     "eslint": "^9.24.0",
-    "tsx": "^4.19.3",
+    "graphql-scalars": "^1.24.2",
     "typescript": "^5.8.3",
     "unbuild": "3.5.0",
     "vitest": "^3.1.1"

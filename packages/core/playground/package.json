@@ -3,7 +3,6 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "play": "tsx .",
-    "gqfn": "tsx ../src/cli/main.ts"
+    "play": "tsx ."
   }
 }

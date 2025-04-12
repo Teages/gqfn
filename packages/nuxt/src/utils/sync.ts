@@ -1,5 +1,5 @@
-import type { ClientConfig } from '@gqfn/core/cli'
-import { sync } from '@gqfn/core/cli'
+import type { ClientConfig } from '@gqfn/cli'
+import { sync } from '@gqfn/cli'
 
 interface SyncResult {
   output: Array<{

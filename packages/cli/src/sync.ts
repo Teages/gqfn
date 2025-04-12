@@ -71,7 +71,7 @@ async function resolveSchemaOverride(
   opts?: SchemaConfig,
 ): Promise<string | DocumentNode> {
   if (!opts || opts.type === 'url') {
-    const { method, headers } = opts ?? { }
+    const { method, headers } = opts ?? {}
     const override = opts?.override
     const { data } = await ofetch<{ data: IntrospectionQuery }>(
       override ?? url,
