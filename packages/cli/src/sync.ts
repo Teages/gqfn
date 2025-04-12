@@ -1,11 +1,11 @@
 import type { DocumentNode } from 'graphql'
 import type { ClientConfig, Config, SchemaConfig } from './config'
-import { murmurHash } from 'ohash'
 
 import { extname, resolve } from 'pathe'
 import { generate } from './codegen'
 import { useLogger } from './logger'
 import { loadSchemaFromJson, loadSchemaFromJsonFile, loadSchemaFromRemote, loadSchemaFromTs } from './utils/schema'
+import { generateFilenameFromUrl } from './utils/hash'
 
 export interface Output {
   filename: string
@@ -48,7 +48,7 @@ export async function sync(config: Config): Promise<Output[]> {
 
   // write to output file
   return [...result.entries()].map(([url, content]) => {
-    const filename = `${murmurHash(url).toString(32)}.d.ts`
+    const filename = `${generateFilenameFromUrl(url)}.d.ts`
     return {
       filename,
       url,
