@@ -1,6 +1,6 @@
 # Programmatic Usage
 
-Package `@gqfn/core/cli` provided a `sync` function to programmatic control the schema type generation.
+Package `@gqfn/cli` provided a `sync` function to programmatic control the schema type generation.
 
 ## Type Definition
 

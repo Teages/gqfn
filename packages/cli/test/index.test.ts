@@ -6,7 +6,7 @@ import { resolve } from 'pathe'
 import { describe, expect, it } from 'vitest'
 import { sync } from '../src'
 
-describe('@gqfn/core/cli', () => {
+describe('@gqfn/cli', () => {
   const fixtures = [
     { name: 'cytoid-io', type: 'sdl', url: 'https://services.cytoid.io/graphql' },
     { name: 'cytoid-io', type: 'json', url: 'https://services.cytoid.io/graphql' },

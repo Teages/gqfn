@@ -27,7 +27,7 @@ Learn more about the [Command Line](./command.md).
 You can import the generator if you want to control the schema types generation.
 
 ```ts twoslash
-import { sync } from '@gqfn/core/cli'
+import { sync } from '@gqfn/cli'
 
 const output = await sync({
   clients: ['https://graphql.anilist.co'],
