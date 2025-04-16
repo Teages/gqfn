@@ -41,15 +41,23 @@ export async function loadSchemaFromJson(raw: string) {
   }
 }
 
-export async function loadSchemaFromRemote(endpoint: string, ofetchOptions: FetchOptions<'json'>) {
-  const { data } = await ofetch<{ data: IntrospectionQuery }>(
-    endpoint,
-    {
-      method: 'POST',
-      body: { query: getIntrospectionQuery() },
-      ...ofetchOptions,
-    },
-  )
+export async function loadSchemaFromRemote(
+  endpoint: string,
+  ofetchOptions: FetchOptions<'json'> & { method?: 'GET' | 'POST' },
+) {
+  const options = ofetchOptions.method === 'GET'
+    ? {
+        method: 'GET',
+        query: { query: getIntrospectionQuery() },
+        ...ofetchOptions,
+      }
+    : {
+        method: 'POST',
+        body: { query: getIntrospectionQuery() },
+        ...ofetchOptions,
+      }
+
+  const { data } = await ofetch<{ data: IntrospectionQuery }>(endpoint, options)
 
   return printSchema(buildClientSchema(data))
 }
