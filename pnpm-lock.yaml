@@ -90,9 +90,6 @@ importers:
       '@commander-js/extra-typings':
         specifier: ^13.1.0
         version: 13.1.0(commander@13.1.0)
-      '@gqfn/core':
-        specifier: workspace:*
-        version: link:../core
       c12:
         specifier: ^3.0.3
         version: 3.0.3(magicast@0.3.5)

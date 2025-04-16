@@ -34,14 +34,6 @@
     "test:types": "tsc --noEmit --skipLibCheck",
     "test:dev": "vitest run"
   },
-  "peerDependencies": {
-    "@gqfn/core": "workspace:*"
-  },
-  "peerDependenciesMeta": {
-    "@gqfn/core": {
-      "optional": true
-    }
-  },
   "dependencies": {
     "@commander-js/extra-typings": "^13.1.0",
     "c12": "^3.0.3",
