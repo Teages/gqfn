@@ -1,6 +1,6 @@
 export { generate } from './codegen'
 
-export * from './config/type'
+export * from './config'
 
 export * from './sync'
 

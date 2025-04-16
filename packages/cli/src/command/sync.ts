@@ -28,7 +28,7 @@ export async function sync(options: CommandSyncOptions) {
   const entries = Object.entries(result)
   const length = entries.length
 
-  if (length && !options.ignoreError) {
+  if (errors && !options.ignoreError) {
     throw new Error('Failed to sync schema from one or more clients.', { cause: errors })
   }
 
@@ -38,7 +38,7 @@ export async function sync(options: CommandSyncOptions) {
     await fs.writeFile(outputPath, content)
   }
 
-  if (Object.keys(errors).length) {
+  if (errors) {
     ctx.logger.warn(`Failed to sync schema from ${Object.keys(errors).length} ${Object.keys(errors).length > 1 ? 'clients' : 'client'}.`)
   }
 

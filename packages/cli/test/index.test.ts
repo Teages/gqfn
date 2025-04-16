@@ -36,7 +36,7 @@ describe('@gqfn/cli', () => {
       { url, loader: schemaConfig },
     ])
     expect(Object.keys(result)).toHaveLength(1)
-    expect(errors[url]).toBeDefined()
+    expect(errors?.[url]).toBeDefined()
   })
 
   it('failed', async () => {
@@ -47,7 +47,7 @@ describe('@gqfn/cli', () => {
       { url: 'https://0.0.0.0:1234' },
     ])
     expect(Object.keys(result)).toHaveLength(1)
-    expect(errors['https://0.0.0.0:1234']).toBeDefined()
+    expect(errors?.['https://0.0.0.0:1234']).toBeDefined()
   })
 })
 

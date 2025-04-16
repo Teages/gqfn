@@ -7,15 +7,12 @@ import { loadSchemaFromJson, loadSchemaFromJsonFile, loadSchemaFromRemote, loadS
 
 export interface SyncResult {
   result: Record<string, string>
-  errors: Record<string, Error>
+  errors?: Record<string, Error>
 }
 
 export async function sync(clients: (ClientConfig | string)[]): Promise<SyncResult> {
   if (!clients?.length) {
-    return {
-      result: {},
-      errors: {},
-    }
+    return { result: {} }
   }
 
   const result = new Map<string, string>()
@@ -47,7 +44,7 @@ export async function sync(clients: (ClientConfig | string)[]): Promise<SyncResu
     }
   }))
 
-  return { result: Object.fromEntries(result), errors }
+  return { result: Object.fromEntries(result), errors: Object.keys(errors).length ? errors : undefined }
 }
 
 function resolveClient(

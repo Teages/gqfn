@@ -21,7 +21,7 @@ export async function syncSchema(clients: ClientConfig[]): Promise<SyncResult> {
   }))
 
   const success = Object.keys(result)
-  const failed = Object.keys(errors)
+  const failed = errors ? Object.keys(errors) : []
 
   return {
     output,
