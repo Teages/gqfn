@@ -1,2 +1,7 @@
-export type { ClientConfig, Config, SchemaConfig } from './config'
-export { type Output, sync } from './sync'
+export { generate } from './codegen'
+
+export * from './config/type'
+
+export * from './sync'
+
+export { generateFilenameFromUrl } from './utils/hash'

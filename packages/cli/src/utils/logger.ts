@@ -1,4 +1,4 @@
-import type { Config } from './config'
+import type { Config } from '../config'
 import consola from 'consola'
 
 export const logger = consola.withTag('@gqfn/cli')
