@@ -1695,7 +1695,7 @@ type SayingDataInput = InputObject<'SayingDataInput', {
 }>
 
 type ItemWithId = InterfaceObject<'ItemWithId', {
-  id: Field<'id', Res<'Int!'>
+  id: Field<'id', Res<'Int!'>>
 }, {
   Saying: Saying
   User: User
@@ -1797,7 +1797,7 @@ exports[`@gqfn/cli > star-wars sdl 1`] = `
 import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
 
 type Node = InterfaceObject<'Node', {
-  id: Field<'id', Res<'ID!'>
+  id: Field<'id', Res<'ID!'>>
 }, {
   Film: Film
   Person: Person
