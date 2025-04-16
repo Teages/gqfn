@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from '@commander-js/extra-typings'
-import { add, init, remove, sync } from './command'
+import { add, init, sync } from './command'
 
 export function main() {
   const program = new Command()
@@ -22,14 +22,6 @@ export function main() {
     .option('-s, --silent', 'Disable all output', false)
     .action(async (clients, { silent }) => {
       await add({ clients, silent })
-    })
-
-  program.command('remove')
-    .description('Remove an existing GraphQL schema from @gqfn/core.')
-    .argument('<urls...>', 'The URL(s) of the GraphQL schema to remove.')
-    .option('-s, --silent', 'Disable all output', false)
-    .action(async (urls, { silent }) => {
-      await remove({ urls, silent })
     })
 
   program.command('sync')

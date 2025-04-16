@@ -47,15 +47,15 @@ export async function loadSchemaFromRemote(
 ) {
   const options = ofetchOptions.method === 'GET'
     ? {
-      ...ofetchOptions,
-      method: 'GET',
-      query: { query: getIntrospectionQuery() },
-    }
+        ...ofetchOptions,
+        method: 'GET',
+        query: { query: getIntrospectionQuery() },
+      }
     : {
-      ...ofetchOptions,
-      method: 'POST',
-      body: { query: getIntrospectionQuery() },
-    }
+        ...ofetchOptions,
+        method: 'POST',
+        body: { query: getIntrospectionQuery() },
+      }
 
   const { data } = await ofetch<{ data: IntrospectionQuery }>(endpoint, options)
 
