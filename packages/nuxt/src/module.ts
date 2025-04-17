@@ -7,7 +7,7 @@ export interface ModuleOptions {
   /**
    * The list of clients to generate types for.
    */
-  clients?: ClientConfig[]
+  clients?: (ClientConfig | string)[]
   /**
    * Disable console output.
    */

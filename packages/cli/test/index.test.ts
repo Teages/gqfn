@@ -1,4 +1,4 @@
-import type { SchemaConfig } from '../src'
+import type { SchemaLoader } from '../src'
 import fs from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'pathe'
@@ -17,54 +17,44 @@ describe('@gqfn/cli', () => {
   fixtures.forEach(({ name, url, type }) => {
     it(`${name} ${type}`, async () => {
       const schemaConfig = await loadFixture(name, type)
-      const output = await sync({
-        clients: [{ url, schema: schemaConfig }],
-        output: 'gqfn',
-        silent: true,
-      })
-      expect(output.length).toBe(1)
-      expect(output[0].content).toMatchSnapshot()
+      const { result } = await sync([{ url, loader: schemaConfig }])
+      expect(Object.keys(result)).toHaveLength(1)
+      expect(result[url]).toMatchSnapshot()
     })
   })
 
   it('empty', async () => {
-    const output = await sync({ clients: [], output: 'gqfn', silent: true })
-    expect(output.length).toBe(0)
+    const { result } = await sync([])
+    expect(Object.keys(result)).toHaveLength(0)
   })
 
   it('duplicate', async () => {
     const { url, name } = fixtures[0]
     const schemaConfig = await loadFixture(name, 'sdl')
-    const output = await sync({
-      clients: [
-        { url, schema: schemaConfig },
-        { url, schema: schemaConfig },
-      ],
-      output: 'gqfn',
-      silent: true,
-    })
-    expect(output.length).toBe(1)
+    const { result, errors } = await sync([
+      { url, loader: schemaConfig },
+      { url, loader: schemaConfig },
+    ])
+    expect(Object.keys(result)).toHaveLength(1)
+    expect(errors?.[url]).toBeDefined()
   })
 
   it('failed', async () => {
     const { url, name } = fixtures[0]
     const schemaConfig = await loadFixture(name, 'sdl')
-    const output = await sync({
-      clients: [
-        { url, schema: schemaConfig },
-        { url: 'https://0.0.0.0:1234' },
-      ],
-      output: 'gqfn',
-      silent: true,
-    })
-    expect(output.length).toBe(1)
+    const { result, errors } = await sync([
+      { url, loader: schemaConfig },
+      { url: 'https://0.0.0.0:1234' },
+    ])
+    expect(Object.keys(result)).toHaveLength(1)
+    expect(errors?.['https://0.0.0.0:1234']).toBeDefined()
   })
 })
 
 async function loadFixture(
   name: string,
   type: 'sdl' | 'json' | 'def',
-): Promise<SchemaConfig> {
+): Promise<SchemaLoader> {
   const root = fileURLToPath(new URL('./fixtures', import.meta.url))
 
   if (type === 'sdl') {

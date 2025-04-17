@@ -1,5 +1,5 @@
 import type { ClientConfig } from '@gqfn/cli'
-import { sync } from '@gqfn/cli'
+import { generateFilenameFromUrl, sync } from '@gqfn/cli'
 
 interface SyncResult {
   output: Array<{
@@ -11,25 +11,17 @@ interface SyncResult {
   failed: string[]
 }
 
-export async function syncSchema(clients: ClientConfig[]): Promise<SyncResult> {
-  const output = await sync({
-    clients,
-    silent: true,
-    output: '',
-  }) as Array<{
-    filename: string
-    url: string
-    content: string
-  }>
+export async function syncSchema(clients: (ClientConfig | string)[]): Promise<SyncResult> {
+  const { result, errors } = await sync(clients)
 
-  const success = clients
-    .map(client => typeof client === 'object' ? client.url : client)
-    .filter(url => output.some(
-      o => o.url === url,
-    ))
-  const failed = clients
-    .map(client => typeof client === 'object' ? client.url : client)
-    .filter(url => !success.includes(url))
+  const output = Object.entries(result).map(([url, content]) => ({
+    filename: `${generateFilenameFromUrl(url)}.d.ts`,
+    url,
+    content,
+  }))
+
+  const success = Object.keys(result)
+  const failed = errors ? Object.keys(errors) : []
 
   return {
     output,

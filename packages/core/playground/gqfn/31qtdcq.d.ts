@@ -12,7 +12,7 @@ type SayingDataInput = InputObject<'SayingDataInput', {
 }>
 
 type ItemWithId = InterfaceObject<'ItemWithId', {
-  id: Res<'Int!'>
+  id: Field<'id', Res<'Int!'>>
 }, {
   Saying: Saying
   User: User

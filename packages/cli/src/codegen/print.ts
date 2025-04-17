@@ -62,7 +62,7 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
     })
     push(
       `type ${name} = InterfaceObject<'${name}', {`,
-      ...fields.map(({ name, res }) => `  ${name}: Field<'${name}', Res<'${res}'>`),
+      ...fields.map(({ name, res }) => `  ${name}: Field<'${name}', Res<'${res}'>>`),
       `}, {`,
       ...[...imps.values()].map(key => `  ${key}: ${key}`),
       `}>`,
