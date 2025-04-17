@@ -25,7 +25,7 @@ export async function loadSchemaFromTs(path: string, search: string[]): Promise<
 export async function loadSchemaFromJsonFile(path: string) {
   try {
     const fs = await import('node:fs/promises')
-    return loadSchemaFromJson(JSON.parse(await fs.readFile(path, 'utf-8')))
+    return loadSchemaFromJson(await fs.readFile(path, 'utf-8'))
   }
   catch (cause) {
     throw new Error(`Failed to read JSON form ${path}`, { cause })

@@ -21,7 +21,7 @@ export async function sync(options: CommandSyncOptions) {
   ctx.logger.start(`Syncing schema from ${config.clients.length} clients`)
 
   const fs = await import('node:fs/promises')
-  const outputResolve = (...paths: string[]) => resolve(config.output, ...paths)
+  const outputResolve = (...paths: string[]) => resolve(ctx.cwd, config.output, ...paths)
 
   const { result, errors } = await _sync(config.clients)
 
@@ -31,6 +31,9 @@ export async function sync(options: CommandSyncOptions) {
 
   const entries = Object.entries(result)
   const length = entries.length
+
+  // Create output directory if it doesn't exist
+  await fs.mkdir(outputResolve(), { recursive: true })
 
   for (const [url, content] of entries) {
     const filename = `${generateFilenameFromUrl(url)}.d.ts`
