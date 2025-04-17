@@ -19,7 +19,7 @@ export async function sync(clients: (ClientConfig | string)[]): Promise<SyncResu
   const urls = new Set<string>()
   const errors: Record<string, Error> = {}
 
-  await Promise.all(clients.map(async (clientConfig) => {
+  await Promise.allSettled(clients.map(async (clientConfig) => {
     const { url, loader } = resolveClient(clientConfig)
 
     if (urls.has(url)) {

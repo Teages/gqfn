@@ -35,6 +35,10 @@ export async function loadCliConfig(
     )
   }
 
+  if (config.clients && !Array.isArray(config.clients)) {
+    throw new Error('clients must be an array')
+  }
+
   return { config, configFile }
 }
 

@@ -23,9 +23,9 @@ export async function sync(options: CommandSyncOptions) {
   const fs = await import('node:fs/promises')
   const outputResolve = (...paths: string[]) => resolve(ctx.cwd, config.output, ...paths)
 
-  const { result, errors } = await _sync(config.clients)
+  const { result, errors = {} } = await _sync(config.clients)
 
-  if (errors && !options.ignoreError) {
+  if (Object.keys(errors).length && !options.ignoreError) {
     throw new Error('Failed to sync schema from one or more clients.', { cause: errors })
   }
 
@@ -38,10 +38,20 @@ export async function sync(options: CommandSyncOptions) {
   for (const [url, content] of entries) {
     const filename = `${generateFilenameFromUrl(url)}.d.ts`
     const outputPath = outputResolve(filename)
-    await fs.writeFile(outputPath, content)
+
+    try {
+      await fs.writeFile(outputPath, content)
+    }
+    catch (error) {
+      if (!options.ignoreError) {
+        throw new Error(`Failed to write schema file for ${url}`, { cause: error })
+      }
+
+      errors[url] = error as Error
+    }
   }
 
-  if (errors) {
+  if (Object.keys(errors).length) {
     ctx.logger.warn(`Failed to sync schema from ${Object.keys(errors).length} ${Object.keys(errors).length > 1 ? 'clients' : 'client'}.`)
   }
 
