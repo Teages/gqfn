@@ -9,7 +9,7 @@ export default defineConfig({
     'https://graphql.anilist.co',
     'https://countries.trevorblades.com',
     {
-      url: "/test-fixtures/graphql",
+      url: '/test-fixtures/graphql',
       loader: {
         type: 'path',
         value: '../../cli/test/fixtures/local/schema.ts',
