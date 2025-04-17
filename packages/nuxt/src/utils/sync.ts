@@ -11,7 +11,7 @@ interface SyncResult {
   failed: string[]
 }
 
-export async function syncSchema(clients: ClientConfig[]): Promise<SyncResult> {
+export async function syncSchema(clients: (ClientConfig | string)[]): Promise<SyncResult> {
   const { result, errors } = await sync(clients)
 
   const output = Object.entries(result).map(([url, content]) => ({
