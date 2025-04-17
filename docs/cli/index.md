@@ -29,13 +29,7 @@ You can import the generator if you want to control the schema types generation.
 ```ts twoslash
 import { sync } from '@gqfn/cli'
 
-const output = await sync({
-  clients: ['https://graphql.anilist.co'],
-  output: 'src/gqfn',
-  silent: true, // disable logger
-})
-
-// write to file
+const { result, errors } = await sync(['https://graphql.anilist.co'])
 ```
 
 Learn more about the [Programmatic Usage](./programmatic.md).
