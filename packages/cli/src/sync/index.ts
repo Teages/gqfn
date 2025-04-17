@@ -3,7 +3,7 @@ import type { DocumentNode } from 'graphql'
 import type { ClientConfig, SchemaLoader } from '../config'
 import { extname, resolve } from 'pathe'
 import { generate } from '../codegen'
-import { loadSchemaFromJson, loadSchemaFromJsonFile, loadSchemaFromRemote, loadSchemaFromTs } from '../utils/schema'
+import { loadSchemaFromJson, loadSchemaFromJsonFile, loadSchemaFromRemote, loadSchemaFromTs } from './loaders'
 
 export interface SyncResult {
   result: Record<string, string>
