@@ -25,12 +25,12 @@ export async function sync(options: CommandSyncOptions) {
 
   const { result, errors } = await _sync(config.clients)
 
-  const entries = Object.entries(result)
-  const length = entries.length
-
   if (errors && !options.ignoreError) {
     throw new Error('Failed to sync schema from one or more clients.', { cause: errors })
   }
+
+  const entries = Object.entries(result)
+  const length = entries.length
 
   for (const [url, content] of entries) {
     const filename = `${generateFilenameFromUrl(url)}.d.ts`
