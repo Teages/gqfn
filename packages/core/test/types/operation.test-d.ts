@@ -1,4 +1,4 @@
-import type { ResultOf } from '../../src/types/document'
+import type { ResultOf, VariablesOf } from '../../src/types/document'
 import type { GraphQueryFunctionCore } from '../../src/types/operation'
 import type { Schema } from './schema'
 import { describe, expectTypeOf, test } from 'vitest'
@@ -10,7 +10,13 @@ describe('types/document', () => {
     const _i0 = gqfn([])
     expectTypeOf<ResultOf<typeof _i0>>().toEqualTypeOf<never>()
 
-    const _i1 = gqfn(['hello'])
-    expectTypeOf<ResultOf<typeof _i1>>().toEqualTypeOf<{ hello: string }>()
+    const _i1 = gqfn(['__typename', 'hello'])
+    expectTypeOf<ResultOf<typeof _i1>>().toEqualTypeOf<{ __typename: 'Query', hello: string }>()
+
+    const _i2 = gqfn('query Hello', { name: 'String! = "world"' }, [{
+      hello: $ => $({ name: $.name }, true).withDirective(['@skip', { if: true }]),
+    }])
+    expectTypeOf<ResultOf<typeof _i2>>().toEqualTypeOf<{ hello: string | null | undefined }>()
+    expectTypeOf<VariablesOf<typeof _i2>>().toEqualTypeOf<{ name?: string | undefined }>()
   })
 })

@@ -1,4 +1,4 @@
-import type { DollarPackage } from '../../src/types/dollar'
+import type { DollarPackage } from '../../src/types-legacy/dollar'
 import { describe, expectTypeOf, test } from 'vitest'
 
 describe('types/dollar', () => {

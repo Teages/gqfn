@@ -1,5 +1,5 @@
-import type { GraphQueryFunction, RequireOperationPartialData } from '../../src/types'
-import type { ResultOf, VariablesOf } from '../../src/types/document'
+import type { GraphQueryFunction, RequireOperationPartialData } from '../../src/types-legacy'
+import type { ResultOf, VariablesOf } from '../../src/types-legacy/document'
 import type { Schema } from './schema'
 import { describe, expectTypeOf, test } from 'vitest'
 

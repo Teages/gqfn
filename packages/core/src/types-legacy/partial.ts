@@ -1,15 +1,15 @@
 import type { Exact, Expand } from '../internal/utils'
-import type { BaseObject, DefineSchema } from './define'
+import type { TypeObject, UserSchemaTypes } from '../schema'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
 import type { DollarPayload } from './dollar'
 import type { FragmentBase, FragmentName } from './fragment'
-import type { PrepareSelection } from './prepare'
-import type { AnalyzedObjectSelection, ParseObjectSelectionContext } from './result'
+import type { AnalyzedSelectionSetComplex, ParseSelectionObject } from './parser/selection'
+import type { PrepareOperationSelectionSet } from './selection'
 import type { PrepareVariables, VariablesDefinition } from './variable'
 
 const OperationPartialBaseSymbol = Symbol('@gqfn/core:OperationPartialBase')
 export interface OperationPartial<
-  T extends BaseObject<string, any, any>,
+  T extends TypeObject<string, any, any>,
   P,
   Variables extends DollarPayload,
 > {
@@ -20,16 +20,16 @@ export interface OperationPartial<
 export type RequireOperationPartialData<
   T extends OperationPartial<any, any, any>,
 > = T extends OperationPartial<infer Base, infer P, any>
-  ? Expand<ParseObjectSelectionContext<Base, P>>
+  ? Expand<ParseSelectionObject<Base, P>>
   : never
 
 export interface GraphQueryFunctionPartial<
-  Schema extends DefineSchema<any>,
+  Schema extends UserSchemaTypes,
 > {
   <
     Name extends FragmentName,
     Type extends keyof FragmentBase<Schema>,
-    Selection extends PrepareSelection<
+    Selection extends PrepareOperationSelectionSet<
       FragmentBase<Schema>[Type],
       Record<string, never>
     >,
@@ -37,7 +37,7 @@ export interface GraphQueryFunctionPartial<
     name: Name,
     base: `on ${Type & string}`,
     selection: Exact<
-      PrepareSelection<
+      PrepareOperationSelectionSet<
         FragmentBase<Schema>[Type],
         Record<string, never>
       >,
@@ -46,7 +46,7 @@ export interface GraphQueryFunctionPartial<
     directives?: Array<DirectiveInput> | DirectivesInputWithDollar<Record<string, never>>,
   ): OperationPartial<
     FragmentBase<Schema>[Type],
-    AnalyzedObjectSelection<Selection>,
+    AnalyzedSelectionSetComplex<Selection>,
     Record<string, any>
   >
 
@@ -55,7 +55,7 @@ export interface GraphQueryFunctionPartial<
     Type extends keyof FragmentBase<Schema>,
     Variables extends VariablesDefinition<VariablesInputs>,
     VariablesInputs extends string,
-    Selection extends PrepareSelection<
+    Selection extends PrepareOperationSelectionSet<
       FragmentBase<Schema>[Type],
       PrepareVariables<NoInfer<Variables>>
     >,
@@ -64,7 +64,7 @@ export interface GraphQueryFunctionPartial<
     base: `on ${Type & string}`,
     variables: Variables,
     selection: Exact<
-      PrepareSelection<
+      PrepareOperationSelectionSet<
         FragmentBase<Schema>[Type],
         PrepareVariables<NoInfer<Variables>>
       >,
@@ -73,7 +73,7 @@ export interface GraphQueryFunctionPartial<
     directives?: Array<DirectiveInput> | DirectivesInputWithDollar<Record<string, never>>,
   ): OperationPartial<
     FragmentBase<Schema>[Type],
-    AnalyzedObjectSelection<Selection>,
+    AnalyzedSelectionSetComplex<Selection>,
     PrepareVariables<Variables>
   >
 }

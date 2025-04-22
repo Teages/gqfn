@@ -1,17 +1,17 @@
 import type {
-  DefineSchema,
-  EnumType,
-
   Field,
   Input,
 
-  InputObjectType,
-  InterfaceType,
-  ObjectType,
   ScalarType,
+  EnumType,
 
+  ObjectType,
   UnionType,
-} from '../../src/types/define'
+  InterfaceType,
+  InputObjectType,
+
+  DefineSchema,
+} from '../src/type-next/define'
 
 export type CategoryEnum =
   | 'funny'
@@ -28,43 +28,43 @@ export type Scalar_Date = ScalarType<'Date', string, string>
 export type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum, CategoryEnum>
 
 export type Input_SayingDataInput = InputObjectType<'SayingDataInput', {
-  category: Input<'CategoryEnum!', Enum_CategoryEnum>
-  content: Input<'String!', Scalar_String>
+  category: Field<'CategoryEnum!', Enum_CategoryEnum>
+  content: Field<'String!', Scalar_String>
 }>
 
 export type Interface_ItemWithId = InterfaceType<'ItemWithId', {
   id: Field<'Int!', Scalar_Int>
 }, {
-  Saying: Type_Saying
-  User: Type_User
+  Saying: Object_Saying
+  User: Object_User
 }>
 
-export type Type_Saying = ObjectType<'Saying', {
+export type Object_Saying = ObjectType<'Saying', {
   category: Field<'CategoryEnum!', Enum_CategoryEnum>
   content: Field<'String!', Scalar_String>
   createdAt: Field<'Date!', Scalar_Date>
   id: Field<'Int!', Scalar_Int>
-  owner: Field<'User!', Type_User>
+  owner: Field<'User!', Object_User>
   updatedAt: Field<'Date!', Scalar_Date>
 }>
 
-export type Type_User = ObjectType<'User', {
+export type Object_User = ObjectType<'User', {
   email: Field<'String!', Scalar_String>
-  friends: Field<'[User!]!', Type_User>
+  friends: Field<'[User!]!', Object_User>
   id: Field<'Int!', Scalar_Int>
   name: Field<'String!', Scalar_String>
-  sayings: Field<'[Saying!]!', Type_Saying, {
+  sayings: Field<'[Saying!]!', Object_Saying, {
     category: Input<'CategoryEnum', Enum_CategoryEnum>
   }>
 }>
 
 export type Union_Data = UnionType<'Data', {
-  Saying: Type_Saying
-  User: Type_User
+  Saying: Object_Saying
+  User: Object_User
 }>
 
 export type Type_Mutation = ObjectType<'Mutation', {
-  addSaying: Field<'Saying!', Type_Saying, {
+  addSaying: Field<'Saying!', Object_Saying, {
     input: Input<'SayingDataInput', Input_SayingDataInput>
     ownerId: Field<'Int!', Scalar_Int>
   }>
@@ -76,16 +76,16 @@ export type Type_Query = ObjectType<'Query', {
   hello: Field<'String!', Scalar_String, {
     name: Input<'String', Scalar_String>
   }>
-  saying: Field<'Saying!', Type_Saying, {
+  saying: Field<'Saying!', Object_Saying, {
     id: Field<'Int!', Scalar_Int>
   }>
-  sayings: Field<'[Saying!]!', Type_Saying, {
+  sayings: Field<'[Saying!]!', Object_Saying, {
     category: Input<'CategoryEnum', Enum_CategoryEnum>
   }>
-  user: Field<'User!', Type_User, {
+  user: Field<'User!', Object_User, {
     id: Field<'Int!', Scalar_Int>
   }>
-  users: Field<'[User!]!', Type_User>
+  users: Field<'[User!]!', Object_User>
 }>
 
 export type Type_Subscription = ObjectType<'Subscription', {
@@ -95,25 +95,25 @@ export type Type_Subscription = ObjectType<'Subscription', {
 }>
 
 export type Schema = DefineSchema<{
-  Int: Scalar_Int
-  Float: Scalar_Float
-  String: Scalar_String
-  Boolean: Scalar_Boolean
-  ID: Scalar_ID
-  Date: Scalar_Date
+  Int: Scalar_Int,
+  Float: Scalar_Float,
+  String: Scalar_String,
+  Boolean: Scalar_Boolean,
+  ID: Scalar_ID,
+  Date: Scalar_Date,
 
-  CategoryEnum: Enum_CategoryEnum
+  CategoryEnum: Enum_CategoryEnum,
 
-  SayingDataInput: Input_SayingDataInput
+  SayingDataInput: Input_SayingDataInput,
 
-  ItemWithId: Interface_ItemWithId
+  ItemWithId: Interface_ItemWithId,
 
-  Saying: Type_Saying
-  User: Type_User
+  Saying: Object_Saying,
+  User: Object_User,
 
-  Data: Union_Data
+  Data: Union_Data,
 
-  Mutation: Type_Mutation
-  Query: Type_Query
-  Subscription: Type_Subscription
+  Mutation: Type_Mutation,
+  Query: Type_Query,
+  Subscription: Type_Subscription,
 }>

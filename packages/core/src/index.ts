@@ -1,9 +1,9 @@
 import type { GraphQueryFunction as RawGraphQueryFunction } from './runtime'
 import type { DefineSchema, Schemas, UserSchemaTypes } from './schema'
-import type { GraphQueryFunction } from './types'
+import type { GraphQueryFunction } from './types-legacy'
 import { gqfn } from './runtime'
 
-export type { ResultOf, TypedDocumentNode, VariablesOf } from './types'
+export type { ResultOf, TypedDocumentNode, VariablesOf } from './types-legacy'
 
 export function createGQFn<T extends UserSchemaTypes>(): GraphQueryFunction<T> {
   return gqfn as unknown as GraphQueryFunction<T>

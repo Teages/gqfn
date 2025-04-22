@@ -1,10 +1,10 @@
 import type { RelaxedOptional } from '../internal/utils'
-import type { ArgOf } from '../schema'
-import type { AcceptVariables } from './variable'
+import type { Input } from './define'
+import type { RequireInputOrVariable } from './utils'
 
 export type Argument = Record<string, unknown>
 export type PrepareSelectionArgument<
-  T extends Record<string, ArgOf<any, string>>,
+  T extends Record<string, Input<any, any>>,
 > = RelaxedOptional<{
-  [K in keyof T]: AcceptVariables<T[K]>
+  [K in keyof T]: RequireInputOrVariable<T[K]>
 }>

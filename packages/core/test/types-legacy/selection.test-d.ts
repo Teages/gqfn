@@ -1,5 +1,5 @@
 import type { Field } from '../../src/schema'
-import type { IsHasArguments, IsRequiredArguments, IsTypeObjectKeys, PrepareField, PrepareOperationSelectionSet, PrepareSelectionField, PrepareSelectionObject, PrepareSelectionObjectForFields, PrepareSelectionObjectForInlineFragment, PrepareSelectionSetComplex, PrepareSelectionSetSimple } from '../../src/types/selection'
+import type { IsHasArguments, IsRequiredArguments, IsTypeObjectKeys, PrepareField, PrepareOperationSelectionSet, PrepareSelectionField, PrepareSelectionObject, PrepareSelectionObjectForFields, PrepareSelectionObjectForInlineFragment, PrepareSelectionSetComplex, PrepareSelectionSetSimple } from '../../src/types-legacy/selection'
 import type { Arg, Data, ItemWithId, Mutation, Query, Res, Subscription, User } from './schema'
 import { describe, expectTypeOf, test } from 'vitest'
 

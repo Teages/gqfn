@@ -1,4 +1,4 @@
-import type { GraphQueryFunction, RequireOperationPartialData, TypedDocumentNode } from '../../src/types'
+import type { GraphQueryFunction, RequireOperationPartialData, TypedDocumentNode } from '../../src/types-legacy'
 import type { CategoryEnum, Schema } from './fixture/schema'
 import { describe, expectTypeOf, test } from 'vitest'
 

@@ -1,7 +1,7 @@
 import type { Exact } from '../../../src/internal/utils'
 import type { TypeObject } from '../../../src/schema'
-import type { AnalyzedSelectionSetComplex, ParseSelectionObjectForFields, ParseSelectionObjectForInlineFragment, ParseSelectionSetComplex } from '../../../src/types/parser/selection'
-import type { PrepareSelectionSetComplex } from '../../../src/types/selection'
+import type { AnalyzedSelectionSetComplex, ParseSelectionObjectForFields, ParseSelectionObjectForInlineFragment, ParseSelectionSetComplex } from '../../../src/types-legacy/parser/selection'
+import type { PrepareSelectionSetComplex } from '../../../src/types-legacy/selection'
 import type { Data, ItemWithId, Query, User } from '../schema'
 import { describe, expectTypeOf, test } from 'vitest'
 
