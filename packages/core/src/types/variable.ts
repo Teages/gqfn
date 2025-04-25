@@ -15,18 +15,9 @@ export interface Variable<T extends string> {
 
 export type PrepareVariables<T extends VariablesDefinition<string>> = {
   [K in keyof T]: UnpackDollar<T[K]> extends `${infer Type} = ${infer _Default}`
-    ? PrepareVariable<Type>
-    : PrepareVariable<UnpackDollar<T[K]>>
+    ? Variable<Type>
+    : Variable<UnpackDollar<T[K]>>
 }
-type PrepareVariable<
-  TKey extends string,
-> = TKey extends `${infer F}!`
-  ? NonNullable<PrepareVariable<F>>
-  : TKey extends `[${infer F}]`
-    ? PrepareVariable<F> extends never
-      ? never
-      : Array<PrepareVariable<F>> | null | undefined
-    : Variable<TKey> | null | undefined
 
 export type AcceptVariable<Modifier extends string> =
   | Variable<Modifier>
@@ -49,7 +40,7 @@ type AcceptVariableAsSimpledList<Modifier extends string> =
         | Variable<AcceptSimpledListModifier<F>>
         : Modifier extends `[${infer F}]`
           ?
-          | Variable<`[${F}!]`> // TODO: support multi-level nested lists
+          | Variable<`[${F}!]`> | Variable<`[${F}!]!`> // TODO: support multi-level nested lists
           | Variable<`${AcceptSimpledListModifier<F>}!`>
           | Variable<`${AcceptSimpledListModifier<F>}`>
           : never

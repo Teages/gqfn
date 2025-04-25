@@ -1,5 +1,7 @@
+import type { GraphQueryFunction } from '../../src/types'
 import type { Input } from '../../src/types/define'
-import type { FindType, ParseInputModifier, ParseOutputModifier, RequireInput, RequireInputOrVariable, Typename } from '../../src/types/utils'
+import type { ParseObjectSelectionContextField } from '../../src/types/result'
+import type { FindType, ModifiedName, ParseInputModifier, ParseOutputModifier, RequireInput, RequireInputOrVariable, SchemaRequire, Typename, TypenameField } from '../../src/types/utils'
 import type { Variable } from '../../src/types/variable'
 import type {
   Enum_CategoryEnum,
@@ -22,6 +24,12 @@ import type {
 import { describe, expectTypeOf, test } from 'vitest'
 
 describe('type-next/utils', () => {
+  test('TypenameField', () => {
+    expectTypeOf<
+      ParseObjectSelectionContextField<TypenameField<'Name'>, true>
+    >().toEqualTypeOf<'Name'>()
+  })
+
   test('Typename', () => {
     expectTypeOf<Typename<Type_Saying>>().toEqualTypeOf<'Saying'>()
     expectTypeOf<Typename<Type_User>>().toEqualTypeOf<'User'>()
@@ -30,6 +38,16 @@ describe('type-next/utils', () => {
     expectTypeOf<Typename<Type_Subscription>>().toEqualTypeOf<'Subscription'>()
     expectTypeOf<Typename<Union_Data>>().toEqualTypeOf<'Saying' | 'User'>()
     expectTypeOf<Typename<Interface_ItemWithId>>().toEqualTypeOf<'Saying' | 'User'>()
+  })
+
+  test('ModifiedName', () => {
+    expectTypeOf<ModifiedName<'String'>>().toEqualTypeOf<'String'>()
+    expectTypeOf<ModifiedName<'String!'>>().toEqualTypeOf<'String'>()
+    expectTypeOf<ModifiedName<'String!!'>>().toEqualTypeOf<never>()
+    expectTypeOf<ModifiedName<'[String]'>>().toEqualTypeOf<'String'>()
+    expectTypeOf<ModifiedName<'[String!]'>>().toEqualTypeOf<'String'>()
+    expectTypeOf<ModifiedName<'[String]!'>>().toEqualTypeOf<'String'>()
+    expectTypeOf<ModifiedName<'[String!]!'>>().toEqualTypeOf<'String'>()
   })
 
   test('FindType', () => {
@@ -220,5 +238,28 @@ describe('type-next/utils', () => {
     expectTypeOf([1, 2, 'a'])
       .not
       .toExtend<ParseInputModifier<'[Int!]!', Scalar_Int, number>>()
+  })
+
+  test('SchemaRequire', () => {
+    expectTypeOf<SchemaRequire<GraphQueryFunction<Schema>, 'Int'>>()
+      .toEqualTypeOf<number | null | undefined>()
+
+    expectTypeOf<SchemaRequire<GraphQueryFunction<Schema>, 'Int!'>>()
+      .toEqualTypeOf<number>()
+
+    expectTypeOf<SchemaRequire<GraphQueryFunction<Schema>, '[Int]'>>()
+      .toEqualTypeOf<(number | null | undefined)[] | number | null | undefined>()
+
+    expectTypeOf<SchemaRequire<GraphQueryFunction<Schema>, '[Int]!'>>()
+      .toEqualTypeOf<(number | null | undefined)[] | number>()
+
+    expectTypeOf<SchemaRequire<GraphQueryFunction<Schema>, '[Int!]'>>()
+      .toEqualTypeOf<number[] | number | null | undefined>()
+
+    expectTypeOf<SchemaRequire<GraphQueryFunction<Schema>, '[Int!]!'>>()
+      .toEqualTypeOf<number[] | number>()
+
+    expectTypeOf<SchemaRequire<GraphQueryFunction<Schema>, 'SayingDataInput!'>>()
+      .toEqualTypeOf<{ category: 'funny' | 'jokes' | 'serious', content: string }>()
   })
 })

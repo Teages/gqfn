@@ -44,7 +44,7 @@ export type ObjectSelectionOnInlineFragments<
   T extends BaseObject<any, any, any>,
   Variables extends DollarPayload,
 > = T extends BaseObject<any, any, infer Implements>
-? {
+  ? {
     [K in keyof Implements as `... on ${K & string}`]?: SelectionFnOnInlineFragment<Implements[K], Variables>
   } & {
     '...'?: SelectionFnOnInlineFragment<T, Variables>
@@ -78,7 +78,7 @@ export interface SelectionFnOnField<
     $: SelectionDollar<
       PrepareSelection<Type, Variables>,
       PreparedArguments,
-      Record<string, unknown>
+      Variables
     >
   ): DollarPackage<any, any>
 }
@@ -90,15 +90,16 @@ export type SelectionFnOnInlineFragment<
   $: SelectionDollar<
     ObjectSelection<T, Variables>,
     Record<string, never>,
-    Record<string, never>
+    Variables
   >
 ) => DollarPackage<any, any>
 
+export type AliasSpace = ' ' | ''
 export type WithAlias<
   FieldName,
   AliasName = string,
 > = FieldName extends string
   ? AliasName extends string
-    ? `${AliasName}:${FieldName}` | FieldName
+    ? `${AliasName}:${AliasSpace}${FieldName}` | FieldName
     : never
   : never

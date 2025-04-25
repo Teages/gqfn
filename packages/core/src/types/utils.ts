@@ -3,7 +3,7 @@ import type { BaseObject, BaseScalar, BaseType, DefineSchema, Field, Input, Inpu
 import type { AcceptVariable } from './variable'
 
 export type TypenameField<Name extends string> =
-  Field<'String', ScalarType<'String', Name, Name>>
+  Field<'String!', ScalarType<'String', Name, Name>>
 
 export type Typename<T extends BaseType<any, any>> =
   T extends BaseObject<infer Name, any, infer Implements>

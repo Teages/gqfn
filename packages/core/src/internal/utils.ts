@@ -88,3 +88,12 @@ export type Expand<T> = T extends (...args: infer A) => infer R
       ? { [K in keyof O]: Expand<O[K]> }
       : never
     : T
+
+export type MayBePartial<T> = { [K in keyof T]: T[K] | null | undefined }
+
+export type IntersectionAvoidEmpty<T, U> =
+  T extends Record<string, never>
+    ? U
+    : U extends Record<string, never>
+      ? T
+      : T & U

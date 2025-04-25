@@ -1,4 +1,4 @@
-import type { Expand, FlatRecord, UnionToIntersection, Values } from '../internal/utils'
+import type { Expand, FlatRecord, IntersectionAvoidEmpty, MayBePartial, Trim, UnionToIntersection, Values } from '../internal/utils'
 import type { BaseObject, BaseScalar, BaseType, Field } from './define'
 import type { DollarPackage } from './dollar'
 import type { ParseOutputModifier, Typename } from './utils'
@@ -31,13 +31,16 @@ export type ParseObjectSelectionContext<
 > = Context extends Record<string, any>
   ? Extract<keyof Context, `... on ${string}` | '...'> extends never
     ? ParseObjectSelectionContextFields<T, Context>
-    : ParseObjectSelectionContextFields<T, Context>
-      & ParseObjectSelectionContextInlineFragments<T, PickInlineFragmentKeys<Context>>
+    : IntersectionAvoidEmpty<
+      ParseObjectSelectionContextFields<T, OmitInlineFragmentKeys<Context>>,
+      ParseObjectSelectionContextInlineFragments<T, PickInlineFragmentKeys<Context>>
+    >
   : never
 export type PickInlineFragmentKeys<T> = {
-  [K in keyof T]: K extends '...' | `... on ${string}`
-    ? T[K]
-    : never
+  [K in keyof T as K extends '...' | `... on ${string}` ? K : never]: T[K]
+}
+export type OmitInlineFragmentKeys<T> = {
+  [K in keyof T as K extends '...' | `... on ${string}` ? never : K]: T[K]
 }
 
 export type ParseObjectSelectionContextFields<
@@ -65,7 +68,7 @@ export type ParseObjectSelectionContextField<
 
 export type ParseSelectionName<T extends string> =
   T extends `${infer Name}:${infer Field}`
-    ? { Field: Field, Name: Name }
+    ? { Field: Trim<Field>, Name: Name }
     : { Field: T, Name: T }
 
 export type ParseObjectSelectionContextInlineFragments<
@@ -82,7 +85,7 @@ export type ParseObjectSelectionContextInlineFragments<
           ? ParseInlineFragmentReturn<T, SelectionObject['...']>
           : never
         : K extends `... on ${infer Type}`
-          ? { __typename?: Typename<Implements[Type]> } & ParseInlineFragmentReturn<Implements[Type], SelectionObject[K]>
+          ? { __typename?: Typename<T> } & ParseInlineFragmentReturn<Implements[Type], SelectionObject[K]>
           : never
     }>
   : never
@@ -90,11 +93,9 @@ export type ParseInlineFragmentReturn<
   T extends BaseObject<any, any, any>,
   SelectionField,
 > = SelectionField extends (...args: any) => DollarPackage<infer Selection extends Array<any>, infer IsOptional>
-  ?
-  | ParseObjectSelection<T, Selection>
-  | true extends IsOptional
-    ? { [K in keyof ParseObjectSelection<T, Selection>]: null | undefined }
-    : never
+  ? true extends IsOptional
+    ? MayBePartial<ParseObjectSelection<T, Selection>>
+    : ParseObjectSelection<T, Selection>
   : never
 
 /**
