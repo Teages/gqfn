@@ -11,7 +11,7 @@ import type {
   ScalarType,
 
   UnionType,
-} from '../../src/types/define'
+} from '../../src/schema'
 
 export type CategoryEnum =
   | 'funny'

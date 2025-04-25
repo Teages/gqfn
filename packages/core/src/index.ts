@@ -1,31 +1,22 @@
 import type { GraphQueryFunction as RawGraphQueryFunction } from './runtime'
-import type { DefineSchema, Schemas, UserSchemaTypes } from './schema'
-import type { GraphQueryFunction } from './types-legacy'
-import { gqfn } from './runtime'
+import type { Schemas } from './schema'
+import type { DefineSchema, GraphQueryFunction } from './types'
+import { gqfn as raw } from './runtime'
 
-export type { ResultOf, TypedDocumentNode, VariablesOf } from './types-legacy'
-
-export function createGQFn<T extends UserSchemaTypes>(): GraphQueryFunction<T> {
-  return gqfn as unknown as GraphQueryFunction<T>
-}
-
-export function useGQFnSchema<T extends string | (keyof Schemas & string)>(url: T): LoadGQFnFromUrl<T>
-export function useGQFnSchema<T extends string>(_url: T) {
-  return gqfn as any
-}
-
-export const rawGQFn = gqfn
-
-export type LoadSchemaFromUrl<T extends string> =
-  T extends keyof Schemas
-    ? Schemas[T] extends UserSchemaTypes | DefineSchema<any>
-      ? Schemas[T]
-      : never
-    : never
-
-export type LoadGQFnFromUrl<T extends string> =
-  T extends keyof Schemas
-    ? Schemas[T] extends UserSchemaTypes | DefineSchema<any>
-      ? GraphQueryFunction<Schemas[T]>
+export type { Schemas } from './schema'
+export type { ResultOf, TypedDocumentNode, VariablesOf } from './types'
+export type UseSchemaResult<T extends string | DefineSchema<any>> =
+  T extends DefineSchema<any>
+    ? GraphQueryFunction<T>
+    : T extends keyof Schemas
+      ? Schemas[T] extends DefineSchema<any>
+        ? GraphQueryFunction<Schemas[T]>
+        : RawGraphQueryFunction
       : RawGraphQueryFunction
-    : RawGraphQueryFunction
+
+export { raw }
+export function useSchema<T extends DefineSchema<any>>(): UseSchemaResult<T>
+export function useSchema<T extends string | (keyof Schemas & string)>(url: T): UseSchemaResult<T>
+export function useSchema<T extends string | DefineSchema<any> = string>(_url?: T) {
+  return raw as any
+}

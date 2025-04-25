@@ -1,13 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { createGQFn } from '../src'
+import { raw } from '../src'
 
 describe('@gqfn/core', () => {
   it('works', () => {
-    const gqfn = createGQFn()
-    expect(typeof gqfn).toBe('function')
-    expect(typeof gqfn.gqfn).toBe('function')
-    expect(typeof gqfn.enum).toBe('function')
-    expect(typeof gqfn.fragment).toBe('function')
-    expect(typeof gqfn.partial).toBe('function')
+    expect(typeof raw).toBe('function')
+    expect(typeof raw.gqfn).toBe('function')
+    expect(typeof raw.enum).toBe('function')
+    expect(typeof raw.fragment).toBe('function')
+    expect(typeof raw.partial).toBe('function')
   })
 })
