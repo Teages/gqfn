@@ -103,7 +103,7 @@ describe('type-next/utils', () => {
     expectTypeOf<RequireInputOrVariable<Input<'[Int]', Scalar_Int>>>()
       .toEqualTypeOf<
         | number | (number | null | undefined)[]
-        | Variable<'[Int]'> | Variable<'[Int]!'> | Variable<'[Int!]'>
+        | Variable<'[Int]'> | Variable<'[Int]!'> | Variable<'[Int!]'> | Variable<'[Int!]!'>
         | Variable<'Int!'> | Variable<'Int'>
         | null | undefined
     >()
