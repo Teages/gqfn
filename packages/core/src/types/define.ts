@@ -42,15 +42,13 @@ export interface EnumType<
 export interface ObjectType<
   Name extends string,
   Fields extends Record<string, Field<any, any, any>>,
-// eslint-disable-next-line ts/no-empty-object-type
-> extends BaseObject<Name, Fields, {}> {
+> extends BaseObject<Name, Fields, Record<string, never>> {
   __type__?: () => 'Type'
 }
 export interface UnionType<
   Name extends string,
   Implements extends Record<string, BaseObject<any, any, any>>,
-// eslint-disable-next-line ts/no-empty-object-type
-> extends BaseObject<Name, {}, Implements> {
+> extends BaseObject<Name, Record<string, never>, Implements> {
   __type__?: () => 'Union'
 }
 export interface InterfaceType<
