@@ -1,11 +1,7 @@
-import type { Resolver } from '@nuxt/kit'
-import type { Nuxt } from '@nuxt/schema'
+import type { SetupContext } from '.'
 import { addImportsDir, addServerImportsDir } from '@nuxt/kit'
 
-export function setupImports({ nuxt, resolver }: {
-  nuxt: Nuxt
-  resolver: Resolver
-}) {
+export function setupImports({ nuxt, resolver }: SetupContext) {
   addImportsDir(resolver.resolve('./runtime/app/utils'))
   addServerImportsDir(resolver.resolve('./runtime/server/utils'))
 

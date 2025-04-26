@@ -1,16 +1,8 @@
-import type { Resolver } from '@nuxt/kit'
-import type { Nuxt } from '@nuxt/schema'
-import type { ConsolaInstance } from 'consola'
-import type { ModuleOptions } from '../module'
+import type { SetupContext } from '.'
 import { syncSchema } from '../utils/sync'
 import { useTypeVfs } from '../utils/vfs'
 
-export async function setupSchema({ nuxt, resolver, logger, options }: {
-  nuxt: Nuxt
-  resolver: Resolver
-  logger: ConsolaInstance
-  options: ModuleOptions
-}) {
+export async function setupSchema({ nuxt, resolver, logger, options }: SetupContext) {
   const vfs = useTypeVfs('types/gqfn-schema')
 
   // add schema types
@@ -28,10 +20,12 @@ export async function setupSchema({ nuxt, resolver, logger, options }: {
     logger.start('Syncing GraphQL schema')
     const result = await syncSchema(options.clients)
 
-    result.output.forEach(o => vfs.update(
-      o.filename as `${string}.d.ts`,
-      o.content,
-    ))
+    await Promise.allSettled(
+      result.output.map(o => vfs.update(
+        o.filename as `${string}.d.ts`,
+        o.content,
+      )),
+    )
 
     result.failed.forEach(url => logger.error(`Failed to sync Schema from ${url}`))
     if (result.success.length > 0) {
