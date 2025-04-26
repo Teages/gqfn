@@ -163,81 +163,81 @@ describe('type-next/utils', () => {
       .toEqualTypeOf<string[][] | string>()
 
     // from spec 3.11 List
-    // [Int]	[1, 2, 3]	[1, 2, 3]
+    // [Int] [1, 2, 3] [1, 2, 3]
     expectTypeOf([1, 2, 3])
       .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
-    // [Int]	[1, "b", true]	Error: Incorrect item value
+    // [Int] [1, "b", true] Error: Incorrect item value
     expectTypeOf([1, 'b', true])
       .not
       .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
-    // [Int]	1	[1]
+    // [Int] 1 [1]
     expectTypeOf(1)
       .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
-    // [Int]	null	null
+    // [Int] null null
     expectTypeOf(null)
       .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
-    // [[Int]]	[[1], [2, 3]]	[[1], [2, 3]]
+    // [[Int]] [[1], [2, 3]] [[1], [2, 3]]
     expectTypeOf([[1], [2, 3]])
       .toExtend<ParseInputModifier<'[[Int]]', Scalar_Int, number>>()
-    // [[Int]]	[1, 2, 3]	Error: Incorrect item value
+    // [[Int]] [1, 2, 3] Error: Incorrect item value
     expectTypeOf([1, 2, 3])
       .not
       .toExtend<ParseInputModifier<'[[Int]]', Scalar_Int, number>>()
-    // [[Int]]	1	[[1]]
+    // [[Int]] 1 [[1]]
     expectTypeOf(1)
       .toExtend<ParseInputModifier<'[[Int]]', Scalar_Int, number>>()
-    // [[Int]]	null	null
+    // [[Int]] null null
     expectTypeOf(null)
       .toExtend<ParseInputModifier<'[[Int]]', Scalar_Int, number>>()
 
     // from spec 3.12.1 Combining List and Non-Null
-    // [Int]	[1, 2, null]	[1, 2, null]
+    // [Int] [1, 2, null] [1, 2, null]
     expectTypeOf([1, 2, null])
       .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
-    // [Int]	[1, 2, Error]	[1, 2, null] (With logged error)
+    // [Int] [1, 2, Error] [1, 2, null] (With logged error)
     expectTypeOf([1, 2, 'a'])
       .not
       .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
-    // [Int]!	[1, 2, 3]	[1, 2, 3]
+    // [Int]! [1, 2, 3] [1, 2, 3]
     expectTypeOf([1, 2, 3])
       .toExtend<ParseInputModifier<'[Int]!', Scalar_Int, number>>()
-    // [Int]!	null	Error: Value cannot be null
+    // [Int]! null Error: Value cannot be null
     expectTypeOf(null)
       .not
       .toExtend<ParseInputModifier<'[Int]!', Scalar_Int, number>>()
-    // [Int]!	[1, 2, null]	[1, 2, null]
+    // [Int]! [1, 2, null] [1, 2, null]
     expectTypeOf([1, 2, null])
       .toExtend<ParseInputModifier<'[Int]!', Scalar_Int, number>>()
-    // [Int]!	[1, 2, Error]	[1, 2, null] (With logged error)
+    // [Int]! [1, 2, Error] [1, 2, null] (With logged error)
     expectTypeOf([1, 2, 'a'])
       .not
       .toExtend<ParseInputModifier<'[Int]!', Scalar_Int, number>>()
-    // [Int!]	[1, 2, 3]	[1, 2, 3]
+    // [Int!] [1, 2, 3] [1, 2, 3]
     expectTypeOf([1, 2, 3])
       .toExtend<ParseInputModifier<'[Int!]', Scalar_Int, number>>()
-    // [Int!]	null	null
+    // [Int!] null null
     expectTypeOf(null)
       .toExtend<ParseInputModifier<'[Int!]', Scalar_Int, number>>()
-    // [Int!]	[1, 2, null]	null (With logged coercion error)
+    // [Int!] [1, 2, null] null (With logged coercion error)
     expectTypeOf([1, 2, null])
       .not
       .toExtend<ParseInputModifier<'[Int!]', Scalar_Int, number>>()
-    // [Int!]	[1, 2, Error]	null (With logged error)
+    // [Int!] [1, 2, Error] null (With logged error)
     expectTypeOf([1, 2, 'a'])
       .not
       .toExtend<ParseInputModifier<'[Int!]', Scalar_Int, number>>()
-    // [Int!]!	[1, 2, 3]	[1, 2, 3]
+    // [Int!]! [1, 2, 3] [1, 2, 3]
     expectTypeOf([1, 2, 3])
       .toExtend<ParseInputModifier<'[Int!]!', Scalar_Int, number>>()
-    // [Int!]!	null	Error: Value cannot be null
+    // [Int!]! null Error: Value cannot be null
     expectTypeOf(null)
       .not
       .toExtend<ParseInputModifier<'[Int!]!', Scalar_Int, number>>()
-    // [Int!]!	[1, 2, null]	Error: Item cannot be null
+    // [Int!]! [1, 2, null] Error: Item cannot be null
     expectTypeOf([1, 2, null])
       .not
       .toExtend<ParseInputModifier<'[Int!]!', Scalar_Int, number>>()
-    // [Int!]!	[1, 2, Error]	Error: Error occurred in item
+    // [Int!]! [1, 2, Error] Error: Error occurred in item
     expectTypeOf([1, 2, 'a'])
       .not
       .toExtend<ParseInputModifier<'[Int!]!', Scalar_Int, number>>()

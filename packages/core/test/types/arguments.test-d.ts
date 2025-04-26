@@ -1,7 +1,7 @@
 import type { Input } from '../../src/types'
 import type { PrepareSelectionArgument } from '../../src/types/argument'
 import type { AcceptVariable } from '../../src/types/variable'
-import type { Scalar_String, Schema } from './schema'
+import type { Scalar_String } from './schema'
 import { describe, expectTypeOf, test } from 'vitest'
 
 describe('types/arguments', () => {

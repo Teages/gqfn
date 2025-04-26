@@ -1,16 +1,16 @@
 import type {
+  DefineSchema,
+  EnumType,
+
   Field,
   Input,
 
-  ScalarType,
-  EnumType,
-
-  ObjectType,
-  UnionType,
-  InterfaceType,
   InputObjectType,
+  InterfaceType,
+  ObjectType,
+  ScalarType,
 
-  DefineSchema,
+  UnionType,
 } from '../src/type-next/define'
 
 export type CategoryEnum =
@@ -95,25 +95,25 @@ export type Type_Subscription = ObjectType<'Subscription', {
 }>
 
 export type Schema = DefineSchema<{
-  Int: Scalar_Int,
-  Float: Scalar_Float,
-  String: Scalar_String,
-  Boolean: Scalar_Boolean,
-  ID: Scalar_ID,
-  Date: Scalar_Date,
+  Int: Scalar_Int
+  Float: Scalar_Float
+  String: Scalar_String
+  Boolean: Scalar_Boolean
+  ID: Scalar_ID
+  Date: Scalar_Date
 
-  CategoryEnum: Enum_CategoryEnum,
+  CategoryEnum: Enum_CategoryEnum
 
-  SayingDataInput: Input_SayingDataInput,
+  SayingDataInput: Input_SayingDataInput
 
-  ItemWithId: Interface_ItemWithId,
+  ItemWithId: Interface_ItemWithId
 
-  Saying: Object_Saying,
-  User: Object_User,
+  Saying: Object_Saying
+  User: Object_User
 
-  Data: Union_Data,
+  Data: Union_Data
 
-  Mutation: Type_Mutation,
-  Query: Type_Query,
-  Subscription: Type_Subscription,
+  Mutation: Type_Mutation
+  Query: Type_Query
+  Subscription: Type_Subscription
 }>

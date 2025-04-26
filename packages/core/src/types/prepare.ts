@@ -34,21 +34,15 @@ export type ObjectSelectionOnFields<
   T extends BaseObject<any, any, any>,
   Variables extends DollarPayload,
 > = T extends BaseObject<infer Name, infer Fields, any>
-  ? {
-    [K in keyof Fields as WithAlias<K>]?: SelectionOnField<Fields[K], Variables>
-  } & {
-    [K in '__typename' as WithAlias<K>]?: SelectionOnField<TypenameField<Name>, Variables>
-  }
+  ? ({ [K in keyof Fields as WithAlias<K>]?: SelectionOnField<Fields[K], Variables> }
+    & { [K in '__typename' as WithAlias<K>]?: SelectionOnField<TypenameField<Name>, Variables> })
   : never
 export type ObjectSelectionOnInlineFragments<
   T extends BaseObject<any, any, any>,
   Variables extends DollarPayload,
 > = T extends BaseObject<any, any, infer Implements>
-  ? {
-    [K in keyof Implements as `... on ${K & string}`]?: SelectionFnOnInlineFragment<Implements[K], Variables>
-  } & {
-    '...'?: SelectionFnOnInlineFragment<T, Variables>
-  }
+  ? ({ [K in keyof Implements as `... on ${K & string}`]?: SelectionFnOnInlineFragment<Implements[K], Variables> }
+    & { '...'?: SelectionFnOnInlineFragment<T, Variables> })
   : never
 
 export type SelectionOnField<

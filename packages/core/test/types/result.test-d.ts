@@ -1,9 +1,7 @@
-import type { Exact } from '../../src/internal/utils'
-import type { BaseObject, BaseType, Field } from '../../src/types'
+import type { Field } from '../../src/types'
 import type { DollarPackage } from '../../src/types/dollar'
-import type { ObjectSelectionOnInlineFragments, PrepareSelection } from '../../src/types/prepare'
 import type { AnalyzedObjectSelection, OmitInlineFragmentKeys, ParseInlineFragmentReturn, ParseObjectSelection, ParseObjectSelectionContext, ParseObjectSelectionContextField, ParseObjectSelectionContextInlineFragments, ParseSelection, ParseSelectionName, PickInlineFragmentKeys } from '../../src/types/result'
-import type { Scalar_Boolean, Scalar_String, Schema, Type_Query, Type_User, Union_Data } from './schema'
+import type { Scalar_Boolean, Scalar_String, Type_Query, Type_User, Union_Data } from './schema'
 import { describe, expectTypeOf, test } from 'vitest'
 
 describe('types/result', () => {
