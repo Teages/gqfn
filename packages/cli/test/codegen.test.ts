@@ -5,20 +5,44 @@ import { generate } from '../src/codegen'
 describe('codegen', () => {
   describe('generate', () => {
     it('scalar', () => {
-      const schema = `
-        scalar DateTime
-      `
-      const result = generate(schema)
-      expect(result).toMatchInlineSnapshot(`
+      expect(generate(
+        `scalar DateTime`,
+        { scalars: { DateTime: 'string' } },
+      )).toMatchInlineSnapshot(`
         "/* eslint-ignore */
         import type { ScalarType, DefineSchema } from '@gqfn/core/schema'
 
-        type Scalar_DateTime = ScalarType<'DateTime', unknown, unknown>
+        type Scalar_DateTime = ScalarType<'DateTime', string, string>
         type Scalar_Int = ScalarType<'Int', number, number>
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string | number>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
+
+        export type Schema = DefineSchema<{
+          DateTime: Scalar_DateTime
+          Int: Scalar_Int
+          Float: Scalar_Float
+          String: Scalar_String
+          Boolean: Scalar_Boolean
+          ID: Scalar_ID
+        }>
+        "
+      `)
+
+      expect(generate(
+        `scalar DateTime`,
+        { scalars: { DateTime: { input: 'string | number | Date', output: 'string' } } },
+      )).toMatchInlineSnapshot(`
+        "/* eslint-ignore */
+        import type { ScalarType, DefineSchema } from '@gqfn/core/schema'
+
+        type Scalar_DateTime = ScalarType<'DateTime', string | number | Date, string>
+        type Scalar_Int = ScalarType<'Int', number, number>
+        type Scalar_Float = ScalarType<'Float', number, number>
+        type Scalar_String = ScalarType<'String', string, string>
+        type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
 
         export type Schema = DefineSchema<{
           DateTime: Scalar_DateTime
@@ -49,7 +73,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string | number>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
 
         export type UserRole =
           | 'ADMIN'
@@ -86,7 +110,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string | number>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
 
         type Input_UserInput = InputObjectType<'UserInput', {
           name: Input<'String!', Scalar_String>
@@ -132,7 +156,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string | number>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
 
         type Type_User = ObjectType<'User', {
           id: Field<'ID!', Scalar_ID>
@@ -193,7 +217,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string | number>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
 
         type Type_Dog = ObjectType<'Dog', {
           name: Field<'String!', Scalar_String>
@@ -252,7 +276,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string | number>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
 
         type Type_User = ObjectType<'User', {
           id: Field<'ID!', Scalar_ID>
@@ -289,7 +313,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string | number>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
 
         type Type_Query = ObjectType<'Query', {
           user: Field<'User', undefined, {
@@ -339,7 +363,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string | number>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
 
         type Type_Query = ObjectType<'Query', {
           hello: Field<'String!', Scalar_String>

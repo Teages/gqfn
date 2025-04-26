@@ -1,4 +1,5 @@
 import type { DocumentNode, EnumTypeDefinitionNode, FieldDefinitionNode, InputObjectTypeDefinitionNode, InterfaceTypeDefinitionNode, NameNode, ObjectTypeDefinitionNode, ScalarTypeDefinitionNode, UnionTypeDefinitionNode } from 'graphql'
+import type { CodegenOptions } from '.'
 import { Kind, parse, print } from 'graphql'
 
 export interface ItemData { name: string }
@@ -47,7 +48,7 @@ const DEFAULT_SCALARS: Record<string, { input: string, output: string }> = {
   },
   ID: {
     input: 'string | number',
-    output: 'string | number',
+    output: 'string',
   },
 }
 
@@ -59,7 +60,7 @@ export class SchemaData {
   typeObjects: Record<string, TypeObjectData> = {}
   unions: Record<string, UnionData> = {}
 
-  constructor(schema: DocumentNode) {
+  constructor(schema: DocumentNode, options?: CodegenOptions) {
     if (schema.kind !== Kind.DOCUMENT) {
       throw new Error('Invalid schema, require DocumentNode')
     }
@@ -75,7 +76,7 @@ export class SchemaData {
           break
         }
         case Kind.SCALAR_TYPE_DEFINITION: {
-          const node = parseScalarNode(def)
+          const node = parseScalarNode(def, options?.scalars)
           if (this.scalarTypes[node.name]) {
             throw new Error(`Duplicate scalar type: ${node.name}`)
           }
@@ -136,10 +137,16 @@ function parseEnumNode(def: EnumTypeDefinitionNode): EnumTypeData {
   return { name, values }
 }
 
-function parseScalarNode(def: ScalarTypeDefinitionNode): ScalarTypeData {
+function parseScalarNode(
+  def: ScalarTypeDefinitionNode,
+  scalars: Record<string, string | { input: string, output: string }> = {},
+): ScalarTypeData {
   const name = parseName(def.name)
+  const scalarOption = scalars[name] || 'unknown'
+  const input = typeof scalarOption === 'string' ? scalarOption : scalarOption.input
+  const output = typeof scalarOption === 'string' ? scalarOption : scalarOption.output
 
-  return { name, input: 'unknown', output: 'unknown' }
+  return { name, input, output }
 }
 
 function parseInputObjectNode(def: InputObjectTypeDefinitionNode): InputObjectData {
@@ -196,7 +203,7 @@ function parseName(node: NameNode): string {
   return node.value
 }
 
-export function parseSchema(schema: string | DocumentNode): SchemaData {
+export function parseSchema(schema: string | DocumentNode, options?: CodegenOptions): SchemaData {
   let documentNode: DocumentNode | undefined
   if (typeof schema === 'string') {
     try {
@@ -220,5 +227,5 @@ export function parseSchema(schema: string | DocumentNode): SchemaData {
     throw new Error('Invalid schema, require DocumentNode, Schema AST(JSON) or Schema SDL')
   }
 
-  return new SchemaData(documentNode)
+  return new SchemaData(documentNode, options)
 }

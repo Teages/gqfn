@@ -1,10 +1,7 @@
+import type { CodegenOptions } from '.'
 import type { SchemaData } from './parse'
 
-export interface PrintOptions {
-  url?: string
-}
-
-export function print(schemaData: SchemaData, { url }: PrintOptions = {}): string {
+export function print(schemaData: SchemaData, { url }: CodegenOptions = {}): string {
   const lines: Array<string> = []
   const push = (...str: Array<string>) => lines.push(...str)
 

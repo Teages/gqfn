@@ -20,7 +20,7 @@ export async function sync(clients: (ClientConfig | string)[]): Promise<SyncResu
   const errors: Record<string, Error> = {}
 
   await Promise.allSettled(clients.map(async (clientConfig) => {
-    const { url, loader } = resolveClient(clientConfig)
+    const { url, loader, scalars } = resolveClient(clientConfig)
 
     if (urls.has(url)) {
       errors[url] = new Error(`Duplicate client: ${url}`)
@@ -31,7 +31,7 @@ export async function sync(clients: (ClientConfig | string)[]): Promise<SyncResu
     // load graphql schema sdl
     try {
       const sdl = await loadSchema(url, loader)
-      const code = generate(sdl, { url })
+      const code = generate(sdl, { url, scalars })
       result.set(url, code)
     }
     catch (error) {
