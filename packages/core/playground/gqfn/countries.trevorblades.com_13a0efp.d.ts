@@ -5,7 +5,7 @@ type Scalar_Int = ScalarType<'Int', number, number>
 type Scalar_Float = ScalarType<'Float', number, number>
 type Scalar_String = ScalarType<'String', string, string>
 type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-type Scalar_ID = ScalarType<'ID', string | number, string | number>
+type Scalar_ID = ScalarType<'ID', string | number, string>
 
 type Input_ContinentFilterInput = InputObjectType<'ContinentFilterInput', {
   code: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>

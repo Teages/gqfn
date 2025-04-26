@@ -12,7 +12,7 @@ export type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
 export type Scalar_ID = ScalarType<'ID', string | number, string | number>
 export type Scalar_Date = ScalarType<'Date', string, string>
 
-export type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum, CategoryEnum>
+export type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum>
 
 export type Input_SayingDataInput = InputObjectType<'SayingDataInput', {
   category: Input<'CategoryEnum!', Enum_CategoryEnum>
@@ -53,7 +53,7 @@ export type Union_Data = UnionType<'Data', {
 export type Type_Mutation = ObjectType<'Mutation', {
   addSaying: Field<'Saying!', Type_Saying, {
     input: Input<'SayingDataInput', Input_SayingDataInput>
-    ownerId: Field<'Int!', Scalar_Int>
+    ownerId: Input<'Int!', Scalar_Int>
   }>
 }>
 
@@ -64,20 +64,20 @@ export type Type_Query = ObjectType<'Query', {
     name: Input<'String', Scalar_String>
   }>
   saying: Field<'Saying!', Type_Saying, {
-    id: Field<'Int!', Scalar_Int>
+    id: Input<'Int!', Scalar_Int>
   }>
   sayings: Field<'[Saying!]!', Type_Saying, {
     category: Input<'CategoryEnum', Enum_CategoryEnum>
   }>
   user: Field<'User!', Type_User, {
-    id: Field<'Int!', Scalar_Int>
+    id: Input<'Int!', Scalar_Int>
   }>
   users: Field<'[User!]!', Type_User>
 }>
 
 export type Type_Subscription = ObjectType<'Subscription', {
   countdown: Field<'Int!', Scalar_Int, {
-    from: Field<'Int!', Scalar_Int>
+    from: Input<'Int!', Scalar_Int>
   }>
 }>
 
