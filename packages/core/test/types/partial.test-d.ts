@@ -1,4 +1,4 @@
-import { ResultOf, VariablesOf } from '../../src'
+import type { ResultOf, VariablesOf } from '../../src'
 import type { GraphQueryFunctionCore } from '../../src/types/operation'
 import type { GraphQueryFunctionPartial, OperationPartial } from '../../src/types/partial'
 import type { PrepareVariables } from '../../src/types/variable'
@@ -24,7 +24,7 @@ describe('types/partial', () => {
       PrepareVariables<{ name: 'String!' }>
     >>()
     const _i0_res = schema.gqfn('query GetHello', { name: 'String! = "world"' }, [{
-      '...': $ => $([{ ..._i0($) }])
+      '...': $ => $([{ ..._i0($) }]),
     }])
     expectTypeOf<ResultOf<typeof _i0_res>>().toEqualTypeOf<{ __typename: 'Query' }>()
     expectTypeOf<VariablesOf<typeof _i0_res>>().toEqualTypeOf<{ name?: string | undefined }>()

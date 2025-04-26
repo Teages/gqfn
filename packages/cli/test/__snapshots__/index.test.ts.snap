@@ -2,7 +2,7 @@
 
 exports[`@gqfn/cli > cytoid-io json 1`] = `
 "/* eslint-ignore */
-import type { ScalarType, EnumType, InputObjectType, Input, Field, ObjectType } from '@gqfn/core/schema'
+import type { ScalarType, EnumType, InputObjectType, Input, Field, ObjectType, DefineSchema } from '@gqfn/core/schema'
 
 type Scalar_FileSize = ScalarType<'FileSize', unknown, unknown>
 type Scalar_Date = ScalarType<'Date', unknown, unknown>
@@ -18,12 +18,12 @@ export type ResourceState =
   | 'PRIVATE'
   | 'PUBLIC'
   | 'UNLISTED'
-type Enum_ResourceState = EnumType<'ResourceState', ResourceState, ResourceState>
+type Enum_ResourceState = EnumType<'ResourceState', ResourceState>
 
 export type QueryOrder =
   | 'ASC'
   | 'DESC'
-type Enum_QueryOrder = EnumType<'QueryOrder', QueryOrder, QueryOrder>
+type Enum_QueryOrder = EnumType<'QueryOrder', QueryOrder>
 
 export type LevelQuerySort =
   | 'CREATION_DATE'
@@ -33,13 +33,13 @@ export type LevelQuerySort =
   | 'PLAYS'
   | 'RATING'
   | 'DIFFICULTY'
-type Enum_LevelQuerySort = EnumType<'LevelQuerySort', LevelQuerySort, LevelQuerySort>
+type Enum_LevelQuerySort = EnumType<'LevelQuerySort', LevelQuerySort>
 
 export type PostType =
   | 'POST'
   | 'PAGE'
   | 'EVENT'
-type Enum_PostType = EnumType<'PostType', PostType, PostType>
+type Enum_PostType = EnumType<'PostType', PostType>
 
 export type GameplayMods =
   | 'FC'
@@ -53,7 +53,7 @@ export type GameplayMods =
   | 'ExHard'
   | 'HideScanline'
   | 'HideNotes'
-type Enum_GameplayMods = EnumType<'GameplayMods', GameplayMods, GameplayMods>
+type Enum_GameplayMods = EnumType<'GameplayMods', GameplayMods>
 
 export type RecordQuerySort =
   | 'Score'
@@ -61,7 +61,7 @@ export type RecordQuerySort =
   | 'Date'
   | 'Rating'
   | 'RecentRating'
-type Enum_RecordQuerySort = EnumType<'RecordQuerySort', RecordQuerySort, RecordQuerySort>
+type Enum_RecordQuerySort = EnumType<'RecordQuerySort', RecordQuerySort>
 
 export type SearchLevelSortingStrategy =
   | 'CREATION_DATE'
@@ -71,18 +71,18 @@ export type SearchLevelSortingStrategy =
   | 'PLAYS'
   | 'RATING'
   | 'DIFFICULTY'
-type Enum_SearchLevelSortingStrategy = EnumType<'SearchLevelSortingStrategy', SearchLevelSortingStrategy, SearchLevelSortingStrategy>
+type Enum_SearchLevelSortingStrategy = EnumType<'SearchLevelSortingStrategy', SearchLevelSortingStrategy>
 
 export type SearchLevelOrder =
   | 'ASC'
   | 'DESC'
-type Enum_SearchLevelOrder = EnumType<'SearchLevelOrder', SearchLevelOrder, SearchLevelOrder>
+type Enum_SearchLevelOrder = EnumType<'SearchLevelOrder', SearchLevelOrder>
 
 export type Role =
   | 'MODERATOR'
   | 'ADMIN'
   | 'USER'
-type Enum_Role = EnumType<'Role', Role, Role>
+type Enum_Role = EnumType<'Role', Role>
 
 type Input_ResourceMetaInput = InputObjectType<'ResourceMetaInput', {
   name: Input<'String', Scalar_String>
@@ -100,18 +100,18 @@ type Input_CollectionInput = InputObjectType<'CollectionInput', {
   title: Input<'String', Scalar_String>
   slogan: Input<'String', Scalar_String>
   description: Input<'String', Scalar_String>
-  levelIds: Input<'[Int!]', undefined>
-  tags: Input<'[String!]', undefined>
+  levelIds: Input<'[Int!]', Scalar_Int>
+  tags: Input<'[String!]', Scalar_String>
   state: Input<'ResourceState', Enum_ResourceState>
   metadata: Input<'CollectionMetaInput', Input_CollectionMetaInput>
 }>
 
 type Input_UpdateLevelInput = InputObjectType<'UpdateLevelInput', {
   state: Input<'ResourceState', Enum_ResourceState>
-  tags: Input<'[String!]', undefined>
+  tags: Input<'[String!]', Scalar_String>
   description: Input<'String', Scalar_String>
   censored: Input<'String', Scalar_String>
-  category: Input<'[String!]', undefined>
+  category: Input<'[String!]', Scalar_String>
 }>
 
 type Input_PartialChartMetadata = InputObjectType<'PartialChartMetadata', {
@@ -130,7 +130,7 @@ type Input_PartialMetadata = InputObjectType<'PartialMetadata', {
   illustrator_source: Input<'String', Scalar_String>
   charter: Input<'String', Scalar_String>
   storyboarder: Input<'String', Scalar_String>
-  charts: Input<'[PartialChartMetadata!]', undefined>
+  charts: Input<'[PartialChartMetadata!]', Input_PartialChartMetadata>
 }>
 
 type Input_PostMetaInput = InputObjectType<'PostMetaInput', {
@@ -173,23 +173,23 @@ type Type_Query = ObjectType<'Query', {
   discordOnlineCount: Field<'Int', Scalar_Int>
   recentTweet: Field<'String', Scalar_String>
   collectionsCount: Field<'Int!', Scalar_Int>
-  collection: Field<'Collection', undefined, {
+  collection: Field<'Collection', Type_Collection, {
     id: Input<'ID', Scalar_ID>
     uid: Input<'String', Scalar_String>
   }>
-  collections: Field<'[CollectionListing!]!', undefined, {
+  collections: Field<'[CollectionListing!]!', Type_CollectionListing, {
     limit: Input<'Int', Scalar_Int>
     cursor: Input<'ID', Scalar_ID>
     ownerId: Input<'String', Scalar_String>
     ownerUid: Input<'String', Scalar_String>
   }>
-  recentComments: Field<'[Comment!]!', undefined, {
+  recentComments: Field<'[Comment!]!', Type_Comment, {
     limit: Input<'Int', Scalar_Int>
   }>
-  level: Field<'Level', undefined, {
+  level: Field<'Level', Type_Level, {
     uid: Input<'String!', Scalar_String>
   }>
-  levels: Field<'[Level!]!', undefined, {
+  levels: Field<'[Level!]!', Type_Level, {
     order: Input<'QueryOrder', Enum_QueryOrder>
     page: Input<'Int', Scalar_Int>
     limit: Input<'Int', Scalar_Int>
@@ -199,27 +199,27 @@ type Type_Query = ObjectType<'Query', {
   levelsCount: Field<'Int!', Scalar_Int, {
     category: Input<'String', Scalar_String>
   }>
-  chart: Field<'Chart', undefined, {
+  chart: Field<'Chart', Type_Chart, {
     levelUid: Input<'String!', Scalar_String>
     chartType: Input<'String!', Scalar_String>
   }>
-  getPosts: Field<'[Post!]!', undefined, {
+  getPosts: Field<'[Post!]!', Type_Post, {
     limit: Input<'Int!', Scalar_Int>
     all: Input<'Boolean', Scalar_Boolean>
     skip: Input<'Int', Scalar_Int>
   }>
-  getActivePosts: Field<'[Post!]!', undefined, {
+  getActivePosts: Field<'[Post!]!', Type_Post, {
     limit: Input<'Int!', Scalar_Int>
     skip: Input<'Int', Scalar_Int>
   }>
-  getPost: Field<'PostDetail', undefined, {
+  getPost: Field<'PostDetail', Type_PostDetail, {
     uid: Input<'String!', Scalar_String>
   }>
-  recentRecords: Field<'[Record!]!', undefined, {
+  recentRecords: Field<'[Record!]!', Type_Record, {
     limit: Input<'Int', Scalar_Int>
     ranked: Input<'Boolean', Scalar_Boolean>
   }>
-  records: Field<'[Record!]!', undefined, {
+  records: Field<'[Record!]!', Type_Record, {
     query: Input<'RecordQueryInput', Input_RecordQueryInput>
     page: Input<'Int', Scalar_Int>
     limit: Input<'Int', Scalar_Int>
@@ -229,51 +229,51 @@ type Type_Query = ObjectType<'Query', {
   recordsCount: Field<'Int!', Scalar_Int, {
     query: Input<'RecordQueryInput', Input_RecordQueryInput>
   }>
-  record: Field<'Record', undefined, {
+  record: Field<'Record', Type_Record, {
     id: Input<'Int!', Scalar_Int>
     chartId: Input<'Int!', Scalar_Int>
   }>
-  searchLevels: Field<'[Level!]!', undefined, {
+  searchLevels: Field<'[Level!]!', Type_Level, {
     search: Input<'String!', Scalar_String>
     start: Input<'Int', Scalar_Int>
     limit: Input<'Int', Scalar_Int>
     strategy: Input<'SearchLevelSortingStrategy', Enum_SearchLevelSortingStrategy>
     order: Input<'SearchLevelOrder', Enum_SearchLevelOrder>
   }>
-  profile: Field<'Profile', undefined, {
+  profile: Field<'Profile', Type_Profile, {
     id: Input<'ID', Scalar_ID>
     uid: Input<'String', Scalar_String>
   }>
-  user: Field<'User', undefined, {
+  user: Field<'User', Type_User, {
     id: Input<'ID', Scalar_ID>
     uid: Input<'String', Scalar_String>
   }>
-  my: Field<'My', undefined>
+  my: Field<'My', Type_My>
 }>
 
 type Type_Mutation = ObjectType<'Mutation', {
-  updateCollection: Field<'CollectionUserListing', undefined, {
+  updateCollection: Field<'CollectionUserListing', Type_CollectionUserListing, {
     id: Input<'ID!', Scalar_ID>
     input: Input<'CollectionInput!', Input_CollectionInput>
   }>
-  createCollection: Field<'CollectionUserListing', undefined, {
+  createCollection: Field<'CollectionUserListing', Type_CollectionUserListing, {
     input: Input<'CollectionInput!', Input_CollectionInput>
   }>
-  deleteCollection: Field<'CollectionUserListing', undefined, {
+  deleteCollection: Field<'CollectionUserListing', Type_CollectionUserListing, {
     id: Input<'ID!', Scalar_ID>
   }>
   evaluateEpic: Field<'String', Scalar_String, {
     id: Input<'String', Scalar_String>
   }>
-  rateLevel: Field<'Rating!', undefined, {
+  rateLevel: Field<'Rating!', Type_Rating, {
     id: Input<'String!', Scalar_String>
     rating: Input<'Int', Scalar_Int>
   }>
-  unpackLevelPackage: Field<'UserLevel', undefined, {
+  unpackLevelPackage: Field<'UserLevel', Type_UserLevel, {
     token: Input<'String!', Scalar_String>
     replace: Input<'String', Scalar_String>
   }>
-  editLevelMetadata: Field<'UserLevel', undefined, {
+  editLevelMetadata: Field<'UserLevel', Type_UserLevel, {
     id: Input<'String!', Scalar_String>
     metadata: Input<'PartialMetadata', Input_PartialMetadata>
   }>
@@ -290,14 +290,14 @@ type Type_Mutation = ObjectType<'Mutation', {
   removeFromLibrary: Field<'Boolean', Scalar_Boolean, {
     levelId: Input<'Int!', Scalar_Int>
   }>
-  createPost: Field<'Post', undefined, {
+  createPost: Field<'Post', Type_Post, {
     post: Input<'PostInput', Input_PostInput>
   }>
-  updatePost: Field<'Post', undefined, {
+  updatePost: Field<'Post', Type_Post, {
     id: Input<'ID!', Scalar_ID>
     input: Input<'PostInput', Input_PostInput>
   }>
-  deletePost: Field<'Post', undefined, {
+  deletePost: Field<'Post', Type_Post, {
     id: Input<'ID!', Scalar_ID>
   }>
   addEmail: Field<'Boolean', Scalar_Boolean, {
@@ -332,10 +332,10 @@ type Type_Mutation = ObjectType<'Mutation', {
   updateProfile: Field<'Boolean', Scalar_Boolean, {
     input: Input<'ProfileInput!', Input_ProfileInput>
   }>
-  updateProfileHeader: Field<'Image', undefined, {
+  updateProfileHeader: Field<'Image', Type_Image, {
     path: Input<'String!', Scalar_String>
   }>
-  setAvatar: Field<'Avatar', undefined, {
+  setAvatar: Field<'Avatar', Type_Avatar, {
     path: Input<'String', Scalar_String>
   }>
   setUserActive: Field<'Boolean', Scalar_Boolean, {
@@ -370,36 +370,36 @@ type Type_Badge = ObjectType<'Badge', {
 }>
 
 type Type_Profile = ObjectType<'Profile', {
-  badges: Field<'[Badge!]!', undefined>
-  recentRecords: Field<'[UserRecord!]!', undefined, {
+  badges: Field<'[Badge!]!', Type_Badge>
+  recentRecords: Field<'[UserRecord!]!', Type_UserRecord, {
     limit: Input<'Int', Scalar_Int>
     sort: Input<'RecordQuerySort', Enum_RecordQuerySort>
     order: Input<'QueryOrder', Enum_QueryOrder>
   }>
-  bestRecords: Field<'[UserRecord!]!', undefined, {
+  bestRecords: Field<'[UserRecord!]!', Type_UserRecord, {
     limit: Input<'Int', Scalar_Int>
   }>
   id: Field<'ID!', Scalar_ID>
-  user: Field<'User', undefined>
+  user: Field<'User', Type_User>
   birthday: Field<'Date', Scalar_Date>
   bio: Field<'String', Scalar_String>
-  header: Field<'Image', undefined>
+  header: Field<'Image', Type_Image>
   rating: Field<'Float!', Scalar_Float>
-  exp: Field<'ProfileExp!', undefined>
-  grades: Field<'ProfileGrades!', undefined>
-  activity: Field<'ProfileActivity!', undefined>
-  timeseries: Field<'[ProfileTimeSeries!]!', undefined>
+  exp: Field<'ProfileExp!', Type_ProfileExp>
+  grades: Field<'ProfileGrades!', Type_ProfileGrades>
+  activity: Field<'ProfileActivity!', Type_ProfileActivity>
+  timeseries: Field<'[ProfileTimeSeries!]!', Type_ProfileTimeSeries>
 }>
 
 type Type_User = ObjectType<'User', {
   collectionsCount: Field<'Int!', Scalar_Int>
-  collections: Field<'[CollectionUserListing!]!', undefined, {
+  collections: Field<'[CollectionUserListing!]!', Type_CollectionUserListing, {
     first: Input<'Int', Scalar_Int>
   }>
   levelsCount: Field<'Int!', Scalar_Int, {
     category: Input<'String', Scalar_String>
   }>
-  levels: Field<'[UserLevel!]!', undefined, {
+  levels: Field<'[UserLevel!]!', Type_UserLevel, {
     first: Input<'Int', Scalar_Int>
     category: Input<'String', Scalar_String>
     sort: Input<'LevelQuerySort', Enum_LevelQuerySort>
@@ -408,41 +408,41 @@ type Type_User = ObjectType<'User', {
   id: Field<'ID!', Scalar_ID>
   uid: Field<'String', Scalar_String>
   name: Field<'String', Scalar_String>
-  emails: Field<'[Email!]!', undefined>
+  emails: Field<'[Email!]!', Type_Email>
   registrationDate: Field<'Date', Scalar_Date>
   role: Field<'Role!', Enum_Role>
-  avatar: Field<'Avatar!', undefined>
+  avatar: Field<'Avatar!', Type_Avatar>
   active: Field<'Boolean', Scalar_Boolean>
   lastSeen: Field<'Date', Scalar_Date>
-  my: Field<'My', undefined>
+  my: Field<'My', Type_My>
 }>
 
 type Type_My = ObjectType<'My', {
-  collections: Field<'[CollectionUserListing!]!', undefined>
-  levels: Field<'[UserStudioLevel!]!', undefined, {
+  collections: Field<'[CollectionUserListing!]!', Type_CollectionUserListing>
+  levels: Field<'[UserStudioLevel!]!', Type_UserStudioLevel, {
     start: Input<'Int', Scalar_Int>
     limit: Input<'Int', Scalar_Int>
   }>
   levelsCount: Field<'Int!', Scalar_Int>
-  library: Field<'[Level!]!', undefined, {
+  library: Field<'[Level!]!', Type_Level, {
     granted: Input<'Boolean', Scalar_Boolean>
   }>
-  emails: Field<'[Email!]!', undefined>
+  emails: Field<'[Email!]!', Type_Email>
   user: Field<'User', Type_User>
-  externalAccountProviders: Field<'[String!]!', undefined>
+  externalAccountProviders: Field<'[String!]!', Scalar_String>
 }>
 
 type Type_CollectionUserListing = ObjectType<'CollectionUserListing', {
   id: Field<'ID!', Scalar_ID>
   uid: Field<'String!', Scalar_String>
-  cover: Field<'Image', undefined>
+  cover: Field<'Image', Type_Image>
   title: Field<'String!', Scalar_String>
   slogan: Field<'String!', Scalar_String>
   description: Field<'String!', Scalar_String>
   levelCount: Field<'Int!', Scalar_Int>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
-  tags: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
   metadata: Field<'ResourceMeta!', Type_ResourceMeta>
 }>
@@ -450,18 +450,18 @@ type Type_CollectionUserListing = ObjectType<'CollectionUserListing', {
 type Type_Collection = ObjectType<'Collection', {
   id: Field<'ID!', Scalar_ID>
   uid: Field<'String!', Scalar_String>
-  cover: Field<'Image', undefined>
+  cover: Field<'Image', Type_Image>
   title: Field<'String!', Scalar_String>
   slogan: Field<'String!', Scalar_String>
   description: Field<'String!', Scalar_String>
   owner: Field<'User', Type_User>
   levelCount: Field<'Int!', Scalar_Int>
-  levels: Field<'[Level!]!', undefined, {
+  levels: Field<'[Level!]!', Type_Level, {
     limit: Input<'Int', Scalar_Int>
   }>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
-  tags: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
   metadata: Field<'ResourceMeta!', Type_ResourceMeta>
 }>
@@ -469,7 +469,7 @@ type Type_Collection = ObjectType<'Collection', {
 type Type_CollectionListing = ObjectType<'CollectionListing', {
   id: Field<'ID!', Scalar_ID>
   uid: Field<'String!', Scalar_String>
-  cover: Field<'Image', undefined>
+  cover: Field<'Image', Type_Image>
   title: Field<'String!', Scalar_String>
   slogan: Field<'String!', Scalar_String>
   description: Field<'String!', Scalar_String>
@@ -477,7 +477,7 @@ type Type_CollectionListing = ObjectType<'CollectionListing', {
   levelCount: Field<'Int!', Scalar_Int>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
-  tags: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
   metadata: Field<'ResourceMeta!', Type_ResourceMeta>
 }>
@@ -537,7 +537,7 @@ type Type_Chart = ObjectType<'Chart', {
   difficulty: Field<'Int!', Scalar_Int>
   type: Field<'String!', Scalar_String>
   notesCount: Field<'Int!', Scalar_Int>
-  leaderboard: Field<'[LeaderboardRecord!]!', undefined, {
+  leaderboard: Field<'[LeaderboardRecord!]!', Type_LeaderboardRecord, {
     start: Input<'Int!', Scalar_Int>
     limit: Input<'Int!', Scalar_Int>
   }>
@@ -548,7 +548,7 @@ type Type_Rating = ObjectType<'Rating', {
   average: Field<'Float', Scalar_Float>
   total: Field<'Int!', Scalar_Int>
   rating: Field<'Float', Scalar_Float>
-  distribution: Field<'[Int!]!', undefined>
+  distribution: Field<'[Int!]!', Scalar_Int>
 }>
 
 type Type_Level = ObjectType<'Level', {
@@ -562,13 +562,13 @@ type Type_Level = ObjectType<'Level', {
   description: Field<'String!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
   censored: Field<'String', Scalar_String>
-  tags: Field<'[String!]!', undefined>
-  category: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
   owner: Field<'User', Type_User>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
   bundle: Field<'LevelBundle', Type_LevelBundle>
-  charts: Field<'[Chart!]!', undefined>
+  charts: Field<'[Chart!]!', Type_Chart>
   rating: Field<'Rating!', Type_Rating>
   owned: Field<'Boolean', Scalar_Boolean>
 }>
@@ -584,12 +584,12 @@ type Type_UserLevel = ObjectType<'UserLevel', {
   description: Field<'String!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
   censored: Field<'String', Scalar_String>
-  tags: Field<'[String!]!', undefined>
-  category: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
   bundle: Field<'LevelBundle', Type_LevelBundle>
-  charts: Field<'[Chart!]!', undefined>
+  charts: Field<'[Chart!]!', Type_Chart>
 }>
 
 type Type_UserStudioLevel = ObjectType<'UserStudioLevel', {
@@ -603,12 +603,12 @@ type Type_UserStudioLevel = ObjectType<'UserStudioLevel', {
   description: Field<'String!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
   censored: Field<'String', Scalar_String>
-  tags: Field<'[String!]!', undefined>
-  category: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
   bundle: Field<'LevelBundle', Type_LevelBundle>
-  charts: Field<'[Chart!]!', undefined>
+  charts: Field<'[Chart!]!', Type_Chart>
   downloadCount: Field<'Float', Scalar_Float>
   playCount: Field<'Float', Scalar_Float>
   avgRating: Field<'Float', Scalar_Float>
@@ -678,8 +678,8 @@ type Type_RecordLevel = ObjectType<'RecordLevel', {
   description: Field<'String!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
   censored: Field<'String', Scalar_String>
-  tags: Field<'[String!]!', undefined>
-  category: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
   owner: Field<'User', Type_User>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
@@ -702,7 +702,7 @@ type Type_Record = ObjectType<'Record', {
   chart: Field<'RecordChart', Type_RecordChart>
   score: Field<'Int!', Scalar_Int>
   accuracy: Field<'Float!', Scalar_Float>
-  mods: Field<'[GameplayMods!]!', undefined>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
   ranked: Field<'Boolean!', Scalar_Boolean>
   details: Field<'RecordDetails!', Type_RecordDetails>
   rating: Field<'Float!', Scalar_Float>
@@ -716,7 +716,7 @@ type Type_LeaderboardRecord = ObjectType<'LeaderboardRecord', {
   owner: Field<'User', Type_User>
   score: Field<'Int!', Scalar_Int>
   accuracy: Field<'Float!', Scalar_Float>
-  mods: Field<'[GameplayMods!]!', undefined>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
   details: Field<'RecordDetails!', Type_RecordDetails>
 }>
 
@@ -726,7 +726,7 @@ type Type_UserRecord = ObjectType<'UserRecord', {
   chart: Field<'RecordChart', Type_RecordChart>
   score: Field<'Int!', Scalar_Int>
   accuracy: Field<'Float!', Scalar_Float>
-  mods: Field<'[GameplayMods!]!', undefined>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
   ranked: Field<'Boolean!', Scalar_Boolean>
   details: Field<'RecordDetails!', Type_RecordDetails>
   rating: Field<'Float!', Scalar_Float>
@@ -855,7 +855,7 @@ declare module '@gqfn/core/schema' {
 
 exports[`@gqfn/cli > cytoid-io sdl 1`] = `
 "/* eslint-ignore */
-import type { ScalarType, EnumType, InputObjectType, Input, Field, ObjectType } from '@gqfn/core/schema'
+import type { ScalarType, EnumType, InputObjectType, Input, Field, ObjectType, DefineSchema } from '@gqfn/core/schema'
 
 type Scalar_Date = ScalarType<'Date', unknown, unknown>
 type Scalar_FileSize = ScalarType<'FileSize', unknown, unknown>
@@ -879,7 +879,7 @@ export type GameplayMods =
   | 'ExHard'
   | 'HideScanline'
   | 'HideNotes'
-type Enum_GameplayMods = EnumType<'GameplayMods', GameplayMods, GameplayMods>
+type Enum_GameplayMods = EnumType<'GameplayMods', GameplayMods>
 
 export type LevelQuerySort =
   | 'CREATION_DATE'
@@ -889,18 +889,18 @@ export type LevelQuerySort =
   | 'PLAYS'
   | 'RATING'
   | 'DIFFICULTY'
-type Enum_LevelQuerySort = EnumType<'LevelQuerySort', LevelQuerySort, LevelQuerySort>
+type Enum_LevelQuerySort = EnumType<'LevelQuerySort', LevelQuerySort>
 
 export type PostType =
   | 'POST'
   | 'PAGE'
   | 'EVENT'
-type Enum_PostType = EnumType<'PostType', PostType, PostType>
+type Enum_PostType = EnumType<'PostType', PostType>
 
 export type QueryOrder =
   | 'ASC'
   | 'DESC'
-type Enum_QueryOrder = EnumType<'QueryOrder', QueryOrder, QueryOrder>
+type Enum_QueryOrder = EnumType<'QueryOrder', QueryOrder>
 
 export type RecordQuerySort =
   | 'Score'
@@ -908,24 +908,24 @@ export type RecordQuerySort =
   | 'Date'
   | 'Rating'
   | 'RecentRating'
-type Enum_RecordQuerySort = EnumType<'RecordQuerySort', RecordQuerySort, RecordQuerySort>
+type Enum_RecordQuerySort = EnumType<'RecordQuerySort', RecordQuerySort>
 
 export type ResourceState =
   | 'PRIVATE'
   | 'PUBLIC'
   | 'UNLISTED'
-type Enum_ResourceState = EnumType<'ResourceState', ResourceState, ResourceState>
+type Enum_ResourceState = EnumType<'ResourceState', ResourceState>
 
 export type Role =
   | 'MODERATOR'
   | 'ADMIN'
   | 'USER'
-type Enum_Role = EnumType<'Role', Role, Role>
+type Enum_Role = EnumType<'Role', Role>
 
 export type SearchLevelOrder =
   | 'ASC'
   | 'DESC'
-type Enum_SearchLevelOrder = EnumType<'SearchLevelOrder', SearchLevelOrder, SearchLevelOrder>
+type Enum_SearchLevelOrder = EnumType<'SearchLevelOrder', SearchLevelOrder>
 
 export type SearchLevelSortingStrategy =
   | 'CREATION_DATE'
@@ -935,7 +935,7 @@ export type SearchLevelSortingStrategy =
   | 'PLAYS'
   | 'RATING'
   | 'DIFFICULTY'
-type Enum_SearchLevelSortingStrategy = EnumType<'SearchLevelSortingStrategy', SearchLevelSortingStrategy, SearchLevelSortingStrategy>
+type Enum_SearchLevelSortingStrategy = EnumType<'SearchLevelSortingStrategy', SearchLevelSortingStrategy>
 
 type Input_CollectionInput = InputObjectType<'CollectionInput', {
   uid: Input<'String', Scalar_String>
@@ -943,14 +943,14 @@ type Input_CollectionInput = InputObjectType<'CollectionInput', {
   title: Input<'String', Scalar_String>
   slogan: Input<'String', Scalar_String>
   description: Input<'String', Scalar_String>
-  levelIds: Input<'[Int!]', undefined>
-  tags: Input<'[String!]', undefined>
+  levelIds: Input<'[Int!]', Scalar_Int>
+  tags: Input<'[String!]', Scalar_String>
   state: Input<'ResourceState', Enum_ResourceState>
-  metadata: Input<'CollectionMetaInput', undefined>
+  metadata: Input<'CollectionMetaInput', Input_CollectionMetaInput>
 }>
 
 type Input_CollectionMetaInput = InputObjectType<'CollectionMetaInput', {
-  cover: Input<'ResourceMetaInput', undefined>
+  cover: Input<'ResourceMetaInput', Input_ResourceMetaInput>
 }>
 
 type Input_PartialChartMetadata = InputObjectType<'PartialChartMetadata', {
@@ -969,7 +969,7 @@ type Input_PartialMetadata = InputObjectType<'PartialMetadata', {
   illustrator_source: Input<'String', Scalar_String>
   charter: Input<'String', Scalar_String>
   storyboarder: Input<'String', Scalar_String>
-  charts: Input<'[PartialChartMetadata!]', undefined>
+  charts: Input<'[PartialChartMetadata!]', Input_PartialChartMetadata>
 }>
 
 type Input_PostInput = InputObjectType<'PostInput', {
@@ -981,7 +981,7 @@ type Input_PostInput = InputObjectType<'PostInput', {
   state: Input<'ResourceState', Enum_ResourceState>
   coverPath: Input<'String', Scalar_String>
   logoPath: Input<'String', Scalar_String>
-  metadata: Input<'PostMetaInput', undefined>
+  metadata: Input<'PostMetaInput', Input_PostMetaInput>
   startDate: Input<'Date', Scalar_Date>
   endDate: Input<'Date', Scalar_Date>
   locked: Input<'Boolean', Scalar_Boolean>
@@ -990,7 +990,7 @@ type Input_PostInput = InputObjectType<'PostInput', {
 }>
 
 type Input_PostMetaInput = InputObjectType<'PostMetaInput', {
-  cover: Input<'ResourceMetaInput', undefined>
+  cover: Input<'ResourceMetaInput', Input_ResourceMetaInput>
 }>
 
 type Input_ProfileInput = InputObjectType<'ProfileInput', {
@@ -1016,10 +1016,10 @@ type Input_ResourceMetaInput = InputObjectType<'ResourceMetaInput', {
 
 type Input_UpdateLevelInput = InputObjectType<'UpdateLevelInput', {
   state: Input<'ResourceState', Enum_ResourceState>
-  tags: Input<'[String!]', undefined>
+  tags: Input<'[String!]', Scalar_String>
   description: Input<'String', Scalar_String>
   censored: Input<'String', Scalar_String>
-  category: Input<'[String!]', undefined>
+  category: Input<'[String!]', Scalar_String>
 }>
 
 type Type_Avatar = ObjectType<'Avatar', {
@@ -1044,7 +1044,7 @@ type Type_Chart = ObjectType<'Chart', {
   difficulty: Field<'Int!', Scalar_Int>
   type: Field<'String!', Scalar_String>
   notesCount: Field<'Int!', Scalar_Int>
-  leaderboard: Field<'[LeaderboardRecord!]!', undefined, {
+  leaderboard: Field<'[LeaderboardRecord!]!', Type_LeaderboardRecord, {
     start: Input<'Int!', Scalar_Int>
     limit: Input<'Int!', Scalar_Int>
   }>
@@ -1054,51 +1054,51 @@ type Type_Chart = ObjectType<'Chart', {
 type Type_Collection = ObjectType<'Collection', {
   id: Field<'ID!', Scalar_ID>
   uid: Field<'String!', Scalar_String>
-  cover: Field<'Image', undefined>
+  cover: Field<'Image', Type_Image>
   title: Field<'String!', Scalar_String>
   slogan: Field<'String!', Scalar_String>
   description: Field<'String!', Scalar_String>
-  owner: Field<'User', undefined>
+  owner: Field<'User', Type_User>
   levelCount: Field<'Int!', Scalar_Int>
-  levels: Field<'[Level!]!', undefined, {
+  levels: Field<'[Level!]!', Type_Level, {
     limit: Input<'Int', Scalar_Int>
   }>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
-  tags: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
-  metadata: Field<'ResourceMeta!', undefined>
+  metadata: Field<'ResourceMeta!', Type_ResourceMeta>
 }>
 
 type Type_CollectionListing = ObjectType<'CollectionListing', {
   id: Field<'ID!', Scalar_ID>
   uid: Field<'String!', Scalar_String>
-  cover: Field<'Image', undefined>
+  cover: Field<'Image', Type_Image>
   title: Field<'String!', Scalar_String>
   slogan: Field<'String!', Scalar_String>
   description: Field<'String!', Scalar_String>
-  owner: Field<'User', undefined>
+  owner: Field<'User', Type_User>
   levelCount: Field<'Int!', Scalar_Int>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
-  tags: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
-  metadata: Field<'ResourceMeta!', undefined>
+  metadata: Field<'ResourceMeta!', Type_ResourceMeta>
 }>
 
 type Type_CollectionUserListing = ObjectType<'CollectionUserListing', {
   id: Field<'ID!', Scalar_ID>
   uid: Field<'String!', Scalar_String>
-  cover: Field<'Image', undefined>
+  cover: Field<'Image', Type_Image>
   title: Field<'String!', Scalar_String>
   slogan: Field<'String!', Scalar_String>
   description: Field<'String!', Scalar_String>
   levelCount: Field<'Int!', Scalar_Int>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
-  tags: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
-  metadata: Field<'ResourceMeta!', undefined>
+  metadata: Field<'ResourceMeta!', Type_ResourceMeta>
 }>
 
 type Type_Comment = ObjectType<'Comment', {
@@ -1107,7 +1107,7 @@ type Type_Comment = ObjectType<'Comment', {
   key: Field<'String!', Scalar_String>
   content: Field<'String!', Scalar_String>
   date: Field<'Date!', Scalar_Date>
-  owner: Field<'User', undefined>
+  owner: Field<'User', Type_User>
   metadata: Field<'Object', Scalar_Object>
 }>
 
@@ -1136,11 +1136,11 @@ type Type_Image = ObjectType<'Image', {
 type Type_LeaderboardRecord = ObjectType<'LeaderboardRecord', {
   id: Field<'Int!', Scalar_Int>
   date: Field<'Date!', Scalar_Date>
-  owner: Field<'User', undefined>
+  owner: Field<'User', Type_User>
   score: Field<'Int!', Scalar_Int>
   accuracy: Field<'Float!', Scalar_Float>
-  mods: Field<'[GameplayMods!]!', undefined>
-  details: Field<'RecordDetails!', undefined>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
+  details: Field<'RecordDetails!', Type_RecordDetails>
 }>
 
 type Type_Level = ObjectType<'Level', {
@@ -1148,20 +1148,20 @@ type Type_Level = ObjectType<'Level', {
   version: Field<'Int!', Scalar_Int>
   uid: Field<'String!', Scalar_String>
   title: Field<'String!', Scalar_String>
-  metadata: Field<'LevelMeta!', undefined>
+  metadata: Field<'LevelMeta!', Type_LevelMeta>
   duration: Field<'Float!', Scalar_Float>
   size: Field<'FileSize!', Scalar_FileSize>
   description: Field<'String!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
   censored: Field<'String', Scalar_String>
-  tags: Field<'[String!]!', undefined>
-  category: Field<'[String!]!', undefined>
-  owner: Field<'User', undefined>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
+  owner: Field<'User', Type_User>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
-  bundle: Field<'LevelBundle', undefined>
-  charts: Field<'[Chart!]!', undefined>
-  rating: Field<'Rating!', undefined>
+  bundle: Field<'LevelBundle', Type_LevelBundle>
+  charts: Field<'[Chart!]!', Type_Chart>
+  rating: Field<'Rating!', Type_Rating>
   owned: Field<'Boolean', Scalar_Boolean>
 }>
 
@@ -1173,10 +1173,10 @@ type Type_LevelBundle = ObjectType<'LevelBundle', {
 
 type Type_LevelMeta = ObjectType<'LevelMeta', {
   title_localized: Field<'String', Scalar_String>
-  artist: Field<'ResourceMetaProperty', undefined>
-  illustrator: Field<'ResourceMetaProperty', undefined>
-  charter: Field<'ResourceMetaProperty', undefined>
-  storyboarder: Field<'ResourceMetaProperty', undefined>
+  artist: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
+  illustrator: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
+  charter: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
+  storyboarder: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
 }>
 
 type Type_Mutation = ObjectType<'Mutation', {
@@ -1193,15 +1193,15 @@ type Type_Mutation = ObjectType<'Mutation', {
   evaluateEpic: Field<'String', Scalar_String, {
     id: Input<'String', Scalar_String>
   }>
-  rateLevel: Field<'Rating!', undefined, {
+  rateLevel: Field<'Rating!', Type_Rating, {
     id: Input<'String!', Scalar_String>
     rating: Input<'Int', Scalar_Int>
   }>
-  unpackLevelPackage: Field<'UserLevel', undefined, {
+  unpackLevelPackage: Field<'UserLevel', Type_UserLevel, {
     token: Input<'String!', Scalar_String>
     replace: Input<'String', Scalar_String>
   }>
-  editLevelMetadata: Field<'UserLevel', undefined, {
+  editLevelMetadata: Field<'UserLevel', Type_UserLevel, {
     id: Input<'String!', Scalar_String>
     metadata: Input<'PartialMetadata', Input_PartialMetadata>
   }>
@@ -1218,14 +1218,14 @@ type Type_Mutation = ObjectType<'Mutation', {
   removeFromLibrary: Field<'Boolean', Scalar_Boolean, {
     levelId: Input<'Int!', Scalar_Int>
   }>
-  createPost: Field<'Post', undefined, {
+  createPost: Field<'Post', Type_Post, {
     post: Input<'PostInput', Input_PostInput>
   }>
-  updatePost: Field<'Post', undefined, {
+  updatePost: Field<'Post', Type_Post, {
     id: Input<'ID!', Scalar_ID>
     input: Input<'PostInput', Input_PostInput>
   }>
-  deletePost: Field<'Post', undefined, {
+  deletePost: Field<'Post', Type_Post, {
     id: Input<'ID!', Scalar_ID>
   }>
   addEmail: Field<'Boolean', Scalar_Boolean, {
@@ -1281,18 +1281,18 @@ type Type_Mutation = ObjectType<'Mutation', {
 }>
 
 type Type_My = ObjectType<'My', {
-  collections: Field<'[CollectionUserListing!]!', undefined>
-  levels: Field<'[UserStudioLevel!]!', undefined, {
+  collections: Field<'[CollectionUserListing!]!', Type_CollectionUserListing>
+  levels: Field<'[UserStudioLevel!]!', Type_UserStudioLevel, {
     start: Input<'Int', Scalar_Int>
     limit: Input<'Int', Scalar_Int>
   }>
   levelsCount: Field<'Int!', Scalar_Int>
-  library: Field<'[Level!]!', undefined, {
+  library: Field<'[Level!]!', Type_Level, {
     granted: Input<'Boolean', Scalar_Boolean>
   }>
-  emails: Field<'[Email!]!', undefined>
-  user: Field<'User', undefined>
-  externalAccountProviders: Field<'[String!]!', undefined>
+  emails: Field<'[Email!]!', Type_Email>
+  user: Field<'User', Type_User>
+  externalAccountProviders: Field<'[String!]!', Scalar_String>
 }>
 
 type Type_Post = ObjectType<'Post', {
@@ -1309,7 +1309,7 @@ type Type_Post = ObjectType<'Post', {
   endDate: Field<'Date', Scalar_Date>
   cover: Field<'Image', Type_Image>
   logo: Field<'Image', Type_Image>
-  metadata: Field<'PostMeta', undefined>
+  metadata: Field<'PostMeta', Type_PostMeta>
   locked: Field<'Boolean', Scalar_Boolean>
 }>
 
@@ -1327,7 +1327,7 @@ type Type_PostDetail = ObjectType<'PostDetail', {
   endDate: Field<'Date', Scalar_Date>
   cover: Field<'Image', Type_Image>
   logo: Field<'Image', Type_Image>
-  metadata: Field<'PostMeta', undefined>
+  metadata: Field<'PostMeta', Type_PostMeta>
   locked: Field<'Boolean', Scalar_Boolean>
   level: Field<'Level', Type_Level>
   collection: Field<'Collection', Type_Collection>
@@ -1335,29 +1335,29 @@ type Type_PostDetail = ObjectType<'PostDetail', {
 }>
 
 type Type_PostMeta = ObjectType<'PostMeta', {
-  cover: Field<'ResourceMetaProperty', undefined>
+  cover: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
 }>
 
 type Type_Profile = ObjectType<'Profile', {
-  badges: Field<'[Badge!]!', undefined>
-  recentRecords: Field<'[UserRecord!]!', undefined, {
+  badges: Field<'[Badge!]!', Type_Badge>
+  recentRecords: Field<'[UserRecord!]!', Type_UserRecord, {
     limit: Input<'Int', Scalar_Int>
     sort: Input<'RecordQuerySort', Enum_RecordQuerySort>
     order: Input<'QueryOrder', Enum_QueryOrder>
   }>
-  bestRecords: Field<'[UserRecord!]!', undefined, {
+  bestRecords: Field<'[UserRecord!]!', Type_UserRecord, {
     limit: Input<'Int', Scalar_Int>
   }>
   id: Field<'ID!', Scalar_ID>
-  user: Field<'User', undefined>
+  user: Field<'User', Type_User>
   birthday: Field<'Date', Scalar_Date>
   bio: Field<'String', Scalar_String>
   header: Field<'Image', Type_Image>
   rating: Field<'Float!', Scalar_Float>
-  exp: Field<'ProfileExp!', undefined>
-  grades: Field<'ProfileGrades!', undefined>
-  activity: Field<'ProfileActivity!', undefined>
-  timeseries: Field<'[ProfileTimeSeries!]!', undefined>
+  exp: Field<'ProfileExp!', Type_ProfileExp>
+  grades: Field<'ProfileGrades!', Type_ProfileGrades>
+  activity: Field<'ProfileActivity!', Type_ProfileActivity>
+  timeseries: Field<'[ProfileTimeSeries!]!', Type_ProfileTimeSeries>
 }>
 
 type Type_ProfileActivity = ObjectType<'ProfileActivity', {
@@ -1407,19 +1407,19 @@ type Type_Query = ObjectType<'Query', {
     id: Input<'ID', Scalar_ID>
     uid: Input<'String', Scalar_String>
   }>
-  collections: Field<'[CollectionListing!]!', undefined, {
+  collections: Field<'[CollectionListing!]!', Type_CollectionListing, {
     limit: Input<'Int', Scalar_Int>
     cursor: Input<'ID', Scalar_ID>
     ownerId: Input<'String', Scalar_String>
     ownerUid: Input<'String', Scalar_String>
   }>
-  recentComments: Field<'[Comment!]!', undefined, {
+  recentComments: Field<'[Comment!]!', Type_Comment, {
     limit: Input<'Int', Scalar_Int>
   }>
   level: Field<'Level', Type_Level, {
     uid: Input<'String!', Scalar_String>
   }>
-  levels: Field<'[Level!]!', undefined, {
+  levels: Field<'[Level!]!', Type_Level, {
     order: Input<'QueryOrder', Enum_QueryOrder>
     page: Input<'Int', Scalar_Int>
     limit: Input<'Int', Scalar_Int>
@@ -1433,23 +1433,23 @@ type Type_Query = ObjectType<'Query', {
     levelUid: Input<'String!', Scalar_String>
     chartType: Input<'String!', Scalar_String>
   }>
-  getPosts: Field<'[Post!]!', undefined, {
+  getPosts: Field<'[Post!]!', Type_Post, {
     limit: Input<'Int!', Scalar_Int>
     all: Input<'Boolean', Scalar_Boolean>
     skip: Input<'Int', Scalar_Int>
   }>
-  getActivePosts: Field<'[Post!]!', undefined, {
+  getActivePosts: Field<'[Post!]!', Type_Post, {
     limit: Input<'Int!', Scalar_Int>
     skip: Input<'Int', Scalar_Int>
   }>
   getPost: Field<'PostDetail', Type_PostDetail, {
     uid: Input<'String!', Scalar_String>
   }>
-  recentRecords: Field<'[Record!]!', undefined, {
+  recentRecords: Field<'[Record!]!', Type_Record, {
     limit: Input<'Int', Scalar_Int>
     ranked: Input<'Boolean', Scalar_Boolean>
   }>
-  records: Field<'[Record!]!', undefined, {
+  records: Field<'[Record!]!', Type_Record, {
     query: Input<'RecordQueryInput', Input_RecordQueryInput>
     page: Input<'Int', Scalar_Int>
     limit: Input<'Int', Scalar_Int>
@@ -1459,11 +1459,11 @@ type Type_Query = ObjectType<'Query', {
   recordsCount: Field<'Int!', Scalar_Int, {
     query: Input<'RecordQueryInput', Input_RecordQueryInput>
   }>
-  record: Field<'Record', undefined, {
+  record: Field<'Record', Type_Record, {
     id: Input<'Int!', Scalar_Int>
     chartId: Input<'Int!', Scalar_Int>
   }>
-  searchLevels: Field<'[Level!]!', undefined, {
+  searchLevels: Field<'[Level!]!', Type_Level, {
     search: Input<'String!', Scalar_String>
     start: Input<'Int', Scalar_Int>
     limit: Input<'Int', Scalar_Int>
@@ -1474,7 +1474,7 @@ type Type_Query = ObjectType<'Query', {
     id: Input<'ID', Scalar_ID>
     uid: Input<'String', Scalar_String>
   }>
-  user: Field<'User', undefined, {
+  user: Field<'User', Type_User, {
     id: Input<'ID', Scalar_ID>
     uid: Input<'String', Scalar_String>
   }>
@@ -1485,19 +1485,19 @@ type Type_Rating = ObjectType<'Rating', {
   average: Field<'Float', Scalar_Float>
   total: Field<'Int!', Scalar_Int>
   rating: Field<'Float', Scalar_Float>
-  distribution: Field<'[Int!]!', undefined>
+  distribution: Field<'[Int!]!', Scalar_Int>
 }>
 
 type Type_Record = ObjectType<'Record', {
   id: Field<'Int!', Scalar_Int>
   date: Field<'Date!', Scalar_Date>
-  owner: Field<'User', undefined>
-  chart: Field<'RecordChart', undefined>
+  owner: Field<'User', Type_User>
+  chart: Field<'RecordChart', Type_RecordChart>
   score: Field<'Int!', Scalar_Int>
   accuracy: Field<'Float!', Scalar_Float>
-  mods: Field<'[GameplayMods!]!', undefined>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
   ranked: Field<'Boolean!', Scalar_Boolean>
-  details: Field<'RecordDetails!', undefined>
+  details: Field<'RecordDetails!', Type_RecordDetails>
   rating: Field<'Float!', Scalar_Float>
   recentRating: Field<'Float', Scalar_Float>
   rank: Field<'Int', Scalar_Int>
@@ -1509,7 +1509,7 @@ type Type_RecordChart = ObjectType<'RecordChart', {
   difficulty: Field<'Int!', Scalar_Int>
   type: Field<'String!', Scalar_String>
   notesCount: Field<'Int!', Scalar_Int>
-  level: Field<'RecordLevel', undefined>
+  level: Field<'RecordLevel', Type_RecordLevel>
 }>
 
 type Type_RecordDetails = ObjectType<'RecordDetails', {
@@ -1532,16 +1532,16 @@ type Type_RecordLevel = ObjectType<'RecordLevel', {
   description: Field<'String!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
   censored: Field<'String', Scalar_String>
-  tags: Field<'[String!]!', undefined>
-  category: Field<'[String!]!', undefined>
-  owner: Field<'User', undefined>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
+  owner: Field<'User', Type_User>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
   bundle: Field<'LevelBundle', Type_LevelBundle>
 }>
 
 type Type_ResourceMeta = ObjectType<'ResourceMeta', {
-  cover: Field<'ResourceMetaProperty', undefined>
+  cover: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
 }>
 
 type Type_ResourceMetaProperty = ObjectType<'ResourceMetaProperty', {
@@ -1552,13 +1552,13 @@ type Type_ResourceMetaProperty = ObjectType<'ResourceMetaProperty', {
 
 type Type_User = ObjectType<'User', {
   collectionsCount: Field<'Int!', Scalar_Int>
-  collections: Field<'[CollectionUserListing!]!', undefined, {
+  collections: Field<'[CollectionUserListing!]!', Type_CollectionUserListing, {
     first: Input<'Int', Scalar_Int>
   }>
   levelsCount: Field<'Int!', Scalar_Int, {
     category: Input<'String', Scalar_String>
   }>
-  levels: Field<'[UserLevel!]!', undefined, {
+  levels: Field<'[UserLevel!]!', Type_UserLevel, {
     first: Input<'Int', Scalar_Int>
     category: Input<'String', Scalar_String>
     sort: Input<'LevelQuerySort', Enum_LevelQuerySort>
@@ -1567,7 +1567,7 @@ type Type_User = ObjectType<'User', {
   id: Field<'ID!', Scalar_ID>
   uid: Field<'String', Scalar_String>
   name: Field<'String', Scalar_String>
-  emails: Field<'[Email!]!', undefined>
+  emails: Field<'[Email!]!', Type_Email>
   registrationDate: Field<'Date', Scalar_Date>
   role: Field<'Role!', Enum_Role>
   avatar: Field<'Avatar!', Type_Avatar>
@@ -1587,12 +1587,12 @@ type Type_UserLevel = ObjectType<'UserLevel', {
   description: Field<'String!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
   censored: Field<'String', Scalar_String>
-  tags: Field<'[String!]!', undefined>
-  category: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
   bundle: Field<'LevelBundle', Type_LevelBundle>
-  charts: Field<'[Chart!]!', undefined>
+  charts: Field<'[Chart!]!', Type_Chart>
 }>
 
 type Type_UserRecord = ObjectType<'UserRecord', {
@@ -1601,7 +1601,7 @@ type Type_UserRecord = ObjectType<'UserRecord', {
   chart: Field<'RecordChart', Type_RecordChart>
   score: Field<'Int!', Scalar_Int>
   accuracy: Field<'Float!', Scalar_Float>
-  mods: Field<'[GameplayMods!]!', undefined>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
   ranked: Field<'Boolean!', Scalar_Boolean>
   details: Field<'RecordDetails!', Type_RecordDetails>
   rating: Field<'Float!', Scalar_Float>
@@ -1619,12 +1619,12 @@ type Type_UserStudioLevel = ObjectType<'UserStudioLevel', {
   description: Field<'String!', Scalar_String>
   state: Field<'ResourceState!', Enum_ResourceState>
   censored: Field<'String', Scalar_String>
-  tags: Field<'[String!]!', undefined>
-  category: Field<'[String!]!', undefined>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
   creationDate: Field<'Date!', Scalar_Date>
   modificationDate: Field<'Date!', Scalar_Date>
   bundle: Field<'LevelBundle', Type_LevelBundle>
-  charts: Field<'[Chart!]!', undefined>
+  charts: Field<'[Chart!]!', Type_Chart>
   downloadCount: Field<'Float', Scalar_Float>
   playCount: Field<'Float', Scalar_Float>
   avgRating: Field<'Float', Scalar_Float>
@@ -1708,7 +1708,7 @@ declare module '@gqfn/core/schema' {
 
 exports[`@gqfn/cli > local def 1`] = `
 "/* eslint-ignore */
-import type { ScalarType, EnumType, InputObjectType, Input, Field, ObjectType, InterfaceType, UnionType } from '@gqfn/core/schema'
+import type { ScalarType, EnumType, InputObjectType, Input, Field, ObjectType, InterfaceType, UnionType, DefineSchema } from '@gqfn/core/schema'
 
 type Scalar_Date = ScalarType<'Date', unknown, unknown>
 type Scalar_Int = ScalarType<'Int', number, number>
@@ -1721,7 +1721,7 @@ export type CategoryEnum =
   | 'funny'
   | 'jokes'
   | 'serious'
-type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum, CategoryEnum>
+type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum>
 
 type Input_SayingDataInput = InputObjectType<'SayingDataInput', {
   category: Input<'CategoryEnum!', Enum_CategoryEnum>
@@ -1729,28 +1729,28 @@ type Input_SayingDataInput = InputObjectType<'SayingDataInput', {
 }>
 
 type Type_Mutation = ObjectType<'Mutation', {
-  addSaying: Field<'Saying!', undefined, {
+  addSaying: Field<'Saying!', Type_Saying, {
     input: Input<'SayingDataInput!', Input_SayingDataInput>
     ownerId: Input<'Int!', Scalar_Int>
   }>
 }>
 
 type Type_Query = ObjectType<'Query', {
-  all: Field<'[Data!]!', undefined>
-  allId: Field<'[ItemWithId!]!', undefined>
+  all: Field<'[Data!]!', Union_Data>
+  allId: Field<'[ItemWithId!]!', Interface_ItemWithId>
   hello: Field<'String!', Scalar_String, {
     name: Input<'String', Scalar_String>
   }>
-  saying: Field<'Saying!', undefined, {
+  saying: Field<'Saying!', Type_Saying, {
     id: Input<'Int!', Scalar_Int>
   }>
-  sayings: Field<'[Saying!]!', undefined, {
-    category: Input<'[CategoryEnum!]', undefined>
+  sayings: Field<'[Saying!]!', Type_Saying, {
+    category: Input<'[CategoryEnum!]', Enum_CategoryEnum>
   }>
-  user: Field<'User!', undefined, {
+  user: Field<'User!', Type_User, {
     id: Input<'Int!', Scalar_Int>
   }>
-  users: Field<'[User!]!', undefined>
+  users: Field<'[User!]!', Type_User>
 }>
 
 type Type_Saying = ObjectType<'Saying', {
@@ -1758,7 +1758,7 @@ type Type_Saying = ObjectType<'Saying', {
   content: Field<'String!', Scalar_String>
   createdAt: Field<'Date!', Scalar_Date>
   id: Field<'Int!', Scalar_Int>
-  owner: Field<'User!', undefined>
+  owner: Field<'User!', Type_User>
   updatedAt: Field<'Date!', Scalar_Date>
 }>
 
@@ -1770,10 +1770,10 @@ type Type_Subscription = ObjectType<'Subscription', {
 
 type Type_User = ObjectType<'User', {
   email: Field<'String!', Scalar_String>
-  friends: Field<'[User!]!', undefined>
+  friends: Field<'[User!]!', Type_User>
   id: Field<'Int!', Scalar_Int>
   name: Field<'String!', Scalar_String>
-  sayings: Field<'[Saying!]!', undefined, {
+  sayings: Field<'[Saying!]!', Type_Saying, {
     category: Input<'CategoryEnum', Enum_CategoryEnum>
   }>
 }>
@@ -1818,7 +1818,7 @@ declare module '@gqfn/core/schema' {
 
 exports[`@gqfn/cli > star-wars sdl 1`] = `
 "/* eslint-ignore */
-import type { ScalarType, Field, Input, ObjectType, InterfaceType } from '@gqfn/core/schema'
+import type { ScalarType, Field, Input, ObjectType, InterfaceType, DefineSchema } from '@gqfn/core/schema'
 
 type Scalar_Int = ScalarType<'Int', number, number>
 type Scalar_Float = ScalarType<'Float', number, number>
@@ -1827,7 +1827,7 @@ type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
 type Scalar_ID = ScalarType<'ID', string | number, string | number>
 
 type Type_Film = ObjectType<'Film', {
-  characterConnection: Field<'FilmCharactersConnection', undefined, {
+  characterConnection: Field<'FilmCharactersConnection', Type_FilmCharactersConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -1839,7 +1839,7 @@ type Type_Film = ObjectType<'Film', {
   episodeID: Field<'Int', Scalar_Int>
   id: Field<'ID!', Scalar_ID>
   openingCrawl: Field<'String', Scalar_String>
-  planetConnection: Field<'FilmPlanetsConnection', undefined, {
+  planetConnection: Field<'FilmPlanetsConnection', Type_FilmPlanetsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -1847,20 +1847,20 @@ type Type_Film = ObjectType<'Film', {
   }>
   producers: Field<'[String]', Scalar_String>
   releaseDate: Field<'String', Scalar_String>
-  speciesConnection: Field<'FilmSpeciesConnection', undefined, {
+  speciesConnection: Field<'FilmSpeciesConnection', Type_FilmSpeciesConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
     last: Input<'Int', Scalar_Int>
   }>
-  starshipConnection: Field<'FilmStarshipsConnection', undefined, {
+  starshipConnection: Field<'FilmStarshipsConnection', Type_FilmStarshipsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
     last: Input<'Int', Scalar_Int>
   }>
   title: Field<'String', Scalar_String>
-  vehicleConnection: Field<'FilmVehiclesConnection', undefined, {
+  vehicleConnection: Field<'FilmVehiclesConnection', Type_FilmVehiclesConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -1869,69 +1869,69 @@ type Type_Film = ObjectType<'Film', {
 }>
 
 type Type_FilmCharactersConnection = ObjectType<'FilmCharactersConnection', {
-  characters: Field<'[Person]', undefined>
-  edges: Field<'[FilmCharactersEdge]', undefined>
-  pageInfo: Field<'PageInfo!', undefined>
+  characters: Field<'[Person]', Type_Person>
+  edges: Field<'[FilmCharactersEdge]', Type_FilmCharactersEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
   totalCount: Field<'Int', Scalar_Int>
 }>
 
 type Type_FilmCharactersEdge = ObjectType<'FilmCharactersEdge', {
   cursor: Field<'String!', Scalar_String>
-  node: Field<'Person', undefined>
+  node: Field<'Person', Type_Person>
 }>
 
 type Type_FilmPlanetsConnection = ObjectType<'FilmPlanetsConnection', {
-  edges: Field<'[FilmPlanetsEdge]', undefined>
-  pageInfo: Field<'PageInfo!', undefined>
-  planets: Field<'[Planet]', undefined>
+  edges: Field<'[FilmPlanetsEdge]', Type_FilmPlanetsEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  planets: Field<'[Planet]', Type_Planet>
   totalCount: Field<'Int', Scalar_Int>
 }>
 
 type Type_FilmPlanetsEdge = ObjectType<'FilmPlanetsEdge', {
   cursor: Field<'String!', Scalar_String>
-  node: Field<'Planet', undefined>
+  node: Field<'Planet', Type_Planet>
 }>
 
 type Type_FilmSpeciesConnection = ObjectType<'FilmSpeciesConnection', {
-  edges: Field<'[FilmSpeciesEdge]', undefined>
-  pageInfo: Field<'PageInfo!', undefined>
-  species: Field<'[Species]', undefined>
+  edges: Field<'[FilmSpeciesEdge]', Type_FilmSpeciesEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  species: Field<'[Species]', Type_Species>
   totalCount: Field<'Int', Scalar_Int>
 }>
 
 type Type_FilmSpeciesEdge = ObjectType<'FilmSpeciesEdge', {
   cursor: Field<'String!', Scalar_String>
-  node: Field<'Species', undefined>
+  node: Field<'Species', Type_Species>
 }>
 
 type Type_FilmStarshipsConnection = ObjectType<'FilmStarshipsConnection', {
-  edges: Field<'[FilmStarshipsEdge]', undefined>
-  pageInfo: Field<'PageInfo!', undefined>
-  starships: Field<'[Starship]', undefined>
+  edges: Field<'[FilmStarshipsEdge]', Type_FilmStarshipsEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  starships: Field<'[Starship]', Type_Starship>
   totalCount: Field<'Int', Scalar_Int>
 }>
 
 type Type_FilmStarshipsEdge = ObjectType<'FilmStarshipsEdge', {
   cursor: Field<'String!', Scalar_String>
-  node: Field<'Starship', undefined>
+  node: Field<'Starship', Type_Starship>
 }>
 
 type Type_FilmVehiclesConnection = ObjectType<'FilmVehiclesConnection', {
-  edges: Field<'[FilmVehiclesEdge]', undefined>
-  pageInfo: Field<'PageInfo!', undefined>
+  edges: Field<'[FilmVehiclesEdge]', Type_FilmVehiclesEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
   totalCount: Field<'Int', Scalar_Int>
-  vehicles: Field<'[Vehicle]', undefined>
+  vehicles: Field<'[Vehicle]', Type_Vehicle>
 }>
 
 type Type_FilmVehiclesEdge = ObjectType<'FilmVehiclesEdge', {
   cursor: Field<'String!', Scalar_String>
-  node: Field<'Vehicle', undefined>
+  node: Field<'Vehicle', Type_Vehicle>
 }>
 
 type Type_FilmsConnection = ObjectType<'FilmsConnection', {
-  edges: Field<'[FilmsEdge]', undefined>
+  edges: Field<'[FilmsEdge]', Type_FilmsEdge>
   films: Field<'[Film]', Type_Film>
-  pageInfo: Field<'PageInfo!', undefined>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
   totalCount: Field<'Int', Scalar_Int>
 }>
 
@@ -1948,15 +1948,15 @@ type Type_PageInfo = ObjectType<'PageInfo', {
 }>
 
 type Type_PeopleConnection = ObjectType<'PeopleConnection', {
-  edges: Field<'[PeopleEdge]', undefined>
+  edges: Field<'[PeopleEdge]', Type_PeopleEdge>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
-  people: Field<'[Person]', undefined>
+  people: Field<'[Person]', Type_Person>
   totalCount: Field<'Int', Scalar_Int>
 }>
 
 type Type_PeopleEdge = ObjectType<'PeopleEdge', {
   cursor: Field<'String!', Scalar_String>
-  node: Field<'Person', undefined>
+  node: Field<'Person', Type_Person>
 }>
 
 type Type_Person = ObjectType<'Person', {
@@ -1964,7 +1964,7 @@ type Type_Person = ObjectType<'Person', {
   created: Field<'String', Scalar_String>
   edited: Field<'String', Scalar_String>
   eyeColor: Field<'String', Scalar_String>
-  filmConnection: Field<'PersonFilmsConnection', undefined, {
+  filmConnection: Field<'PersonFilmsConnection', Type_PersonFilmsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -1973,19 +1973,19 @@ type Type_Person = ObjectType<'Person', {
   gender: Field<'String', Scalar_String>
   hairColor: Field<'String', Scalar_String>
   height: Field<'Int', Scalar_Int>
-  homeworld: Field<'Planet', undefined>
+  homeworld: Field<'Planet', Type_Planet>
   id: Field<'ID!', Scalar_ID>
   mass: Field<'Float', Scalar_Float>
   name: Field<'String', Scalar_String>
   skinColor: Field<'String', Scalar_String>
-  species: Field<'Species', undefined>
-  starshipConnection: Field<'PersonStarshipsConnection', undefined, {
+  species: Field<'Species', Type_Species>
+  starshipConnection: Field<'PersonStarshipsConnection', Type_PersonStarshipsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
     last: Input<'Int', Scalar_Int>
   }>
-  vehicleConnection: Field<'PersonVehiclesConnection', undefined, {
+  vehicleConnection: Field<'PersonVehiclesConnection', Type_PersonVehiclesConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -1994,7 +1994,7 @@ type Type_Person = ObjectType<'Person', {
 }>
 
 type Type_PersonFilmsConnection = ObjectType<'PersonFilmsConnection', {
-  edges: Field<'[PersonFilmsEdge]', undefined>
+  edges: Field<'[PersonFilmsEdge]', Type_PersonFilmsEdge>
   films: Field<'[Film]', Type_Film>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   totalCount: Field<'Int', Scalar_Int>
@@ -2006,27 +2006,27 @@ type Type_PersonFilmsEdge = ObjectType<'PersonFilmsEdge', {
 }>
 
 type Type_PersonStarshipsConnection = ObjectType<'PersonStarshipsConnection', {
-  edges: Field<'[PersonStarshipsEdge]', undefined>
+  edges: Field<'[PersonStarshipsEdge]', Type_PersonStarshipsEdge>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
-  starships: Field<'[Starship]', undefined>
+  starships: Field<'[Starship]', Type_Starship>
   totalCount: Field<'Int', Scalar_Int>
 }>
 
 type Type_PersonStarshipsEdge = ObjectType<'PersonStarshipsEdge', {
   cursor: Field<'String!', Scalar_String>
-  node: Field<'Starship', undefined>
+  node: Field<'Starship', Type_Starship>
 }>
 
 type Type_PersonVehiclesConnection = ObjectType<'PersonVehiclesConnection', {
-  edges: Field<'[PersonVehiclesEdge]', undefined>
+  edges: Field<'[PersonVehiclesEdge]', Type_PersonVehiclesEdge>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   totalCount: Field<'Int', Scalar_Int>
-  vehicles: Field<'[Vehicle]', undefined>
+  vehicles: Field<'[Vehicle]', Type_Vehicle>
 }>
 
 type Type_PersonVehiclesEdge = ObjectType<'PersonVehiclesEdge', {
   cursor: Field<'String!', Scalar_String>
-  node: Field<'Vehicle', undefined>
+  node: Field<'Vehicle', Type_Vehicle>
 }>
 
 type Type_Planet = ObjectType<'Planet', {
@@ -2034,7 +2034,7 @@ type Type_Planet = ObjectType<'Planet', {
   created: Field<'String', Scalar_String>
   diameter: Field<'Int', Scalar_Int>
   edited: Field<'String', Scalar_String>
-  filmConnection: Field<'PlanetFilmsConnection', undefined, {
+  filmConnection: Field<'PlanetFilmsConnection', Type_PlanetFilmsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -2045,7 +2045,7 @@ type Type_Planet = ObjectType<'Planet', {
   name: Field<'String', Scalar_String>
   orbitalPeriod: Field<'Int', Scalar_Int>
   population: Field<'Float', Scalar_Float>
-  residentConnection: Field<'PlanetResidentsConnection', undefined, {
+  residentConnection: Field<'PlanetResidentsConnection', Type_PlanetResidentsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -2057,7 +2057,7 @@ type Type_Planet = ObjectType<'Planet', {
 }>
 
 type Type_PlanetFilmsConnection = ObjectType<'PlanetFilmsConnection', {
-  edges: Field<'[PlanetFilmsEdge]', undefined>
+  edges: Field<'[PlanetFilmsEdge]', Type_PlanetFilmsEdge>
   films: Field<'[Film]', Type_Film>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   totalCount: Field<'Int', Scalar_Int>
@@ -2069,7 +2069,7 @@ type Type_PlanetFilmsEdge = ObjectType<'PlanetFilmsEdge', {
 }>
 
 type Type_PlanetResidentsConnection = ObjectType<'PlanetResidentsConnection', {
-  edges: Field<'[PlanetResidentsEdge]', undefined>
+  edges: Field<'[PlanetResidentsEdge]', Type_PlanetResidentsEdge>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   residents: Field<'[Person]', Type_Person>
   totalCount: Field<'Int', Scalar_Int>
@@ -2081,7 +2081,7 @@ type Type_PlanetResidentsEdge = ObjectType<'PlanetResidentsEdge', {
 }>
 
 type Type_PlanetsConnection = ObjectType<'PlanetsConnection', {
-  edges: Field<'[PlanetsEdge]', undefined>
+  edges: Field<'[PlanetsEdge]', Type_PlanetsEdge>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   planets: Field<'[Planet]', Type_Planet>
   totalCount: Field<'Int', Scalar_Int>
@@ -2111,19 +2111,19 @@ type Type_Root = ObjectType<'Root', {
     first: Input<'Int', Scalar_Int>
     last: Input<'Int', Scalar_Int>
   }>
-  allSpecies: Field<'SpeciesConnection', undefined, {
+  allSpecies: Field<'SpeciesConnection', Type_SpeciesConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
     last: Input<'Int', Scalar_Int>
   }>
-  allStarships: Field<'StarshipsConnection', undefined, {
+  allStarships: Field<'StarshipsConnection', Type_StarshipsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
     last: Input<'Int', Scalar_Int>
   }>
-  allVehicles: Field<'VehiclesConnection', undefined, {
+  allVehicles: Field<'VehiclesConnection', Type_VehiclesConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -2133,7 +2133,7 @@ type Type_Root = ObjectType<'Root', {
     filmID: Input<'ID', Scalar_ID>
     id: Input<'ID', Scalar_ID>
   }>
-  node: Field<'Node', undefined, {
+  node: Field<'Node', Interface_Node, {
     id: Input<'ID!', Scalar_ID>
   }>
   person: Field<'Person', Type_Person, {
@@ -2144,15 +2144,15 @@ type Type_Root = ObjectType<'Root', {
     id: Input<'ID', Scalar_ID>
     planetID: Input<'ID', Scalar_ID>
   }>
-  species: Field<'Species', undefined, {
+  species: Field<'Species', Type_Species, {
     id: Input<'ID', Scalar_ID>
     speciesID: Input<'ID', Scalar_ID>
   }>
-  starship: Field<'Starship', undefined, {
+  starship: Field<'Starship', Type_Starship, {
     id: Input<'ID', Scalar_ID>
     starshipID: Input<'ID', Scalar_ID>
   }>
-  vehicle: Field<'Vehicle', undefined, {
+  vehicle: Field<'Vehicle', Type_Vehicle, {
     id: Input<'ID', Scalar_ID>
     vehicleID: Input<'ID', Scalar_ID>
   }>
@@ -2166,7 +2166,7 @@ type Type_Species = ObjectType<'Species', {
   designation: Field<'String', Scalar_String>
   edited: Field<'String', Scalar_String>
   eyeColors: Field<'[String]', Scalar_String>
-  filmConnection: Field<'SpeciesFilmsConnection', undefined, {
+  filmConnection: Field<'SpeciesFilmsConnection', Type_SpeciesFilmsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -2177,7 +2177,7 @@ type Type_Species = ObjectType<'Species', {
   id: Field<'ID!', Scalar_ID>
   language: Field<'String', Scalar_String>
   name: Field<'String', Scalar_String>
-  personConnection: Field<'SpeciesPeopleConnection', undefined, {
+  personConnection: Field<'SpeciesPeopleConnection', Type_SpeciesPeopleConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -2187,7 +2187,7 @@ type Type_Species = ObjectType<'Species', {
 }>
 
 type Type_SpeciesConnection = ObjectType<'SpeciesConnection', {
-  edges: Field<'[SpeciesEdge]', undefined>
+  edges: Field<'[SpeciesEdge]', Type_SpeciesEdge>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   species: Field<'[Species]', Type_Species>
   totalCount: Field<'Int', Scalar_Int>
@@ -2199,7 +2199,7 @@ type Type_SpeciesEdge = ObjectType<'SpeciesEdge', {
 }>
 
 type Type_SpeciesFilmsConnection = ObjectType<'SpeciesFilmsConnection', {
-  edges: Field<'[SpeciesFilmsEdge]', undefined>
+  edges: Field<'[SpeciesFilmsEdge]', Type_SpeciesFilmsEdge>
   films: Field<'[Film]', Type_Film>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   totalCount: Field<'Int', Scalar_Int>
@@ -2211,7 +2211,7 @@ type Type_SpeciesFilmsEdge = ObjectType<'SpeciesFilmsEdge', {
 }>
 
 type Type_SpeciesPeopleConnection = ObjectType<'SpeciesPeopleConnection', {
-  edges: Field<'[SpeciesPeopleEdge]', undefined>
+  edges: Field<'[SpeciesPeopleEdge]', Type_SpeciesPeopleEdge>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   people: Field<'[Person]', Type_Person>
   totalCount: Field<'Int', Scalar_Int>
@@ -2230,7 +2230,7 @@ type Type_Starship = ObjectType<'Starship', {
   created: Field<'String', Scalar_String>
   crew: Field<'String', Scalar_String>
   edited: Field<'String', Scalar_String>
-  filmConnection: Field<'StarshipFilmsConnection', undefined, {
+  filmConnection: Field<'StarshipFilmsConnection', Type_StarshipFilmsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -2244,7 +2244,7 @@ type Type_Starship = ObjectType<'Starship', {
   model: Field<'String', Scalar_String>
   name: Field<'String', Scalar_String>
   passengers: Field<'String', Scalar_String>
-  pilotConnection: Field<'StarshipPilotsConnection', undefined, {
+  pilotConnection: Field<'StarshipPilotsConnection', Type_StarshipPilotsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -2254,7 +2254,7 @@ type Type_Starship = ObjectType<'Starship', {
 }>
 
 type Type_StarshipFilmsConnection = ObjectType<'StarshipFilmsConnection', {
-  edges: Field<'[StarshipFilmsEdge]', undefined>
+  edges: Field<'[StarshipFilmsEdge]', Type_StarshipFilmsEdge>
   films: Field<'[Film]', Type_Film>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   totalCount: Field<'Int', Scalar_Int>
@@ -2266,7 +2266,7 @@ type Type_StarshipFilmsEdge = ObjectType<'StarshipFilmsEdge', {
 }>
 
 type Type_StarshipPilotsConnection = ObjectType<'StarshipPilotsConnection', {
-  edges: Field<'[StarshipPilotsEdge]', undefined>
+  edges: Field<'[StarshipPilotsEdge]', Type_StarshipPilotsEdge>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   pilots: Field<'[Person]', Type_Person>
   totalCount: Field<'Int', Scalar_Int>
@@ -2278,7 +2278,7 @@ type Type_StarshipPilotsEdge = ObjectType<'StarshipPilotsEdge', {
 }>
 
 type Type_StarshipsConnection = ObjectType<'StarshipsConnection', {
-  edges: Field<'[StarshipsEdge]', undefined>
+  edges: Field<'[StarshipsEdge]', Type_StarshipsEdge>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   starships: Field<'[Starship]', Type_Starship>
   totalCount: Field<'Int', Scalar_Int>
@@ -2296,7 +2296,7 @@ type Type_Vehicle = ObjectType<'Vehicle', {
   created: Field<'String', Scalar_String>
   crew: Field<'String', Scalar_String>
   edited: Field<'String', Scalar_String>
-  filmConnection: Field<'VehicleFilmsConnection', undefined, {
+  filmConnection: Field<'VehicleFilmsConnection', Type_VehicleFilmsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -2309,7 +2309,7 @@ type Type_Vehicle = ObjectType<'Vehicle', {
   model: Field<'String', Scalar_String>
   name: Field<'String', Scalar_String>
   passengers: Field<'String', Scalar_String>
-  pilotConnection: Field<'VehiclePilotsConnection', undefined, {
+  pilotConnection: Field<'VehiclePilotsConnection', Type_VehiclePilotsConnection, {
     after: Input<'String', Scalar_String>
     before: Input<'String', Scalar_String>
     first: Input<'Int', Scalar_Int>
@@ -2319,7 +2319,7 @@ type Type_Vehicle = ObjectType<'Vehicle', {
 }>
 
 type Type_VehicleFilmsConnection = ObjectType<'VehicleFilmsConnection', {
-  edges: Field<'[VehicleFilmsEdge]', undefined>
+  edges: Field<'[VehicleFilmsEdge]', Type_VehicleFilmsEdge>
   films: Field<'[Film]', Type_Film>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   totalCount: Field<'Int', Scalar_Int>
@@ -2331,7 +2331,7 @@ type Type_VehicleFilmsEdge = ObjectType<'VehicleFilmsEdge', {
 }>
 
 type Type_VehiclePilotsConnection = ObjectType<'VehiclePilotsConnection', {
-  edges: Field<'[VehiclePilotsEdge]', undefined>
+  edges: Field<'[VehiclePilotsEdge]', Type_VehiclePilotsEdge>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   pilots: Field<'[Person]', Type_Person>
   totalCount: Field<'Int', Scalar_Int>
@@ -2343,7 +2343,7 @@ type Type_VehiclePilotsEdge = ObjectType<'VehiclePilotsEdge', {
 }>
 
 type Type_VehiclesConnection = ObjectType<'VehiclesConnection', {
-  edges: Field<'[VehiclesEdge]', undefined>
+  edges: Field<'[VehiclesEdge]', Type_VehiclesEdge>
   pageInfo: Field<'PageInfo!', Type_PageInfo>
   totalCount: Field<'Int', Scalar_Int>
   vehicles: Field<'[Vehicle]', Type_Vehicle>

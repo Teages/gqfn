@@ -4,8 +4,8 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {
-      "@gqfn/core/*": [
-        "../src/*"
+      "@gqfn/core/schema": [
+        "../src/schema"
       ],
       "@gqfn/core": [
         "../src"

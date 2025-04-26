@@ -1,30 +1,36 @@
 /* eslint-ignore */
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
+import type { ScalarType, Field, Input, ObjectType, DefineSchema } from '@gqfn/core/schema'
 
-type Query = TypeObject<'Query', {
-  hello: Field<'hello', Res<'String!'>, {
-    name: Arg<'String'>
+type Scalar_Int = ScalarType<'Int', number, number>
+type Scalar_Float = ScalarType<'Float', number, number>
+type Scalar_String = ScalarType<'String', string, string>
+type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+type Scalar_ID = ScalarType<'ID', string | number, string | number>
+
+type Type_Query = ObjectType<'Query', {
+  hello: Field<'String!', Scalar_String, {
+    name: Input<'String', Scalar_String>
   }>
-  user: Field<'user', Res<'User'>, {
-    id: Arg<'ID'>
+  user: Field<'User', Type_User, {
+    id: Input<'ID', Scalar_ID>
   }>
-  users: Field<'users', Res<'[User!]!'>>
+  users: Field<'[User!]!', Type_User>
 }>
 
-type User = TypeObject<'User', {
-  id: Field<'id', Res<'ID!'>>
-  name: Field<'name', Res<'String!'>>
+type Type_User = ObjectType<'User', {
+  id: Field<'ID!', Scalar_ID>
+  name: Field<'String!', Scalar_String>
 }>
 
 export type Schema = DefineSchema<{
-  Objects: {
-    Query: Query
-    User: User
-  }
+  Int: Scalar_Int
+  Float: Scalar_Float
+  String: Scalar_String
+  Boolean: Scalar_Boolean
+  ID: Scalar_ID
+  Query: Type_Query
+  User: Type_User
 }>
-
-type Arg<T extends string> = ArgOf<Schema, T>
-type Res<T extends string> = ResOf<Schema, T>
 
 declare module '@gqfn/core/schema' {
   interface Schemas {

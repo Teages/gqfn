@@ -75,9 +75,12 @@ describe('type-next/utils', () => {
     expectTypeOf<RequireInput<Input<'[Int!]!', Scalar_Int>>>()
       .toEqualTypeOf<number[] | number>()
     expectTypeOf<RequireInput<Input<'SayingDataInput!', Input_SayingDataInput>>>()
-      .toEqualTypeOf<{ category: 'funny' | 'jokes' | 'serious', content: string }>()
+      .toEqualTypeOf<{ category: (() => 'funny') | (() => 'jokes') | (() => 'serious'), content: string }>()
     expectTypeOf<RequireInput<Input<'[SayingDataInput!]!', Input_SayingDataInput>>>()
-      .toEqualTypeOf<{ category: 'funny' | 'jokes' | 'serious', content: string }[] | { category: 'funny' | 'jokes' | 'serious', content: string }>()
+      .toEqualTypeOf<
+        | { category: (() => 'funny') | (() => 'jokes') | (() => 'serious'), content: string }[]
+        | { category: (() => 'funny') | (() => 'jokes') | (() => 'serious'), content: string }
+    >()
   })
 
   test('RequireInputOrVariable', () => {
@@ -110,7 +113,7 @@ describe('type-next/utils', () => {
     expectTypeOf<RequireInputOrVariable<Input<'SayingDataInput!', Input_SayingDataInput>>>()
       .toEqualTypeOf<
         | {
-          category: 'funny' | 'jokes' | 'serious' | Variable<'CategoryEnum!'>
+          category: (() => 'funny') | (() => 'jokes') | (() => 'serious') | Variable<'CategoryEnum!'>
           content: string | Variable<'String!'>
         }
         | Variable<'SayingDataInput!'>
@@ -118,11 +121,11 @@ describe('type-next/utils', () => {
     expectTypeOf<RequireInputOrVariable<Input<'[SayingDataInput!]!', Input_SayingDataInput>>>()
       .toEqualTypeOf<
         | {
-          category: 'funny' | 'jokes' | 'serious' | Variable<'CategoryEnum!'>
+          category: (() => 'funny') | (() => 'jokes') | (() => 'serious') | Variable<'CategoryEnum!'>
           content: string | Variable<'String!'>
         }[]
         | {
-          category: 'funny' | 'jokes' | 'serious' | Variable<'CategoryEnum!'>
+          category: (() => 'funny') | (() => 'jokes') | (() => 'serious') | Variable<'CategoryEnum!'>
           content: string | Variable<'String!'>
         }
         | Variable<'[SayingDataInput!]!'>
@@ -260,6 +263,6 @@ describe('type-next/utils', () => {
       .toEqualTypeOf<number[] | number>()
 
     expectTypeOf<SchemaRequire<GraphQueryFunction<Schema>, 'SayingDataInput!'>>()
-      .toEqualTypeOf<{ category: 'funny' | 'jokes' | 'serious', content: string }>()
+      .toEqualTypeOf<{ category: (() => 'funny') | (() => 'jokes') | (() => 'serious'), content: string }>()
   })
 })

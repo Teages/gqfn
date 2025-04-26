@@ -11,11 +11,29 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
   const helpers = new Set<string>()
   const nameMap = new Map<string, string>()
 
+  // prepare name map
+  Object.entries(schemaData.scalarTypes).forEach(([name]) => {
+    nameMap.set(name, `Scalar_${name}`)
+  })
+  Object.entries(schemaData.enumTypes).forEach(([name]) => {
+    nameMap.set(name, `Enum_${name}`)
+  })
+  Object.entries(schemaData.inputObjects).forEach(([name]) => {
+    nameMap.set(name, `Input_${name}`)
+  })
+  Object.entries(schemaData.typeObjects).forEach(([name]) => {
+    nameMap.set(name, `Type_${name}`)
+  })
+  Object.entries(schemaData.interfaceObjects).forEach(([name]) => {
+    nameMap.set(name, `Interface_${name}`)
+  })
+  Object.entries(schemaData.unions).forEach(([name]) => {
+    nameMap.set(name, `Union_${name}`)
+  })
+
   // scalars
   Object.entries(schemaData.scalarTypes).forEach(([name, { input, output }]) => {
-    const typename = `Scalar_${name}`
-    nameMap.set(name, typename)
-    push(`type ${typename} = ScalarType<'${name}', ${input}, ${output}>`)
+    push(`type ${nameMap.get(name)} = ScalarType<'${name}', ${input}, ${output}>`)
   })
   if (Object.keys(schemaData.scalarTypes).length) {
     helpers.add('ScalarType')
@@ -24,12 +42,10 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
 
   // enums
   Object.entries(schemaData.enumTypes).forEach(([name, { values }]) => {
-    const typename = `Enum_${name}`
-    nameMap.set(name, typename)
     push(
       `export type ${name} =`,
       ...values.map(val => `  | '${val}'`),
-      `type ${typename} = EnumType<'${name}', ${name}, ${name}>`,
+      `type ${nameMap.get(name)} = EnumType<'${name}', ${name}>`,
       '',
     )
   })
@@ -39,10 +55,8 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
 
   // input objects
   Object.entries(schemaData.inputObjects).forEach(([name, { args }]) => {
-    const typename = `Input_${name}`
-    nameMap.set(name, typename)
     push(
-      `type ${typename} = InputObjectType<'${name}', {`,
+      `type ${nameMap.get(name)} = InputObjectType<'${name}', {`,
       ...Object.entries(args).map(([key, val]) => `  ${key}: Input<'${val}', ${nameMap.get(removeModifier(val))}>`),
       `}>`,
       '',
@@ -55,9 +69,7 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
 
   // type
   Object.entries(schemaData.typeObjects).forEach(([name, { fields }]) => {
-    const typename = `Type_${name}`
-    nameMap.set(name, typename)
-    push(`type ${typename} = ObjectType<'${name}', {`)
+    push(`type ${nameMap.get(name)} = ObjectType<'${name}', {`)
 
     fields.forEach(({ name, args, res }) => {
       if (args && Object.keys(args).length > 0) {
@@ -84,9 +96,6 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
 
   // interfaces
   Object.entries(schemaData.interfaceObjects).forEach(([name, { fields, impl: _impl }]) => {
-    const typename = `Interface_${name}`
-    nameMap.set(name, typename)
-
     const inheritedInterfaces = new Set<string>([name])
     const collectInheritedInterfaces = (interfaceName: string) => {
       const childs = Object.entries(schemaData.interfaceObjects)
@@ -108,7 +117,7 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
     })
 
     push(
-      `type ${typename} = InterfaceType<'${name}', {`,
+      `type ${nameMap.get(name)} = InterfaceType<'${name}', {`,
       ...fields.map(({ name, res }) => `  ${name}: Field<'${name}', Res<'${res}'>>`),
       `}, {`,
       ...Array.from(entities).map(key => `  ${key}: ${nameMap.get(key)}`),
@@ -123,9 +132,6 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
 
   // union
   Object.entries(schemaData.unions).forEach(([name, { types }]) => {
-    const typename = `Union_${name}`
-    nameMap.set(name, typename)
-
     const inheritedUnions = new Set<string>([name])
     const collectInheritedUnions = (childs: Array<string>) => {
       childs.forEach((name) => {
@@ -148,7 +154,7 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
     })
 
     push(
-      `type ${typename} = UnionType<'${name}', {`,
+      `type ${nameMap.get(name)} = UnionType<'${name}', {`,
       ...Array.from(entities).map(key => `  ${key}: ${nameMap.get(key)}`),
       `}>`,
       '',
@@ -165,6 +171,7 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
     `}>`,
     '',
   )
+  helpers.add('DefineSchema')
 
   // declare
   if (url) {
@@ -189,11 +196,11 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
 
 function removeModifier(str: string) {
   if (str.endsWith('!')) {
-    return str.slice(0, -1)
+    return removeModifier(str.slice(0, -1))
   }
 
   if (str.startsWith('[') && str.endsWith(']')) {
-    return str.slice(1, -1)
+    return removeModifier(str.slice(1, -1))
   }
 
   return str

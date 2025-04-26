@@ -11,7 +11,7 @@ describe('codegen', () => {
       const result = generate(schema)
       expect(result).toMatchInlineSnapshot(`
         "/* eslint-ignore */
-        import type { ScalarType } from '@gqfn/core/schema'
+        import type { ScalarType, DefineSchema } from '@gqfn/core/schema'
 
         type Scalar_DateTime = ScalarType<'DateTime', unknown, unknown>
         type Scalar_Int = ScalarType<'Int', number, number>
@@ -43,7 +43,7 @@ describe('codegen', () => {
       const result = generate(schema)
       expect(result).toMatchInlineSnapshot(`
         "/* eslint-ignore */
-        import type { ScalarType, EnumType } from '@gqfn/core/schema'
+        import type { ScalarType, EnumType, DefineSchema } from '@gqfn/core/schema'
 
         type Scalar_Int = ScalarType<'Int', number, number>
         type Scalar_Float = ScalarType<'Float', number, number>
@@ -55,7 +55,7 @@ describe('codegen', () => {
           | 'ADMIN'
           | 'USER'
           | 'GUEST'
-        type Enum_UserRole = EnumType<'UserRole', UserRole, UserRole>
+        type Enum_UserRole = EnumType<'UserRole', UserRole>
 
         export type Schema = DefineSchema<{
           Int: Scalar_Int
@@ -80,7 +80,7 @@ describe('codegen', () => {
       const result = generate(schema)
       expect(result).toMatchInlineSnapshot(`
         "/* eslint-ignore */
-        import type { ScalarType, InputObjectType, Input } from '@gqfn/core/schema'
+        import type { ScalarType, InputObjectType, Input, DefineSchema } from '@gqfn/core/schema'
 
         type Scalar_Int = ScalarType<'Int', number, number>
         type Scalar_Float = ScalarType<'Float', number, number>
@@ -126,7 +126,7 @@ describe('codegen', () => {
       const result = generate(schema)
       expect(result).toMatchInlineSnapshot(`
         "/* eslint-ignore */
-        import type { ScalarType, Field, ObjectType, InterfaceType } from '@gqfn/core/schema'
+        import type { ScalarType, Field, ObjectType, InterfaceType, DefineSchema } from '@gqfn/core/schema'
 
         type Scalar_Int = ScalarType<'Int', number, number>
         type Scalar_Float = ScalarType<'Float', number, number>
@@ -187,7 +187,7 @@ describe('codegen', () => {
       const result = generate(schema)
       expect(result).toMatchInlineSnapshot(`
         "/* eslint-ignore */
-        import type { ScalarType, Field, ObjectType, UnionType } from '@gqfn/core/schema'
+        import type { ScalarType, Field, ObjectType, UnionType, DefineSchema } from '@gqfn/core/schema'
 
         type Scalar_Int = ScalarType<'Int', number, number>
         type Scalar_Float = ScalarType<'Float', number, number>
@@ -246,7 +246,7 @@ describe('codegen', () => {
       const result = generate(schema)
       expect(result).toMatchInlineSnapshot(`
         "/* eslint-ignore */
-        import type { ScalarType, Field, ObjectType } from '@gqfn/core/schema'
+        import type { ScalarType, Field, ObjectType, DefineSchema } from '@gqfn/core/schema'
 
         type Scalar_Int = ScalarType<'Int', number, number>
         type Scalar_Float = ScalarType<'Float', number, number>
@@ -283,7 +283,7 @@ describe('codegen', () => {
       const result = generate(schema)
       expect(result).toMatchInlineSnapshot(`
         "/* eslint-ignore */
-        import type { ScalarType, Field, Input, ObjectType } from '@gqfn/core/schema'
+        import type { ScalarType, Field, Input, ObjectType, DefineSchema } from '@gqfn/core/schema'
 
         type Scalar_Int = ScalarType<'Int', number, number>
         type Scalar_Float = ScalarType<'Float', number, number>
@@ -333,7 +333,7 @@ describe('codegen', () => {
       const result = generate(document)
       expect(result).toMatchInlineSnapshot(`
         "/* eslint-ignore */
-        import type { ScalarType, Field, ObjectType } from '@gqfn/core/schema'
+        import type { ScalarType, Field, ObjectType, DefineSchema } from '@gqfn/core/schema'
 
         type Scalar_Int = ScalarType<'Int', number, number>
         type Scalar_Float = ScalarType<'Float', number, number>

@@ -7,6 +7,12 @@ import { createGraphQueryFunctionFragment } from './fragment'
 import { createGraphQueryFunctionCore } from './operation'
 import { createGraphQueryPartial } from './partial'
 
+export type {
+  EnumFunction,
+  GraphQueryFunctionCore,
+  GraphQueryFunctionFragment,
+  GraphQueryPartial,
+}
 export interface GraphQueryFunction extends GraphQueryFunctionCore {
   gqfn: GraphQueryFunctionCore
   enum: EnumFunction

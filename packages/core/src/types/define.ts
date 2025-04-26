@@ -1,3 +1,5 @@
+import type { PackedEnum } from './enum'
+
 export interface DefineSchema<
   Namespace extends Record<string, BaseType<any, any>>,
 > {
@@ -28,9 +30,12 @@ export interface ScalarType<
 }
 export interface EnumType<
   Name extends string,
-  Output,
-  Input,
-> extends BaseScalar<Name, Output, Input> {
+  Definition extends string,
+> extends BaseScalar<
+    Name,
+    Definition,
+    PackedEnum<Definition>
+  > {
   __type__?: () => 'Enum'
 }
 

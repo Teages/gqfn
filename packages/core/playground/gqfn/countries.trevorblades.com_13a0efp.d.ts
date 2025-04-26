@@ -1,114 +1,118 @@
 /* eslint-ignore */
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
+import type { ScalarType, InputObjectType, Input, Field, ObjectType, DefineSchema } from '@gqfn/core/schema'
 
-type ContinentFilterInput = InputObject<'ContinentFilterInput', {
-  code: Arg<'StringQueryOperatorInput'>
+type Scalar_Int = ScalarType<'Int', number, number>
+type Scalar_Float = ScalarType<'Float', number, number>
+type Scalar_String = ScalarType<'String', string, string>
+type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+type Scalar_ID = ScalarType<'ID', string | number, string | number>
+
+type Input_ContinentFilterInput = InputObjectType<'ContinentFilterInput', {
+  code: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
 }>
 
-type CountryFilterInput = InputObject<'CountryFilterInput', {
-  code: Arg<'StringQueryOperatorInput'>
-  continent: Arg<'StringQueryOperatorInput'>
-  currency: Arg<'StringQueryOperatorInput'>
-  name: Arg<'StringQueryOperatorInput'>
+type Input_CountryFilterInput = InputObjectType<'CountryFilterInput', {
+  code: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
+  continent: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
+  currency: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
+  name: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
 }>
 
-type LanguageFilterInput = InputObject<'LanguageFilterInput', {
-  code: Arg<'StringQueryOperatorInput'>
+type Input_LanguageFilterInput = InputObjectType<'LanguageFilterInput', {
+  code: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
 }>
 
-type StringQueryOperatorInput = InputObject<'StringQueryOperatorInput', {
-  eq: Arg<'String'>
-  in: Arg<'[String!]'>
-  ne: Arg<'String'>
-  nin: Arg<'[String!]'>
-  regex: Arg<'String'>
+type Input_StringQueryOperatorInput = InputObjectType<'StringQueryOperatorInput', {
+  eq: Input<'String', Scalar_String>
+  in: Input<'[String!]', Scalar_String>
+  ne: Input<'String', Scalar_String>
+  nin: Input<'[String!]', Scalar_String>
+  regex: Input<'String', Scalar_String>
 }>
 
-type Continent = TypeObject<'Continent', {
-  code: Field<'code', Res<'ID!'>>
-  countries: Field<'countries', Res<'[Country!]!'>>
-  name: Field<'name', Res<'String!'>>
+type Type_Continent = ObjectType<'Continent', {
+  code: Field<'ID!', Scalar_ID>
+  countries: Field<'[Country!]!', Type_Country>
+  name: Field<'String!', Scalar_String>
 }>
 
-type Country = TypeObject<'Country', {
-  awsRegion: Field<'awsRegion', Res<'String!'>>
-  capital: Field<'capital', Res<'String'>>
-  code: Field<'code', Res<'ID!'>>
-  continent: Field<'continent', Res<'Continent!'>>
-  currencies: Field<'currencies', Res<'[String!]!'>>
-  currency: Field<'currency', Res<'String'>>
-  emoji: Field<'emoji', Res<'String!'>>
-  emojiU: Field<'emojiU', Res<'String!'>>
-  languages: Field<'languages', Res<'[Language!]!'>>
-  name: Field<'name', Res<'String!'>, {
-    lang: Arg<'String'>
+type Type_Country = ObjectType<'Country', {
+  awsRegion: Field<'String!', Scalar_String>
+  capital: Field<'String', Scalar_String>
+  code: Field<'ID!', Scalar_ID>
+  continent: Field<'Continent!', Type_Continent>
+  currencies: Field<'[String!]!', Scalar_String>
+  currency: Field<'String', Scalar_String>
+  emoji: Field<'String!', Scalar_String>
+  emojiU: Field<'String!', Scalar_String>
+  languages: Field<'[Language!]!', Type_Language>
+  name: Field<'String!', Scalar_String, {
+    lang: Input<'String', Scalar_String>
   }>
-  native: Field<'native', Res<'String!'>>
-  phone: Field<'phone', Res<'String!'>>
-  phones: Field<'phones', Res<'[String!]!'>>
-  states: Field<'states', Res<'[State!]!'>>
-  subdivisions: Field<'subdivisions', Res<'[Subdivision!]!'>>
+  native: Field<'String!', Scalar_String>
+  phone: Field<'String!', Scalar_String>
+  phones: Field<'[String!]!', Scalar_String>
+  states: Field<'[State!]!', Type_State>
+  subdivisions: Field<'[Subdivision!]!', Type_Subdivision>
 }>
 
-type Language = TypeObject<'Language', {
-  code: Field<'code', Res<'ID!'>>
-  name: Field<'name', Res<'String!'>>
-  native: Field<'native', Res<'String!'>>
-  rtl: Field<'rtl', Res<'Boolean!'>>
+type Type_Language = ObjectType<'Language', {
+  code: Field<'ID!', Scalar_ID>
+  name: Field<'String!', Scalar_String>
+  native: Field<'String!', Scalar_String>
+  rtl: Field<'Boolean!', Scalar_Boolean>
 }>
 
-type Query = TypeObject<'Query', {
-  continent: Field<'continent', Res<'Continent'>, {
-    code: Arg<'ID!'>
+type Type_Query = ObjectType<'Query', {
+  continent: Field<'Continent', Type_Continent, {
+    code: Input<'ID!', Scalar_ID>
   }>
-  continents: Field<'continents', Res<'[Continent!]!'>, {
-    filter: Arg<'ContinentFilterInput'>
+  continents: Field<'[Continent!]!', Type_Continent, {
+    filter: Input<'ContinentFilterInput', Input_ContinentFilterInput>
   }>
-  countries: Field<'countries', Res<'[Country!]!'>, {
-    filter: Arg<'CountryFilterInput'>
+  countries: Field<'[Country!]!', Type_Country, {
+    filter: Input<'CountryFilterInput', Input_CountryFilterInput>
   }>
-  country: Field<'country', Res<'Country'>, {
-    code: Arg<'ID!'>
+  country: Field<'Country', Type_Country, {
+    code: Input<'ID!', Scalar_ID>
   }>
-  language: Field<'language', Res<'Language'>, {
-    code: Arg<'ID!'>
+  language: Field<'Language', Type_Language, {
+    code: Input<'ID!', Scalar_ID>
   }>
-  languages: Field<'languages', Res<'[Language!]!'>, {
-    filter: Arg<'LanguageFilterInput'>
+  languages: Field<'[Language!]!', Type_Language, {
+    filter: Input<'LanguageFilterInput', Input_LanguageFilterInput>
   }>
 }>
 
-type State = TypeObject<'State', {
-  code: Field<'code', Res<'String'>>
-  country: Field<'country', Res<'Country!'>>
-  name: Field<'name', Res<'String!'>>
+type Type_State = ObjectType<'State', {
+  code: Field<'String', Scalar_String>
+  country: Field<'Country!', Type_Country>
+  name: Field<'String!', Scalar_String>
 }>
 
-type Subdivision = TypeObject<'Subdivision', {
-  code: Field<'code', Res<'ID!'>>
-  emoji: Field<'emoji', Res<'String'>>
-  name: Field<'name', Res<'String!'>>
+type Type_Subdivision = ObjectType<'Subdivision', {
+  code: Field<'ID!', Scalar_ID>
+  emoji: Field<'String', Scalar_String>
+  name: Field<'String!', Scalar_String>
 }>
 
 export type Schema = DefineSchema<{
-  Inputs: {
-    ContinentFilterInput: ContinentFilterInput
-    CountryFilterInput: CountryFilterInput
-    LanguageFilterInput: LanguageFilterInput
-    StringQueryOperatorInput: StringQueryOperatorInput
-  }
-  Objects: {
-    Continent: Continent
-    Country: Country
-    Language: Language
-    Query: Query
-    State: State
-    Subdivision: Subdivision
-  }
+  Int: Scalar_Int
+  Float: Scalar_Float
+  String: Scalar_String
+  Boolean: Scalar_Boolean
+  ID: Scalar_ID
+  ContinentFilterInput: Input_ContinentFilterInput
+  CountryFilterInput: Input_CountryFilterInput
+  LanguageFilterInput: Input_LanguageFilterInput
+  StringQueryOperatorInput: Input_StringQueryOperatorInput
+  Continent: Type_Continent
+  Country: Type_Country
+  Language: Type_Language
+  Query: Type_Query
+  State: Type_State
+  Subdivision: Type_Subdivision
 }>
-
-type Arg<T extends string> = ArgOf<Schema, T>
-type Res<T extends string> = ResOf<Schema, T>
 
 declare module '@gqfn/core/schema' {
   interface Schemas {

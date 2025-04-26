@@ -1,22 +1,37 @@
-import type { GraphQueryFunction as RawGraphQueryFunction } from './runtime'
+import type {
+  EnumFunction as RawEnumFunction,
+  GraphQueryFunction as RawGraphQueryFunction,
+  GraphQueryFunctionCore as RawGraphQueryFunctionCore,
+  GraphQueryFunctionFragment as RawGraphQueryFunctionFragment,
+  GraphQueryPartial as RawGraphQueryPartial,
+} from './runtime'
 import type { Schemas } from './schema'
 import type { DefineSchema, GraphQueryFunction } from './types'
-import { gqfn as raw } from './runtime'
+import { createGQFn, gqfn as raw } from './runtime'
 
+export type { RawGraphQueryFunction }
 export type { Schemas } from './schema'
+export type { RequireOperationPartialData } from './types'
 export type { ResultOf, TypedDocumentNode, VariablesOf } from './types'
-export type UseSchemaResult<T extends string | DefineSchema<any>> =
-  T extends DefineSchema<any>
-    ? GraphQueryFunction<T>
-    : T extends keyof Schemas
-      ? Schemas[T] extends DefineSchema<any>
-        ? GraphQueryFunction<Schemas[T]>
-        : RawGraphQueryFunction
-      : RawGraphQueryFunction
+
+/** @deprecated Unknown schema */
+export interface UnknownSchema extends RawGraphQueryFunctionCore {
+  /** @deprecated Unknown schema */
+  gqfn: RawGraphQueryFunctionCore
+  /** @deprecated Unknown schema */
+  enum: RawEnumFunction
+  /** @deprecated Unknown schema */
+  fragment: RawGraphQueryFunctionFragment
+  /** @deprecated Unknown schema */
+  partial: RawGraphQueryPartial
+}
 
 export { raw }
-export function useSchema<T extends DefineSchema<any>>(): UseSchemaResult<T>
-export function useSchema<T extends string | (keyof Schemas & string)>(url: T): UseSchemaResult<T>
+
+export function useSchema(): UnknownSchema
+export function useSchema<T extends DefineSchema<any>>(schema: T): GraphQueryFunction<T>
+export function useSchema<T extends keyof Schemas>(url: T): GraphQueryFunction<Schemas[T]>
+export function useSchema<T extends string>(url: T): UnknownSchema
 export function useSchema<T extends string | DefineSchema<any> = string>(_url?: T) {
-  return raw as any
+  return createGQFn() as any
 }

@@ -1,4 +1,17 @@
-import type { ScalarType, EnumType, InputObjectType, Input, Field, ObjectType, InterfaceType, UnionType, DefineSchema } from '@gqfn/core/schema'
+import type {
+  DefineSchema,
+  EnumType,
+
+  Field,
+  Input,
+
+  InputObjectType,
+  InterfaceType,
+  ObjectType,
+  ScalarType,
+
+  UnionType,
+} from '../src/schema'
 
 export type CategoryEnum =
   | 'funny'
@@ -12,7 +25,7 @@ export type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
 export type Scalar_ID = ScalarType<'ID', string | number, string | number>
 export type Scalar_Date = ScalarType<'Date', string, string>
 
-export type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum, CategoryEnum>
+export type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum>
 
 export type Input_SayingDataInput = InputObjectType<'SayingDataInput', {
   category: Input<'CategoryEnum!', Enum_CategoryEnum>
@@ -105,7 +118,7 @@ export type Schema = DefineSchema<{
   Subscription: Type_Subscription
 }>
 
-declare module '@gqfn/core/schema' {
+declare module '../src/schema' {
   interface Schemas {
     '/graphql': Schema
   }

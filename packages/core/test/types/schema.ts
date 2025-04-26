@@ -25,7 +25,7 @@ export type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
 export type Scalar_ID = ScalarType<'ID', string | number, string | number>
 export type Scalar_Date = ScalarType<'Date', string, string>
 
-export type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum, CategoryEnum>
+export type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum>
 
 export type Input_SayingDataInput = InputObjectType<'SayingDataInput', {
   category: Input<'CategoryEnum!', Enum_CategoryEnum>
