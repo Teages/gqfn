@@ -1,4 +1,4 @@
-import type { RequireOperationPartialData } from '#gqfn'
+import type { RequireOperationPartialData } from "#gqfn"
 
 const endpoint = 'https://graphql-test.teages.xyz/graphql-user'
 const gqfn = useGQFnSchema(endpoint)
