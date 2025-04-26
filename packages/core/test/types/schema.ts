@@ -1,17 +1,4 @@
-import type {
-  DefineSchema,
-  EnumType,
-
-  Field,
-  Input,
-
-  InputObjectType,
-  InterfaceType,
-  ObjectType,
-  ScalarType,
-
-  UnionType,
-} from '../../src/schema'
+import type { DefineSchema, EnumType, Field, Input, InputObjectType, InterfaceType, ObjectType, ScalarType, UnionType } from '../../src/schema'
 
 export type CategoryEnum =
   | 'funny'
@@ -66,7 +53,7 @@ export type Union_Data = UnionType<'Data', {
 export type Type_Mutation = ObjectType<'Mutation', {
   addSaying: Field<'Saying!', Type_Saying, {
     input: Input<'SayingDataInput', Input_SayingDataInput>
-    ownerId: Field<'Int!', Scalar_Int>
+    ownerId: Input<'Int!', Scalar_Int>
   }>
 }>
 
@@ -77,20 +64,20 @@ export type Type_Query = ObjectType<'Query', {
     name: Input<'String', Scalar_String>
   }>
   saying: Field<'Saying!', Type_Saying, {
-    id: Field<'Int!', Scalar_Int>
+    id: Input<'Int!', Scalar_Int>
   }>
   sayings: Field<'[Saying!]!', Type_Saying, {
     category: Input<'CategoryEnum', Enum_CategoryEnum>
   }>
   user: Field<'User!', Type_User, {
-    id: Field<'Int!', Scalar_Int>
+    id: Input<'Int!', Scalar_Int>
   }>
   users: Field<'[User!]!', Type_User>
 }>
 
 export type Type_Subscription = ObjectType<'Subscription', {
   countdown: Field<'Int!', Scalar_Int, {
-    from: Field<'Int!', Scalar_Int>
+    from: Input<'Int!', Scalar_Int>
   }>
 }>
 
