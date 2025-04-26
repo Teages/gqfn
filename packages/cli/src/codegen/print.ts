@@ -118,7 +118,7 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
 
     push(
       `type ${nameMap.get(name)} = InterfaceType<'${name}', {`,
-      ...fields.map(({ name, res }) => `  ${name}: Field<'${name}', Res<'${res}'>>`),
+      ...fields.map(({ name, res }) => `  ${name}: Field<'${res}', ${nameMap.get(removeModifier(res))}>`),
       `}, {`,
       ...Array.from(entities).map(key => `  ${key}: ${nameMap.get(key)}`),
       `}>`,

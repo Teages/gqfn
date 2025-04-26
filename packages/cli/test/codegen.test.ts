@@ -141,14 +141,14 @@ describe('codegen', () => {
         }>
 
         type Interface_Node = InterfaceType<'Node', {
-          id: Field<'id', Res<'ID!'>>
+          id: Field<'ID!', Scalar_ID>
         }, {
           User: Type_User
         }>
 
         type Interface_NodeWithUUID = InterfaceType<'NodeWithUUID', {
-          id: Field<'id', Res<'ID!'>>
-          uuid: Field<'uuid', Res<'String!'>>
+          id: Field<'ID!', Scalar_ID>
+          uuid: Field<'String!', Scalar_String>
         }, {
           User: Type_User
         }>

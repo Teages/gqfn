@@ -1779,7 +1779,7 @@ type Type_User = ObjectType<'User', {
 }>
 
 type Interface_ItemWithId = InterfaceType<'ItemWithId', {
-  id: Field<'id', Res<'Int!'>>
+  id: Field<'Int!', Scalar_Int>
 }, {
   Saying: Type_Saying
   User: Type_User
@@ -2355,7 +2355,7 @@ type Type_VehiclesEdge = ObjectType<'VehiclesEdge', {
 }>
 
 type Interface_Node = InterfaceType<'Node', {
-  id: Field<'id', Res<'ID!'>>
+  id: Field<'ID!', Scalar_ID>
 }, {
   Film: Type_Film
   Person: Type_Person
