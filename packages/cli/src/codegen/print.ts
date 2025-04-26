@@ -6,163 +6,164 @@ export interface PrintOptions {
 
 export function print(schemaData: SchemaData, { url }: PrintOptions = {}): string {
   const lines: Array<string> = []
-  const push = (...str: Array<string>) => lines.push(...str, '')
-  // ignores and import type utils
-  push(
-    `/* eslint-ignore */`,
-    `import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'`,
-  )
+  const push = (...str: Array<string>) => lines.push(...str)
+
+  const helpers = new Set<string>()
+  const nameMap = new Map<string, string>()
 
   // scalars
-  const scalars: Array<string> = []
-  Object.entries(schemaData.scalarTypes).forEach(([name, scalar]) => {
-    scalars.push(`    ${name}: ScalarType<'${name}', ${scalar.type}>`)
+  Object.entries(schemaData.scalarTypes).forEach(([name, { input, output }]) => {
+    const typename = `Scalar_${name}`
+    nameMap.set(name, typename)
+    push(`type ${typename} = ScalarType<'${name}', ${input}, ${output}>`)
   })
+  if (Object.keys(schemaData.scalarTypes).length) {
+    helpers.add('ScalarType')
+    push('')
+  }
 
   // enums
-  const enums: Array<string> = []
   Object.entries(schemaData.enumTypes).forEach(([name, { values }]) => {
+    const typename = `Enum_${name}`
+    nameMap.set(name, typename)
     push(
       `export type ${name} =`,
       ...values.map(val => `  | '${val}'`),
-    )
-
-    enums.push(
-      `    ${name}: EnumType<'${name}', ${name}>`,
+      `type ${typename} = EnumType<'${name}', ${name}, ${name}>`,
+      '',
     )
   })
+  if (Object.keys(schemaData.enumTypes).length) {
+    helpers.add('EnumType')
+  }
 
   // input objects
-  const inputs: Array<string> = []
   Object.entries(schemaData.inputObjects).forEach(([name, { args }]) => {
+    const typename = `Input_${name}`
+    nameMap.set(name, typename)
     push(
-      `type ${name} = InputObject<'${name}', {`,
-      ...Object.entries(args).map(([field, type]) => `  ${field}: Arg<'${type}'>`),
+      `type ${typename} = InputObjectType<'${name}', {`,
+      ...Object.entries(args).map(([key, val]) => `  ${key}: Input<'${val}', ${nameMap.get(removeModifier(val))}>`),
       `}>`,
-    )
-
-    inputs.push(
-      `    ${name}: ${name}`,
+      '',
     )
   })
+  if (Object.keys(schemaData.inputObjects).length) {
+    helpers.add('InputObjectType')
+    helpers.add('Input')
+  }
+
+  // type
+  Object.entries(schemaData.typeObjects).forEach(([name, { fields }]) => {
+    const typename = `Type_${name}`
+    nameMap.set(name, typename)
+    push(`type ${typename} = ObjectType<'${name}', {`)
+
+    fields.forEach(({ name, args, res }) => {
+      if (args && Object.keys(args).length > 0) {
+        push(
+          `  ${name}: Field<'${res}', ${nameMap.get(removeModifier(res))}, {`,
+          ...Object.entries(args).map(([key, val]) =>
+            `    ${key}: Input<'${val}', ${nameMap.get(removeModifier(val))}>`),
+          `  }>`,
+        )
+        helpers.add('Field')
+        helpers.add('Input')
+      }
+      else {
+        push(`  ${name}: Field<'${res}', ${nameMap.get(removeModifier(res))}>`)
+        helpers.add('Field')
+      }
+    })
+
+    push(`}>`, '')
+  })
+  if (Object.keys(schemaData.typeObjects).length) {
+    helpers.add('ObjectType')
+  }
 
   // interfaces
-  const interfaces: Array<string> = []
-  Object.entries(schemaData.interfaceObjects).forEach(([name, { fields }]) => {
-    const imps = new Set<string>()
-    Object.entries(schemaData.typeObjects).forEach(([key, data]) => {
-      if (data.implements.includes(name)) {
-        imps.add(key)
+  Object.entries(schemaData.interfaceObjects).forEach(([name, { fields, impl: _impl }]) => {
+    const typename = `Interface_${name}`
+    nameMap.set(name, typename)
+
+    const inheritedInterfaces = new Set<string>([name])
+    const collectInheritedInterfaces = (interfaceName: string) => {
+      const childs = Object.entries(schemaData.interfaceObjects)
+        .filter(([_, { impl }]) => impl.includes(interfaceName))
+      childs.forEach(([name]) => {
+        if (!inheritedInterfaces.has(name)) {
+          inheritedInterfaces.add(name)
+          collectInheritedInterfaces(name)
+        }
+      })
+    }
+    collectInheritedInterfaces(name)
+
+    const entities = new Set<string>()
+    Object.entries(schemaData.typeObjects).forEach(([key, { impl: typeImpl }]) => {
+      if (typeImpl.some(name => inheritedInterfaces.has(name))) {
+        entities.add(key)
       }
     })
-    Object.entries(schemaData.interfaceObjects).forEach(([key, data]) => {
-      if (data.implements.includes(name)) {
-        imps.add(key)
-      }
-    })
+
     push(
-      `type ${name} = InterfaceObject<'${name}', {`,
+      `type ${typename} = InterfaceType<'${name}', {`,
       ...fields.map(({ name, res }) => `  ${name}: Field<'${name}', Res<'${res}'>>`),
       `}, {`,
-      ...[...imps.values()].map(key => `  ${key}: ${key}`),
+      ...Array.from(entities).map(key => `  ${key}: ${nameMap.get(key)}`),
       `}>`,
-    )
-
-    interfaces.push(
-      `    ${name}: ${name}`,
+      '',
     )
   })
+  if (Object.keys(schemaData.interfaceObjects).length) {
+    helpers.add('InterfaceType')
+    helpers.add('Field')
+  }
 
   // union
-  const unions: Array<string> = []
   Object.entries(schemaData.unions).forEach(([name, { types }]) => {
-    push(
-      `type ${name} = Union<'${name}', {`,
-      ...types.map(key => `  ${key}: ${key}`),
-      `}>`,
-    )
+    const typename = `Union_${name}`
+    nameMap.set(name, typename)
 
-    unions.push(
-      `    ${name}: ${name}`,
-    )
-  })
-
-  // object type
-  const objects: Array<string> = []
-  Object.entries(schemaData.typeObjects).forEach(([name, { fields }]) => {
-    push(
-      `type ${name} = TypeObject<'${name}', {`,
-      ...fields.map(({ name, args, res }) => {
-        if (args && Object.keys(args).length > 0) {
-          return [
-            `  ${name}: Field<'${name}', Res<'${res}'>, {`,
-            ...Object.entries(args).map(([key, val]) => `    ${key}: Arg<'${val}'>`),
-            '  }>',
-          ].join('\n')
+    const inheritedUnions = new Set<string>([name])
+    const collectInheritedUnions = (childs: Array<string>) => {
+      childs.forEach((name) => {
+        const child = schemaData.unions[name]
+        if (child && !inheritedUnions.has(name)) {
+          inheritedUnions.add(name)
+          collectInheritedUnions(child.types)
         }
+      })
+    }
+    collectInheritedUnions(types)
 
-        return `  ${name}: Field<'${name}', Res<'${res}'>>`
-      }),
+    const entities = new Set<string>()
+    inheritedUnions.forEach((name) => {
+      schemaData.unions[name].types.forEach((name) => {
+        if (name in schemaData.typeObjects && !entities.has(name)) {
+          entities.add(name)
+        }
+      })
+    })
+
+    push(
+      `type ${typename} = UnionType<'${name}', {`,
+      ...Array.from(entities).map(key => `  ${key}: ${nameMap.get(key)}`),
       `}>`,
-    )
-
-    objects.push(
-      `    ${name}: ${name}`,
+      '',
     )
   })
+  if (Object.keys(schemaData.unions).length) {
+    helpers.add('UnionType')
+  }
 
   // schema
   push(
     `export type Schema = DefineSchema<{`,
-    ...(scalars.length > 0
-      ? [
-          `  Scalars: {`,
-          ...scalars,
-          `  }`,
-        ]
-      : []),
-    ...(enums.length > 0
-      ? [
-          `  Enums: {`,
-          ...enums,
-          `  }`,
-        ]
-      : []),
-    ...(inputs.length > 0
-      ? [
-          `  Inputs: {`,
-          ...inputs,
-          `  }`,
-        ]
-      : []),
-    ...(interfaces.length > 0
-      ? [
-          `  Interfaces: {`,
-          ...interfaces,
-          `  }`,
-        ]
-      : []),
-    ...(unions.length > 0
-      ? [
-          `  Unions: {`,
-          ...unions,
-          `  }`,
-        ]
-      : []),
-    ...(objects.length > 0
-      ? [
-          `  Objects: {`,
-          ...objects,
-          `  }`,
-        ]
-      : []),
+    ...nameMap.entries().map(([name, typename]) => `  ${name}: ${typename}`),
     `}>`,
-  )
-
-  // utils
-  push(
-    `type Arg<T extends string> = ArgOf<Schema, T>`,
-    `type Res<T extends string> = ResOf<Schema, T>`,
+    '',
   )
 
   // declare
@@ -173,8 +174,27 @@ export function print(schemaData: SchemaData, { url }: PrintOptions = {}): strin
       `    '${url}': Schema`,
       `  }`,
       `}`,
+      '',
     )
   }
+  // ignores and import type utils
+  lines.unshift(
+    `/* eslint-ignore */`,
+    `import type { ${[...helpers].join(', ')} } from '@gqfn/core/schema'`,
+    '',
+  )
 
   return lines.join('\n')
+}
+
+function removeModifier(str: string) {
+  if (str.endsWith('!')) {
+    return str.slice(0, -1)
+  }
+
+  if (str.startsWith('[') && str.endsWith(']')) {
+    return str.slice(1, -1)
+  }
+
+  return str
 }

@@ -4,7 +4,8 @@ import { Kind, parse, print } from 'graphql'
 export interface ItemData { name: string }
 
 export interface ScalarTypeData extends ItemData {
-  type: 'string'
+  input: string
+  output: string
 }
 export interface EnumTypeData extends ItemData {
   values: string[]
@@ -16,7 +17,7 @@ export interface InputObjectData extends ItemData {
 export interface InterfaceObjectData extends TypeObjectData {}
 export interface TypeObjectData extends ItemData {
   fields: FieldData[]
-  implements: string[]
+  impl: string[]
 }
 export interface UnionData extends ItemData {
   types: string[]
@@ -25,6 +26,29 @@ export interface UnionData extends ItemData {
 export interface FieldData extends ItemData {
   res: string
   args?: Record<string, string>
+}
+
+const DEFAULT_SCALARS: Record<string, { input: string, output: string }> = {
+  Int: {
+    input: 'number',
+    output: 'number',
+  },
+  Float: {
+    input: 'number',
+    output: 'number',
+  },
+  String: {
+    input: 'string',
+    output: 'string',
+  },
+  Boolean: {
+    input: 'boolean',
+    output: 'boolean',
+  },
+  ID: {
+    input: 'string | number',
+    output: 'string | number',
+  },
 }
 
 export class SchemaData {
@@ -95,6 +119,13 @@ export class SchemaData {
         }
       }
     })
+
+    // add default scalars if not exist
+    Object.entries(DEFAULT_SCALARS).forEach(([name, { input, output }]) => {
+      if (!this.scalarTypes[name]) {
+        this.scalarTypes[name] = { name, input, output }
+      }
+    })
   }
 }
 
@@ -107,9 +138,8 @@ function parseEnumNode(def: EnumTypeDefinitionNode): EnumTypeData {
 
 function parseScalarNode(def: ScalarTypeDefinitionNode): ScalarTypeData {
   const name = parseName(def.name)
-  const type = 'string'
 
-  return { name, type }
+  return { name, input: 'unknown', output: 'unknown' }
 }
 
 function parseInputObjectNode(def: InputObjectTypeDefinitionNode): InputObjectData {
@@ -130,7 +160,7 @@ function parseInterfaceNode(def: InterfaceTypeDefinitionNode): InterfaceObjectDa
   const fields: FieldData[] = def.fields?.map(field => parseFieldNode(field)) ?? []
   const imps: string[] = def.interfaces?.map(node => parseName(node.name)) ?? []
 
-  return { name, fields, implements: imps }
+  return { name, fields, impl: imps }
 }
 
 function parseTypeObjectNode(def: ObjectTypeDefinitionNode): TypeObjectData {
@@ -138,7 +168,7 @@ function parseTypeObjectNode(def: ObjectTypeDefinitionNode): TypeObjectData {
   const fields: FieldData[] = def.fields?.map(field => parseFieldNode(field)) ?? []
   const imps: string[] = def.interfaces?.map(node => parseName(node.name)) ?? []
 
-  return { name, fields, implements: imps }
+  return { name, fields, impl: imps }
 }
 
 function parseUnion(def: UnionTypeDefinitionNode): UnionData {
