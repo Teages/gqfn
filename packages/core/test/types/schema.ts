@@ -1,101 +1,106 @@
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union } from '../../src/schema'
+import type { DefineSchema, EnumType, Field, Input, InputObjectType, InterfaceType, ObjectType, ScalarType, UnionType } from '../../src/schema'
 
 export type CategoryEnum =
   | 'funny'
   | 'jokes'
   | 'serious'
 
-export type SayingDataInput = InputObject<'SayingDataInput', {
-  category: Arg<'CategoryEnum!'>
-  content: Arg<'String!'>
+export type Scalar_Int = ScalarType<'Int', number, number>
+export type Scalar_Float = ScalarType<'Float', number, number>
+export type Scalar_String = ScalarType<'String', string, string>
+export type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+export type Scalar_ID = ScalarType<'ID', string | number, string | number>
+export type Scalar_Date = ScalarType<'Date', string, string>
+
+export type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum>
+
+export type Input_SayingDataInput = InputObjectType<'SayingDataInput', {
+  category: Input<'CategoryEnum!', Enum_CategoryEnum>
+  content: Input<'String!', Scalar_String>
 }>
 
-export type ItemWithId = InterfaceObject<'ItemWithId', {
-  id: Field<'id', Res<'Int!'>>
+export type Interface_ItemWithId = InterfaceType<'ItemWithId', {
+  id: Field<'Int!', Scalar_Int>
 }, {
-  Saying: Saying
-  User: User
+  Saying: Type_Saying
+  User: Type_User
 }>
 
-export type Data = Union<'Data', {
-  Saying: Saying
-  User: User
+export type Type_Saying = ObjectType<'Saying', {
+  category: Field<'CategoryEnum!', Enum_CategoryEnum>
+  content: Field<'String!', Scalar_String>
+  createdAt: Field<'Date!', Scalar_Date>
+  id: Field<'Int!', Scalar_Int>
+  owner: Field<'User!', Type_User>
+  updatedAt: Field<'Date!', Scalar_Date>
 }>
 
-export type Mutation = TypeObject<'Mutation', {
-  addSaying: Field<'addSaying', Res<'Saying!'>, {
-    input: Arg<'SayingDataInput!'>
-    ownerId: Arg<'Int!'>
+export type Type_User = ObjectType<'User', {
+  email: Field<'String!', Scalar_String>
+  friends: Field<'[User!]!', Type_User>
+  id: Field<'Int!', Scalar_Int>
+  name: Field<'String!', Scalar_String>
+  sayings: Field<'[Saying!]!', Type_Saying, {
+    category: Input<'CategoryEnum', Enum_CategoryEnum>
   }>
 }>
 
-export type Query = TypeObject<'Query', {
-  all: Field<'all', Res<'[Data!]!'>>
-  allId: Field<'allId', Res<'[ItemWithId!]!'>>
-  hello: Field<'hello', Res<'String!'>, {
-    name: Arg<'String'>
-  }>
-  saying: Field<'saying', Res<'Saying!'>, {
-    id: Arg<'Int!'>
-  }>
-  sayings: Field<'sayings', Res<'[Saying!]!'>, {
-    category: Arg<'[CategoryEnum!]'>
-  }>
-  user: Field<'user', Res<'User!'>, {
-    id: Arg<'Int!'>
-  }>
-  users: Field<'users', Res<'[User!]!'>>
+export type Union_Data = UnionType<'Data', {
+  Saying: Type_Saying
+  User: Type_User
 }>
 
-export type Saying = TypeObject<'Saying', {
-  category: Field<'category', Res<'CategoryEnum!'>>
-  content: Field<'content', Res<'String!'>>
-  createdAt: Field<'createdAt', Res<'Date!'>>
-  id: Field<'id', Res<'Int!'>>
-  owner: Field<'owner', Res<'User!'>>
-  updatedAt: Field<'updatedAt', Res<'Date!'>>
-}>
-
-export type Subscription = TypeObject<'Subscription', {
-  countdown: Field<'countdown', Res<'Int!'>, {
-    from: Arg<'Int!'>
+export type Type_Mutation = ObjectType<'Mutation', {
+  addSaying: Field<'Saying!', Type_Saying, {
+    input: Input<'SayingDataInput', Input_SayingDataInput>
+    ownerId: Input<'Int!', Scalar_Int>
   }>
 }>
 
-export type User = TypeObject<'User', {
-  email: Field<'email', Res<'String!'>>
-  friends: Field<'friends', Res<'[User!]!'>>
-  id: Field<'id', Res<'Int!'>>
-  name: Field<'name', Res<'String!'>>
-  sayings: Field<'sayings', Res<'[Saying!]!'>, {
-    category: Arg<'CategoryEnum'>
+export type Type_Query = ObjectType<'Query', {
+  all: Field<'[Data!]!', Union_Data>
+  allId: Field<'[ItemWithId!]!', Interface_ItemWithId>
+  hello: Field<'String!', Scalar_String, {
+    name: Input<'String', Scalar_String>
+  }>
+  saying: Field<'Saying!', Type_Saying, {
+    id: Input<'Int!', Scalar_Int>
+  }>
+  sayings: Field<'[Saying!]!', Type_Saying, {
+    category: Input<'CategoryEnum', Enum_CategoryEnum>
+  }>
+  user: Field<'User!', Type_User, {
+    id: Input<'Int!', Scalar_Int>
+  }>
+  users: Field<'[User!]!', Type_User>
+}>
+
+export type Type_Subscription = ObjectType<'Subscription', {
+  countdown: Field<'Int!', Scalar_Int, {
+    from: Input<'Int!', Scalar_Int>
   }>
 }>
 
 export type Schema = DefineSchema<{
-  Scalars: {
-    Date: ScalarType<'Date', string>
-  }
-  Enums: {
-    CategoryEnum: EnumType<'CategoryEnum', CategoryEnum>
-  }
-  Inputs: {
-    SayingDataInput: SayingDataInput
-  }
-  Interfaces: {
-    ItemWithId: ItemWithId
-  }
-  Unions: {
-    Data: Data
-  }
-  Objects: {
-    Mutation: Mutation
-    Query: Query
-    Saying: Saying
-    Subscription: Subscription
-    User: User
-  }
-}>
+  Int: Scalar_Int
+  Float: Scalar_Float
+  String: Scalar_String
+  Boolean: Scalar_Boolean
+  ID: Scalar_ID
+  Date: Scalar_Date
 
-export type Arg<T extends string> = ArgOf<Schema, T>
-export type Res<T extends string> = ResOf<Schema, T>
+  CategoryEnum: Enum_CategoryEnum
+
+  SayingDataInput: Input_SayingDataInput
+
+  ItemWithId: Interface_ItemWithId
+
+  Saying: Type_Saying
+  User: Type_User
+
+  Data: Union_Data
+
+  Mutation: Type_Mutation
+  Query: Type_Query
+  Subscription: Type_Subscription
+}>

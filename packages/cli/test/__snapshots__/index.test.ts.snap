@@ -2,16 +2,28 @@
 
 exports[`@gqfn/cli > cytoid-io json 1`] = `
 "/* eslint-ignore */
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
+import type { ScalarType, EnumType, InputObjectType, Input, Field, ObjectType, DefineSchema } from '@gqfn/core/schema'
+
+type Scalar_FileSize = ScalarType<'FileSize', unknown, unknown>
+type Scalar_Date = ScalarType<'Date', unknown, unknown>
+type Scalar_Long = ScalarType<'Long', unknown, unknown>
+type Scalar_Object = ScalarType<'Object', unknown, unknown>
+type Scalar_Int = ScalarType<'Int', number, number>
+type Scalar_Float = ScalarType<'Float', number, number>
+type Scalar_String = ScalarType<'String', string, string>
+type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+type Scalar_ID = ScalarType<'ID', string | number, string>
 
 export type ResourceState =
   | 'PRIVATE'
   | 'PUBLIC'
   | 'UNLISTED'
+type Enum_ResourceState = EnumType<'ResourceState', ResourceState>
 
 export type QueryOrder =
   | 'ASC'
   | 'DESC'
+type Enum_QueryOrder = EnumType<'QueryOrder', QueryOrder>
 
 export type LevelQuerySort =
   | 'CREATION_DATE'
@@ -21,11 +33,13 @@ export type LevelQuerySort =
   | 'PLAYS'
   | 'RATING'
   | 'DIFFICULTY'
+type Enum_LevelQuerySort = EnumType<'LevelQuerySort', LevelQuerySort>
 
 export type PostType =
   | 'POST'
   | 'PAGE'
   | 'EVENT'
+type Enum_PostType = EnumType<'PostType', PostType>
 
 export type GameplayMods =
   | 'FC'
@@ -39,6 +53,7 @@ export type GameplayMods =
   | 'ExHard'
   | 'HideScanline'
   | 'HideNotes'
+type Enum_GameplayMods = EnumType<'GameplayMods', GameplayMods>
 
 export type RecordQuerySort =
   | 'Score'
@@ -46,6 +61,7 @@ export type RecordQuerySort =
   | 'Date'
   | 'Rating'
   | 'RecentRating'
+type Enum_RecordQuerySort = EnumType<'RecordQuerySort', RecordQuerySort>
 
 export type SearchLevelSortingStrategy =
   | 'CREATION_DATE'
@@ -55,782 +71,779 @@ export type SearchLevelSortingStrategy =
   | 'PLAYS'
   | 'RATING'
   | 'DIFFICULTY'
+type Enum_SearchLevelSortingStrategy = EnumType<'SearchLevelSortingStrategy', SearchLevelSortingStrategy>
 
 export type SearchLevelOrder =
   | 'ASC'
   | 'DESC'
+type Enum_SearchLevelOrder = EnumType<'SearchLevelOrder', SearchLevelOrder>
 
 export type Role =
   | 'MODERATOR'
   | 'ADMIN'
   | 'USER'
+type Enum_Role = EnumType<'Role', Role>
 
-type ResourceMetaInput = InputObject<'ResourceMetaInput', {
-  name: Arg<'String'>
-  localized_name: Arg<'String'>
-  url: Arg<'String'>
+type Input_ResourceMetaInput = InputObjectType<'ResourceMetaInput', {
+  name: Input<'String', Scalar_String>
+  localized_name: Input<'String', Scalar_String>
+  url: Input<'String', Scalar_String>
 }>
 
-type CollectionMetaInput = InputObject<'CollectionMetaInput', {
-  cover: Arg<'ResourceMetaInput'>
+type Input_CollectionMetaInput = InputObjectType<'CollectionMetaInput', {
+  cover: Input<'ResourceMetaInput', Input_ResourceMetaInput>
 }>
 
-type CollectionInput = InputObject<'CollectionInput', {
-  uid: Arg<'String'>
-  coverPath: Arg<'String'>
-  title: Arg<'String'>
-  slogan: Arg<'String'>
-  description: Arg<'String'>
-  levelIds: Arg<'[Int!]'>
-  tags: Arg<'[String!]'>
-  state: Arg<'ResourceState'>
-  metadata: Arg<'CollectionMetaInput'>
+type Input_CollectionInput = InputObjectType<'CollectionInput', {
+  uid: Input<'String', Scalar_String>
+  coverPath: Input<'String', Scalar_String>
+  title: Input<'String', Scalar_String>
+  slogan: Input<'String', Scalar_String>
+  description: Input<'String', Scalar_String>
+  levelIds: Input<'[Int!]', Scalar_Int>
+  tags: Input<'[String!]', Scalar_String>
+  state: Input<'ResourceState', Enum_ResourceState>
+  metadata: Input<'CollectionMetaInput', Input_CollectionMetaInput>
 }>
 
-type UpdateLevelInput = InputObject<'UpdateLevelInput', {
-  state: Arg<'ResourceState'>
-  tags: Arg<'[String!]'>
-  description: Arg<'String'>
-  censored: Arg<'String'>
-  category: Arg<'[String!]'>
+type Input_UpdateLevelInput = InputObjectType<'UpdateLevelInput', {
+  state: Input<'ResourceState', Enum_ResourceState>
+  tags: Input<'[String!]', Scalar_String>
+  description: Input<'String', Scalar_String>
+  censored: Input<'String', Scalar_String>
+  category: Input<'[String!]', Scalar_String>
 }>
 
-type PartialChartMetadata = InputObject<'PartialChartMetadata', {
-  type: Arg<'String!'>
-  name: Arg<'String'>
-  difficulty: Arg<'Int'>
+type Input_PartialChartMetadata = InputObjectType<'PartialChartMetadata', {
+  type: Input<'String!', Scalar_String>
+  name: Input<'String', Scalar_String>
+  difficulty: Input<'Int', Scalar_Int>
 }>
 
-type PartialMetadata = InputObject<'PartialMetadata', {
-  title: Arg<'String'>
-  title_localized: Arg<'String'>
-  artist: Arg<'String'>
-  artist_localized: Arg<'String'>
-  artist_source: Arg<'String'>
-  illustrator: Arg<'String'>
-  illustrator_source: Arg<'String'>
-  charter: Arg<'String'>
-  storyboarder: Arg<'String'>
-  charts: Arg<'[PartialChartMetadata!]'>
+type Input_PartialMetadata = InputObjectType<'PartialMetadata', {
+  title: Input<'String', Scalar_String>
+  title_localized: Input<'String', Scalar_String>
+  artist: Input<'String', Scalar_String>
+  artist_localized: Input<'String', Scalar_String>
+  artist_source: Input<'String', Scalar_String>
+  illustrator: Input<'String', Scalar_String>
+  illustrator_source: Input<'String', Scalar_String>
+  charter: Input<'String', Scalar_String>
+  storyboarder: Input<'String', Scalar_String>
+  charts: Input<'[PartialChartMetadata!]', Input_PartialChartMetadata>
 }>
 
-type PostMetaInput = InputObject<'PostMetaInput', {
-  cover: Arg<'ResourceMetaInput'>
+type Input_PostMetaInput = InputObjectType<'PostMetaInput', {
+  cover: Input<'ResourceMetaInput', Input_ResourceMetaInput>
 }>
 
-type PostInput = InputObject<'PostInput', {
-  type: Arg<'PostType'>
-  uid: Arg<'String'>
-  title: Arg<'String'>
-  slogan: Arg<'String'>
-  content: Arg<'String'>
-  state: Arg<'ResourceState'>
-  coverPath: Arg<'String'>
-  logoPath: Arg<'String'>
-  metadata: Arg<'PostMetaInput'>
-  startDate: Arg<'Date'>
-  endDate: Arg<'Date'>
-  locked: Arg<'Boolean'>
-  levelId: Arg<'Int'>
-  collectionId: Arg<'ID'>
+type Input_PostInput = InputObjectType<'PostInput', {
+  type: Input<'PostType', Enum_PostType>
+  uid: Input<'String', Scalar_String>
+  title: Input<'String', Scalar_String>
+  slogan: Input<'String', Scalar_String>
+  content: Input<'String', Scalar_String>
+  state: Input<'ResourceState', Enum_ResourceState>
+  coverPath: Input<'String', Scalar_String>
+  logoPath: Input<'String', Scalar_String>
+  metadata: Input<'PostMetaInput', Input_PostMetaInput>
+  startDate: Input<'Date', Scalar_Date>
+  endDate: Input<'Date', Scalar_Date>
+  locked: Input<'Boolean', Scalar_Boolean>
+  levelId: Input<'Int', Scalar_Int>
+  collectionId: Input<'ID', Scalar_ID>
 }>
 
-type RecordQueryInput = InputObject<'RecordQueryInput', {
-  chartId: Arg<'Int'>
-  ownerId: Arg<'ID'>
-  ownerUid: Arg<'String'>
-  startDate: Arg<'Date'>
-  endDate: Arg<'Date'>
-  best: Arg<'Boolean'>
-  ranked: Arg<'Boolean'>
+type Input_RecordQueryInput = InputObjectType<'RecordQueryInput', {
+  chartId: Input<'Int', Scalar_Int>
+  ownerId: Input<'ID', Scalar_ID>
+  ownerUid: Input<'String', Scalar_String>
+  startDate: Input<'Date', Scalar_Date>
+  endDate: Input<'Date', Scalar_Date>
+  best: Input<'Boolean', Scalar_Boolean>
+  ranked: Input<'Boolean', Scalar_Boolean>
 }>
 
-type ProfileInput = InputObject<'ProfileInput', {
-  birthday: Arg<'Date'>
-  bio: Arg<'String'>
+type Input_ProfileInput = InputObjectType<'ProfileInput', {
+  birthday: Input<'Date', Scalar_Date>
+  bio: Input<'String', Scalar_String>
 }>
 
-type Query = TypeObject<'Query', {
-  discordOnlineCount: Field<'discordOnlineCount', Res<'Int'>>
-  recentTweet: Field<'recentTweet', Res<'String'>>
-  collectionsCount: Field<'collectionsCount', Res<'Int!'>>
-  collection: Field<'collection', Res<'Collection'>, {
-    id: Arg<'ID'>
-    uid: Arg<'String'>
+type Type_Query = ObjectType<'Query', {
+  discordOnlineCount: Field<'Int', Scalar_Int>
+  recentTweet: Field<'String', Scalar_String>
+  collectionsCount: Field<'Int!', Scalar_Int>
+  collection: Field<'Collection', Type_Collection, {
+    id: Input<'ID', Scalar_ID>
+    uid: Input<'String', Scalar_String>
   }>
-  collections: Field<'collections', Res<'[CollectionListing!]!'>, {
-    limit: Arg<'Int'>
-    cursor: Arg<'ID'>
-    ownerId: Arg<'String'>
-    ownerUid: Arg<'String'>
+  collections: Field<'[CollectionListing!]!', Type_CollectionListing, {
+    limit: Input<'Int', Scalar_Int>
+    cursor: Input<'ID', Scalar_ID>
+    ownerId: Input<'String', Scalar_String>
+    ownerUid: Input<'String', Scalar_String>
   }>
-  recentComments: Field<'recentComments', Res<'[Comment!]!'>, {
-    limit: Arg<'Int'>
+  recentComments: Field<'[Comment!]!', Type_Comment, {
+    limit: Input<'Int', Scalar_Int>
   }>
-  level: Field<'level', Res<'Level'>, {
-    uid: Arg<'String!'>
+  level: Field<'Level', Type_Level, {
+    uid: Input<'String!', Scalar_String>
   }>
-  levels: Field<'levels', Res<'[Level!]!'>, {
-    order: Arg<'QueryOrder'>
-    page: Arg<'Int'>
-    limit: Arg<'Int'>
-    sort: Arg<'LevelQuerySort'>
-    category: Arg<'String'>
+  levels: Field<'[Level!]!', Type_Level, {
+    order: Input<'QueryOrder', Enum_QueryOrder>
+    page: Input<'Int', Scalar_Int>
+    limit: Input<'Int', Scalar_Int>
+    sort: Input<'LevelQuerySort', Enum_LevelQuerySort>
+    category: Input<'String', Scalar_String>
   }>
-  levelsCount: Field<'levelsCount', Res<'Int!'>, {
-    category: Arg<'String'>
+  levelsCount: Field<'Int!', Scalar_Int, {
+    category: Input<'String', Scalar_String>
   }>
-  chart: Field<'chart', Res<'Chart'>, {
-    levelUid: Arg<'String!'>
-    chartType: Arg<'String!'>
+  chart: Field<'Chart', Type_Chart, {
+    levelUid: Input<'String!', Scalar_String>
+    chartType: Input<'String!', Scalar_String>
   }>
-  getPosts: Field<'getPosts', Res<'[Post!]!'>, {
-    limit: Arg<'Int!'>
-    all: Arg<'Boolean'>
-    skip: Arg<'Int'>
+  getPosts: Field<'[Post!]!', Type_Post, {
+    limit: Input<'Int!', Scalar_Int>
+    all: Input<'Boolean', Scalar_Boolean>
+    skip: Input<'Int', Scalar_Int>
   }>
-  getActivePosts: Field<'getActivePosts', Res<'[Post!]!'>, {
-    limit: Arg<'Int!'>
-    skip: Arg<'Int'>
+  getActivePosts: Field<'[Post!]!', Type_Post, {
+    limit: Input<'Int!', Scalar_Int>
+    skip: Input<'Int', Scalar_Int>
   }>
-  getPost: Field<'getPost', Res<'PostDetail'>, {
-    uid: Arg<'String!'>
+  getPost: Field<'PostDetail', Type_PostDetail, {
+    uid: Input<'String!', Scalar_String>
   }>
-  recentRecords: Field<'recentRecords', Res<'[Record!]!'>, {
-    limit: Arg<'Int'>
-    ranked: Arg<'Boolean'>
+  recentRecords: Field<'[Record!]!', Type_Record, {
+    limit: Input<'Int', Scalar_Int>
+    ranked: Input<'Boolean', Scalar_Boolean>
   }>
-  records: Field<'records', Res<'[Record!]!'>, {
-    query: Arg<'RecordQueryInput'>
-    page: Arg<'Int'>
-    limit: Arg<'Int'>
-    sort: Arg<'RecordQuerySort'>
-    order: Arg<'QueryOrder'>
+  records: Field<'[Record!]!', Type_Record, {
+    query: Input<'RecordQueryInput', Input_RecordQueryInput>
+    page: Input<'Int', Scalar_Int>
+    limit: Input<'Int', Scalar_Int>
+    sort: Input<'RecordQuerySort', Enum_RecordQuerySort>
+    order: Input<'QueryOrder', Enum_QueryOrder>
   }>
-  recordsCount: Field<'recordsCount', Res<'Int!'>, {
-    query: Arg<'RecordQueryInput'>
+  recordsCount: Field<'Int!', Scalar_Int, {
+    query: Input<'RecordQueryInput', Input_RecordQueryInput>
   }>
-  record: Field<'record', Res<'Record'>, {
-    id: Arg<'Int!'>
-    chartId: Arg<'Int!'>
+  record: Field<'Record', Type_Record, {
+    id: Input<'Int!', Scalar_Int>
+    chartId: Input<'Int!', Scalar_Int>
   }>
-  searchLevels: Field<'searchLevels', Res<'[Level!]!'>, {
-    search: Arg<'String!'>
-    start: Arg<'Int'>
-    limit: Arg<'Int'>
-    strategy: Arg<'SearchLevelSortingStrategy'>
-    order: Arg<'SearchLevelOrder'>
+  searchLevels: Field<'[Level!]!', Type_Level, {
+    search: Input<'String!', Scalar_String>
+    start: Input<'Int', Scalar_Int>
+    limit: Input<'Int', Scalar_Int>
+    strategy: Input<'SearchLevelSortingStrategy', Enum_SearchLevelSortingStrategy>
+    order: Input<'SearchLevelOrder', Enum_SearchLevelOrder>
   }>
-  profile: Field<'profile', Res<'Profile'>, {
-    id: Arg<'ID'>
-    uid: Arg<'String'>
+  profile: Field<'Profile', Type_Profile, {
+    id: Input<'ID', Scalar_ID>
+    uid: Input<'String', Scalar_String>
   }>
-  user: Field<'user', Res<'User'>, {
-    id: Arg<'ID'>
-    uid: Arg<'String'>
+  user: Field<'User', Type_User, {
+    id: Input<'ID', Scalar_ID>
+    uid: Input<'String', Scalar_String>
   }>
-  my: Field<'my', Res<'My'>>
+  my: Field<'My', Type_My>
 }>
 
-type Mutation = TypeObject<'Mutation', {
-  updateCollection: Field<'updateCollection', Res<'CollectionUserListing'>, {
-    id: Arg<'ID!'>
-    input: Arg<'CollectionInput!'>
+type Type_Mutation = ObjectType<'Mutation', {
+  updateCollection: Field<'CollectionUserListing', Type_CollectionUserListing, {
+    id: Input<'ID!', Scalar_ID>
+    input: Input<'CollectionInput!', Input_CollectionInput>
   }>
-  createCollection: Field<'createCollection', Res<'CollectionUserListing'>, {
-    input: Arg<'CollectionInput!'>
+  createCollection: Field<'CollectionUserListing', Type_CollectionUserListing, {
+    input: Input<'CollectionInput!', Input_CollectionInput>
   }>
-  deleteCollection: Field<'deleteCollection', Res<'CollectionUserListing'>, {
-    id: Arg<'ID!'>
+  deleteCollection: Field<'CollectionUserListing', Type_CollectionUserListing, {
+    id: Input<'ID!', Scalar_ID>
   }>
-  evaluateEpic: Field<'evaluateEpic', Res<'String'>, {
-    id: Arg<'String'>
+  evaluateEpic: Field<'String', Scalar_String, {
+    id: Input<'String', Scalar_String>
   }>
-  rateLevel: Field<'rateLevel', Res<'Rating!'>, {
-    id: Arg<'String!'>
-    rating: Arg<'Int'>
+  rateLevel: Field<'Rating!', Type_Rating, {
+    id: Input<'String!', Scalar_String>
+    rating: Input<'Int', Scalar_Int>
   }>
-  unpackLevelPackage: Field<'unpackLevelPackage', Res<'UserLevel'>, {
-    token: Arg<'String!'>
-    replace: Arg<'String'>
+  unpackLevelPackage: Field<'UserLevel', Type_UserLevel, {
+    token: Input<'String!', Scalar_String>
+    replace: Input<'String', Scalar_String>
   }>
-  editLevelMetadata: Field<'editLevelMetadata', Res<'UserLevel'>, {
-    id: Arg<'String!'>
-    metadata: Arg<'PartialMetadata'>
+  editLevelMetadata: Field<'UserLevel', Type_UserLevel, {
+    id: Input<'String!', Scalar_String>
+    metadata: Input<'PartialMetadata', Input_PartialMetadata>
   }>
-  deleteLevel: Field<'deleteLevel', Res<'Boolean'>, {
-    id: Arg<'ID!'>
+  deleteLevel: Field<'Boolean', Scalar_Boolean, {
+    id: Input<'ID!', Scalar_ID>
   }>
-  updateLevel: Field<'updateLevel', Res<'Boolean'>, {
-    id: Arg<'ID!'>
-    input: Arg<'UpdateLevelInput'>
+  updateLevel: Field<'Boolean', Scalar_Boolean, {
+    id: Input<'ID!', Scalar_ID>
+    input: Input<'UpdateLevelInput', Input_UpdateLevelInput>
   }>
-  addToLibrary: Field<'addToLibrary', Res<'Boolean'>, {
-    levelId: Arg<'Int!'>
+  addToLibrary: Field<'Boolean', Scalar_Boolean, {
+    levelId: Input<'Int!', Scalar_Int>
   }>
-  removeFromLibrary: Field<'removeFromLibrary', Res<'Boolean'>, {
-    levelId: Arg<'Int!'>
+  removeFromLibrary: Field<'Boolean', Scalar_Boolean, {
+    levelId: Input<'Int!', Scalar_Int>
   }>
-  createPost: Field<'createPost', Res<'Post'>, {
-    post: Arg<'PostInput'>
+  createPost: Field<'Post', Type_Post, {
+    post: Input<'PostInput', Input_PostInput>
   }>
-  updatePost: Field<'updatePost', Res<'Post'>, {
-    id: Arg<'ID!'>
-    input: Arg<'PostInput'>
+  updatePost: Field<'Post', Type_Post, {
+    id: Input<'ID!', Scalar_ID>
+    input: Input<'PostInput', Input_PostInput>
   }>
-  deletePost: Field<'deletePost', Res<'Post'>, {
-    id: Arg<'ID!'>
+  deletePost: Field<'Post', Type_Post, {
+    id: Input<'ID!', Scalar_ID>
   }>
-  addEmail: Field<'addEmail', Res<'Boolean'>, {
-    email: Arg<'String!'>
+  addEmail: Field<'Boolean', Scalar_Boolean, {
+    email: Input<'String!', Scalar_String>
   }>
-  sendVerificationEmail: Field<'sendVerificationEmail', Res<'Boolean'>, {
-    email: Arg<'String!'>
+  sendVerificationEmail: Field<'Boolean', Scalar_Boolean, {
+    email: Input<'String!', Scalar_String>
   }>
-  makeEmailPrimary: Field<'makeEmailPrimary', Res<'Boolean'>, {
-    email: Arg<'String!'>
+  makeEmailPrimary: Field<'Boolean', Scalar_Boolean, {
+    email: Input<'String!', Scalar_String>
   }>
-  deleteEmail: Field<'deleteEmail', Res<'Boolean'>, {
-    email: Arg<'String!'>
+  deleteEmail: Field<'Boolean', Scalar_Boolean, {
+    email: Input<'String!', Scalar_String>
   }>
-  sendResetPasswordEmail: Field<'sendResetPasswordEmail', Res<'Boolean'>, {
-    email: Arg<'String!'>
+  sendResetPasswordEmail: Field<'Boolean', Scalar_Boolean, {
+    email: Input<'String!', Scalar_String>
   }>
-  changePasswordWithToken: Field<'changePasswordWithToken', Res<'Boolean'>, {
-    token: Arg<'String!'>
-    password: Arg<'String!'>
+  changePasswordWithToken: Field<'Boolean', Scalar_Boolean, {
+    token: Input<'String!', Scalar_String>
+    password: Input<'String!', Scalar_String>
   }>
-  changePassword: Field<'changePassword', Res<'Boolean'>, {
-    oldPassword: Arg<'String!'>
-    newPassword: Arg<'String!'>
+  changePassword: Field<'Boolean', Scalar_Boolean, {
+    oldPassword: Input<'String!', Scalar_String>
+    newPassword: Input<'String!', Scalar_String>
   }>
-  removeExternalAccount: Field<'removeExternalAccount', Res<'Boolean'>, {
-    provider: Arg<'String!'>
+  removeExternalAccount: Field<'Boolean', Scalar_Boolean, {
+    provider: Input<'String!', Scalar_String>
   }>
-  addExternalAccount: Field<'addExternalAccount', Res<'Boolean'>, {
-    token: Arg<'String!'>
+  addExternalAccount: Field<'Boolean', Scalar_Boolean, {
+    token: Input<'String!', Scalar_String>
   }>
-  updateProfile: Field<'updateProfile', Res<'Boolean'>, {
-    input: Arg<'ProfileInput!'>
+  updateProfile: Field<'Boolean', Scalar_Boolean, {
+    input: Input<'ProfileInput!', Input_ProfileInput>
   }>
-  updateProfileHeader: Field<'updateProfileHeader', Res<'Image'>, {
-    path: Arg<'String!'>
+  updateProfileHeader: Field<'Image', Type_Image, {
+    path: Input<'String!', Scalar_String>
   }>
-  setAvatar: Field<'setAvatar', Res<'Avatar'>, {
-    path: Arg<'String'>
+  setAvatar: Field<'Avatar', Type_Avatar, {
+    path: Input<'String', Scalar_String>
   }>
-  setUserActive: Field<'setUserActive', Res<'Boolean'>, {
-    id: Arg<'ID!'>
-    active: Arg<'Boolean!'>
+  setUserActive: Field<'Boolean', Scalar_Boolean, {
+    id: Input<'ID!', Scalar_ID>
+    active: Input<'Boolean!', Scalar_Boolean>
   }>
-  banUser: Field<'banUser', Res<'Boolean'>, {
-    id: Arg<'ID!'>
-    reason: Arg<'String!'>
+  banUser: Field<'Boolean', Scalar_Boolean, {
+    id: Input<'ID!', Scalar_ID>
+    reason: Input<'String!', Scalar_String>
   }>
-  grantUserBadge: Field<'grantUserBadge', Res<'Boolean'>, {
-    id: Arg<'ID!'>
-    badge: Arg<'String!'>
-  }>
-}>
-
-type ResourceMetaProperty = TypeObject<'ResourceMetaProperty', {
-  name: Field<'name', Res<'String'>>
-  localized_name: Field<'localized_name', Res<'String'>>
-  url: Field<'url', Res<'String'>>
-}>
-
-type ResourceMeta = TypeObject<'ResourceMeta', {
-  cover: Field<'cover', Res<'ResourceMetaProperty'>>
-}>
-
-type Badge = TypeObject<'Badge', {
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String!'>>
-  description: Field<'description', Res<'String'>>
-  metadata: Field<'metadata', Res<'Object'>>
-}>
-
-type Profile = TypeObject<'Profile', {
-  badges: Field<'badges', Res<'[Badge!]!'>>
-  recentRecords: Field<'recentRecords', Res<'[UserRecord!]!'>, {
-    limit: Arg<'Int'>
-    sort: Arg<'RecordQuerySort'>
-    order: Arg<'QueryOrder'>
-  }>
-  bestRecords: Field<'bestRecords', Res<'[UserRecord!]!'>, {
-    limit: Arg<'Int'>
-  }>
-  id: Field<'id', Res<'ID!'>>
-  user: Field<'user', Res<'User'>>
-  birthday: Field<'birthday', Res<'Date'>>
-  bio: Field<'bio', Res<'String'>>
-  header: Field<'header', Res<'Image'>>
-  rating: Field<'rating', Res<'Float!'>>
-  exp: Field<'exp', Res<'ProfileExp!'>>
-  grades: Field<'grades', Res<'ProfileGrades!'>>
-  activity: Field<'activity', Res<'ProfileActivity!'>>
-  timeseries: Field<'timeseries', Res<'[ProfileTimeSeries!]!'>>
-}>
-
-type User = TypeObject<'User', {
-  collectionsCount: Field<'collectionsCount', Res<'Int!'>>
-  collections: Field<'collections', Res<'[CollectionUserListing!]!'>, {
-    first: Arg<'Int'>
-  }>
-  levelsCount: Field<'levelsCount', Res<'Int!'>, {
-    category: Arg<'String'>
-  }>
-  levels: Field<'levels', Res<'[UserLevel!]!'>, {
-    first: Arg<'Int'>
-    category: Arg<'String'>
-    sort: Arg<'LevelQuerySort'>
-    order: Arg<'QueryOrder'>
-  }>
-  id: Field<'id', Res<'ID!'>>
-  uid: Field<'uid', Res<'String'>>
-  name: Field<'name', Res<'String'>>
-  emails: Field<'emails', Res<'[Email!]!'>>
-  registrationDate: Field<'registrationDate', Res<'Date'>>
-  role: Field<'role', Res<'Role!'>>
-  avatar: Field<'avatar', Res<'Avatar!'>>
-  active: Field<'active', Res<'Boolean'>>
-  lastSeen: Field<'lastSeen', Res<'Date'>>
-  my: Field<'my', Res<'My'>>
-}>
-
-type My = TypeObject<'My', {
-  collections: Field<'collections', Res<'[CollectionUserListing!]!'>>
-  levels: Field<'levels', Res<'[UserStudioLevel!]!'>, {
-    start: Arg<'Int'>
-    limit: Arg<'Int'>
-  }>
-  levelsCount: Field<'levelsCount', Res<'Int!'>>
-  library: Field<'library', Res<'[Level!]!'>, {
-    granted: Arg<'Boolean'>
-  }>
-  emails: Field<'emails', Res<'[Email!]!'>>
-  user: Field<'user', Res<'User'>>
-  externalAccountProviders: Field<'externalAccountProviders', Res<'[String!]!'>>
-}>
-
-type CollectionUserListing = TypeObject<'CollectionUserListing', {
-  id: Field<'id', Res<'ID!'>>
-  uid: Field<'uid', Res<'String!'>>
-  cover: Field<'cover', Res<'Image'>>
-  title: Field<'title', Res<'String!'>>
-  slogan: Field<'slogan', Res<'String!'>>
-  description: Field<'description', Res<'String!'>>
-  levelCount: Field<'levelCount', Res<'Int!'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  metadata: Field<'metadata', Res<'ResourceMeta!'>>
-}>
-
-type Collection = TypeObject<'Collection', {
-  id: Field<'id', Res<'ID!'>>
-  uid: Field<'uid', Res<'String!'>>
-  cover: Field<'cover', Res<'Image'>>
-  title: Field<'title', Res<'String!'>>
-  slogan: Field<'slogan', Res<'String!'>>
-  description: Field<'description', Res<'String!'>>
-  owner: Field<'owner', Res<'User'>>
-  levelCount: Field<'levelCount', Res<'Int!'>>
-  levels: Field<'levels', Res<'[Level!]!'>, {
-    limit: Arg<'Int'>
-  }>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  metadata: Field<'metadata', Res<'ResourceMeta!'>>
-}>
-
-type CollectionListing = TypeObject<'CollectionListing', {
-  id: Field<'id', Res<'ID!'>>
-  uid: Field<'uid', Res<'String!'>>
-  cover: Field<'cover', Res<'Image'>>
-  title: Field<'title', Res<'String!'>>
-  slogan: Field<'slogan', Res<'String!'>>
-  description: Field<'description', Res<'String!'>>
-  owner: Field<'owner', Res<'User'>>
-  levelCount: Field<'levelCount', Res<'Int!'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  metadata: Field<'metadata', Res<'ResourceMeta!'>>
-}>
-
-type Comment = TypeObject<'Comment', {
-  id: Field<'id', Res<'Int!'>>
-  category: Field<'category', Res<'String!'>>
-  key: Field<'key', Res<'String!'>>
-  content: Field<'content', Res<'String!'>>
-  date: Field<'date', Res<'Date!'>>
-  owner: Field<'owner', Res<'User'>>
-  metadata: Field<'metadata', Res<'Object'>>
-}>
-
-type File = TypeObject<'File', {
-  path: Field<'path', Res<'String!'>>
-  creationDate: Field<'creationDate', Res<'Date'>>
-}>
-
-type Image = TypeObject<'Image', {
-  original: Field<'original', Res<'String'>>
-  thumbnail: Field<'thumbnail', Res<'String'>>
-  cover: Field<'cover', Res<'String'>>
-  stripe: Field<'stripe', Res<'String'>>
-  sized: Field<'sized', Res<'String'>, {
-    height: Arg<'Int'>
-    width: Arg<'Int'>
+  grantUserBadge: Field<'Boolean', Scalar_Boolean, {
+    id: Input<'ID!', Scalar_ID>
+    badge: Input<'String!', Scalar_String>
   }>
 }>
 
-type Avatar = TypeObject<'Avatar', {
-  original: Field<'original', Res<'String'>>
-  small: Field<'small', Res<'String'>>
-  large: Field<'large', Res<'String'>>
-  sized: Field<'sized', Res<'String'>, {
-    size: Arg<'Int'>
+type Type_ResourceMetaProperty = ObjectType<'ResourceMetaProperty', {
+  name: Field<'String', Scalar_String>
+  localized_name: Field<'String', Scalar_String>
+  url: Field<'String', Scalar_String>
+}>
+
+type Type_ResourceMeta = ObjectType<'ResourceMeta', {
+  cover: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
+}>
+
+type Type_Badge = ObjectType<'Badge', {
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String!', Scalar_String>
+  description: Field<'String', Scalar_String>
+  metadata: Field<'Object', Scalar_Object>
+}>
+
+type Type_Profile = ObjectType<'Profile', {
+  badges: Field<'[Badge!]!', Type_Badge>
+  recentRecords: Field<'[UserRecord!]!', Type_UserRecord, {
+    limit: Input<'Int', Scalar_Int>
+    sort: Input<'RecordQuerySort', Enum_RecordQuerySort>
+    order: Input<'QueryOrder', Enum_QueryOrder>
+  }>
+  bestRecords: Field<'[UserRecord!]!', Type_UserRecord, {
+    limit: Input<'Int', Scalar_Int>
+  }>
+  id: Field<'ID!', Scalar_ID>
+  user: Field<'User', Type_User>
+  birthday: Field<'Date', Scalar_Date>
+  bio: Field<'String', Scalar_String>
+  header: Field<'Image', Type_Image>
+  rating: Field<'Float!', Scalar_Float>
+  exp: Field<'ProfileExp!', Type_ProfileExp>
+  grades: Field<'ProfileGrades!', Type_ProfileGrades>
+  activity: Field<'ProfileActivity!', Type_ProfileActivity>
+  timeseries: Field<'[ProfileTimeSeries!]!', Type_ProfileTimeSeries>
+}>
+
+type Type_User = ObjectType<'User', {
+  collectionsCount: Field<'Int!', Scalar_Int>
+  collections: Field<'[CollectionUserListing!]!', Type_CollectionUserListing, {
+    first: Input<'Int', Scalar_Int>
+  }>
+  levelsCount: Field<'Int!', Scalar_Int, {
+    category: Input<'String', Scalar_String>
+  }>
+  levels: Field<'[UserLevel!]!', Type_UserLevel, {
+    first: Input<'Int', Scalar_Int>
+    category: Input<'String', Scalar_String>
+    sort: Input<'LevelQuerySort', Enum_LevelQuerySort>
+    order: Input<'QueryOrder', Enum_QueryOrder>
+  }>
+  id: Field<'ID!', Scalar_ID>
+  uid: Field<'String', Scalar_String>
+  name: Field<'String', Scalar_String>
+  emails: Field<'[Email!]!', Type_Email>
+  registrationDate: Field<'Date', Scalar_Date>
+  role: Field<'Role!', Enum_Role>
+  avatar: Field<'Avatar!', Type_Avatar>
+  active: Field<'Boolean', Scalar_Boolean>
+  lastSeen: Field<'Date', Scalar_Date>
+  my: Field<'My', Type_My>
+}>
+
+type Type_My = ObjectType<'My', {
+  collections: Field<'[CollectionUserListing!]!', Type_CollectionUserListing>
+  levels: Field<'[UserStudioLevel!]!', Type_UserStudioLevel, {
+    start: Input<'Int', Scalar_Int>
+    limit: Input<'Int', Scalar_Int>
+  }>
+  levelsCount: Field<'Int!', Scalar_Int>
+  library: Field<'[Level!]!', Type_Level, {
+    granted: Input<'Boolean', Scalar_Boolean>
+  }>
+  emails: Field<'[Email!]!', Type_Email>
+  user: Field<'User', Type_User>
+  externalAccountProviders: Field<'[String!]!', Scalar_String>
+}>
+
+type Type_CollectionUserListing = ObjectType<'CollectionUserListing', {
+  id: Field<'ID!', Scalar_ID>
+  uid: Field<'String!', Scalar_String>
+  cover: Field<'Image', Type_Image>
+  title: Field<'String!', Scalar_String>
+  slogan: Field<'String!', Scalar_String>
+  description: Field<'String!', Scalar_String>
+  levelCount: Field<'Int!', Scalar_Int>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  tags: Field<'[String!]!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  metadata: Field<'ResourceMeta!', Type_ResourceMeta>
+}>
+
+type Type_Collection = ObjectType<'Collection', {
+  id: Field<'ID!', Scalar_ID>
+  uid: Field<'String!', Scalar_String>
+  cover: Field<'Image', Type_Image>
+  title: Field<'String!', Scalar_String>
+  slogan: Field<'String!', Scalar_String>
+  description: Field<'String!', Scalar_String>
+  owner: Field<'User', Type_User>
+  levelCount: Field<'Int!', Scalar_Int>
+  levels: Field<'[Level!]!', Type_Level, {
+    limit: Input<'Int', Scalar_Int>
+  }>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  tags: Field<'[String!]!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  metadata: Field<'ResourceMeta!', Type_ResourceMeta>
+}>
+
+type Type_CollectionListing = ObjectType<'CollectionListing', {
+  id: Field<'ID!', Scalar_ID>
+  uid: Field<'String!', Scalar_String>
+  cover: Field<'Image', Type_Image>
+  title: Field<'String!', Scalar_String>
+  slogan: Field<'String!', Scalar_String>
+  description: Field<'String!', Scalar_String>
+  owner: Field<'User', Type_User>
+  levelCount: Field<'Int!', Scalar_Int>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  tags: Field<'[String!]!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  metadata: Field<'ResourceMeta!', Type_ResourceMeta>
+}>
+
+type Type_Comment = ObjectType<'Comment', {
+  id: Field<'Int!', Scalar_Int>
+  category: Field<'String!', Scalar_String>
+  key: Field<'String!', Scalar_String>
+  content: Field<'String!', Scalar_String>
+  date: Field<'Date!', Scalar_Date>
+  owner: Field<'User', Type_User>
+  metadata: Field<'Object', Scalar_Object>
+}>
+
+type Type_File = ObjectType<'File', {
+  path: Field<'String!', Scalar_String>
+  creationDate: Field<'Date', Scalar_Date>
+}>
+
+type Type_Image = ObjectType<'Image', {
+  original: Field<'String', Scalar_String>
+  thumbnail: Field<'String', Scalar_String>
+  cover: Field<'String', Scalar_String>
+  stripe: Field<'String', Scalar_String>
+  sized: Field<'String', Scalar_String, {
+    height: Input<'Int', Scalar_Int>
+    width: Input<'Int', Scalar_Int>
   }>
 }>
 
-type LevelMeta = TypeObject<'LevelMeta', {
-  title_localized: Field<'title_localized', Res<'String'>>
-  artist: Field<'artist', Res<'ResourceMetaProperty'>>
-  illustrator: Field<'illustrator', Res<'ResourceMetaProperty'>>
-  charter: Field<'charter', Res<'ResourceMetaProperty'>>
-  storyboarder: Field<'storyboarder', Res<'ResourceMetaProperty'>>
-}>
-
-type LevelBundle = TypeObject<'LevelBundle', {
-  music: Field<'music', Res<'String'>>
-  musicPreview: Field<'musicPreview', Res<'String'>>
-  backgroundImage: Field<'backgroundImage', Res<'Image'>>
-}>
-
-type Chart = TypeObject<'Chart', {
-  id: Field<'id', Res<'Int!'>>
-  name: Field<'name', Res<'String'>>
-  difficulty: Field<'difficulty', Res<'Int!'>>
-  type: Field<'type', Res<'String!'>>
-  notesCount: Field<'notesCount', Res<'Int!'>>
-  leaderboard: Field<'leaderboard', Res<'[LeaderboardRecord!]!'>, {
-    start: Arg<'Int!'>
-    limit: Arg<'Int!'>
+type Type_Avatar = ObjectType<'Avatar', {
+  original: Field<'String', Scalar_String>
+  small: Field<'String', Scalar_String>
+  large: Field<'String', Scalar_String>
+  sized: Field<'String', Scalar_String, {
+    size: Input<'Int', Scalar_Int>
   }>
-  numPlayers: Field<'numPlayers', Res<'Int!'>>
 }>
 
-type Rating = TypeObject<'Rating', {
-  average: Field<'average', Res<'Float'>>
-  total: Field<'total', Res<'Int!'>>
-  rating: Field<'rating', Res<'Float'>>
-  distribution: Field<'distribution', Res<'[Int!]!'>>
+type Type_LevelMeta = ObjectType<'LevelMeta', {
+  title_localized: Field<'String', Scalar_String>
+  artist: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
+  illustrator: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
+  charter: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
+  storyboarder: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
 }>
 
-type Level = TypeObject<'Level', {
-  id: Field<'id', Res<'Int!'>>
-  version: Field<'version', Res<'Int!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String!'>>
-  metadata: Field<'metadata', Res<'LevelMeta!'>>
-  duration: Field<'duration', Res<'Float!'>>
-  size: Field<'size', Res<'FileSize!'>>
-  description: Field<'description', Res<'String!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  censored: Field<'censored', Res<'String'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  category: Field<'category', Res<'[String!]!'>>
-  owner: Field<'owner', Res<'User'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  bundle: Field<'bundle', Res<'LevelBundle'>>
-  charts: Field<'charts', Res<'[Chart!]!'>>
-  rating: Field<'rating', Res<'Rating!'>>
-  owned: Field<'owned', Res<'Boolean'>>
+type Type_LevelBundle = ObjectType<'LevelBundle', {
+  music: Field<'String', Scalar_String>
+  musicPreview: Field<'String', Scalar_String>
+  backgroundImage: Field<'Image', Type_Image>
 }>
 
-type UserLevel = TypeObject<'UserLevel', {
-  id: Field<'id', Res<'Int!'>>
-  version: Field<'version', Res<'Int!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String!'>>
-  metadata: Field<'metadata', Res<'LevelMeta!'>>
-  duration: Field<'duration', Res<'Float!'>>
-  size: Field<'size', Res<'FileSize!'>>
-  description: Field<'description', Res<'String!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  censored: Field<'censored', Res<'String'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  category: Field<'category', Res<'[String!]!'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  bundle: Field<'bundle', Res<'LevelBundle'>>
-  charts: Field<'charts', Res<'[Chart!]!'>>
+type Type_Chart = ObjectType<'Chart', {
+  id: Field<'Int!', Scalar_Int>
+  name: Field<'String', Scalar_String>
+  difficulty: Field<'Int!', Scalar_Int>
+  type: Field<'String!', Scalar_String>
+  notesCount: Field<'Int!', Scalar_Int>
+  leaderboard: Field<'[LeaderboardRecord!]!', Type_LeaderboardRecord, {
+    start: Input<'Int!', Scalar_Int>
+    limit: Input<'Int!', Scalar_Int>
+  }>
+  numPlayers: Field<'Int!', Scalar_Int>
 }>
 
-type UserStudioLevel = TypeObject<'UserStudioLevel', {
-  id: Field<'id', Res<'Int!'>>
-  version: Field<'version', Res<'Int!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String!'>>
-  metadata: Field<'metadata', Res<'LevelMeta!'>>
-  duration: Field<'duration', Res<'Float!'>>
-  size: Field<'size', Res<'FileSize!'>>
-  description: Field<'description', Res<'String!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  censored: Field<'censored', Res<'String'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  category: Field<'category', Res<'[String!]!'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  bundle: Field<'bundle', Res<'LevelBundle'>>
-  charts: Field<'charts', Res<'[Chart!]!'>>
-  downloadCount: Field<'downloadCount', Res<'Float'>>
-  playCount: Field<'playCount', Res<'Float'>>
-  avgRating: Field<'avgRating', Res<'Float'>>
-  ratingCount: Field<'ratingCount', Res<'Float'>>
+type Type_Rating = ObjectType<'Rating', {
+  average: Field<'Float', Scalar_Float>
+  total: Field<'Int!', Scalar_Int>
+  rating: Field<'Float', Scalar_Float>
+  distribution: Field<'[Int!]!', Scalar_Int>
 }>
 
-type PostMeta = TypeObject<'PostMeta', {
-  cover: Field<'cover', Res<'ResourceMetaProperty'>>
+type Type_Level = ObjectType<'Level', {
+  id: Field<'Int!', Scalar_Int>
+  version: Field<'Int!', Scalar_Int>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String!', Scalar_String>
+  metadata: Field<'LevelMeta!', Type_LevelMeta>
+  duration: Field<'Float!', Scalar_Float>
+  size: Field<'FileSize!', Scalar_FileSize>
+  description: Field<'String!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  censored: Field<'String', Scalar_String>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
+  owner: Field<'User', Type_User>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  bundle: Field<'LevelBundle', Type_LevelBundle>
+  charts: Field<'[Chart!]!', Type_Chart>
+  rating: Field<'Rating!', Type_Rating>
+  owned: Field<'Boolean', Scalar_Boolean>
 }>
 
-type Post = TypeObject<'Post', {
-  id: Field<'id', Res<'String!'>>
-  type: Field<'type', Res<'PostType!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String'>>
-  slogan: Field<'slogan', Res<'String'>>
-  content: Field<'content', Res<'String'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  creationDate: Field<'creationDate', Res<'Date'>>
-  modificationDate: Field<'modificationDate', Res<'Date'>>
-  startDate: Field<'startDate', Res<'Date'>>
-  endDate: Field<'endDate', Res<'Date'>>
-  cover: Field<'cover', Res<'Image'>>
-  logo: Field<'logo', Res<'Image'>>
-  metadata: Field<'metadata', Res<'PostMeta'>>
-  locked: Field<'locked', Res<'Boolean'>>
+type Type_UserLevel = ObjectType<'UserLevel', {
+  id: Field<'Int!', Scalar_Int>
+  version: Field<'Int!', Scalar_Int>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String!', Scalar_String>
+  metadata: Field<'LevelMeta!', Type_LevelMeta>
+  duration: Field<'Float!', Scalar_Float>
+  size: Field<'FileSize!', Scalar_FileSize>
+  description: Field<'String!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  censored: Field<'String', Scalar_String>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  bundle: Field<'LevelBundle', Type_LevelBundle>
+  charts: Field<'[Chart!]!', Type_Chart>
 }>
 
-type PostDetail = TypeObject<'PostDetail', {
-  id: Field<'id', Res<'String!'>>
-  type: Field<'type', Res<'PostType!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String'>>
-  slogan: Field<'slogan', Res<'String'>>
-  content: Field<'content', Res<'String'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  creationDate: Field<'creationDate', Res<'Date'>>
-  modificationDate: Field<'modificationDate', Res<'Date'>>
-  startDate: Field<'startDate', Res<'Date'>>
-  endDate: Field<'endDate', Res<'Date'>>
-  cover: Field<'cover', Res<'Image'>>
-  logo: Field<'logo', Res<'Image'>>
-  metadata: Field<'metadata', Res<'PostMeta'>>
-  locked: Field<'locked', Res<'Boolean'>>
-  level: Field<'level', Res<'Level'>>
-  collection: Field<'collection', Res<'Collection'>>
-  epicId: Field<'epicId', Res<'String'>>
+type Type_UserStudioLevel = ObjectType<'UserStudioLevel', {
+  id: Field<'Int!', Scalar_Int>
+  version: Field<'Int!', Scalar_Int>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String!', Scalar_String>
+  metadata: Field<'LevelMeta!', Type_LevelMeta>
+  duration: Field<'Float!', Scalar_Float>
+  size: Field<'FileSize!', Scalar_FileSize>
+  description: Field<'String!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  censored: Field<'String', Scalar_String>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  bundle: Field<'LevelBundle', Type_LevelBundle>
+  charts: Field<'[Chart!]!', Type_Chart>
+  downloadCount: Field<'Float', Scalar_Float>
+  playCount: Field<'Float', Scalar_Float>
+  avgRating: Field<'Float', Scalar_Float>
+  ratingCount: Field<'Float', Scalar_Float>
 }>
 
-type RecordDetails = TypeObject<'RecordDetails', {
-  perfect: Field<'perfect', Res<'Int!'>>
-  great: Field<'great', Res<'Int!'>>
-  good: Field<'good', Res<'Int!'>>
-  bad: Field<'bad', Res<'Int!'>>
-  miss: Field<'miss', Res<'Int!'>>
-  maxCombo: Field<'maxCombo', Res<'Int!'>>
+type Type_PostMeta = ObjectType<'PostMeta', {
+  cover: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
 }>
 
-type RecordLevel = TypeObject<'RecordLevel', {
-  id: Field<'id', Res<'Int!'>>
-  version: Field<'version', Res<'Int!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String!'>>
-  metadata: Field<'metadata', Res<'LevelMeta!'>>
-  duration: Field<'duration', Res<'Float!'>>
-  size: Field<'size', Res<'FileSize!'>>
-  description: Field<'description', Res<'String!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  censored: Field<'censored', Res<'String'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  category: Field<'category', Res<'[String!]!'>>
-  owner: Field<'owner', Res<'User'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  bundle: Field<'bundle', Res<'LevelBundle'>>
+type Type_Post = ObjectType<'Post', {
+  id: Field<'String!', Scalar_String>
+  type: Field<'PostType!', Enum_PostType>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String', Scalar_String>
+  slogan: Field<'String', Scalar_String>
+  content: Field<'String', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  creationDate: Field<'Date', Scalar_Date>
+  modificationDate: Field<'Date', Scalar_Date>
+  startDate: Field<'Date', Scalar_Date>
+  endDate: Field<'Date', Scalar_Date>
+  cover: Field<'Image', Type_Image>
+  logo: Field<'Image', Type_Image>
+  metadata: Field<'PostMeta', Type_PostMeta>
+  locked: Field<'Boolean', Scalar_Boolean>
 }>
 
-type RecordChart = TypeObject<'RecordChart', {
-  id: Field<'id', Res<'Int!'>>
-  name: Field<'name', Res<'String'>>
-  difficulty: Field<'difficulty', Res<'Int!'>>
-  type: Field<'type', Res<'String!'>>
-  notesCount: Field<'notesCount', Res<'Int!'>>
-  level: Field<'level', Res<'RecordLevel'>>
+type Type_PostDetail = ObjectType<'PostDetail', {
+  id: Field<'String!', Scalar_String>
+  type: Field<'PostType!', Enum_PostType>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String', Scalar_String>
+  slogan: Field<'String', Scalar_String>
+  content: Field<'String', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  creationDate: Field<'Date', Scalar_Date>
+  modificationDate: Field<'Date', Scalar_Date>
+  startDate: Field<'Date', Scalar_Date>
+  endDate: Field<'Date', Scalar_Date>
+  cover: Field<'Image', Type_Image>
+  logo: Field<'Image', Type_Image>
+  metadata: Field<'PostMeta', Type_PostMeta>
+  locked: Field<'Boolean', Scalar_Boolean>
+  level: Field<'Level', Type_Level>
+  collection: Field<'Collection', Type_Collection>
+  epicId: Field<'String', Scalar_String>
 }>
 
-type Record = TypeObject<'Record', {
-  id: Field<'id', Res<'Int!'>>
-  date: Field<'date', Res<'Date!'>>
-  owner: Field<'owner', Res<'User'>>
-  chart: Field<'chart', Res<'RecordChart'>>
-  score: Field<'score', Res<'Int!'>>
-  accuracy: Field<'accuracy', Res<'Float!'>>
-  mods: Field<'mods', Res<'[GameplayMods!]!'>>
-  ranked: Field<'ranked', Res<'Boolean!'>>
-  details: Field<'details', Res<'RecordDetails!'>>
-  rating: Field<'rating', Res<'Float!'>>
-  recentRating: Field<'recentRating', Res<'Float'>>
-  rank: Field<'rank', Res<'Int'>>
+type Type_RecordDetails = ObjectType<'RecordDetails', {
+  perfect: Field<'Int!', Scalar_Int>
+  great: Field<'Int!', Scalar_Int>
+  good: Field<'Int!', Scalar_Int>
+  bad: Field<'Int!', Scalar_Int>
+  miss: Field<'Int!', Scalar_Int>
+  maxCombo: Field<'Int!', Scalar_Int>
 }>
 
-type LeaderboardRecord = TypeObject<'LeaderboardRecord', {
-  id: Field<'id', Res<'Int!'>>
-  date: Field<'date', Res<'Date!'>>
-  owner: Field<'owner', Res<'User'>>
-  score: Field<'score', Res<'Int!'>>
-  accuracy: Field<'accuracy', Res<'Float!'>>
-  mods: Field<'mods', Res<'[GameplayMods!]!'>>
-  details: Field<'details', Res<'RecordDetails!'>>
+type Type_RecordLevel = ObjectType<'RecordLevel', {
+  id: Field<'Int!', Scalar_Int>
+  version: Field<'Int!', Scalar_Int>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String!', Scalar_String>
+  metadata: Field<'LevelMeta!', Type_LevelMeta>
+  duration: Field<'Float!', Scalar_Float>
+  size: Field<'FileSize!', Scalar_FileSize>
+  description: Field<'String!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  censored: Field<'String', Scalar_String>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
+  owner: Field<'User', Type_User>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  bundle: Field<'LevelBundle', Type_LevelBundle>
 }>
 
-type UserRecord = TypeObject<'UserRecord', {
-  id: Field<'id', Res<'Int!'>>
-  date: Field<'date', Res<'Date!'>>
-  chart: Field<'chart', Res<'RecordChart'>>
-  score: Field<'score', Res<'Int!'>>
-  accuracy: Field<'accuracy', Res<'Float!'>>
-  mods: Field<'mods', Res<'[GameplayMods!]!'>>
-  ranked: Field<'ranked', Res<'Boolean!'>>
-  details: Field<'details', Res<'RecordDetails!'>>
-  rating: Field<'rating', Res<'Float!'>>
-  recentRating: Field<'recentRating', Res<'Float'>>
+type Type_RecordChart = ObjectType<'RecordChart', {
+  id: Field<'Int!', Scalar_Int>
+  name: Field<'String', Scalar_String>
+  difficulty: Field<'Int!', Scalar_Int>
+  type: Field<'String!', Scalar_String>
+  notesCount: Field<'Int!', Scalar_Int>
+  level: Field<'RecordLevel', Type_RecordLevel>
 }>
 
-type Email = TypeObject<'Email', {
-  address: Field<'address', Res<'String!'>>
-  verified: Field<'verified', Res<'Boolean!'>>
-  primary: Field<'primary', Res<'Boolean'>>
+type Type_Record = ObjectType<'Record', {
+  id: Field<'Int!', Scalar_Int>
+  date: Field<'Date!', Scalar_Date>
+  owner: Field<'User', Type_User>
+  chart: Field<'RecordChart', Type_RecordChart>
+  score: Field<'Int!', Scalar_Int>
+  accuracy: Field<'Float!', Scalar_Float>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
+  ranked: Field<'Boolean!', Scalar_Boolean>
+  details: Field<'RecordDetails!', Type_RecordDetails>
+  rating: Field<'Float!', Scalar_Float>
+  recentRating: Field<'Float', Scalar_Float>
+  rank: Field<'Int', Scalar_Int>
 }>
 
-type ProfileExp = TypeObject<'ProfileExp', {
-  basicExp: Field<'basicExp', Res<'Int!'>>
-  levelExp: Field<'levelExp', Res<'Int!'>>
-  totalExp: Field<'totalExp', Res<'Int!'>>
-  currentLevel: Field<'currentLevel', Res<'Int!'>>
-  nextLevelExp: Field<'nextLevelExp', Res<'Int!'>>
-  currentLevelExp: Field<'currentLevelExp', Res<'Int!'>>
+type Type_LeaderboardRecord = ObjectType<'LeaderboardRecord', {
+  id: Field<'Int!', Scalar_Int>
+  date: Field<'Date!', Scalar_Date>
+  owner: Field<'User', Type_User>
+  score: Field<'Int!', Scalar_Int>
+  accuracy: Field<'Float!', Scalar_Float>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
+  details: Field<'RecordDetails!', Type_RecordDetails>
 }>
 
-type ProfileGrades = TypeObject<'ProfileGrades', {
-  MAX: Field<'MAX', Res<'Int!'>>
-  SS: Field<'SS', Res<'Int!'>>
-  S: Field<'S', Res<'Int!'>>
-  A: Field<'A', Res<'Int!'>>
-  B: Field<'B', Res<'Int!'>>
-  C: Field<'C', Res<'Int!'>>
-  D: Field<'D', Res<'Int!'>>
-  F: Field<'F', Res<'Int!'>>
+type Type_UserRecord = ObjectType<'UserRecord', {
+  id: Field<'Int!', Scalar_Int>
+  date: Field<'Date!', Scalar_Date>
+  chart: Field<'RecordChart', Type_RecordChart>
+  score: Field<'Int!', Scalar_Int>
+  accuracy: Field<'Float!', Scalar_Float>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
+  ranked: Field<'Boolean!', Scalar_Boolean>
+  details: Field<'RecordDetails!', Type_RecordDetails>
+  rating: Field<'Float!', Scalar_Float>
+  recentRating: Field<'Float', Scalar_Float>
 }>
 
-type ProfileActivity = TypeObject<'ProfileActivity', {
-  totalRankedPlays: Field<'totalRankedPlays', Res<'Long!'>>
-  clearedNotes: Field<'clearedNotes', Res<'Long!'>>
-  maxCombo: Field<'maxCombo', Res<'Long!'>>
-  averageRankedAccuracy: Field<'averageRankedAccuracy', Res<'Float!'>>
-  totalRankedScore: Field<'totalRankedScore', Res<'Long!'>>
-  totalPlayTime: Field<'totalPlayTime', Res<'Float!'>>
+type Type_Email = ObjectType<'Email', {
+  address: Field<'String!', Scalar_String>
+  verified: Field<'Boolean!', Scalar_Boolean>
+  primary: Field<'Boolean', Scalar_Boolean>
 }>
 
-type ProfileTimeSeries = TypeObject<'ProfileTimeSeries', {
-  cumulativeRating: Field<'cumulativeRating', Res<'Float!'>>
-  cumulativeAccuracy: Field<'cumulativeAccuracy', Res<'Float!'>>
-  week: Field<'week', Res<'Int!'>>
-  year: Field<'year', Res<'Int!'>>
-  accuracy: Field<'accuracy', Res<'Float!'>>
-  rating: Field<'rating', Res<'Float!'>>
-  count: Field<'count', Res<'Int!'>>
+type Type_ProfileExp = ObjectType<'ProfileExp', {
+  basicExp: Field<'Int!', Scalar_Int>
+  levelExp: Field<'Int!', Scalar_Int>
+  totalExp: Field<'Int!', Scalar_Int>
+  currentLevel: Field<'Int!', Scalar_Int>
+  nextLevelExp: Field<'Int!', Scalar_Int>
+  currentLevelExp: Field<'Int!', Scalar_Int>
+}>
+
+type Type_ProfileGrades = ObjectType<'ProfileGrades', {
+  MAX: Field<'Int!', Scalar_Int>
+  SS: Field<'Int!', Scalar_Int>
+  S: Field<'Int!', Scalar_Int>
+  A: Field<'Int!', Scalar_Int>
+  B: Field<'Int!', Scalar_Int>
+  C: Field<'Int!', Scalar_Int>
+  D: Field<'Int!', Scalar_Int>
+  F: Field<'Int!', Scalar_Int>
+}>
+
+type Type_ProfileActivity = ObjectType<'ProfileActivity', {
+  totalRankedPlays: Field<'Long!', Scalar_Long>
+  clearedNotes: Field<'Long!', Scalar_Long>
+  maxCombo: Field<'Long!', Scalar_Long>
+  averageRankedAccuracy: Field<'Float!', Scalar_Float>
+  totalRankedScore: Field<'Long!', Scalar_Long>
+  totalPlayTime: Field<'Float!', Scalar_Float>
+}>
+
+type Type_ProfileTimeSeries = ObjectType<'ProfileTimeSeries', {
+  cumulativeRating: Field<'Float!', Scalar_Float>
+  cumulativeAccuracy: Field<'Float!', Scalar_Float>
+  week: Field<'Int!', Scalar_Int>
+  year: Field<'Int!', Scalar_Int>
+  accuracy: Field<'Float!', Scalar_Float>
+  rating: Field<'Float!', Scalar_Float>
+  count: Field<'Int!', Scalar_Int>
 }>
 
 export type Schema = DefineSchema<{
-  Scalars: {
-    FileSize: ScalarType<'FileSize', string>
-    Date: ScalarType<'Date', string>
-    Long: ScalarType<'Long', string>
-    Object: ScalarType<'Object', string>
-  }
-  Enums: {
-    ResourceState: EnumType<'ResourceState', ResourceState>
-    QueryOrder: EnumType<'QueryOrder', QueryOrder>
-    LevelQuerySort: EnumType<'LevelQuerySort', LevelQuerySort>
-    PostType: EnumType<'PostType', PostType>
-    GameplayMods: EnumType<'GameplayMods', GameplayMods>
-    RecordQuerySort: EnumType<'RecordQuerySort', RecordQuerySort>
-    SearchLevelSortingStrategy: EnumType<'SearchLevelSortingStrategy', SearchLevelSortingStrategy>
-    SearchLevelOrder: EnumType<'SearchLevelOrder', SearchLevelOrder>
-    Role: EnumType<'Role', Role>
-  }
-  Inputs: {
-    ResourceMetaInput: ResourceMetaInput
-    CollectionMetaInput: CollectionMetaInput
-    CollectionInput: CollectionInput
-    UpdateLevelInput: UpdateLevelInput
-    PartialChartMetadata: PartialChartMetadata
-    PartialMetadata: PartialMetadata
-    PostMetaInput: PostMetaInput
-    PostInput: PostInput
-    RecordQueryInput: RecordQueryInput
-    ProfileInput: ProfileInput
-  }
-  Objects: {
-    Query: Query
-    Mutation: Mutation
-    ResourceMetaProperty: ResourceMetaProperty
-    ResourceMeta: ResourceMeta
-    Badge: Badge
-    Profile: Profile
-    User: User
-    My: My
-    CollectionUserListing: CollectionUserListing
-    Collection: Collection
-    CollectionListing: CollectionListing
-    Comment: Comment
-    File: File
-    Image: Image
-    Avatar: Avatar
-    LevelMeta: LevelMeta
-    LevelBundle: LevelBundle
-    Chart: Chart
-    Rating: Rating
-    Level: Level
-    UserLevel: UserLevel
-    UserStudioLevel: UserStudioLevel
-    PostMeta: PostMeta
-    Post: Post
-    PostDetail: PostDetail
-    RecordDetails: RecordDetails
-    RecordLevel: RecordLevel
-    RecordChart: RecordChart
-    Record: Record
-    LeaderboardRecord: LeaderboardRecord
-    UserRecord: UserRecord
-    Email: Email
-    ProfileExp: ProfileExp
-    ProfileGrades: ProfileGrades
-    ProfileActivity: ProfileActivity
-    ProfileTimeSeries: ProfileTimeSeries
-  }
+  FileSize: Scalar_FileSize
+  Date: Scalar_Date
+  Long: Scalar_Long
+  Object: Scalar_Object
+  Int: Scalar_Int
+  Float: Scalar_Float
+  String: Scalar_String
+  Boolean: Scalar_Boolean
+  ID: Scalar_ID
+  ResourceState: Enum_ResourceState
+  QueryOrder: Enum_QueryOrder
+  LevelQuerySort: Enum_LevelQuerySort
+  PostType: Enum_PostType
+  GameplayMods: Enum_GameplayMods
+  RecordQuerySort: Enum_RecordQuerySort
+  SearchLevelSortingStrategy: Enum_SearchLevelSortingStrategy
+  SearchLevelOrder: Enum_SearchLevelOrder
+  Role: Enum_Role
+  ResourceMetaInput: Input_ResourceMetaInput
+  CollectionMetaInput: Input_CollectionMetaInput
+  CollectionInput: Input_CollectionInput
+  UpdateLevelInput: Input_UpdateLevelInput
+  PartialChartMetadata: Input_PartialChartMetadata
+  PartialMetadata: Input_PartialMetadata
+  PostMetaInput: Input_PostMetaInput
+  PostInput: Input_PostInput
+  RecordQueryInput: Input_RecordQueryInput
+  ProfileInput: Input_ProfileInput
+  Query: Type_Query
+  Mutation: Type_Mutation
+  ResourceMetaProperty: Type_ResourceMetaProperty
+  ResourceMeta: Type_ResourceMeta
+  Badge: Type_Badge
+  Profile: Type_Profile
+  User: Type_User
+  My: Type_My
+  CollectionUserListing: Type_CollectionUserListing
+  Collection: Type_Collection
+  CollectionListing: Type_CollectionListing
+  Comment: Type_Comment
+  File: Type_File
+  Image: Type_Image
+  Avatar: Type_Avatar
+  LevelMeta: Type_LevelMeta
+  LevelBundle: Type_LevelBundle
+  Chart: Type_Chart
+  Rating: Type_Rating
+  Level: Type_Level
+  UserLevel: Type_UserLevel
+  UserStudioLevel: Type_UserStudioLevel
+  PostMeta: Type_PostMeta
+  Post: Type_Post
+  PostDetail: Type_PostDetail
+  RecordDetails: Type_RecordDetails
+  RecordLevel: Type_RecordLevel
+  RecordChart: Type_RecordChart
+  Record: Type_Record
+  LeaderboardRecord: Type_LeaderboardRecord
+  UserRecord: Type_UserRecord
+  Email: Type_Email
+  ProfileExp: Type_ProfileExp
+  ProfileGrades: Type_ProfileGrades
+  ProfileActivity: Type_ProfileActivity
+  ProfileTimeSeries: Type_ProfileTimeSeries
 }>
-
-type Arg<T extends string> = ArgOf<Schema, T>
-type Res<T extends string> = ResOf<Schema, T>
 
 declare module '@gqfn/core/schema' {
   interface Schemas {
@@ -842,7 +855,17 @@ declare module '@gqfn/core/schema' {
 
 exports[`@gqfn/cli > cytoid-io sdl 1`] = `
 "/* eslint-ignore */
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
+import type { ScalarType, EnumType, InputObjectType, Input, Field, ObjectType, DefineSchema } from '@gqfn/core/schema'
+
+type Scalar_Date = ScalarType<'Date', unknown, unknown>
+type Scalar_FileSize = ScalarType<'FileSize', unknown, unknown>
+type Scalar_Long = ScalarType<'Long', unknown, unknown>
+type Scalar_Object = ScalarType<'Object', unknown, unknown>
+type Scalar_Int = ScalarType<'Int', number, number>
+type Scalar_Float = ScalarType<'Float', number, number>
+type Scalar_String = ScalarType<'String', string, string>
+type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+type Scalar_ID = ScalarType<'ID', string | number, string>
 
 export type GameplayMods =
   | 'FC'
@@ -856,6 +879,7 @@ export type GameplayMods =
   | 'ExHard'
   | 'HideScanline'
   | 'HideNotes'
+type Enum_GameplayMods = EnumType<'GameplayMods', GameplayMods>
 
 export type LevelQuerySort =
   | 'CREATION_DATE'
@@ -865,15 +889,18 @@ export type LevelQuerySort =
   | 'PLAYS'
   | 'RATING'
   | 'DIFFICULTY'
+type Enum_LevelQuerySort = EnumType<'LevelQuerySort', LevelQuerySort>
 
 export type PostType =
   | 'POST'
   | 'PAGE'
   | 'EVENT'
+type Enum_PostType = EnumType<'PostType', PostType>
 
 export type QueryOrder =
   | 'ASC'
   | 'DESC'
+type Enum_QueryOrder = EnumType<'QueryOrder', QueryOrder>
 
 export type RecordQuerySort =
   | 'Score'
@@ -881,20 +908,24 @@ export type RecordQuerySort =
   | 'Date'
   | 'Rating'
   | 'RecentRating'
+type Enum_RecordQuerySort = EnumType<'RecordQuerySort', RecordQuerySort>
 
 export type ResourceState =
   | 'PRIVATE'
   | 'PUBLIC'
   | 'UNLISTED'
+type Enum_ResourceState = EnumType<'ResourceState', ResourceState>
 
 export type Role =
   | 'MODERATOR'
   | 'ADMIN'
   | 'USER'
+type Enum_Role = EnumType<'Role', Role>
 
 export type SearchLevelOrder =
   | 'ASC'
   | 'DESC'
+type Enum_SearchLevelOrder = EnumType<'SearchLevelOrder', SearchLevelOrder>
 
 export type SearchLevelSortingStrategy =
   | 'CREATION_DATE'
@@ -904,773 +935,768 @@ export type SearchLevelSortingStrategy =
   | 'PLAYS'
   | 'RATING'
   | 'DIFFICULTY'
+type Enum_SearchLevelSortingStrategy = EnumType<'SearchLevelSortingStrategy', SearchLevelSortingStrategy>
 
-type CollectionInput = InputObject<'CollectionInput', {
-  uid: Arg<'String'>
-  coverPath: Arg<'String'>
-  title: Arg<'String'>
-  slogan: Arg<'String'>
-  description: Arg<'String'>
-  levelIds: Arg<'[Int!]'>
-  tags: Arg<'[String!]'>
-  state: Arg<'ResourceState'>
-  metadata: Arg<'CollectionMetaInput'>
+type Input_CollectionInput = InputObjectType<'CollectionInput', {
+  uid: Input<'String', Scalar_String>
+  coverPath: Input<'String', Scalar_String>
+  title: Input<'String', Scalar_String>
+  slogan: Input<'String', Scalar_String>
+  description: Input<'String', Scalar_String>
+  levelIds: Input<'[Int!]', Scalar_Int>
+  tags: Input<'[String!]', Scalar_String>
+  state: Input<'ResourceState', Enum_ResourceState>
+  metadata: Input<'CollectionMetaInput', Input_CollectionMetaInput>
 }>
 
-type CollectionMetaInput = InputObject<'CollectionMetaInput', {
-  cover: Arg<'ResourceMetaInput'>
+type Input_CollectionMetaInput = InputObjectType<'CollectionMetaInput', {
+  cover: Input<'ResourceMetaInput', Input_ResourceMetaInput>
 }>
 
-type PartialChartMetadata = InputObject<'PartialChartMetadata', {
-  type: Arg<'String!'>
-  name: Arg<'String'>
-  difficulty: Arg<'Int'>
+type Input_PartialChartMetadata = InputObjectType<'PartialChartMetadata', {
+  type: Input<'String!', Scalar_String>
+  name: Input<'String', Scalar_String>
+  difficulty: Input<'Int', Scalar_Int>
 }>
 
-type PartialMetadata = InputObject<'PartialMetadata', {
-  title: Arg<'String'>
-  title_localized: Arg<'String'>
-  artist: Arg<'String'>
-  artist_localized: Arg<'String'>
-  artist_source: Arg<'String'>
-  illustrator: Arg<'String'>
-  illustrator_source: Arg<'String'>
-  charter: Arg<'String'>
-  storyboarder: Arg<'String'>
-  charts: Arg<'[PartialChartMetadata!]'>
+type Input_PartialMetadata = InputObjectType<'PartialMetadata', {
+  title: Input<'String', Scalar_String>
+  title_localized: Input<'String', Scalar_String>
+  artist: Input<'String', Scalar_String>
+  artist_localized: Input<'String', Scalar_String>
+  artist_source: Input<'String', Scalar_String>
+  illustrator: Input<'String', Scalar_String>
+  illustrator_source: Input<'String', Scalar_String>
+  charter: Input<'String', Scalar_String>
+  storyboarder: Input<'String', Scalar_String>
+  charts: Input<'[PartialChartMetadata!]', Input_PartialChartMetadata>
 }>
 
-type PostInput = InputObject<'PostInput', {
-  type: Arg<'PostType'>
-  uid: Arg<'String'>
-  title: Arg<'String'>
-  slogan: Arg<'String'>
-  content: Arg<'String'>
-  state: Arg<'ResourceState'>
-  coverPath: Arg<'String'>
-  logoPath: Arg<'String'>
-  metadata: Arg<'PostMetaInput'>
-  startDate: Arg<'Date'>
-  endDate: Arg<'Date'>
-  locked: Arg<'Boolean'>
-  levelId: Arg<'Int'>
-  collectionId: Arg<'ID'>
+type Input_PostInput = InputObjectType<'PostInput', {
+  type: Input<'PostType', Enum_PostType>
+  uid: Input<'String', Scalar_String>
+  title: Input<'String', Scalar_String>
+  slogan: Input<'String', Scalar_String>
+  content: Input<'String', Scalar_String>
+  state: Input<'ResourceState', Enum_ResourceState>
+  coverPath: Input<'String', Scalar_String>
+  logoPath: Input<'String', Scalar_String>
+  metadata: Input<'PostMetaInput', Input_PostMetaInput>
+  startDate: Input<'Date', Scalar_Date>
+  endDate: Input<'Date', Scalar_Date>
+  locked: Input<'Boolean', Scalar_Boolean>
+  levelId: Input<'Int', Scalar_Int>
+  collectionId: Input<'ID', Scalar_ID>
 }>
 
-type PostMetaInput = InputObject<'PostMetaInput', {
-  cover: Arg<'ResourceMetaInput'>
+type Input_PostMetaInput = InputObjectType<'PostMetaInput', {
+  cover: Input<'ResourceMetaInput', Input_ResourceMetaInput>
 }>
 
-type ProfileInput = InputObject<'ProfileInput', {
-  birthday: Arg<'Date'>
-  bio: Arg<'String'>
+type Input_ProfileInput = InputObjectType<'ProfileInput', {
+  birthday: Input<'Date', Scalar_Date>
+  bio: Input<'String', Scalar_String>
 }>
 
-type RecordQueryInput = InputObject<'RecordQueryInput', {
-  chartId: Arg<'Int'>
-  ownerId: Arg<'ID'>
-  ownerUid: Arg<'String'>
-  startDate: Arg<'Date'>
-  endDate: Arg<'Date'>
-  best: Arg<'Boolean'>
-  ranked: Arg<'Boolean'>
+type Input_RecordQueryInput = InputObjectType<'RecordQueryInput', {
+  chartId: Input<'Int', Scalar_Int>
+  ownerId: Input<'ID', Scalar_ID>
+  ownerUid: Input<'String', Scalar_String>
+  startDate: Input<'Date', Scalar_Date>
+  endDate: Input<'Date', Scalar_Date>
+  best: Input<'Boolean', Scalar_Boolean>
+  ranked: Input<'Boolean', Scalar_Boolean>
 }>
 
-type ResourceMetaInput = InputObject<'ResourceMetaInput', {
-  name: Arg<'String'>
-  localized_name: Arg<'String'>
-  url: Arg<'String'>
+type Input_ResourceMetaInput = InputObjectType<'ResourceMetaInput', {
+  name: Input<'String', Scalar_String>
+  localized_name: Input<'String', Scalar_String>
+  url: Input<'String', Scalar_String>
 }>
 
-type UpdateLevelInput = InputObject<'UpdateLevelInput', {
-  state: Arg<'ResourceState'>
-  tags: Arg<'[String!]'>
-  description: Arg<'String'>
-  censored: Arg<'String'>
-  category: Arg<'[String!]'>
+type Input_UpdateLevelInput = InputObjectType<'UpdateLevelInput', {
+  state: Input<'ResourceState', Enum_ResourceState>
+  tags: Input<'[String!]', Scalar_String>
+  description: Input<'String', Scalar_String>
+  censored: Input<'String', Scalar_String>
+  category: Input<'[String!]', Scalar_String>
 }>
 
-type Avatar = TypeObject<'Avatar', {
-  original: Field<'original', Res<'String'>>
-  small: Field<'small', Res<'String'>>
-  large: Field<'large', Res<'String'>>
-  sized: Field<'sized', Res<'String'>, {
-    size: Arg<'Int'>
-  }>
-}>
-
-type Badge = TypeObject<'Badge', {
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String!'>>
-  description: Field<'description', Res<'String'>>
-  metadata: Field<'metadata', Res<'Object'>>
-}>
-
-type Chart = TypeObject<'Chart', {
-  id: Field<'id', Res<'Int!'>>
-  name: Field<'name', Res<'String'>>
-  difficulty: Field<'difficulty', Res<'Int!'>>
-  type: Field<'type', Res<'String!'>>
-  notesCount: Field<'notesCount', Res<'Int!'>>
-  leaderboard: Field<'leaderboard', Res<'[LeaderboardRecord!]!'>, {
-    start: Arg<'Int!'>
-    limit: Arg<'Int!'>
-  }>
-  numPlayers: Field<'numPlayers', Res<'Int!'>>
-}>
-
-type Collection = TypeObject<'Collection', {
-  id: Field<'id', Res<'ID!'>>
-  uid: Field<'uid', Res<'String!'>>
-  cover: Field<'cover', Res<'Image'>>
-  title: Field<'title', Res<'String!'>>
-  slogan: Field<'slogan', Res<'String!'>>
-  description: Field<'description', Res<'String!'>>
-  owner: Field<'owner', Res<'User'>>
-  levelCount: Field<'levelCount', Res<'Int!'>>
-  levels: Field<'levels', Res<'[Level!]!'>, {
-    limit: Arg<'Int'>
-  }>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  metadata: Field<'metadata', Res<'ResourceMeta!'>>
-}>
-
-type CollectionListing = TypeObject<'CollectionListing', {
-  id: Field<'id', Res<'ID!'>>
-  uid: Field<'uid', Res<'String!'>>
-  cover: Field<'cover', Res<'Image'>>
-  title: Field<'title', Res<'String!'>>
-  slogan: Field<'slogan', Res<'String!'>>
-  description: Field<'description', Res<'String!'>>
-  owner: Field<'owner', Res<'User'>>
-  levelCount: Field<'levelCount', Res<'Int!'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  metadata: Field<'metadata', Res<'ResourceMeta!'>>
-}>
-
-type CollectionUserListing = TypeObject<'CollectionUserListing', {
-  id: Field<'id', Res<'ID!'>>
-  uid: Field<'uid', Res<'String!'>>
-  cover: Field<'cover', Res<'Image'>>
-  title: Field<'title', Res<'String!'>>
-  slogan: Field<'slogan', Res<'String!'>>
-  description: Field<'description', Res<'String!'>>
-  levelCount: Field<'levelCount', Res<'Int!'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  metadata: Field<'metadata', Res<'ResourceMeta!'>>
-}>
-
-type Comment = TypeObject<'Comment', {
-  id: Field<'id', Res<'Int!'>>
-  category: Field<'category', Res<'String!'>>
-  key: Field<'key', Res<'String!'>>
-  content: Field<'content', Res<'String!'>>
-  date: Field<'date', Res<'Date!'>>
-  owner: Field<'owner', Res<'User'>>
-  metadata: Field<'metadata', Res<'Object'>>
-}>
-
-type Email = TypeObject<'Email', {
-  address: Field<'address', Res<'String!'>>
-  verified: Field<'verified', Res<'Boolean!'>>
-  primary: Field<'primary', Res<'Boolean'>>
-}>
-
-type File = TypeObject<'File', {
-  path: Field<'path', Res<'String!'>>
-  creationDate: Field<'creationDate', Res<'Date'>>
-}>
-
-type Image = TypeObject<'Image', {
-  original: Field<'original', Res<'String'>>
-  thumbnail: Field<'thumbnail', Res<'String'>>
-  cover: Field<'cover', Res<'String'>>
-  stripe: Field<'stripe', Res<'String'>>
-  sized: Field<'sized', Res<'String'>, {
-    height: Arg<'Int'>
-    width: Arg<'Int'>
+type Type_Avatar = ObjectType<'Avatar', {
+  original: Field<'String', Scalar_String>
+  small: Field<'String', Scalar_String>
+  large: Field<'String', Scalar_String>
+  sized: Field<'String', Scalar_String, {
+    size: Input<'Int', Scalar_Int>
   }>
 }>
 
-type LeaderboardRecord = TypeObject<'LeaderboardRecord', {
-  id: Field<'id', Res<'Int!'>>
-  date: Field<'date', Res<'Date!'>>
-  owner: Field<'owner', Res<'User'>>
-  score: Field<'score', Res<'Int!'>>
-  accuracy: Field<'accuracy', Res<'Float!'>>
-  mods: Field<'mods', Res<'[GameplayMods!]!'>>
-  details: Field<'details', Res<'RecordDetails!'>>
+type Type_Badge = ObjectType<'Badge', {
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String!', Scalar_String>
+  description: Field<'String', Scalar_String>
+  metadata: Field<'Object', Scalar_Object>
 }>
 
-type Level = TypeObject<'Level', {
-  id: Field<'id', Res<'Int!'>>
-  version: Field<'version', Res<'Int!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String!'>>
-  metadata: Field<'metadata', Res<'LevelMeta!'>>
-  duration: Field<'duration', Res<'Float!'>>
-  size: Field<'size', Res<'FileSize!'>>
-  description: Field<'description', Res<'String!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  censored: Field<'censored', Res<'String'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  category: Field<'category', Res<'[String!]!'>>
-  owner: Field<'owner', Res<'User'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  bundle: Field<'bundle', Res<'LevelBundle'>>
-  charts: Field<'charts', Res<'[Chart!]!'>>
-  rating: Field<'rating', Res<'Rating!'>>
-  owned: Field<'owned', Res<'Boolean'>>
+type Type_Chart = ObjectType<'Chart', {
+  id: Field<'Int!', Scalar_Int>
+  name: Field<'String', Scalar_String>
+  difficulty: Field<'Int!', Scalar_Int>
+  type: Field<'String!', Scalar_String>
+  notesCount: Field<'Int!', Scalar_Int>
+  leaderboard: Field<'[LeaderboardRecord!]!', Type_LeaderboardRecord, {
+    start: Input<'Int!', Scalar_Int>
+    limit: Input<'Int!', Scalar_Int>
+  }>
+  numPlayers: Field<'Int!', Scalar_Int>
 }>
 
-type LevelBundle = TypeObject<'LevelBundle', {
-  music: Field<'music', Res<'String'>>
-  musicPreview: Field<'musicPreview', Res<'String'>>
-  backgroundImage: Field<'backgroundImage', Res<'Image'>>
+type Type_Collection = ObjectType<'Collection', {
+  id: Field<'ID!', Scalar_ID>
+  uid: Field<'String!', Scalar_String>
+  cover: Field<'Image', Type_Image>
+  title: Field<'String!', Scalar_String>
+  slogan: Field<'String!', Scalar_String>
+  description: Field<'String!', Scalar_String>
+  owner: Field<'User', Type_User>
+  levelCount: Field<'Int!', Scalar_Int>
+  levels: Field<'[Level!]!', Type_Level, {
+    limit: Input<'Int', Scalar_Int>
+  }>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  tags: Field<'[String!]!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  metadata: Field<'ResourceMeta!', Type_ResourceMeta>
 }>
 
-type LevelMeta = TypeObject<'LevelMeta', {
-  title_localized: Field<'title_localized', Res<'String'>>
-  artist: Field<'artist', Res<'ResourceMetaProperty'>>
-  illustrator: Field<'illustrator', Res<'ResourceMetaProperty'>>
-  charter: Field<'charter', Res<'ResourceMetaProperty'>>
-  storyboarder: Field<'storyboarder', Res<'ResourceMetaProperty'>>
+type Type_CollectionListing = ObjectType<'CollectionListing', {
+  id: Field<'ID!', Scalar_ID>
+  uid: Field<'String!', Scalar_String>
+  cover: Field<'Image', Type_Image>
+  title: Field<'String!', Scalar_String>
+  slogan: Field<'String!', Scalar_String>
+  description: Field<'String!', Scalar_String>
+  owner: Field<'User', Type_User>
+  levelCount: Field<'Int!', Scalar_Int>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  tags: Field<'[String!]!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  metadata: Field<'ResourceMeta!', Type_ResourceMeta>
 }>
 
-type Mutation = TypeObject<'Mutation', {
-  updateCollection: Field<'updateCollection', Res<'CollectionUserListing'>, {
-    id: Arg<'ID!'>
-    input: Arg<'CollectionInput!'>
-  }>
-  createCollection: Field<'createCollection', Res<'CollectionUserListing'>, {
-    input: Arg<'CollectionInput!'>
-  }>
-  deleteCollection: Field<'deleteCollection', Res<'CollectionUserListing'>, {
-    id: Arg<'ID!'>
-  }>
-  evaluateEpic: Field<'evaluateEpic', Res<'String'>, {
-    id: Arg<'String'>
-  }>
-  rateLevel: Field<'rateLevel', Res<'Rating!'>, {
-    id: Arg<'String!'>
-    rating: Arg<'Int'>
-  }>
-  unpackLevelPackage: Field<'unpackLevelPackage', Res<'UserLevel'>, {
-    token: Arg<'String!'>
-    replace: Arg<'String'>
-  }>
-  editLevelMetadata: Field<'editLevelMetadata', Res<'UserLevel'>, {
-    id: Arg<'String!'>
-    metadata: Arg<'PartialMetadata'>
-  }>
-  deleteLevel: Field<'deleteLevel', Res<'Boolean'>, {
-    id: Arg<'ID!'>
-  }>
-  updateLevel: Field<'updateLevel', Res<'Boolean'>, {
-    id: Arg<'ID!'>
-    input: Arg<'UpdateLevelInput'>
-  }>
-  addToLibrary: Field<'addToLibrary', Res<'Boolean'>, {
-    levelId: Arg<'Int!'>
-  }>
-  removeFromLibrary: Field<'removeFromLibrary', Res<'Boolean'>, {
-    levelId: Arg<'Int!'>
-  }>
-  createPost: Field<'createPost', Res<'Post'>, {
-    post: Arg<'PostInput'>
-  }>
-  updatePost: Field<'updatePost', Res<'Post'>, {
-    id: Arg<'ID!'>
-    input: Arg<'PostInput'>
-  }>
-  deletePost: Field<'deletePost', Res<'Post'>, {
-    id: Arg<'ID!'>
-  }>
-  addEmail: Field<'addEmail', Res<'Boolean'>, {
-    email: Arg<'String!'>
-  }>
-  sendVerificationEmail: Field<'sendVerificationEmail', Res<'Boolean'>, {
-    email: Arg<'String!'>
-  }>
-  makeEmailPrimary: Field<'makeEmailPrimary', Res<'Boolean'>, {
-    email: Arg<'String!'>
-  }>
-  deleteEmail: Field<'deleteEmail', Res<'Boolean'>, {
-    email: Arg<'String!'>
-  }>
-  sendResetPasswordEmail: Field<'sendResetPasswordEmail', Res<'Boolean'>, {
-    email: Arg<'String!'>
-  }>
-  changePasswordWithToken: Field<'changePasswordWithToken', Res<'Boolean'>, {
-    token: Arg<'String!'>
-    password: Arg<'String!'>
-  }>
-  changePassword: Field<'changePassword', Res<'Boolean'>, {
-    oldPassword: Arg<'String!'>
-    newPassword: Arg<'String!'>
-  }>
-  removeExternalAccount: Field<'removeExternalAccount', Res<'Boolean'>, {
-    provider: Arg<'String!'>
-  }>
-  addExternalAccount: Field<'addExternalAccount', Res<'Boolean'>, {
-    token: Arg<'String!'>
-  }>
-  updateProfile: Field<'updateProfile', Res<'Boolean'>, {
-    input: Arg<'ProfileInput!'>
-  }>
-  updateProfileHeader: Field<'updateProfileHeader', Res<'Image'>, {
-    path: Arg<'String!'>
-  }>
-  setAvatar: Field<'setAvatar', Res<'Avatar'>, {
-    path: Arg<'String'>
-  }>
-  setUserActive: Field<'setUserActive', Res<'Boolean'>, {
-    id: Arg<'ID!'>
-    active: Arg<'Boolean!'>
-  }>
-  banUser: Field<'banUser', Res<'Boolean'>, {
-    id: Arg<'ID!'>
-    reason: Arg<'String!'>
-  }>
-  grantUserBadge: Field<'grantUserBadge', Res<'Boolean'>, {
-    id: Arg<'ID!'>
-    badge: Arg<'String!'>
+type Type_CollectionUserListing = ObjectType<'CollectionUserListing', {
+  id: Field<'ID!', Scalar_ID>
+  uid: Field<'String!', Scalar_String>
+  cover: Field<'Image', Type_Image>
+  title: Field<'String!', Scalar_String>
+  slogan: Field<'String!', Scalar_String>
+  description: Field<'String!', Scalar_String>
+  levelCount: Field<'Int!', Scalar_Int>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  tags: Field<'[String!]!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  metadata: Field<'ResourceMeta!', Type_ResourceMeta>
+}>
+
+type Type_Comment = ObjectType<'Comment', {
+  id: Field<'Int!', Scalar_Int>
+  category: Field<'String!', Scalar_String>
+  key: Field<'String!', Scalar_String>
+  content: Field<'String!', Scalar_String>
+  date: Field<'Date!', Scalar_Date>
+  owner: Field<'User', Type_User>
+  metadata: Field<'Object', Scalar_Object>
+}>
+
+type Type_Email = ObjectType<'Email', {
+  address: Field<'String!', Scalar_String>
+  verified: Field<'Boolean!', Scalar_Boolean>
+  primary: Field<'Boolean', Scalar_Boolean>
+}>
+
+type Type_File = ObjectType<'File', {
+  path: Field<'String!', Scalar_String>
+  creationDate: Field<'Date', Scalar_Date>
+}>
+
+type Type_Image = ObjectType<'Image', {
+  original: Field<'String', Scalar_String>
+  thumbnail: Field<'String', Scalar_String>
+  cover: Field<'String', Scalar_String>
+  stripe: Field<'String', Scalar_String>
+  sized: Field<'String', Scalar_String, {
+    height: Input<'Int', Scalar_Int>
+    width: Input<'Int', Scalar_Int>
   }>
 }>
 
-type My = TypeObject<'My', {
-  collections: Field<'collections', Res<'[CollectionUserListing!]!'>>
-  levels: Field<'levels', Res<'[UserStudioLevel!]!'>, {
-    start: Arg<'Int'>
-    limit: Arg<'Int'>
-  }>
-  levelsCount: Field<'levelsCount', Res<'Int!'>>
-  library: Field<'library', Res<'[Level!]!'>, {
-    granted: Arg<'Boolean'>
-  }>
-  emails: Field<'emails', Res<'[Email!]!'>>
-  user: Field<'user', Res<'User'>>
-  externalAccountProviders: Field<'externalAccountProviders', Res<'[String!]!'>>
+type Type_LeaderboardRecord = ObjectType<'LeaderboardRecord', {
+  id: Field<'Int!', Scalar_Int>
+  date: Field<'Date!', Scalar_Date>
+  owner: Field<'User', Type_User>
+  score: Field<'Int!', Scalar_Int>
+  accuracy: Field<'Float!', Scalar_Float>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
+  details: Field<'RecordDetails!', Type_RecordDetails>
 }>
 
-type Post = TypeObject<'Post', {
-  id: Field<'id', Res<'String!'>>
-  type: Field<'type', Res<'PostType!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String'>>
-  slogan: Field<'slogan', Res<'String'>>
-  content: Field<'content', Res<'String'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  creationDate: Field<'creationDate', Res<'Date'>>
-  modificationDate: Field<'modificationDate', Res<'Date'>>
-  startDate: Field<'startDate', Res<'Date'>>
-  endDate: Field<'endDate', Res<'Date'>>
-  cover: Field<'cover', Res<'Image'>>
-  logo: Field<'logo', Res<'Image'>>
-  metadata: Field<'metadata', Res<'PostMeta'>>
-  locked: Field<'locked', Res<'Boolean'>>
+type Type_Level = ObjectType<'Level', {
+  id: Field<'Int!', Scalar_Int>
+  version: Field<'Int!', Scalar_Int>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String!', Scalar_String>
+  metadata: Field<'LevelMeta!', Type_LevelMeta>
+  duration: Field<'Float!', Scalar_Float>
+  size: Field<'FileSize!', Scalar_FileSize>
+  description: Field<'String!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  censored: Field<'String', Scalar_String>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
+  owner: Field<'User', Type_User>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  bundle: Field<'LevelBundle', Type_LevelBundle>
+  charts: Field<'[Chart!]!', Type_Chart>
+  rating: Field<'Rating!', Type_Rating>
+  owned: Field<'Boolean', Scalar_Boolean>
 }>
 
-type PostDetail = TypeObject<'PostDetail', {
-  id: Field<'id', Res<'String!'>>
-  type: Field<'type', Res<'PostType!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String'>>
-  slogan: Field<'slogan', Res<'String'>>
-  content: Field<'content', Res<'String'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  creationDate: Field<'creationDate', Res<'Date'>>
-  modificationDate: Field<'modificationDate', Res<'Date'>>
-  startDate: Field<'startDate', Res<'Date'>>
-  endDate: Field<'endDate', Res<'Date'>>
-  cover: Field<'cover', Res<'Image'>>
-  logo: Field<'logo', Res<'Image'>>
-  metadata: Field<'metadata', Res<'PostMeta'>>
-  locked: Field<'locked', Res<'Boolean'>>
-  level: Field<'level', Res<'Level'>>
-  collection: Field<'collection', Res<'Collection'>>
-  epicId: Field<'epicId', Res<'String'>>
+type Type_LevelBundle = ObjectType<'LevelBundle', {
+  music: Field<'String', Scalar_String>
+  musicPreview: Field<'String', Scalar_String>
+  backgroundImage: Field<'Image', Type_Image>
 }>
 
-type PostMeta = TypeObject<'PostMeta', {
-  cover: Field<'cover', Res<'ResourceMetaProperty'>>
+type Type_LevelMeta = ObjectType<'LevelMeta', {
+  title_localized: Field<'String', Scalar_String>
+  artist: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
+  illustrator: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
+  charter: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
+  storyboarder: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
 }>
 
-type Profile = TypeObject<'Profile', {
-  badges: Field<'badges', Res<'[Badge!]!'>>
-  recentRecords: Field<'recentRecords', Res<'[UserRecord!]!'>, {
-    limit: Arg<'Int'>
-    sort: Arg<'RecordQuerySort'>
-    order: Arg<'QueryOrder'>
+type Type_Mutation = ObjectType<'Mutation', {
+  updateCollection: Field<'CollectionUserListing', Type_CollectionUserListing, {
+    id: Input<'ID!', Scalar_ID>
+    input: Input<'CollectionInput!', Input_CollectionInput>
   }>
-  bestRecords: Field<'bestRecords', Res<'[UserRecord!]!'>, {
-    limit: Arg<'Int'>
+  createCollection: Field<'CollectionUserListing', Type_CollectionUserListing, {
+    input: Input<'CollectionInput!', Input_CollectionInput>
   }>
-  id: Field<'id', Res<'ID!'>>
-  user: Field<'user', Res<'User'>>
-  birthday: Field<'birthday', Res<'Date'>>
-  bio: Field<'bio', Res<'String'>>
-  header: Field<'header', Res<'Image'>>
-  rating: Field<'rating', Res<'Float!'>>
-  exp: Field<'exp', Res<'ProfileExp!'>>
-  grades: Field<'grades', Res<'ProfileGrades!'>>
-  activity: Field<'activity', Res<'ProfileActivity!'>>
-  timeseries: Field<'timeseries', Res<'[ProfileTimeSeries!]!'>>
+  deleteCollection: Field<'CollectionUserListing', Type_CollectionUserListing, {
+    id: Input<'ID!', Scalar_ID>
+  }>
+  evaluateEpic: Field<'String', Scalar_String, {
+    id: Input<'String', Scalar_String>
+  }>
+  rateLevel: Field<'Rating!', Type_Rating, {
+    id: Input<'String!', Scalar_String>
+    rating: Input<'Int', Scalar_Int>
+  }>
+  unpackLevelPackage: Field<'UserLevel', Type_UserLevel, {
+    token: Input<'String!', Scalar_String>
+    replace: Input<'String', Scalar_String>
+  }>
+  editLevelMetadata: Field<'UserLevel', Type_UserLevel, {
+    id: Input<'String!', Scalar_String>
+    metadata: Input<'PartialMetadata', Input_PartialMetadata>
+  }>
+  deleteLevel: Field<'Boolean', Scalar_Boolean, {
+    id: Input<'ID!', Scalar_ID>
+  }>
+  updateLevel: Field<'Boolean', Scalar_Boolean, {
+    id: Input<'ID!', Scalar_ID>
+    input: Input<'UpdateLevelInput', Input_UpdateLevelInput>
+  }>
+  addToLibrary: Field<'Boolean', Scalar_Boolean, {
+    levelId: Input<'Int!', Scalar_Int>
+  }>
+  removeFromLibrary: Field<'Boolean', Scalar_Boolean, {
+    levelId: Input<'Int!', Scalar_Int>
+  }>
+  createPost: Field<'Post', Type_Post, {
+    post: Input<'PostInput', Input_PostInput>
+  }>
+  updatePost: Field<'Post', Type_Post, {
+    id: Input<'ID!', Scalar_ID>
+    input: Input<'PostInput', Input_PostInput>
+  }>
+  deletePost: Field<'Post', Type_Post, {
+    id: Input<'ID!', Scalar_ID>
+  }>
+  addEmail: Field<'Boolean', Scalar_Boolean, {
+    email: Input<'String!', Scalar_String>
+  }>
+  sendVerificationEmail: Field<'Boolean', Scalar_Boolean, {
+    email: Input<'String!', Scalar_String>
+  }>
+  makeEmailPrimary: Field<'Boolean', Scalar_Boolean, {
+    email: Input<'String!', Scalar_String>
+  }>
+  deleteEmail: Field<'Boolean', Scalar_Boolean, {
+    email: Input<'String!', Scalar_String>
+  }>
+  sendResetPasswordEmail: Field<'Boolean', Scalar_Boolean, {
+    email: Input<'String!', Scalar_String>
+  }>
+  changePasswordWithToken: Field<'Boolean', Scalar_Boolean, {
+    token: Input<'String!', Scalar_String>
+    password: Input<'String!', Scalar_String>
+  }>
+  changePassword: Field<'Boolean', Scalar_Boolean, {
+    oldPassword: Input<'String!', Scalar_String>
+    newPassword: Input<'String!', Scalar_String>
+  }>
+  removeExternalAccount: Field<'Boolean', Scalar_Boolean, {
+    provider: Input<'String!', Scalar_String>
+  }>
+  addExternalAccount: Field<'Boolean', Scalar_Boolean, {
+    token: Input<'String!', Scalar_String>
+  }>
+  updateProfile: Field<'Boolean', Scalar_Boolean, {
+    input: Input<'ProfileInput!', Input_ProfileInput>
+  }>
+  updateProfileHeader: Field<'Image', Type_Image, {
+    path: Input<'String!', Scalar_String>
+  }>
+  setAvatar: Field<'Avatar', Type_Avatar, {
+    path: Input<'String', Scalar_String>
+  }>
+  setUserActive: Field<'Boolean', Scalar_Boolean, {
+    id: Input<'ID!', Scalar_ID>
+    active: Input<'Boolean!', Scalar_Boolean>
+  }>
+  banUser: Field<'Boolean', Scalar_Boolean, {
+    id: Input<'ID!', Scalar_ID>
+    reason: Input<'String!', Scalar_String>
+  }>
+  grantUserBadge: Field<'Boolean', Scalar_Boolean, {
+    id: Input<'ID!', Scalar_ID>
+    badge: Input<'String!', Scalar_String>
+  }>
 }>
 
-type ProfileActivity = TypeObject<'ProfileActivity', {
-  totalRankedPlays: Field<'totalRankedPlays', Res<'Long!'>>
-  clearedNotes: Field<'clearedNotes', Res<'Long!'>>
-  maxCombo: Field<'maxCombo', Res<'Long!'>>
-  averageRankedAccuracy: Field<'averageRankedAccuracy', Res<'Float!'>>
-  totalRankedScore: Field<'totalRankedScore', Res<'Long!'>>
-  totalPlayTime: Field<'totalPlayTime', Res<'Float!'>>
+type Type_My = ObjectType<'My', {
+  collections: Field<'[CollectionUserListing!]!', Type_CollectionUserListing>
+  levels: Field<'[UserStudioLevel!]!', Type_UserStudioLevel, {
+    start: Input<'Int', Scalar_Int>
+    limit: Input<'Int', Scalar_Int>
+  }>
+  levelsCount: Field<'Int!', Scalar_Int>
+  library: Field<'[Level!]!', Type_Level, {
+    granted: Input<'Boolean', Scalar_Boolean>
+  }>
+  emails: Field<'[Email!]!', Type_Email>
+  user: Field<'User', Type_User>
+  externalAccountProviders: Field<'[String!]!', Scalar_String>
 }>
 
-type ProfileExp = TypeObject<'ProfileExp', {
-  basicExp: Field<'basicExp', Res<'Int!'>>
-  levelExp: Field<'levelExp', Res<'Int!'>>
-  totalExp: Field<'totalExp', Res<'Int!'>>
-  currentLevel: Field<'currentLevel', Res<'Int!'>>
-  nextLevelExp: Field<'nextLevelExp', Res<'Int!'>>
-  currentLevelExp: Field<'currentLevelExp', Res<'Int!'>>
+type Type_Post = ObjectType<'Post', {
+  id: Field<'String!', Scalar_String>
+  type: Field<'PostType!', Enum_PostType>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String', Scalar_String>
+  slogan: Field<'String', Scalar_String>
+  content: Field<'String', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  creationDate: Field<'Date', Scalar_Date>
+  modificationDate: Field<'Date', Scalar_Date>
+  startDate: Field<'Date', Scalar_Date>
+  endDate: Field<'Date', Scalar_Date>
+  cover: Field<'Image', Type_Image>
+  logo: Field<'Image', Type_Image>
+  metadata: Field<'PostMeta', Type_PostMeta>
+  locked: Field<'Boolean', Scalar_Boolean>
 }>
 
-type ProfileGrades = TypeObject<'ProfileGrades', {
-  MAX: Field<'MAX', Res<'Int!'>>
-  SS: Field<'SS', Res<'Int!'>>
-  S: Field<'S', Res<'Int!'>>
-  A: Field<'A', Res<'Int!'>>
-  B: Field<'B', Res<'Int!'>>
-  C: Field<'C', Res<'Int!'>>
-  D: Field<'D', Res<'Int!'>>
-  F: Field<'F', Res<'Int!'>>
+type Type_PostDetail = ObjectType<'PostDetail', {
+  id: Field<'String!', Scalar_String>
+  type: Field<'PostType!', Enum_PostType>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String', Scalar_String>
+  slogan: Field<'String', Scalar_String>
+  content: Field<'String', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  creationDate: Field<'Date', Scalar_Date>
+  modificationDate: Field<'Date', Scalar_Date>
+  startDate: Field<'Date', Scalar_Date>
+  endDate: Field<'Date', Scalar_Date>
+  cover: Field<'Image', Type_Image>
+  logo: Field<'Image', Type_Image>
+  metadata: Field<'PostMeta', Type_PostMeta>
+  locked: Field<'Boolean', Scalar_Boolean>
+  level: Field<'Level', Type_Level>
+  collection: Field<'Collection', Type_Collection>
+  epicId: Field<'String', Scalar_String>
 }>
 
-type ProfileTimeSeries = TypeObject<'ProfileTimeSeries', {
-  cumulativeRating: Field<'cumulativeRating', Res<'Float!'>>
-  cumulativeAccuracy: Field<'cumulativeAccuracy', Res<'Float!'>>
-  week: Field<'week', Res<'Int!'>>
-  year: Field<'year', Res<'Int!'>>
-  accuracy: Field<'accuracy', Res<'Float!'>>
-  rating: Field<'rating', Res<'Float!'>>
-  count: Field<'count', Res<'Int!'>>
+type Type_PostMeta = ObjectType<'PostMeta', {
+  cover: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
 }>
 
-type Query = TypeObject<'Query', {
-  discordOnlineCount: Field<'discordOnlineCount', Res<'Int'>>
-  recentTweet: Field<'recentTweet', Res<'String'>>
-  collectionsCount: Field<'collectionsCount', Res<'Int!'>>
-  collection: Field<'collection', Res<'Collection'>, {
-    id: Arg<'ID'>
-    uid: Arg<'String'>
+type Type_Profile = ObjectType<'Profile', {
+  badges: Field<'[Badge!]!', Type_Badge>
+  recentRecords: Field<'[UserRecord!]!', Type_UserRecord, {
+    limit: Input<'Int', Scalar_Int>
+    sort: Input<'RecordQuerySort', Enum_RecordQuerySort>
+    order: Input<'QueryOrder', Enum_QueryOrder>
   }>
-  collections: Field<'collections', Res<'[CollectionListing!]!'>, {
-    limit: Arg<'Int'>
-    cursor: Arg<'ID'>
-    ownerId: Arg<'String'>
-    ownerUid: Arg<'String'>
+  bestRecords: Field<'[UserRecord!]!', Type_UserRecord, {
+    limit: Input<'Int', Scalar_Int>
   }>
-  recentComments: Field<'recentComments', Res<'[Comment!]!'>, {
-    limit: Arg<'Int'>
-  }>
-  level: Field<'level', Res<'Level'>, {
-    uid: Arg<'String!'>
-  }>
-  levels: Field<'levels', Res<'[Level!]!'>, {
-    order: Arg<'QueryOrder'>
-    page: Arg<'Int'>
-    limit: Arg<'Int'>
-    sort: Arg<'LevelQuerySort'>
-    category: Arg<'String'>
-  }>
-  levelsCount: Field<'levelsCount', Res<'Int!'>, {
-    category: Arg<'String'>
-  }>
-  chart: Field<'chart', Res<'Chart'>, {
-    levelUid: Arg<'String!'>
-    chartType: Arg<'String!'>
-  }>
-  getPosts: Field<'getPosts', Res<'[Post!]!'>, {
-    limit: Arg<'Int!'>
-    all: Arg<'Boolean'>
-    skip: Arg<'Int'>
-  }>
-  getActivePosts: Field<'getActivePosts', Res<'[Post!]!'>, {
-    limit: Arg<'Int!'>
-    skip: Arg<'Int'>
-  }>
-  getPost: Field<'getPost', Res<'PostDetail'>, {
-    uid: Arg<'String!'>
-  }>
-  recentRecords: Field<'recentRecords', Res<'[Record!]!'>, {
-    limit: Arg<'Int'>
-    ranked: Arg<'Boolean'>
-  }>
-  records: Field<'records', Res<'[Record!]!'>, {
-    query: Arg<'RecordQueryInput'>
-    page: Arg<'Int'>
-    limit: Arg<'Int'>
-    sort: Arg<'RecordQuerySort'>
-    order: Arg<'QueryOrder'>
-  }>
-  recordsCount: Field<'recordsCount', Res<'Int!'>, {
-    query: Arg<'RecordQueryInput'>
-  }>
-  record: Field<'record', Res<'Record'>, {
-    id: Arg<'Int!'>
-    chartId: Arg<'Int!'>
-  }>
-  searchLevels: Field<'searchLevels', Res<'[Level!]!'>, {
-    search: Arg<'String!'>
-    start: Arg<'Int'>
-    limit: Arg<'Int'>
-    strategy: Arg<'SearchLevelSortingStrategy'>
-    order: Arg<'SearchLevelOrder'>
-  }>
-  profile: Field<'profile', Res<'Profile'>, {
-    id: Arg<'ID'>
-    uid: Arg<'String'>
-  }>
-  user: Field<'user', Res<'User'>, {
-    id: Arg<'ID'>
-    uid: Arg<'String'>
-  }>
-  my: Field<'my', Res<'My'>>
+  id: Field<'ID!', Scalar_ID>
+  user: Field<'User', Type_User>
+  birthday: Field<'Date', Scalar_Date>
+  bio: Field<'String', Scalar_String>
+  header: Field<'Image', Type_Image>
+  rating: Field<'Float!', Scalar_Float>
+  exp: Field<'ProfileExp!', Type_ProfileExp>
+  grades: Field<'ProfileGrades!', Type_ProfileGrades>
+  activity: Field<'ProfileActivity!', Type_ProfileActivity>
+  timeseries: Field<'[ProfileTimeSeries!]!', Type_ProfileTimeSeries>
 }>
 
-type Rating = TypeObject<'Rating', {
-  average: Field<'average', Res<'Float'>>
-  total: Field<'total', Res<'Int!'>>
-  rating: Field<'rating', Res<'Float'>>
-  distribution: Field<'distribution', Res<'[Int!]!'>>
+type Type_ProfileActivity = ObjectType<'ProfileActivity', {
+  totalRankedPlays: Field<'Long!', Scalar_Long>
+  clearedNotes: Field<'Long!', Scalar_Long>
+  maxCombo: Field<'Long!', Scalar_Long>
+  averageRankedAccuracy: Field<'Float!', Scalar_Float>
+  totalRankedScore: Field<'Long!', Scalar_Long>
+  totalPlayTime: Field<'Float!', Scalar_Float>
 }>
 
-type Record = TypeObject<'Record', {
-  id: Field<'id', Res<'Int!'>>
-  date: Field<'date', Res<'Date!'>>
-  owner: Field<'owner', Res<'User'>>
-  chart: Field<'chart', Res<'RecordChart'>>
-  score: Field<'score', Res<'Int!'>>
-  accuracy: Field<'accuracy', Res<'Float!'>>
-  mods: Field<'mods', Res<'[GameplayMods!]!'>>
-  ranked: Field<'ranked', Res<'Boolean!'>>
-  details: Field<'details', Res<'RecordDetails!'>>
-  rating: Field<'rating', Res<'Float!'>>
-  recentRating: Field<'recentRating', Res<'Float'>>
-  rank: Field<'rank', Res<'Int'>>
+type Type_ProfileExp = ObjectType<'ProfileExp', {
+  basicExp: Field<'Int!', Scalar_Int>
+  levelExp: Field<'Int!', Scalar_Int>
+  totalExp: Field<'Int!', Scalar_Int>
+  currentLevel: Field<'Int!', Scalar_Int>
+  nextLevelExp: Field<'Int!', Scalar_Int>
+  currentLevelExp: Field<'Int!', Scalar_Int>
 }>
 
-type RecordChart = TypeObject<'RecordChart', {
-  id: Field<'id', Res<'Int!'>>
-  name: Field<'name', Res<'String'>>
-  difficulty: Field<'difficulty', Res<'Int!'>>
-  type: Field<'type', Res<'String!'>>
-  notesCount: Field<'notesCount', Res<'Int!'>>
-  level: Field<'level', Res<'RecordLevel'>>
+type Type_ProfileGrades = ObjectType<'ProfileGrades', {
+  MAX: Field<'Int!', Scalar_Int>
+  SS: Field<'Int!', Scalar_Int>
+  S: Field<'Int!', Scalar_Int>
+  A: Field<'Int!', Scalar_Int>
+  B: Field<'Int!', Scalar_Int>
+  C: Field<'Int!', Scalar_Int>
+  D: Field<'Int!', Scalar_Int>
+  F: Field<'Int!', Scalar_Int>
 }>
 
-type RecordDetails = TypeObject<'RecordDetails', {
-  perfect: Field<'perfect', Res<'Int!'>>
-  great: Field<'great', Res<'Int!'>>
-  good: Field<'good', Res<'Int!'>>
-  bad: Field<'bad', Res<'Int!'>>
-  miss: Field<'miss', Res<'Int!'>>
-  maxCombo: Field<'maxCombo', Res<'Int!'>>
+type Type_ProfileTimeSeries = ObjectType<'ProfileTimeSeries', {
+  cumulativeRating: Field<'Float!', Scalar_Float>
+  cumulativeAccuracy: Field<'Float!', Scalar_Float>
+  week: Field<'Int!', Scalar_Int>
+  year: Field<'Int!', Scalar_Int>
+  accuracy: Field<'Float!', Scalar_Float>
+  rating: Field<'Float!', Scalar_Float>
+  count: Field<'Int!', Scalar_Int>
 }>
 
-type RecordLevel = TypeObject<'RecordLevel', {
-  id: Field<'id', Res<'Int!'>>
-  version: Field<'version', Res<'Int!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String!'>>
-  metadata: Field<'metadata', Res<'LevelMeta!'>>
-  duration: Field<'duration', Res<'Float!'>>
-  size: Field<'size', Res<'FileSize!'>>
-  description: Field<'description', Res<'String!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  censored: Field<'censored', Res<'String'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  category: Field<'category', Res<'[String!]!'>>
-  owner: Field<'owner', Res<'User'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  bundle: Field<'bundle', Res<'LevelBundle'>>
-}>
-
-type ResourceMeta = TypeObject<'ResourceMeta', {
-  cover: Field<'cover', Res<'ResourceMetaProperty'>>
-}>
-
-type ResourceMetaProperty = TypeObject<'ResourceMetaProperty', {
-  name: Field<'name', Res<'String'>>
-  localized_name: Field<'localized_name', Res<'String'>>
-  url: Field<'url', Res<'String'>>
-}>
-
-type User = TypeObject<'User', {
-  collectionsCount: Field<'collectionsCount', Res<'Int!'>>
-  collections: Field<'collections', Res<'[CollectionUserListing!]!'>, {
-    first: Arg<'Int'>
+type Type_Query = ObjectType<'Query', {
+  discordOnlineCount: Field<'Int', Scalar_Int>
+  recentTweet: Field<'String', Scalar_String>
+  collectionsCount: Field<'Int!', Scalar_Int>
+  collection: Field<'Collection', Type_Collection, {
+    id: Input<'ID', Scalar_ID>
+    uid: Input<'String', Scalar_String>
   }>
-  levelsCount: Field<'levelsCount', Res<'Int!'>, {
-    category: Arg<'String'>
+  collections: Field<'[CollectionListing!]!', Type_CollectionListing, {
+    limit: Input<'Int', Scalar_Int>
+    cursor: Input<'ID', Scalar_ID>
+    ownerId: Input<'String', Scalar_String>
+    ownerUid: Input<'String', Scalar_String>
   }>
-  levels: Field<'levels', Res<'[UserLevel!]!'>, {
-    first: Arg<'Int'>
-    category: Arg<'String'>
-    sort: Arg<'LevelQuerySort'>
-    order: Arg<'QueryOrder'>
+  recentComments: Field<'[Comment!]!', Type_Comment, {
+    limit: Input<'Int', Scalar_Int>
   }>
-  id: Field<'id', Res<'ID!'>>
-  uid: Field<'uid', Res<'String'>>
-  name: Field<'name', Res<'String'>>
-  emails: Field<'emails', Res<'[Email!]!'>>
-  registrationDate: Field<'registrationDate', Res<'Date'>>
-  role: Field<'role', Res<'Role!'>>
-  avatar: Field<'avatar', Res<'Avatar!'>>
-  active: Field<'active', Res<'Boolean'>>
-  lastSeen: Field<'lastSeen', Res<'Date'>>
-  my: Field<'my', Res<'My'>>
+  level: Field<'Level', Type_Level, {
+    uid: Input<'String!', Scalar_String>
+  }>
+  levels: Field<'[Level!]!', Type_Level, {
+    order: Input<'QueryOrder', Enum_QueryOrder>
+    page: Input<'Int', Scalar_Int>
+    limit: Input<'Int', Scalar_Int>
+    sort: Input<'LevelQuerySort', Enum_LevelQuerySort>
+    category: Input<'String', Scalar_String>
+  }>
+  levelsCount: Field<'Int!', Scalar_Int, {
+    category: Input<'String', Scalar_String>
+  }>
+  chart: Field<'Chart', Type_Chart, {
+    levelUid: Input<'String!', Scalar_String>
+    chartType: Input<'String!', Scalar_String>
+  }>
+  getPosts: Field<'[Post!]!', Type_Post, {
+    limit: Input<'Int!', Scalar_Int>
+    all: Input<'Boolean', Scalar_Boolean>
+    skip: Input<'Int', Scalar_Int>
+  }>
+  getActivePosts: Field<'[Post!]!', Type_Post, {
+    limit: Input<'Int!', Scalar_Int>
+    skip: Input<'Int', Scalar_Int>
+  }>
+  getPost: Field<'PostDetail', Type_PostDetail, {
+    uid: Input<'String!', Scalar_String>
+  }>
+  recentRecords: Field<'[Record!]!', Type_Record, {
+    limit: Input<'Int', Scalar_Int>
+    ranked: Input<'Boolean', Scalar_Boolean>
+  }>
+  records: Field<'[Record!]!', Type_Record, {
+    query: Input<'RecordQueryInput', Input_RecordQueryInput>
+    page: Input<'Int', Scalar_Int>
+    limit: Input<'Int', Scalar_Int>
+    sort: Input<'RecordQuerySort', Enum_RecordQuerySort>
+    order: Input<'QueryOrder', Enum_QueryOrder>
+  }>
+  recordsCount: Field<'Int!', Scalar_Int, {
+    query: Input<'RecordQueryInput', Input_RecordQueryInput>
+  }>
+  record: Field<'Record', Type_Record, {
+    id: Input<'Int!', Scalar_Int>
+    chartId: Input<'Int!', Scalar_Int>
+  }>
+  searchLevels: Field<'[Level!]!', Type_Level, {
+    search: Input<'String!', Scalar_String>
+    start: Input<'Int', Scalar_Int>
+    limit: Input<'Int', Scalar_Int>
+    strategy: Input<'SearchLevelSortingStrategy', Enum_SearchLevelSortingStrategy>
+    order: Input<'SearchLevelOrder', Enum_SearchLevelOrder>
+  }>
+  profile: Field<'Profile', Type_Profile, {
+    id: Input<'ID', Scalar_ID>
+    uid: Input<'String', Scalar_String>
+  }>
+  user: Field<'User', Type_User, {
+    id: Input<'ID', Scalar_ID>
+    uid: Input<'String', Scalar_String>
+  }>
+  my: Field<'My', Type_My>
 }>
 
-type UserLevel = TypeObject<'UserLevel', {
-  id: Field<'id', Res<'Int!'>>
-  version: Field<'version', Res<'Int!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String!'>>
-  metadata: Field<'metadata', Res<'LevelMeta!'>>
-  duration: Field<'duration', Res<'Float!'>>
-  size: Field<'size', Res<'FileSize!'>>
-  description: Field<'description', Res<'String!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  censored: Field<'censored', Res<'String'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  category: Field<'category', Res<'[String!]!'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  bundle: Field<'bundle', Res<'LevelBundle'>>
-  charts: Field<'charts', Res<'[Chart!]!'>>
+type Type_Rating = ObjectType<'Rating', {
+  average: Field<'Float', Scalar_Float>
+  total: Field<'Int!', Scalar_Int>
+  rating: Field<'Float', Scalar_Float>
+  distribution: Field<'[Int!]!', Scalar_Int>
 }>
 
-type UserRecord = TypeObject<'UserRecord', {
-  id: Field<'id', Res<'Int!'>>
-  date: Field<'date', Res<'Date!'>>
-  chart: Field<'chart', Res<'RecordChart'>>
-  score: Field<'score', Res<'Int!'>>
-  accuracy: Field<'accuracy', Res<'Float!'>>
-  mods: Field<'mods', Res<'[GameplayMods!]!'>>
-  ranked: Field<'ranked', Res<'Boolean!'>>
-  details: Field<'details', Res<'RecordDetails!'>>
-  rating: Field<'rating', Res<'Float!'>>
-  recentRating: Field<'recentRating', Res<'Float'>>
+type Type_Record = ObjectType<'Record', {
+  id: Field<'Int!', Scalar_Int>
+  date: Field<'Date!', Scalar_Date>
+  owner: Field<'User', Type_User>
+  chart: Field<'RecordChart', Type_RecordChart>
+  score: Field<'Int!', Scalar_Int>
+  accuracy: Field<'Float!', Scalar_Float>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
+  ranked: Field<'Boolean!', Scalar_Boolean>
+  details: Field<'RecordDetails!', Type_RecordDetails>
+  rating: Field<'Float!', Scalar_Float>
+  recentRating: Field<'Float', Scalar_Float>
+  rank: Field<'Int', Scalar_Int>
 }>
 
-type UserStudioLevel = TypeObject<'UserStudioLevel', {
-  id: Field<'id', Res<'Int!'>>
-  version: Field<'version', Res<'Int!'>>
-  uid: Field<'uid', Res<'String!'>>
-  title: Field<'title', Res<'String!'>>
-  metadata: Field<'metadata', Res<'LevelMeta!'>>
-  duration: Field<'duration', Res<'Float!'>>
-  size: Field<'size', Res<'FileSize!'>>
-  description: Field<'description', Res<'String!'>>
-  state: Field<'state', Res<'ResourceState!'>>
-  censored: Field<'censored', Res<'String'>>
-  tags: Field<'tags', Res<'[String!]!'>>
-  category: Field<'category', Res<'[String!]!'>>
-  creationDate: Field<'creationDate', Res<'Date!'>>
-  modificationDate: Field<'modificationDate', Res<'Date!'>>
-  bundle: Field<'bundle', Res<'LevelBundle'>>
-  charts: Field<'charts', Res<'[Chart!]!'>>
-  downloadCount: Field<'downloadCount', Res<'Float'>>
-  playCount: Field<'playCount', Res<'Float'>>
-  avgRating: Field<'avgRating', Res<'Float'>>
-  ratingCount: Field<'ratingCount', Res<'Float'>>
+type Type_RecordChart = ObjectType<'RecordChart', {
+  id: Field<'Int!', Scalar_Int>
+  name: Field<'String', Scalar_String>
+  difficulty: Field<'Int!', Scalar_Int>
+  type: Field<'String!', Scalar_String>
+  notesCount: Field<'Int!', Scalar_Int>
+  level: Field<'RecordLevel', Type_RecordLevel>
+}>
+
+type Type_RecordDetails = ObjectType<'RecordDetails', {
+  perfect: Field<'Int!', Scalar_Int>
+  great: Field<'Int!', Scalar_Int>
+  good: Field<'Int!', Scalar_Int>
+  bad: Field<'Int!', Scalar_Int>
+  miss: Field<'Int!', Scalar_Int>
+  maxCombo: Field<'Int!', Scalar_Int>
+}>
+
+type Type_RecordLevel = ObjectType<'RecordLevel', {
+  id: Field<'Int!', Scalar_Int>
+  version: Field<'Int!', Scalar_Int>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String!', Scalar_String>
+  metadata: Field<'LevelMeta!', Type_LevelMeta>
+  duration: Field<'Float!', Scalar_Float>
+  size: Field<'FileSize!', Scalar_FileSize>
+  description: Field<'String!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  censored: Field<'String', Scalar_String>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
+  owner: Field<'User', Type_User>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  bundle: Field<'LevelBundle', Type_LevelBundle>
+}>
+
+type Type_ResourceMeta = ObjectType<'ResourceMeta', {
+  cover: Field<'ResourceMetaProperty', Type_ResourceMetaProperty>
+}>
+
+type Type_ResourceMetaProperty = ObjectType<'ResourceMetaProperty', {
+  name: Field<'String', Scalar_String>
+  localized_name: Field<'String', Scalar_String>
+  url: Field<'String', Scalar_String>
+}>
+
+type Type_User = ObjectType<'User', {
+  collectionsCount: Field<'Int!', Scalar_Int>
+  collections: Field<'[CollectionUserListing!]!', Type_CollectionUserListing, {
+    first: Input<'Int', Scalar_Int>
+  }>
+  levelsCount: Field<'Int!', Scalar_Int, {
+    category: Input<'String', Scalar_String>
+  }>
+  levels: Field<'[UserLevel!]!', Type_UserLevel, {
+    first: Input<'Int', Scalar_Int>
+    category: Input<'String', Scalar_String>
+    sort: Input<'LevelQuerySort', Enum_LevelQuerySort>
+    order: Input<'QueryOrder', Enum_QueryOrder>
+  }>
+  id: Field<'ID!', Scalar_ID>
+  uid: Field<'String', Scalar_String>
+  name: Field<'String', Scalar_String>
+  emails: Field<'[Email!]!', Type_Email>
+  registrationDate: Field<'Date', Scalar_Date>
+  role: Field<'Role!', Enum_Role>
+  avatar: Field<'Avatar!', Type_Avatar>
+  active: Field<'Boolean', Scalar_Boolean>
+  lastSeen: Field<'Date', Scalar_Date>
+  my: Field<'My', Type_My>
+}>
+
+type Type_UserLevel = ObjectType<'UserLevel', {
+  id: Field<'Int!', Scalar_Int>
+  version: Field<'Int!', Scalar_Int>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String!', Scalar_String>
+  metadata: Field<'LevelMeta!', Type_LevelMeta>
+  duration: Field<'Float!', Scalar_Float>
+  size: Field<'FileSize!', Scalar_FileSize>
+  description: Field<'String!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  censored: Field<'String', Scalar_String>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  bundle: Field<'LevelBundle', Type_LevelBundle>
+  charts: Field<'[Chart!]!', Type_Chart>
+}>
+
+type Type_UserRecord = ObjectType<'UserRecord', {
+  id: Field<'Int!', Scalar_Int>
+  date: Field<'Date!', Scalar_Date>
+  chart: Field<'RecordChart', Type_RecordChart>
+  score: Field<'Int!', Scalar_Int>
+  accuracy: Field<'Float!', Scalar_Float>
+  mods: Field<'[GameplayMods!]!', Enum_GameplayMods>
+  ranked: Field<'Boolean!', Scalar_Boolean>
+  details: Field<'RecordDetails!', Type_RecordDetails>
+  rating: Field<'Float!', Scalar_Float>
+  recentRating: Field<'Float', Scalar_Float>
+}>
+
+type Type_UserStudioLevel = ObjectType<'UserStudioLevel', {
+  id: Field<'Int!', Scalar_Int>
+  version: Field<'Int!', Scalar_Int>
+  uid: Field<'String!', Scalar_String>
+  title: Field<'String!', Scalar_String>
+  metadata: Field<'LevelMeta!', Type_LevelMeta>
+  duration: Field<'Float!', Scalar_Float>
+  size: Field<'FileSize!', Scalar_FileSize>
+  description: Field<'String!', Scalar_String>
+  state: Field<'ResourceState!', Enum_ResourceState>
+  censored: Field<'String', Scalar_String>
+  tags: Field<'[String!]!', Scalar_String>
+  category: Field<'[String!]!', Scalar_String>
+  creationDate: Field<'Date!', Scalar_Date>
+  modificationDate: Field<'Date!', Scalar_Date>
+  bundle: Field<'LevelBundle', Type_LevelBundle>
+  charts: Field<'[Chart!]!', Type_Chart>
+  downloadCount: Field<'Float', Scalar_Float>
+  playCount: Field<'Float', Scalar_Float>
+  avgRating: Field<'Float', Scalar_Float>
+  ratingCount: Field<'Float', Scalar_Float>
 }>
 
 export type Schema = DefineSchema<{
-  Scalars: {
-    Date: ScalarType<'Date', string>
-    FileSize: ScalarType<'FileSize', string>
-    Long: ScalarType<'Long', string>
-    Object: ScalarType<'Object', string>
-  }
-  Enums: {
-    GameplayMods: EnumType<'GameplayMods', GameplayMods>
-    LevelQuerySort: EnumType<'LevelQuerySort', LevelQuerySort>
-    PostType: EnumType<'PostType', PostType>
-    QueryOrder: EnumType<'QueryOrder', QueryOrder>
-    RecordQuerySort: EnumType<'RecordQuerySort', RecordQuerySort>
-    ResourceState: EnumType<'ResourceState', ResourceState>
-    Role: EnumType<'Role', Role>
-    SearchLevelOrder: EnumType<'SearchLevelOrder', SearchLevelOrder>
-    SearchLevelSortingStrategy: EnumType<'SearchLevelSortingStrategy', SearchLevelSortingStrategy>
-  }
-  Inputs: {
-    CollectionInput: CollectionInput
-    CollectionMetaInput: CollectionMetaInput
-    PartialChartMetadata: PartialChartMetadata
-    PartialMetadata: PartialMetadata
-    PostInput: PostInput
-    PostMetaInput: PostMetaInput
-    ProfileInput: ProfileInput
-    RecordQueryInput: RecordQueryInput
-    ResourceMetaInput: ResourceMetaInput
-    UpdateLevelInput: UpdateLevelInput
-  }
-  Objects: {
-    Avatar: Avatar
-    Badge: Badge
-    Chart: Chart
-    Collection: Collection
-    CollectionListing: CollectionListing
-    CollectionUserListing: CollectionUserListing
-    Comment: Comment
-    Email: Email
-    File: File
-    Image: Image
-    LeaderboardRecord: LeaderboardRecord
-    Level: Level
-    LevelBundle: LevelBundle
-    LevelMeta: LevelMeta
-    Mutation: Mutation
-    My: My
-    Post: Post
-    PostDetail: PostDetail
-    PostMeta: PostMeta
-    Profile: Profile
-    ProfileActivity: ProfileActivity
-    ProfileExp: ProfileExp
-    ProfileGrades: ProfileGrades
-    ProfileTimeSeries: ProfileTimeSeries
-    Query: Query
-    Rating: Rating
-    Record: Record
-    RecordChart: RecordChart
-    RecordDetails: RecordDetails
-    RecordLevel: RecordLevel
-    ResourceMeta: ResourceMeta
-    ResourceMetaProperty: ResourceMetaProperty
-    User: User
-    UserLevel: UserLevel
-    UserRecord: UserRecord
-    UserStudioLevel: UserStudioLevel
-  }
+  Date: Scalar_Date
+  FileSize: Scalar_FileSize
+  Long: Scalar_Long
+  Object: Scalar_Object
+  Int: Scalar_Int
+  Float: Scalar_Float
+  String: Scalar_String
+  Boolean: Scalar_Boolean
+  ID: Scalar_ID
+  GameplayMods: Enum_GameplayMods
+  LevelQuerySort: Enum_LevelQuerySort
+  PostType: Enum_PostType
+  QueryOrder: Enum_QueryOrder
+  RecordQuerySort: Enum_RecordQuerySort
+  ResourceState: Enum_ResourceState
+  Role: Enum_Role
+  SearchLevelOrder: Enum_SearchLevelOrder
+  SearchLevelSortingStrategy: Enum_SearchLevelSortingStrategy
+  CollectionInput: Input_CollectionInput
+  CollectionMetaInput: Input_CollectionMetaInput
+  PartialChartMetadata: Input_PartialChartMetadata
+  PartialMetadata: Input_PartialMetadata
+  PostInput: Input_PostInput
+  PostMetaInput: Input_PostMetaInput
+  ProfileInput: Input_ProfileInput
+  RecordQueryInput: Input_RecordQueryInput
+  ResourceMetaInput: Input_ResourceMetaInput
+  UpdateLevelInput: Input_UpdateLevelInput
+  Avatar: Type_Avatar
+  Badge: Type_Badge
+  Chart: Type_Chart
+  Collection: Type_Collection
+  CollectionListing: Type_CollectionListing
+  CollectionUserListing: Type_CollectionUserListing
+  Comment: Type_Comment
+  Email: Type_Email
+  File: Type_File
+  Image: Type_Image
+  LeaderboardRecord: Type_LeaderboardRecord
+  Level: Type_Level
+  LevelBundle: Type_LevelBundle
+  LevelMeta: Type_LevelMeta
+  Mutation: Type_Mutation
+  My: Type_My
+  Post: Type_Post
+  PostDetail: Type_PostDetail
+  PostMeta: Type_PostMeta
+  Profile: Type_Profile
+  ProfileActivity: Type_ProfileActivity
+  ProfileExp: Type_ProfileExp
+  ProfileGrades: Type_ProfileGrades
+  ProfileTimeSeries: Type_ProfileTimeSeries
+  Query: Type_Query
+  Rating: Type_Rating
+  Record: Type_Record
+  RecordChart: Type_RecordChart
+  RecordDetails: Type_RecordDetails
+  RecordLevel: Type_RecordLevel
+  ResourceMeta: Type_ResourceMeta
+  ResourceMetaProperty: Type_ResourceMetaProperty
+  User: Type_User
+  UserLevel: Type_UserLevel
+  UserRecord: Type_UserRecord
+  UserStudioLevel: Type_UserStudioLevel
 }>
-
-type Arg<T extends string> = ArgOf<Schema, T>
-type Res<T extends string> = ResOf<Schema, T>
 
 declare module '@gqfn/core/schema' {
   interface Schemas {
@@ -1682,107 +1708,105 @@ declare module '@gqfn/core/schema' {
 
 exports[`@gqfn/cli > local def 1`] = `
 "/* eslint-ignore */
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
+import type { ScalarType, EnumType, InputObjectType, Input, Field, ObjectType, InterfaceType, UnionType, DefineSchema } from '@gqfn/core/schema'
+
+type Scalar_Date = ScalarType<'Date', unknown, unknown>
+type Scalar_Int = ScalarType<'Int', number, number>
+type Scalar_Float = ScalarType<'Float', number, number>
+type Scalar_String = ScalarType<'String', string, string>
+type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+type Scalar_ID = ScalarType<'ID', string | number, string>
 
 export type CategoryEnum =
   | 'funny'
   | 'jokes'
   | 'serious'
+type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum>
 
-type SayingDataInput = InputObject<'SayingDataInput', {
-  category: Arg<'CategoryEnum!'>
-  content: Arg<'String!'>
+type Input_SayingDataInput = InputObjectType<'SayingDataInput', {
+  category: Input<'CategoryEnum!', Enum_CategoryEnum>
+  content: Input<'String!', Scalar_String>
 }>
 
-type ItemWithId = InterfaceObject<'ItemWithId', {
-  id: Field<'id', Res<'Int!'>>
+type Type_Mutation = ObjectType<'Mutation', {
+  addSaying: Field<'Saying!', Type_Saying, {
+    input: Input<'SayingDataInput!', Input_SayingDataInput>
+    ownerId: Input<'Int!', Scalar_Int>
+  }>
+}>
+
+type Type_Query = ObjectType<'Query', {
+  all: Field<'[Data!]!', Union_Data>
+  allId: Field<'[ItemWithId!]!', Interface_ItemWithId>
+  hello: Field<'String!', Scalar_String, {
+    name: Input<'String', Scalar_String>
+  }>
+  saying: Field<'Saying!', Type_Saying, {
+    id: Input<'Int!', Scalar_Int>
+  }>
+  sayings: Field<'[Saying!]!', Type_Saying, {
+    category: Input<'[CategoryEnum!]', Enum_CategoryEnum>
+  }>
+  user: Field<'User!', Type_User, {
+    id: Input<'Int!', Scalar_Int>
+  }>
+  users: Field<'[User!]!', Type_User>
+}>
+
+type Type_Saying = ObjectType<'Saying', {
+  category: Field<'CategoryEnum!', Enum_CategoryEnum>
+  content: Field<'String!', Scalar_String>
+  createdAt: Field<'Date!', Scalar_Date>
+  id: Field<'Int!', Scalar_Int>
+  owner: Field<'User!', Type_User>
+  updatedAt: Field<'Date!', Scalar_Date>
+}>
+
+type Type_Subscription = ObjectType<'Subscription', {
+  countdown: Field<'Int!', Scalar_Int, {
+    from: Input<'Int!', Scalar_Int>
+  }>
+}>
+
+type Type_User = ObjectType<'User', {
+  email: Field<'String!', Scalar_String>
+  friends: Field<'[User!]!', Type_User>
+  id: Field<'Int!', Scalar_Int>
+  name: Field<'String!', Scalar_String>
+  sayings: Field<'[Saying!]!', Type_Saying, {
+    category: Input<'CategoryEnum', Enum_CategoryEnum>
+  }>
+}>
+
+type Interface_ItemWithId = InterfaceType<'ItemWithId', {
+  id: Field<'Int!', Scalar_Int>
 }, {
-  Saying: Saying
-  User: User
+  Saying: Type_Saying
+  User: Type_User
 }>
 
-type Data = Union<'Data', {
-  Saying: Saying
-  User: User
-}>
-
-type Mutation = TypeObject<'Mutation', {
-  addSaying: Field<'addSaying', Res<'Saying!'>, {
-    input: Arg<'SayingDataInput!'>
-    ownerId: Arg<'Int!'>
-  }>
-}>
-
-type Query = TypeObject<'Query', {
-  all: Field<'all', Res<'[Data!]!'>>
-  allId: Field<'allId', Res<'[ItemWithId!]!'>>
-  hello: Field<'hello', Res<'String!'>, {
-    name: Arg<'String'>
-  }>
-  saying: Field<'saying', Res<'Saying!'>, {
-    id: Arg<'Int!'>
-  }>
-  sayings: Field<'sayings', Res<'[Saying!]!'>, {
-    category: Arg<'[CategoryEnum!]'>
-  }>
-  user: Field<'user', Res<'User!'>, {
-    id: Arg<'Int!'>
-  }>
-  users: Field<'users', Res<'[User!]!'>>
-}>
-
-type Saying = TypeObject<'Saying', {
-  category: Field<'category', Res<'CategoryEnum!'>>
-  content: Field<'content', Res<'String!'>>
-  createdAt: Field<'createdAt', Res<'Date!'>>
-  id: Field<'id', Res<'Int!'>>
-  owner: Field<'owner', Res<'User!'>>
-  updatedAt: Field<'updatedAt', Res<'Date!'>>
-}>
-
-type Subscription = TypeObject<'Subscription', {
-  countdown: Field<'countdown', Res<'Int!'>, {
-    from: Arg<'Int!'>
-  }>
-}>
-
-type User = TypeObject<'User', {
-  email: Field<'email', Res<'String!'>>
-  friends: Field<'friends', Res<'[User!]!'>>
-  id: Field<'id', Res<'Int!'>>
-  name: Field<'name', Res<'String!'>>
-  sayings: Field<'sayings', Res<'[Saying!]!'>, {
-    category: Arg<'CategoryEnum'>
-  }>
+type Union_Data = UnionType<'Data', {
+  Saying: Type_Saying
+  User: Type_User
 }>
 
 export type Schema = DefineSchema<{
-  Scalars: {
-    Date: ScalarType<'Date', string>
-  }
-  Enums: {
-    CategoryEnum: EnumType<'CategoryEnum', CategoryEnum>
-  }
-  Inputs: {
-    SayingDataInput: SayingDataInput
-  }
-  Interfaces: {
-    ItemWithId: ItemWithId
-  }
-  Unions: {
-    Data: Data
-  }
-  Objects: {
-    Mutation: Mutation
-    Query: Query
-    Saying: Saying
-    Subscription: Subscription
-    User: User
-  }
+  Date: Scalar_Date
+  Int: Scalar_Int
+  Float: Scalar_Float
+  String: Scalar_String
+  Boolean: Scalar_Boolean
+  ID: Scalar_ID
+  CategoryEnum: Enum_CategoryEnum
+  SayingDataInput: Input_SayingDataInput
+  Mutation: Type_Mutation
+  Query: Type_Query
+  Saying: Type_Saying
+  Subscription: Type_Subscription
+  User: Type_User
+  ItemWithId: Interface_ItemWithId
+  Data: Union_Data
 }>
-
-type Arg<T extends string> = ArgOf<Schema, T>
-type Res<T extends string> = ResOf<Schema, T>
 
 declare module '@gqfn/core/schema' {
   interface Schemas {
@@ -1794,609 +1818,613 @@ declare module '@gqfn/core/schema' {
 
 exports[`@gqfn/cli > star-wars sdl 1`] = `
 "/* eslint-ignore */
-import type { ArgOf, DefineSchema, EnumType, Field, InputObject, InterfaceObject, ResOf, ScalarType, TypeObject, Union} from '@gqfn/core/schema'
+import type { ScalarType, Field, Input, ObjectType, InterfaceType, DefineSchema } from '@gqfn/core/schema'
 
-type Node = InterfaceObject<'Node', {
-  id: Field<'id', Res<'ID!'>>
+type Scalar_Int = ScalarType<'Int', number, number>
+type Scalar_Float = ScalarType<'Float', number, number>
+type Scalar_String = ScalarType<'String', string, string>
+type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+type Scalar_ID = ScalarType<'ID', string | number, string>
+
+type Type_Film = ObjectType<'Film', {
+  characterConnection: Field<'FilmCharactersConnection', Type_FilmCharactersConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  created: Field<'String', Scalar_String>
+  director: Field<'String', Scalar_String>
+  edited: Field<'String', Scalar_String>
+  episodeID: Field<'Int', Scalar_Int>
+  id: Field<'ID!', Scalar_ID>
+  openingCrawl: Field<'String', Scalar_String>
+  planetConnection: Field<'FilmPlanetsConnection', Type_FilmPlanetsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  producers: Field<'[String]', Scalar_String>
+  releaseDate: Field<'String', Scalar_String>
+  speciesConnection: Field<'FilmSpeciesConnection', Type_FilmSpeciesConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  starshipConnection: Field<'FilmStarshipsConnection', Type_FilmStarshipsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  title: Field<'String', Scalar_String>
+  vehicleConnection: Field<'FilmVehiclesConnection', Type_FilmVehiclesConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+}>
+
+type Type_FilmCharactersConnection = ObjectType<'FilmCharactersConnection', {
+  characters: Field<'[Person]', Type_Person>
+  edges: Field<'[FilmCharactersEdge]', Type_FilmCharactersEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_FilmCharactersEdge = ObjectType<'FilmCharactersEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Person', Type_Person>
+}>
+
+type Type_FilmPlanetsConnection = ObjectType<'FilmPlanetsConnection', {
+  edges: Field<'[FilmPlanetsEdge]', Type_FilmPlanetsEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  planets: Field<'[Planet]', Type_Planet>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_FilmPlanetsEdge = ObjectType<'FilmPlanetsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Planet', Type_Planet>
+}>
+
+type Type_FilmSpeciesConnection = ObjectType<'FilmSpeciesConnection', {
+  edges: Field<'[FilmSpeciesEdge]', Type_FilmSpeciesEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  species: Field<'[Species]', Type_Species>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_FilmSpeciesEdge = ObjectType<'FilmSpeciesEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Species', Type_Species>
+}>
+
+type Type_FilmStarshipsConnection = ObjectType<'FilmStarshipsConnection', {
+  edges: Field<'[FilmStarshipsEdge]', Type_FilmStarshipsEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  starships: Field<'[Starship]', Type_Starship>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_FilmStarshipsEdge = ObjectType<'FilmStarshipsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Starship', Type_Starship>
+}>
+
+type Type_FilmVehiclesConnection = ObjectType<'FilmVehiclesConnection', {
+  edges: Field<'[FilmVehiclesEdge]', Type_FilmVehiclesEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  totalCount: Field<'Int', Scalar_Int>
+  vehicles: Field<'[Vehicle]', Type_Vehicle>
+}>
+
+type Type_FilmVehiclesEdge = ObjectType<'FilmVehiclesEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Vehicle', Type_Vehicle>
+}>
+
+type Type_FilmsConnection = ObjectType<'FilmsConnection', {
+  edges: Field<'[FilmsEdge]', Type_FilmsEdge>
+  films: Field<'[Film]', Type_Film>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_FilmsEdge = ObjectType<'FilmsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Film', Type_Film>
+}>
+
+type Type_PageInfo = ObjectType<'PageInfo', {
+  endCursor: Field<'String', Scalar_String>
+  hasNextPage: Field<'Boolean!', Scalar_Boolean>
+  hasPreviousPage: Field<'Boolean!', Scalar_Boolean>
+  startCursor: Field<'String', Scalar_String>
+}>
+
+type Type_PeopleConnection = ObjectType<'PeopleConnection', {
+  edges: Field<'[PeopleEdge]', Type_PeopleEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  people: Field<'[Person]', Type_Person>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_PeopleEdge = ObjectType<'PeopleEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Person', Type_Person>
+}>
+
+type Type_Person = ObjectType<'Person', {
+  birthYear: Field<'String', Scalar_String>
+  created: Field<'String', Scalar_String>
+  edited: Field<'String', Scalar_String>
+  eyeColor: Field<'String', Scalar_String>
+  filmConnection: Field<'PersonFilmsConnection', Type_PersonFilmsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  gender: Field<'String', Scalar_String>
+  hairColor: Field<'String', Scalar_String>
+  height: Field<'Int', Scalar_Int>
+  homeworld: Field<'Planet', Type_Planet>
+  id: Field<'ID!', Scalar_ID>
+  mass: Field<'Float', Scalar_Float>
+  name: Field<'String', Scalar_String>
+  skinColor: Field<'String', Scalar_String>
+  species: Field<'Species', Type_Species>
+  starshipConnection: Field<'PersonStarshipsConnection', Type_PersonStarshipsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  vehicleConnection: Field<'PersonVehiclesConnection', Type_PersonVehiclesConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+}>
+
+type Type_PersonFilmsConnection = ObjectType<'PersonFilmsConnection', {
+  edges: Field<'[PersonFilmsEdge]', Type_PersonFilmsEdge>
+  films: Field<'[Film]', Type_Film>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_PersonFilmsEdge = ObjectType<'PersonFilmsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Film', Type_Film>
+}>
+
+type Type_PersonStarshipsConnection = ObjectType<'PersonStarshipsConnection', {
+  edges: Field<'[PersonStarshipsEdge]', Type_PersonStarshipsEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  starships: Field<'[Starship]', Type_Starship>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_PersonStarshipsEdge = ObjectType<'PersonStarshipsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Starship', Type_Starship>
+}>
+
+type Type_PersonVehiclesConnection = ObjectType<'PersonVehiclesConnection', {
+  edges: Field<'[PersonVehiclesEdge]', Type_PersonVehiclesEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  totalCount: Field<'Int', Scalar_Int>
+  vehicles: Field<'[Vehicle]', Type_Vehicle>
+}>
+
+type Type_PersonVehiclesEdge = ObjectType<'PersonVehiclesEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Vehicle', Type_Vehicle>
+}>
+
+type Type_Planet = ObjectType<'Planet', {
+  climates: Field<'[String]', Scalar_String>
+  created: Field<'String', Scalar_String>
+  diameter: Field<'Int', Scalar_Int>
+  edited: Field<'String', Scalar_String>
+  filmConnection: Field<'PlanetFilmsConnection', Type_PlanetFilmsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  gravity: Field<'String', Scalar_String>
+  id: Field<'ID!', Scalar_ID>
+  name: Field<'String', Scalar_String>
+  orbitalPeriod: Field<'Int', Scalar_Int>
+  population: Field<'Float', Scalar_Float>
+  residentConnection: Field<'PlanetResidentsConnection', Type_PlanetResidentsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  rotationPeriod: Field<'Int', Scalar_Int>
+  surfaceWater: Field<'Float', Scalar_Float>
+  terrains: Field<'[String]', Scalar_String>
+}>
+
+type Type_PlanetFilmsConnection = ObjectType<'PlanetFilmsConnection', {
+  edges: Field<'[PlanetFilmsEdge]', Type_PlanetFilmsEdge>
+  films: Field<'[Film]', Type_Film>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_PlanetFilmsEdge = ObjectType<'PlanetFilmsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Film', Type_Film>
+}>
+
+type Type_PlanetResidentsConnection = ObjectType<'PlanetResidentsConnection', {
+  edges: Field<'[PlanetResidentsEdge]', Type_PlanetResidentsEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  residents: Field<'[Person]', Type_Person>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_PlanetResidentsEdge = ObjectType<'PlanetResidentsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Person', Type_Person>
+}>
+
+type Type_PlanetsConnection = ObjectType<'PlanetsConnection', {
+  edges: Field<'[PlanetsEdge]', Type_PlanetsEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  planets: Field<'[Planet]', Type_Planet>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_PlanetsEdge = ObjectType<'PlanetsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Planet', Type_Planet>
+}>
+
+type Type_Root = ObjectType<'Root', {
+  allFilms: Field<'FilmsConnection', Type_FilmsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  allPeople: Field<'PeopleConnection', Type_PeopleConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  allPlanets: Field<'PlanetsConnection', Type_PlanetsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  allSpecies: Field<'SpeciesConnection', Type_SpeciesConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  allStarships: Field<'StarshipsConnection', Type_StarshipsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  allVehicles: Field<'VehiclesConnection', Type_VehiclesConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  film: Field<'Film', Type_Film, {
+    filmID: Input<'ID', Scalar_ID>
+    id: Input<'ID', Scalar_ID>
+  }>
+  node: Field<'Node', Interface_Node, {
+    id: Input<'ID!', Scalar_ID>
+  }>
+  person: Field<'Person', Type_Person, {
+    id: Input<'ID', Scalar_ID>
+    personID: Input<'ID', Scalar_ID>
+  }>
+  planet: Field<'Planet', Type_Planet, {
+    id: Input<'ID', Scalar_ID>
+    planetID: Input<'ID', Scalar_ID>
+  }>
+  species: Field<'Species', Type_Species, {
+    id: Input<'ID', Scalar_ID>
+    speciesID: Input<'ID', Scalar_ID>
+  }>
+  starship: Field<'Starship', Type_Starship, {
+    id: Input<'ID', Scalar_ID>
+    starshipID: Input<'ID', Scalar_ID>
+  }>
+  vehicle: Field<'Vehicle', Type_Vehicle, {
+    id: Input<'ID', Scalar_ID>
+    vehicleID: Input<'ID', Scalar_ID>
+  }>
+}>
+
+type Type_Species = ObjectType<'Species', {
+  averageHeight: Field<'Float', Scalar_Float>
+  averageLifespan: Field<'Int', Scalar_Int>
+  classification: Field<'String', Scalar_String>
+  created: Field<'String', Scalar_String>
+  designation: Field<'String', Scalar_String>
+  edited: Field<'String', Scalar_String>
+  eyeColors: Field<'[String]', Scalar_String>
+  filmConnection: Field<'SpeciesFilmsConnection', Type_SpeciesFilmsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  hairColors: Field<'[String]', Scalar_String>
+  homeworld: Field<'Planet', Type_Planet>
+  id: Field<'ID!', Scalar_ID>
+  language: Field<'String', Scalar_String>
+  name: Field<'String', Scalar_String>
+  personConnection: Field<'SpeciesPeopleConnection', Type_SpeciesPeopleConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  skinColors: Field<'[String]', Scalar_String>
+}>
+
+type Type_SpeciesConnection = ObjectType<'SpeciesConnection', {
+  edges: Field<'[SpeciesEdge]', Type_SpeciesEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  species: Field<'[Species]', Type_Species>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_SpeciesEdge = ObjectType<'SpeciesEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Species', Type_Species>
+}>
+
+type Type_SpeciesFilmsConnection = ObjectType<'SpeciesFilmsConnection', {
+  edges: Field<'[SpeciesFilmsEdge]', Type_SpeciesFilmsEdge>
+  films: Field<'[Film]', Type_Film>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_SpeciesFilmsEdge = ObjectType<'SpeciesFilmsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Film', Type_Film>
+}>
+
+type Type_SpeciesPeopleConnection = ObjectType<'SpeciesPeopleConnection', {
+  edges: Field<'[SpeciesPeopleEdge]', Type_SpeciesPeopleEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  people: Field<'[Person]', Type_Person>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_SpeciesPeopleEdge = ObjectType<'SpeciesPeopleEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Person', Type_Person>
+}>
+
+type Type_Starship = ObjectType<'Starship', {
+  MGLT: Field<'Int', Scalar_Int>
+  cargoCapacity: Field<'Float', Scalar_Float>
+  consumables: Field<'String', Scalar_String>
+  costInCredits: Field<'Float', Scalar_Float>
+  created: Field<'String', Scalar_String>
+  crew: Field<'String', Scalar_String>
+  edited: Field<'String', Scalar_String>
+  filmConnection: Field<'StarshipFilmsConnection', Type_StarshipFilmsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  hyperdriveRating: Field<'Float', Scalar_Float>
+  id: Field<'ID!', Scalar_ID>
+  length: Field<'Float', Scalar_Float>
+  manufacturers: Field<'[String]', Scalar_String>
+  maxAtmospheringSpeed: Field<'Int', Scalar_Int>
+  model: Field<'String', Scalar_String>
+  name: Field<'String', Scalar_String>
+  passengers: Field<'String', Scalar_String>
+  pilotConnection: Field<'StarshipPilotsConnection', Type_StarshipPilotsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  starshipClass: Field<'String', Scalar_String>
+}>
+
+type Type_StarshipFilmsConnection = ObjectType<'StarshipFilmsConnection', {
+  edges: Field<'[StarshipFilmsEdge]', Type_StarshipFilmsEdge>
+  films: Field<'[Film]', Type_Film>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_StarshipFilmsEdge = ObjectType<'StarshipFilmsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Film', Type_Film>
+}>
+
+type Type_StarshipPilotsConnection = ObjectType<'StarshipPilotsConnection', {
+  edges: Field<'[StarshipPilotsEdge]', Type_StarshipPilotsEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  pilots: Field<'[Person]', Type_Person>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_StarshipPilotsEdge = ObjectType<'StarshipPilotsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Person', Type_Person>
+}>
+
+type Type_StarshipsConnection = ObjectType<'StarshipsConnection', {
+  edges: Field<'[StarshipsEdge]', Type_StarshipsEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  starships: Field<'[Starship]', Type_Starship>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_StarshipsEdge = ObjectType<'StarshipsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Starship', Type_Starship>
+}>
+
+type Type_Vehicle = ObjectType<'Vehicle', {
+  cargoCapacity: Field<'Float', Scalar_Float>
+  consumables: Field<'String', Scalar_String>
+  costInCredits: Field<'Float', Scalar_Float>
+  created: Field<'String', Scalar_String>
+  crew: Field<'String', Scalar_String>
+  edited: Field<'String', Scalar_String>
+  filmConnection: Field<'VehicleFilmsConnection', Type_VehicleFilmsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  id: Field<'ID!', Scalar_ID>
+  length: Field<'Float', Scalar_Float>
+  manufacturers: Field<'[String]', Scalar_String>
+  maxAtmospheringSpeed: Field<'Int', Scalar_Int>
+  model: Field<'String', Scalar_String>
+  name: Field<'String', Scalar_String>
+  passengers: Field<'String', Scalar_String>
+  pilotConnection: Field<'VehiclePilotsConnection', Type_VehiclePilotsConnection, {
+    after: Input<'String', Scalar_String>
+    before: Input<'String', Scalar_String>
+    first: Input<'Int', Scalar_Int>
+    last: Input<'Int', Scalar_Int>
+  }>
+  vehicleClass: Field<'String', Scalar_String>
+}>
+
+type Type_VehicleFilmsConnection = ObjectType<'VehicleFilmsConnection', {
+  edges: Field<'[VehicleFilmsEdge]', Type_VehicleFilmsEdge>
+  films: Field<'[Film]', Type_Film>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_VehicleFilmsEdge = ObjectType<'VehicleFilmsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Film', Type_Film>
+}>
+
+type Type_VehiclePilotsConnection = ObjectType<'VehiclePilotsConnection', {
+  edges: Field<'[VehiclePilotsEdge]', Type_VehiclePilotsEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  pilots: Field<'[Person]', Type_Person>
+  totalCount: Field<'Int', Scalar_Int>
+}>
+
+type Type_VehiclePilotsEdge = ObjectType<'VehiclePilotsEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Person', Type_Person>
+}>
+
+type Type_VehiclesConnection = ObjectType<'VehiclesConnection', {
+  edges: Field<'[VehiclesEdge]', Type_VehiclesEdge>
+  pageInfo: Field<'PageInfo!', Type_PageInfo>
+  totalCount: Field<'Int', Scalar_Int>
+  vehicles: Field<'[Vehicle]', Type_Vehicle>
+}>
+
+type Type_VehiclesEdge = ObjectType<'VehiclesEdge', {
+  cursor: Field<'String!', Scalar_String>
+  node: Field<'Vehicle', Type_Vehicle>
+}>
+
+type Interface_Node = InterfaceType<'Node', {
+  id: Field<'ID!', Scalar_ID>
 }, {
-  Film: Film
-  Person: Person
-  Planet: Planet
-  Species: Species
-  Starship: Starship
-  Vehicle: Vehicle
-}>
-
-type Film = TypeObject<'Film', {
-  characterConnection: Field<'characterConnection', Res<'FilmCharactersConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  created: Field<'created', Res<'String'>>
-  director: Field<'director', Res<'String'>>
-  edited: Field<'edited', Res<'String'>>
-  episodeID: Field<'episodeID', Res<'Int'>>
-  id: Field<'id', Res<'ID!'>>
-  openingCrawl: Field<'openingCrawl', Res<'String'>>
-  planetConnection: Field<'planetConnection', Res<'FilmPlanetsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  producers: Field<'producers', Res<'[String]'>>
-  releaseDate: Field<'releaseDate', Res<'String'>>
-  speciesConnection: Field<'speciesConnection', Res<'FilmSpeciesConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  starshipConnection: Field<'starshipConnection', Res<'FilmStarshipsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  title: Field<'title', Res<'String'>>
-  vehicleConnection: Field<'vehicleConnection', Res<'FilmVehiclesConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-}>
-
-type FilmCharactersConnection = TypeObject<'FilmCharactersConnection', {
-  characters: Field<'characters', Res<'[Person]'>>
-  edges: Field<'edges', Res<'[FilmCharactersEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type FilmCharactersEdge = TypeObject<'FilmCharactersEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Person'>>
-}>
-
-type FilmPlanetsConnection = TypeObject<'FilmPlanetsConnection', {
-  edges: Field<'edges', Res<'[FilmPlanetsEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  planets: Field<'planets', Res<'[Planet]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type FilmPlanetsEdge = TypeObject<'FilmPlanetsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Planet'>>
-}>
-
-type FilmSpeciesConnection = TypeObject<'FilmSpeciesConnection', {
-  edges: Field<'edges', Res<'[FilmSpeciesEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  species: Field<'species', Res<'[Species]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type FilmSpeciesEdge = TypeObject<'FilmSpeciesEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Species'>>
-}>
-
-type FilmStarshipsConnection = TypeObject<'FilmStarshipsConnection', {
-  edges: Field<'edges', Res<'[FilmStarshipsEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  starships: Field<'starships', Res<'[Starship]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type FilmStarshipsEdge = TypeObject<'FilmStarshipsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Starship'>>
-}>
-
-type FilmVehiclesConnection = TypeObject<'FilmVehiclesConnection', {
-  edges: Field<'edges', Res<'[FilmVehiclesEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-  vehicles: Field<'vehicles', Res<'[Vehicle]'>>
-}>
-
-type FilmVehiclesEdge = TypeObject<'FilmVehiclesEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Vehicle'>>
-}>
-
-type FilmsConnection = TypeObject<'FilmsConnection', {
-  edges: Field<'edges', Res<'[FilmsEdge]'>>
-  films: Field<'films', Res<'[Film]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type FilmsEdge = TypeObject<'FilmsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Film'>>
-}>
-
-type PageInfo = TypeObject<'PageInfo', {
-  endCursor: Field<'endCursor', Res<'String'>>
-  hasNextPage: Field<'hasNextPage', Res<'Boolean!'>>
-  hasPreviousPage: Field<'hasPreviousPage', Res<'Boolean!'>>
-  startCursor: Field<'startCursor', Res<'String'>>
-}>
-
-type PeopleConnection = TypeObject<'PeopleConnection', {
-  edges: Field<'edges', Res<'[PeopleEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  people: Field<'people', Res<'[Person]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type PeopleEdge = TypeObject<'PeopleEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Person'>>
-}>
-
-type Person = TypeObject<'Person', {
-  birthYear: Field<'birthYear', Res<'String'>>
-  created: Field<'created', Res<'String'>>
-  edited: Field<'edited', Res<'String'>>
-  eyeColor: Field<'eyeColor', Res<'String'>>
-  filmConnection: Field<'filmConnection', Res<'PersonFilmsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  gender: Field<'gender', Res<'String'>>
-  hairColor: Field<'hairColor', Res<'String'>>
-  height: Field<'height', Res<'Int'>>
-  homeworld: Field<'homeworld', Res<'Planet'>>
-  id: Field<'id', Res<'ID!'>>
-  mass: Field<'mass', Res<'Float'>>
-  name: Field<'name', Res<'String'>>
-  skinColor: Field<'skinColor', Res<'String'>>
-  species: Field<'species', Res<'Species'>>
-  starshipConnection: Field<'starshipConnection', Res<'PersonStarshipsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  vehicleConnection: Field<'vehicleConnection', Res<'PersonVehiclesConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-}>
-
-type PersonFilmsConnection = TypeObject<'PersonFilmsConnection', {
-  edges: Field<'edges', Res<'[PersonFilmsEdge]'>>
-  films: Field<'films', Res<'[Film]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type PersonFilmsEdge = TypeObject<'PersonFilmsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Film'>>
-}>
-
-type PersonStarshipsConnection = TypeObject<'PersonStarshipsConnection', {
-  edges: Field<'edges', Res<'[PersonStarshipsEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  starships: Field<'starships', Res<'[Starship]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type PersonStarshipsEdge = TypeObject<'PersonStarshipsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Starship'>>
-}>
-
-type PersonVehiclesConnection = TypeObject<'PersonVehiclesConnection', {
-  edges: Field<'edges', Res<'[PersonVehiclesEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-  vehicles: Field<'vehicles', Res<'[Vehicle]'>>
-}>
-
-type PersonVehiclesEdge = TypeObject<'PersonVehiclesEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Vehicle'>>
-}>
-
-type Planet = TypeObject<'Planet', {
-  climates: Field<'climates', Res<'[String]'>>
-  created: Field<'created', Res<'String'>>
-  diameter: Field<'diameter', Res<'Int'>>
-  edited: Field<'edited', Res<'String'>>
-  filmConnection: Field<'filmConnection', Res<'PlanetFilmsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  gravity: Field<'gravity', Res<'String'>>
-  id: Field<'id', Res<'ID!'>>
-  name: Field<'name', Res<'String'>>
-  orbitalPeriod: Field<'orbitalPeriod', Res<'Int'>>
-  population: Field<'population', Res<'Float'>>
-  residentConnection: Field<'residentConnection', Res<'PlanetResidentsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  rotationPeriod: Field<'rotationPeriod', Res<'Int'>>
-  surfaceWater: Field<'surfaceWater', Res<'Float'>>
-  terrains: Field<'terrains', Res<'[String]'>>
-}>
-
-type PlanetFilmsConnection = TypeObject<'PlanetFilmsConnection', {
-  edges: Field<'edges', Res<'[PlanetFilmsEdge]'>>
-  films: Field<'films', Res<'[Film]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type PlanetFilmsEdge = TypeObject<'PlanetFilmsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Film'>>
-}>
-
-type PlanetResidentsConnection = TypeObject<'PlanetResidentsConnection', {
-  edges: Field<'edges', Res<'[PlanetResidentsEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  residents: Field<'residents', Res<'[Person]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type PlanetResidentsEdge = TypeObject<'PlanetResidentsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Person'>>
-}>
-
-type PlanetsConnection = TypeObject<'PlanetsConnection', {
-  edges: Field<'edges', Res<'[PlanetsEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  planets: Field<'planets', Res<'[Planet]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type PlanetsEdge = TypeObject<'PlanetsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Planet'>>
-}>
-
-type Root = TypeObject<'Root', {
-  allFilms: Field<'allFilms', Res<'FilmsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  allPeople: Field<'allPeople', Res<'PeopleConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  allPlanets: Field<'allPlanets', Res<'PlanetsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  allSpecies: Field<'allSpecies', Res<'SpeciesConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  allStarships: Field<'allStarships', Res<'StarshipsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  allVehicles: Field<'allVehicles', Res<'VehiclesConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  film: Field<'film', Res<'Film'>, {
-    filmID: Arg<'ID'>
-    id: Arg<'ID'>
-  }>
-  node: Field<'node', Res<'Node'>, {
-    id: Arg<'ID!'>
-  }>
-  person: Field<'person', Res<'Person'>, {
-    id: Arg<'ID'>
-    personID: Arg<'ID'>
-  }>
-  planet: Field<'planet', Res<'Planet'>, {
-    id: Arg<'ID'>
-    planetID: Arg<'ID'>
-  }>
-  species: Field<'species', Res<'Species'>, {
-    id: Arg<'ID'>
-    speciesID: Arg<'ID'>
-  }>
-  starship: Field<'starship', Res<'Starship'>, {
-    id: Arg<'ID'>
-    starshipID: Arg<'ID'>
-  }>
-  vehicle: Field<'vehicle', Res<'Vehicle'>, {
-    id: Arg<'ID'>
-    vehicleID: Arg<'ID'>
-  }>
-}>
-
-type Species = TypeObject<'Species', {
-  averageHeight: Field<'averageHeight', Res<'Float'>>
-  averageLifespan: Field<'averageLifespan', Res<'Int'>>
-  classification: Field<'classification', Res<'String'>>
-  created: Field<'created', Res<'String'>>
-  designation: Field<'designation', Res<'String'>>
-  edited: Field<'edited', Res<'String'>>
-  eyeColors: Field<'eyeColors', Res<'[String]'>>
-  filmConnection: Field<'filmConnection', Res<'SpeciesFilmsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  hairColors: Field<'hairColors', Res<'[String]'>>
-  homeworld: Field<'homeworld', Res<'Planet'>>
-  id: Field<'id', Res<'ID!'>>
-  language: Field<'language', Res<'String'>>
-  name: Field<'name', Res<'String'>>
-  personConnection: Field<'personConnection', Res<'SpeciesPeopleConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  skinColors: Field<'skinColors', Res<'[String]'>>
-}>
-
-type SpeciesConnection = TypeObject<'SpeciesConnection', {
-  edges: Field<'edges', Res<'[SpeciesEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  species: Field<'species', Res<'[Species]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type SpeciesEdge = TypeObject<'SpeciesEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Species'>>
-}>
-
-type SpeciesFilmsConnection = TypeObject<'SpeciesFilmsConnection', {
-  edges: Field<'edges', Res<'[SpeciesFilmsEdge]'>>
-  films: Field<'films', Res<'[Film]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type SpeciesFilmsEdge = TypeObject<'SpeciesFilmsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Film'>>
-}>
-
-type SpeciesPeopleConnection = TypeObject<'SpeciesPeopleConnection', {
-  edges: Field<'edges', Res<'[SpeciesPeopleEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  people: Field<'people', Res<'[Person]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type SpeciesPeopleEdge = TypeObject<'SpeciesPeopleEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Person'>>
-}>
-
-type Starship = TypeObject<'Starship', {
-  MGLT: Field<'MGLT', Res<'Int'>>
-  cargoCapacity: Field<'cargoCapacity', Res<'Float'>>
-  consumables: Field<'consumables', Res<'String'>>
-  costInCredits: Field<'costInCredits', Res<'Float'>>
-  created: Field<'created', Res<'String'>>
-  crew: Field<'crew', Res<'String'>>
-  edited: Field<'edited', Res<'String'>>
-  filmConnection: Field<'filmConnection', Res<'StarshipFilmsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  hyperdriveRating: Field<'hyperdriveRating', Res<'Float'>>
-  id: Field<'id', Res<'ID!'>>
-  length: Field<'length', Res<'Float'>>
-  manufacturers: Field<'manufacturers', Res<'[String]'>>
-  maxAtmospheringSpeed: Field<'maxAtmospheringSpeed', Res<'Int'>>
-  model: Field<'model', Res<'String'>>
-  name: Field<'name', Res<'String'>>
-  passengers: Field<'passengers', Res<'String'>>
-  pilotConnection: Field<'pilotConnection', Res<'StarshipPilotsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  starshipClass: Field<'starshipClass', Res<'String'>>
-}>
-
-type StarshipFilmsConnection = TypeObject<'StarshipFilmsConnection', {
-  edges: Field<'edges', Res<'[StarshipFilmsEdge]'>>
-  films: Field<'films', Res<'[Film]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type StarshipFilmsEdge = TypeObject<'StarshipFilmsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Film'>>
-}>
-
-type StarshipPilotsConnection = TypeObject<'StarshipPilotsConnection', {
-  edges: Field<'edges', Res<'[StarshipPilotsEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  pilots: Field<'pilots', Res<'[Person]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type StarshipPilotsEdge = TypeObject<'StarshipPilotsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Person'>>
-}>
-
-type StarshipsConnection = TypeObject<'StarshipsConnection', {
-  edges: Field<'edges', Res<'[StarshipsEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  starships: Field<'starships', Res<'[Starship]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type StarshipsEdge = TypeObject<'StarshipsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Starship'>>
-}>
-
-type Vehicle = TypeObject<'Vehicle', {
-  cargoCapacity: Field<'cargoCapacity', Res<'Float'>>
-  consumables: Field<'consumables', Res<'String'>>
-  costInCredits: Field<'costInCredits', Res<'Float'>>
-  created: Field<'created', Res<'String'>>
-  crew: Field<'crew', Res<'String'>>
-  edited: Field<'edited', Res<'String'>>
-  filmConnection: Field<'filmConnection', Res<'VehicleFilmsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  id: Field<'id', Res<'ID!'>>
-  length: Field<'length', Res<'Float'>>
-  manufacturers: Field<'manufacturers', Res<'[String]'>>
-  maxAtmospheringSpeed: Field<'maxAtmospheringSpeed', Res<'Int'>>
-  model: Field<'model', Res<'String'>>
-  name: Field<'name', Res<'String'>>
-  passengers: Field<'passengers', Res<'String'>>
-  pilotConnection: Field<'pilotConnection', Res<'VehiclePilotsConnection'>, {
-    after: Arg<'String'>
-    before: Arg<'String'>
-    first: Arg<'Int'>
-    last: Arg<'Int'>
-  }>
-  vehicleClass: Field<'vehicleClass', Res<'String'>>
-}>
-
-type VehicleFilmsConnection = TypeObject<'VehicleFilmsConnection', {
-  edges: Field<'edges', Res<'[VehicleFilmsEdge]'>>
-  films: Field<'films', Res<'[Film]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type VehicleFilmsEdge = TypeObject<'VehicleFilmsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Film'>>
-}>
-
-type VehiclePilotsConnection = TypeObject<'VehiclePilotsConnection', {
-  edges: Field<'edges', Res<'[VehiclePilotsEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  pilots: Field<'pilots', Res<'[Person]'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-}>
-
-type VehiclePilotsEdge = TypeObject<'VehiclePilotsEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Person'>>
-}>
-
-type VehiclesConnection = TypeObject<'VehiclesConnection', {
-  edges: Field<'edges', Res<'[VehiclesEdge]'>>
-  pageInfo: Field<'pageInfo', Res<'PageInfo!'>>
-  totalCount: Field<'totalCount', Res<'Int'>>
-  vehicles: Field<'vehicles', Res<'[Vehicle]'>>
-}>
-
-type VehiclesEdge = TypeObject<'VehiclesEdge', {
-  cursor: Field<'cursor', Res<'String!'>>
-  node: Field<'node', Res<'Vehicle'>>
+  Film: Type_Film
+  Person: Type_Person
+  Planet: Type_Planet
+  Species: Type_Species
+  Starship: Type_Starship
+  Vehicle: Type_Vehicle
 }>
 
 export type Schema = DefineSchema<{
-  Interfaces: {
-    Node: Node
-  }
-  Objects: {
-    Film: Film
-    FilmCharactersConnection: FilmCharactersConnection
-    FilmCharactersEdge: FilmCharactersEdge
-    FilmPlanetsConnection: FilmPlanetsConnection
-    FilmPlanetsEdge: FilmPlanetsEdge
-    FilmSpeciesConnection: FilmSpeciesConnection
-    FilmSpeciesEdge: FilmSpeciesEdge
-    FilmStarshipsConnection: FilmStarshipsConnection
-    FilmStarshipsEdge: FilmStarshipsEdge
-    FilmVehiclesConnection: FilmVehiclesConnection
-    FilmVehiclesEdge: FilmVehiclesEdge
-    FilmsConnection: FilmsConnection
-    FilmsEdge: FilmsEdge
-    PageInfo: PageInfo
-    PeopleConnection: PeopleConnection
-    PeopleEdge: PeopleEdge
-    Person: Person
-    PersonFilmsConnection: PersonFilmsConnection
-    PersonFilmsEdge: PersonFilmsEdge
-    PersonStarshipsConnection: PersonStarshipsConnection
-    PersonStarshipsEdge: PersonStarshipsEdge
-    PersonVehiclesConnection: PersonVehiclesConnection
-    PersonVehiclesEdge: PersonVehiclesEdge
-    Planet: Planet
-    PlanetFilmsConnection: PlanetFilmsConnection
-    PlanetFilmsEdge: PlanetFilmsEdge
-    PlanetResidentsConnection: PlanetResidentsConnection
-    PlanetResidentsEdge: PlanetResidentsEdge
-    PlanetsConnection: PlanetsConnection
-    PlanetsEdge: PlanetsEdge
-    Root: Root
-    Species: Species
-    SpeciesConnection: SpeciesConnection
-    SpeciesEdge: SpeciesEdge
-    SpeciesFilmsConnection: SpeciesFilmsConnection
-    SpeciesFilmsEdge: SpeciesFilmsEdge
-    SpeciesPeopleConnection: SpeciesPeopleConnection
-    SpeciesPeopleEdge: SpeciesPeopleEdge
-    Starship: Starship
-    StarshipFilmsConnection: StarshipFilmsConnection
-    StarshipFilmsEdge: StarshipFilmsEdge
-    StarshipPilotsConnection: StarshipPilotsConnection
-    StarshipPilotsEdge: StarshipPilotsEdge
-    StarshipsConnection: StarshipsConnection
-    StarshipsEdge: StarshipsEdge
-    Vehicle: Vehicle
-    VehicleFilmsConnection: VehicleFilmsConnection
-    VehicleFilmsEdge: VehicleFilmsEdge
-    VehiclePilotsConnection: VehiclePilotsConnection
-    VehiclePilotsEdge: VehiclePilotsEdge
-    VehiclesConnection: VehiclesConnection
-    VehiclesEdge: VehiclesEdge
-  }
+  Int: Scalar_Int
+  Float: Scalar_Float
+  String: Scalar_String
+  Boolean: Scalar_Boolean
+  ID: Scalar_ID
+  Film: Type_Film
+  FilmCharactersConnection: Type_FilmCharactersConnection
+  FilmCharactersEdge: Type_FilmCharactersEdge
+  FilmPlanetsConnection: Type_FilmPlanetsConnection
+  FilmPlanetsEdge: Type_FilmPlanetsEdge
+  FilmSpeciesConnection: Type_FilmSpeciesConnection
+  FilmSpeciesEdge: Type_FilmSpeciesEdge
+  FilmStarshipsConnection: Type_FilmStarshipsConnection
+  FilmStarshipsEdge: Type_FilmStarshipsEdge
+  FilmVehiclesConnection: Type_FilmVehiclesConnection
+  FilmVehiclesEdge: Type_FilmVehiclesEdge
+  FilmsConnection: Type_FilmsConnection
+  FilmsEdge: Type_FilmsEdge
+  PageInfo: Type_PageInfo
+  PeopleConnection: Type_PeopleConnection
+  PeopleEdge: Type_PeopleEdge
+  Person: Type_Person
+  PersonFilmsConnection: Type_PersonFilmsConnection
+  PersonFilmsEdge: Type_PersonFilmsEdge
+  PersonStarshipsConnection: Type_PersonStarshipsConnection
+  PersonStarshipsEdge: Type_PersonStarshipsEdge
+  PersonVehiclesConnection: Type_PersonVehiclesConnection
+  PersonVehiclesEdge: Type_PersonVehiclesEdge
+  Planet: Type_Planet
+  PlanetFilmsConnection: Type_PlanetFilmsConnection
+  PlanetFilmsEdge: Type_PlanetFilmsEdge
+  PlanetResidentsConnection: Type_PlanetResidentsConnection
+  PlanetResidentsEdge: Type_PlanetResidentsEdge
+  PlanetsConnection: Type_PlanetsConnection
+  PlanetsEdge: Type_PlanetsEdge
+  Root: Type_Root
+  Species: Type_Species
+  SpeciesConnection: Type_SpeciesConnection
+  SpeciesEdge: Type_SpeciesEdge
+  SpeciesFilmsConnection: Type_SpeciesFilmsConnection
+  SpeciesFilmsEdge: Type_SpeciesFilmsEdge
+  SpeciesPeopleConnection: Type_SpeciesPeopleConnection
+  SpeciesPeopleEdge: Type_SpeciesPeopleEdge
+  Starship: Type_Starship
+  StarshipFilmsConnection: Type_StarshipFilmsConnection
+  StarshipFilmsEdge: Type_StarshipFilmsEdge
+  StarshipPilotsConnection: Type_StarshipPilotsConnection
+  StarshipPilotsEdge: Type_StarshipPilotsEdge
+  StarshipsConnection: Type_StarshipsConnection
+  StarshipsEdge: Type_StarshipsEdge
+  Vehicle: Type_Vehicle
+  VehicleFilmsConnection: Type_VehicleFilmsConnection
+  VehicleFilmsEdge: Type_VehicleFilmsEdge
+  VehiclePilotsConnection: Type_VehiclePilotsConnection
+  VehiclePilotsEdge: Type_VehiclePilotsEdge
+  VehiclesConnection: Type_VehiclesConnection
+  VehiclesEdge: Type_VehiclesEdge
+  Node: Interface_Node
 }>
-
-type Arg<T extends string> = ArgOf<Schema, T>
-type Res<T extends string> = ResOf<Schema, T>
 
 declare module '@gqfn/core/schema' {
   interface Schemas {

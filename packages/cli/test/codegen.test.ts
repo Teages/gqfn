@@ -5,13 +5,55 @@ import { generate } from '../src/codegen'
 describe('codegen', () => {
   describe('generate', () => {
     it('scalar', () => {
-      const schema = `
-        scalar DateTime
-        scalar ID
-      `
-      const result = generate(schema)
-      expect(result).toContain('DateTime: ScalarType')
-      expect(result).toContain('ID: ScalarType')
+      expect(generate(
+        `scalar DateTime`,
+        { scalars: { DateTime: 'string' } },
+      )).toMatchInlineSnapshot(`
+        "/* eslint-ignore */
+        import type { ScalarType, DefineSchema } from '@gqfn/core/schema'
+
+        type Scalar_DateTime = ScalarType<'DateTime', string, string>
+        type Scalar_Int = ScalarType<'Int', number, number>
+        type Scalar_Float = ScalarType<'Float', number, number>
+        type Scalar_String = ScalarType<'String', string, string>
+        type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
+
+        export type Schema = DefineSchema<{
+          DateTime: Scalar_DateTime
+          Int: Scalar_Int
+          Float: Scalar_Float
+          String: Scalar_String
+          Boolean: Scalar_Boolean
+          ID: Scalar_ID
+        }>
+        "
+      `)
+
+      expect(generate(
+        `scalar DateTime`,
+        { scalars: { DateTime: { input: 'string | number | Date', output: 'string' } } },
+      )).toMatchInlineSnapshot(`
+        "/* eslint-ignore */
+        import type { ScalarType, DefineSchema } from '@gqfn/core/schema'
+
+        type Scalar_DateTime = ScalarType<'DateTime', string | number | Date, string>
+        type Scalar_Int = ScalarType<'Int', number, number>
+        type Scalar_Float = ScalarType<'Float', number, number>
+        type Scalar_String = ScalarType<'String', string, string>
+        type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
+
+        export type Schema = DefineSchema<{
+          DateTime: Scalar_DateTime
+          Int: Scalar_Int
+          Float: Scalar_Float
+          String: Scalar_String
+          Boolean: Scalar_Boolean
+          ID: Scalar_ID
+        }>
+        "
+      `)
     })
 
     it('enum', () => {
@@ -23,10 +65,32 @@ describe('codegen', () => {
         }
       `
       const result = generate(schema)
-      expect(result).toContain('export type UserRole =')
-      expect(result).toContain('| \'ADMIN\'')
-      expect(result).toContain('| \'USER\'')
-      expect(result).toContain('| \'GUEST\'')
+      expect(result).toMatchInlineSnapshot(`
+        "/* eslint-ignore */
+        import type { ScalarType, EnumType, DefineSchema } from '@gqfn/core/schema'
+
+        type Scalar_Int = ScalarType<'Int', number, number>
+        type Scalar_Float = ScalarType<'Float', number, number>
+        type Scalar_String = ScalarType<'String', string, string>
+        type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
+
+        export type UserRole =
+          | 'ADMIN'
+          | 'USER'
+          | 'GUEST'
+        type Enum_UserRole = EnumType<'UserRole', UserRole>
+
+        export type Schema = DefineSchema<{
+          Int: Scalar_Int
+          Float: Scalar_Float
+          String: Scalar_String
+          Boolean: Scalar_Boolean
+          ID: Scalar_ID
+          UserRole: Enum_UserRole
+        }>
+        "
+      `)
     })
 
     it('input', () => {
@@ -38,10 +102,32 @@ describe('codegen', () => {
         }
       `
       const result = generate(schema)
-      expect(result).toContain('type UserInput = InputObject')
-      expect(result).toContain('name: Arg')
-      expect(result).toContain('age: Arg')
-      expect(result).toContain('email: Arg')
+      expect(result).toMatchInlineSnapshot(`
+        "/* eslint-ignore */
+        import type { ScalarType, InputObjectType, Input, DefineSchema } from '@gqfn/core/schema'
+
+        type Scalar_Int = ScalarType<'Int', number, number>
+        type Scalar_Float = ScalarType<'Float', number, number>
+        type Scalar_String = ScalarType<'String', string, string>
+        type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
+
+        type Input_UserInput = InputObjectType<'UserInput', {
+          name: Input<'String!', Scalar_String>
+          age: Input<'Int', Scalar_Int>
+          email: Input<'String', Scalar_String>
+        }>
+
+        export type Schema = DefineSchema<{
+          Int: Scalar_Int
+          Float: Scalar_Float
+          String: Scalar_String
+          Boolean: Scalar_Boolean
+          ID: Scalar_ID
+          UserInput: Input_UserInput
+        }>
+        "
+      `)
     })
 
     it('interface', () => {
@@ -50,15 +136,59 @@ describe('codegen', () => {
           id: ID!
         }
 
-        type User implements Node {
+        interface NodeWithUUID implements Node {
           id: ID!
+          uuid: String!
+        }
+
+        type User implements NodeWithUUID {
+          id: ID!
+          uuid: String!
           name: String!
         }
       `
       const result = generate(schema)
-      expect(result).toContain('type Node = InterfaceObject')
-      expect(result).toContain('id: Field')
-      expect(result).toContain('type User = TypeObject')
+      expect(result).toMatchInlineSnapshot(`
+        "/* eslint-ignore */
+        import type { ScalarType, Field, ObjectType, InterfaceType, DefineSchema } from '@gqfn/core/schema'
+
+        type Scalar_Int = ScalarType<'Int', number, number>
+        type Scalar_Float = ScalarType<'Float', number, number>
+        type Scalar_String = ScalarType<'String', string, string>
+        type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
+
+        type Type_User = ObjectType<'User', {
+          id: Field<'ID!', Scalar_ID>
+          uuid: Field<'String!', Scalar_String>
+          name: Field<'String!', Scalar_String>
+        }>
+
+        type Interface_Node = InterfaceType<'Node', {
+          id: Field<'ID!', Scalar_ID>
+        }, {
+          User: Type_User
+        }>
+
+        type Interface_NodeWithUUID = InterfaceType<'NodeWithUUID', {
+          id: Field<'ID!', Scalar_ID>
+          uuid: Field<'String!', Scalar_String>
+        }, {
+          User: Type_User
+        }>
+
+        export type Schema = DefineSchema<{
+          Int: Scalar_Int
+          Float: Scalar_Float
+          String: Scalar_String
+          Boolean: Scalar_Boolean
+          ID: Scalar_ID
+          User: Type_User
+          Node: Interface_Node
+          NodeWithUUID: Interface_NodeWithUUID
+        }>
+        "
+      `)
     })
 
     it('union', () => {
@@ -71,12 +201,61 @@ describe('codegen', () => {
           name: String!
         }
 
+        type Human {
+          name: String!
+        }
+
         union Pet = Dog | Cat
+        union Animal = Pet | Human
       `
       const result = generate(schema)
-      expect(result).toContain('type Pet = Union')
-      expect(result).toContain('Dog: Dog')
-      expect(result).toContain('Cat: Cat')
+      expect(result).toMatchInlineSnapshot(`
+        "/* eslint-ignore */
+        import type { ScalarType, Field, ObjectType, UnionType, DefineSchema } from '@gqfn/core/schema'
+
+        type Scalar_Int = ScalarType<'Int', number, number>
+        type Scalar_Float = ScalarType<'Float', number, number>
+        type Scalar_String = ScalarType<'String', string, string>
+        type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
+
+        type Type_Dog = ObjectType<'Dog', {
+          name: Field<'String!', Scalar_String>
+        }>
+
+        type Type_Cat = ObjectType<'Cat', {
+          name: Field<'String!', Scalar_String>
+        }>
+
+        type Type_Human = ObjectType<'Human', {
+          name: Field<'String!', Scalar_String>
+        }>
+
+        type Union_Pet = UnionType<'Pet', {
+          Dog: Type_Dog
+          Cat: Type_Cat
+        }>
+
+        type Union_Animal = UnionType<'Animal', {
+          Human: Type_Human
+          Dog: Type_Dog
+          Cat: Type_Cat
+        }>
+
+        export type Schema = DefineSchema<{
+          Int: Scalar_Int
+          Float: Scalar_Float
+          String: Scalar_String
+          Boolean: Scalar_Boolean
+          ID: Scalar_ID
+          Dog: Type_Dog
+          Cat: Type_Cat
+          Human: Type_Human
+          Pet: Union_Pet
+          Animal: Union_Animal
+        }>
+        "
+      `)
     })
 
     it('object', () => {
@@ -89,11 +268,33 @@ describe('codegen', () => {
         }
       `
       const result = generate(schema)
-      expect(result).toContain('type User = TypeObject')
-      expect(result).toContain('id: Field')
-      expect(result).toContain('name: Field')
-      expect(result).toContain('age: Field')
-      expect(result).toContain('email: Field')
+      expect(result).toMatchInlineSnapshot(`
+        "/* eslint-ignore */
+        import type { ScalarType, Field, ObjectType, DefineSchema } from '@gqfn/core/schema'
+
+        type Scalar_Int = ScalarType<'Int', number, number>
+        type Scalar_Float = ScalarType<'Float', number, number>
+        type Scalar_String = ScalarType<'String', string, string>
+        type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
+
+        type Type_User = ObjectType<'User', {
+          id: Field<'ID!', Scalar_ID>
+          name: Field<'String!', Scalar_String>
+          age: Field<'Int', Scalar_Int>
+          email: Field<'String', Scalar_String>
+        }>
+
+        export type Schema = DefineSchema<{
+          Int: Scalar_Int
+          Float: Scalar_Float
+          String: Scalar_String
+          Boolean: Scalar_Boolean
+          ID: Scalar_ID
+          User: Type_User
+        }>
+        "
+      `)
     })
 
     it('field', () => {
@@ -104,9 +305,36 @@ describe('codegen', () => {
         }
       `
       const result = generate(schema)
-      expect(result).toContain('id: Arg')
-      expect(result).toContain('limit: Arg')
-      expect(result).toContain('offset: Arg')
+      expect(result).toMatchInlineSnapshot(`
+        "/* eslint-ignore */
+        import type { ScalarType, Field, Input, ObjectType, DefineSchema } from '@gqfn/core/schema'
+
+        type Scalar_Int = ScalarType<'Int', number, number>
+        type Scalar_Float = ScalarType<'Float', number, number>
+        type Scalar_String = ScalarType<'String', string, string>
+        type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
+
+        type Type_Query = ObjectType<'Query', {
+          user: Field<'User', undefined, {
+            id: Input<'ID!', Scalar_ID>
+          }>
+          users: Field<'[User!]!', undefined, {
+            limit: Input<'Int', Scalar_Int>
+            offset: Input<'Int', Scalar_Int>
+          }>
+        }>
+
+        export type Schema = DefineSchema<{
+          Int: Scalar_Int
+          Float: Scalar_Float
+          String: Scalar_String
+          Boolean: Scalar_Boolean
+          ID: Scalar_ID
+          Query: Type_Query
+        }>
+        "
+      `)
     })
 
     it('url', () => {
@@ -127,8 +355,30 @@ describe('codegen', () => {
       `
       const document = parse(schema)
       const result = generate(document)
-      expect(result).toContain('type Query = TypeObject')
-      expect(result).toContain('hello: Field')
+      expect(result).toMatchInlineSnapshot(`
+        "/* eslint-ignore */
+        import type { ScalarType, Field, ObjectType, DefineSchema } from '@gqfn/core/schema'
+
+        type Scalar_Int = ScalarType<'Int', number, number>
+        type Scalar_Float = ScalarType<'Float', number, number>
+        type Scalar_String = ScalarType<'String', string, string>
+        type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+        type Scalar_ID = ScalarType<'ID', string | number, string>
+
+        type Type_Query = ObjectType<'Query', {
+          hello: Field<'String!', Scalar_String>
+        }>
+
+        export type Schema = DefineSchema<{
+          Int: Scalar_Int
+          Float: Scalar_Float
+          String: Scalar_String
+          Boolean: Scalar_Boolean
+          ID: Scalar_ID
+          Query: Type_Query
+        }>
+        "
+      `)
     })
 
     it('invalid', () => {

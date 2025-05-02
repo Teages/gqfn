@@ -1,23 +1,28 @@
 import type { Exact } from '../internal/utils'
-import type { UserSchemaTypes } from '../schema'
+import type { BaseObject, DefineSchema } from './define'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
 import type { TypedDocumentNode } from './document'
-import type { ParseSelectionSet } from './parser/selection'
-import type { PrepareOperationSelectionSet } from './selection'
+import type { PrepareSelection } from './prepare'
+import type { ParseSelection } from './result'
 import type { PrepareVariables, RequireVariables, VariablesDefinition } from './variable'
 
 export type FragmentType = 'fragment'
 export type FragmentName = `${FragmentType} ${string}`
 export type FragmentBaseDefinition = `on ${string}`
-export type FragmentBase<Schema extends UserSchemaTypes> = Schema['Objects'] & Schema['Interfaces'] & Schema['Unions']
+export type FragmentBase<Schema extends DefineSchema<any>> =
+  Schema extends DefineSchema<infer Namespace>
+    ? {
+        [K in keyof Namespace as Namespace[K] extends BaseObject<any, any, any> ? K : never]: Namespace[K]
+      }
+    : never
 
 export interface GraphQueryFunctionFragment<
-  Schema extends UserSchemaTypes,
+  Schema extends DefineSchema<any>,
 > {
   <
     Name extends FragmentName,
     Type extends keyof FragmentBase<Schema>,
-    Selection extends PrepareOperationSelectionSet<
+    Selection extends PrepareSelection<
       FragmentBase<Schema>[Type],
       Record<string, never>
     >,
@@ -25,14 +30,14 @@ export interface GraphQueryFunctionFragment<
     name: Name,
     base: `on ${Type & string}`,
     selection: Exact<
-      PrepareOperationSelectionSet<
+      PrepareSelection<
         FragmentBase<Schema>[Type],
         Record<string, never>
       >,
       Selection
     >,
   ): TypedDocumentNode<
-    ParseSelectionSet<FragmentBase<Schema>[Type], Selection>,
+    ParseSelection<FragmentBase<Schema>[Type], Selection>,
     Record<string, never>
   >
 
@@ -41,7 +46,7 @@ export interface GraphQueryFunctionFragment<
     Type extends keyof FragmentBase<Schema>,
     Variables extends VariablesDefinition<VariablesInputs>,
     VariablesInputs extends string,
-    Selection extends PrepareOperationSelectionSet<
+    Selection extends PrepareSelection<
       FragmentBase<Schema>[Type],
       PrepareVariables<NoInfer<Variables>>
     >,
@@ -50,7 +55,7 @@ export interface GraphQueryFunctionFragment<
     base: `on ${Type & string}`,
     variables: Variables,
     selection: Exact<
-      PrepareOperationSelectionSet<
+      PrepareSelection<
         FragmentBase<Schema>[Type],
         PrepareVariables<NoInfer<Variables>>
       >,
@@ -58,7 +63,7 @@ export interface GraphQueryFunctionFragment<
     >,
     directives?: Array<DirectiveInput> | DirectivesInputWithDollar<Record<string, never>>,
   ): TypedDocumentNode<
-    ParseSelectionSet<FragmentBase<Schema>[Type], Selection>,
+    ParseSelection<FragmentBase<Schema>[Type], Selection>,
     RequireVariables<Schema, Variables>
   >
 }

@@ -6,9 +6,9 @@ import { describe, expectTypeOf, test } from 'vitest'
 describe('types/document', () => {
   test('TypedDocumentNode', () => {
     expectTypeOf<TypedQueryDocumentNode<{ res: 'hello' }, { arg: 'world' }>>()
-      .toMatchTypeOf<TypedDocumentNode<{ res: 'hello' }, { arg: 'world' }>>()
+      .toExtend<TypedDocumentNode<{ res: 'hello' }, { arg: 'world' }>>()
 
     expectTypeOf<GraphqlTypedDocumentNode<{ res: 'hello' }, { arg: 'world' }>>()
-      .toMatchTypeOf<TypedDocumentNode<{ res: 'hello' }, { arg: 'world' }>>()
+      .toExtend<TypedDocumentNode<{ res: 'hello' }, { arg: 'world' }>>()
   })
 })

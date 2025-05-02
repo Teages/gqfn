@@ -10,12 +10,18 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/module.d.mts",
+      "types": "./dist/types.d.mts",
       "import": "./dist/module.mjs"
     }
   },
   "main": "./dist/module.mjs",
-  "types": "./dist/module.d.mts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
   "files": [
     "dist"
   ],
@@ -45,6 +51,7 @@
     "@teages/nuxt-simple-graphql-client": "^0.0.3",
     "@types/node": "^22.14.1",
     "@types/ws": "^8.18.1",
+    "consola": "^3.4.2",
     "eslint": "^9.24.0",
     "get-port-please": "^3.1.2",
     "graphql": "^16.10.0",

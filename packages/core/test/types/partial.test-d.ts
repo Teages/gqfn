@@ -1,74 +1,44 @@
-import type { GraphQueryFunction, RequireOperationPartialData } from '../../src/types'
-import type { ResultOf, VariablesOf } from '../../src/types/document'
-import type { Schema } from './schema'
+import type { ResultOf, VariablesOf } from '../../src'
+import type { GraphQueryFunctionCore } from '../../src/types/operation'
+import type { GraphQueryFunctionPartial, OperationPartial } from '../../src/types/partial'
+import type { PrepareVariables } from '../../src/types/variable'
+import type { Schema, Type_Query, Type_User } from './schema'
 import { describe, expectTypeOf, test } from 'vitest'
 
 describe('types/partial', () => {
   test('GraphQueryFunctionPartial', () => {
-    const gqfn: GraphQueryFunction<Schema> = null as any
+    const schema: {
+      gqfn: GraphQueryFunctionCore<Schema>
+      partial: GraphQueryFunctionPartial<Schema>
+    } = null as any
 
-    const f0 = gqfn.partial('fragment A', 'on User', ['id'])
-    const _q0 = gqfn([{
-      user: $ => $({ id: 0 }, [{ ...f0($) }]),
+    const _i0 = schema.partial(
+      'fragment Hello',
+      'on Query',
+      { name: 'String!' },
+      ['__typename'],
+    )
+    expectTypeOf<typeof _i0>().toEqualTypeOf<OperationPartial<
+      Type_Query,
+      { __typename: true },
+      PrepareVariables<{ name: 'String!' }>
+    >>()
+    const _i0_res = schema.gqfn('query GetHello', { name: 'String! = "world"' }, [{
+      '...': $ => $([{ ..._i0($) }]),
     }])
-    type Args_0 = VariablesOf<typeof _q0>
-    type Result_0 = ResultOf<typeof _q0>
-    expectTypeOf<Args_0>().toEqualTypeOf<Record<string, never>>()
-    expectTypeOf<Result_0>().toEqualTypeOf<{ user: { id: number } }>()
+    expectTypeOf<ResultOf<typeof _i0_res>>().toEqualTypeOf<{ __typename: 'Query' }>()
+    expectTypeOf<VariablesOf<typeof _i0_res>>().toEqualTypeOf<{ name?: string | undefined }>()
 
-    const f1 = gqfn.partial('fragment A', 'on User', { msg: 'String' }, ['id'])
-    type R1 = RequireOperationPartialData<typeof f1>
-    expectTypeOf<R1>().toEqualTypeOf<{ id: number }>()
-
-    const _q1_1 = gqfn(
-      'query Q',
-      { msg: 'String' },
-      [{
-        user: $ => $({ id: 0 }, [{ ...f1($) }]),
-      }],
+    const _i1 = schema.partial(
+      'fragment Hello',
+      'on User',
+      { name: 'String' },
+      ['__typename', { name: true }],
     )
-    type Args_1_1 = VariablesOf<typeof _q1_1>
-    type Result_1_1 = ResultOf<typeof _q1_1>
-    expectTypeOf<Args_1_1>().toEqualTypeOf<{ msg?: string | null | undefined }>()
-    expectTypeOf<Result_1_1>().toEqualTypeOf<{ user: { id: number } }>()
-
-    const _q1_2 = gqfn(
-      'query Q',
-      { msg: 'String!' },
-      [{
-        user: $ => $({ id: 0 }, [{ ...f1($) }]),
-      }],
-    )
-    type Args_1_2 = VariablesOf<typeof _q1_2>
-    type Result_1_2 = ResultOf<typeof _q1_2>
-    expectTypeOf<Args_1_2>().toEqualTypeOf<{ msg: string }>()
-    expectTypeOf<Result_1_2>().toEqualTypeOf<{ user: { id: number } }>()
-
-    const _q1_3 = gqfn(
-      'query Q',
-      { msg: 'String!' },
-      [{
-        users: $ => $([{ ...f1($) }]),
-      }],
-    )
-    type Args_1_3 = VariablesOf<typeof _q1_3>
-    type Result_1_3 = ResultOf<typeof _q1_3>
-    expectTypeOf<Args_1_3>().toEqualTypeOf<{ msg: string }>()
-    expectTypeOf<Result_1_3>().toEqualTypeOf<{ users: { id: number }[] }>()
-
-    const f2 = gqfn.partial('fragment A', 'on User', { msg: 'String!' }, ['id'])
-    type R2 = RequireOperationPartialData<typeof f2>
-    expectTypeOf<R2>().toEqualTypeOf<{ id: number }>()
-    const _q2 = gqfn(
-      'query Q',
-      { msg: 'String!' },
-      [{
-        user: $ => $({ id: 0 }, [{ ...f2($) }]),
-      }],
-    )
-    type Args_2 = VariablesOf<typeof _q2>
-    type Result_2 = ResultOf<typeof _q2>
-    expectTypeOf<Args_2>().toEqualTypeOf<{ msg: string }>()
-    expectTypeOf<Result_2>().toEqualTypeOf<{ user: { id: number } }>()
+    expectTypeOf<typeof _i1>().toEqualTypeOf<OperationPartial<
+      Type_User,
+      { __typename: true, name: true },
+      PrepareVariables<{ name: 'String' }>
+    >>()
   })
 })

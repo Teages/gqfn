@@ -4,9 +4,7 @@ export default defineBuildConfig({
   declaration: true,
   entries: [
     'src/index.ts',
-    'src/runtime/index.ts',
-    'src/types/index.ts',
-    'src/schema/index.ts',
+    'src/schema.ts',
   ],
 
   replace: { 'import.meta.vitest': 'undefined' },

@@ -37,7 +37,7 @@ export interface FetchLoader {
   /**
    * Fetch options to use when fetching the schema.
    *
-   * We use `ofetch` to fetch the schema,
+   * We use [ofetch](https://github.com/unjs/ofetch) to fetch the schema,
    * you can bypass the fetch options with your custom fetch.
    */
   fetchOptions?: Omit<FetchOptions<'json'>, 'method' | 'body'>
@@ -46,6 +46,19 @@ export interface FetchLoader {
 export type GetterLoader = () => (Promise<string> | string)
 
 export type SchemaLoader = FileLoader | SDLLoader | FetchLoader | GetterLoader
+
+export interface ScalarConfig {
+  /**
+   * The input type of the scalar.
+   * @default 'unknown'
+   */
+  input: string
+  /**
+   * The output type of the scalar.
+   * @default 'unknown'
+   */
+  output: string
+}
 
 export interface ClientConfig {
   /**
@@ -57,6 +70,16 @@ export interface ClientConfig {
    * By default, the schema is fetched from the endpoint.
    */
   loader?: SchemaLoader
+  /**
+   * The config of the scalars.
+   *
+   * The key is the name of the scalar,
+   * the value is the config of the scalar.
+   *
+   * - If the value is `string`, it will be used as both the input and output type of the scalar.
+   * - If the value is {@link ScalarConfig}, it will be used as the config of the scalar.
+   */
+  scalars?: Record<string, ScalarConfig | string>
 }
 
 export interface Config {
