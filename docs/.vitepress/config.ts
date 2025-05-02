@@ -83,7 +83,7 @@ export default defineConfig({
           link: '/',
           items: [
             { text: 'Installation', link: '/' },
-            { text: 'useGQFnSchema', link: '/schema' },
+            { text: 'useSchema', link: '/schema' },
             { text: 'Type Utils', link: '/types' },
             { text: 'withGQFnClient', link: '/with-client' },
             { text: 'Nitro Server', link: '/server' },

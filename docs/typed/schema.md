@@ -12,54 +12,42 @@ Here is a empty schema type, you can get start with it:
 
 ```ts twoslash
 import type {
-  ArgOf,
   DefineSchema,
   EnumType,
   Field,
-  InputObject,
-  InterfaceObject,
-  ResOf,
+  Input,
+  InputObjectType,
+  InterfaceType,
+  ObjectType,
   ScalarType,
-  TypeObject,
-  Union,
+  UnionType
 } from '@gqfn/core/schema'
 
 export type Schema = DefineSchema<{
   // Define your schema here
 }>
-
-type Arg<T extends string> = ArgOf<Schema, T>
-type Res<T extends string> = ResOf<Schema, T>
 ```
 
 ### Scalar
 
 To define a scalar type, you can use the `ScalarType` helper type:
 
-:::tip
-Most custom scalar types uses `string` as input and output type in client-side.
-:::
-
 ::: code-group
 ```ts twoslash [schema.ts]
 import type {
-  ArgOf,
   DefineSchema,
   EnumType,
   Field,
-  InputObject,
-  InterfaceObject,
-  ResOf,
+  Input,
+  InputObjectType,
+  InterfaceType,
+  ObjectType,
   ScalarType,
-  TypeObject,
-  Union,
+  UnionType
 } from '@gqfn/core/schema'
+
 // ---cut---
-export type Schema = DefineSchema<{
-  Scalars: {
-    Date: ScalarType<'Date', string>
-  }
-}>
+type Scalar_Date = ScalarType<'Date', string, string>
 ```
 
 ```graphql [GraphQL SDL]
@@ -78,16 +66,15 @@ scalar Date
 ::: code-group
 ```ts twoslash [schema.ts]
 import type {
-  ArgOf,
   DefineSchema,
   EnumType,
   Field,
-  InputObject,
-  InterfaceObject,
-  ResOf,
+  Input,
+  InputObjectType,
+  InterfaceType,
+  ObjectType,
   ScalarType,
-  TypeObject,
-  Union,
+  UnionType
 } from '@gqfn/core/schema'
 // ---cut---
 export type RoleEnum =
@@ -95,11 +82,7 @@ export type RoleEnum =
   | 'USER'
   | 'GUEST'
 
-export type Schema = DefineSchema<{
-  Enums: {
-    RoleEnum: EnumType<'RoleEnum', RoleEnum>
-  }
-}>
+type Enum_RoleEnum = EnumType<'RoleEnum', RoleEnum>
 ```
 
 ```graphql [GraphQL SDL]
@@ -116,30 +99,35 @@ enum RoleEnum {
 ::: code-group
 ```ts twoslash [schema.ts]
 import type {
-  ArgOf,
   DefineSchema,
   EnumType,
   Field,
-  InputObject,
-  InterfaceObject,
-  ResOf,
+  Input,
+  InputObjectType,
+  InterfaceType,
+  ObjectType,
   ScalarType,
-  TypeObject,
-  Union,
+  UnionType
 } from '@gqfn/core/schema'
-type Arg<T extends string> = ArgOf<Schema, T>
-type Res<T extends string> = ResOf<Schema, T>
-// ---cut---
-type UserInput = InputObject<'UserInput', {
-  name: Arg<'String!'>
-  role: Arg<'RoleEnum!'>
-  email: Arg<'String'>
-}>
 
-export type Schema = DefineSchema<{
-  Inputs: {
-    UserInput: UserInput
-  }
+export type Scalar_Int = ScalarType<'Int', number, number>
+export type Scalar_Float = ScalarType<'Float', number, number>
+export type Scalar_String = ScalarType<'String', string, string>
+export type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+export type Scalar_ID = ScalarType<'ID', string | number, string | number>
+export type Scalar_Date = ScalarType<'Date', string, string>
+
+export type RoleEnum =
+  | 'ADMIN'
+  | 'USER'
+  | 'GUEST'
+
+type Enum_RoleEnum = EnumType<'RoleEnum', RoleEnum>
+// ---cut---
+type UserInput = InputObjectType<'UserInput', {
+  name: Input<'String!', Scalar_String>
+  role: Input<'RoleEnum!', Enum_RoleEnum>
+  email: Input<'String', Scalar_String>
 }>
 ```
 
@@ -157,83 +145,86 @@ input UserInput {
 ::: code-group
 ```ts twoslash [schema.ts]
 import type {
-  ArgOf,
   DefineSchema,
   EnumType,
   Field,
-  InputObject,
-  InterfaceObject,
-  ResOf,
+  Input,
+  InputObjectType,
+  InterfaceType,
+  ObjectType,
   ScalarType,
-  TypeObject,
-  Union,
+  UnionType
 } from '@gqfn/core/schema'
-type Arg<T extends string> = ArgOf<Schema, T>
-type Res<T extends string> = ResOf<Schema, T>
+
+export type Scalar_Int = ScalarType<'Int', number, number>
+export type Scalar_Float = ScalarType<'Float', number, number>
+export type Scalar_String = ScalarType<'String', string, string>
+export type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
+export type Scalar_ID = ScalarType<'ID', string | number, string | number>
+export type Scalar_Date = ScalarType<'Date', string, string>
+
+export type RoleEnum =
+  | 'ADMIN'
+  | 'USER'
+  | 'GUEST'
+
 // ---cut---
-type Query = TypeObject<'Query', {
-  users: Field<'users', Res<'User!'>>
-  todo: Field<'todo', Res<'Todo!'>, {
-    id: Arg<'ID!'>
+type Query = ObjectType<'Query', {
+  users: Field<'[User!]!', User>
+  todo: Field<'Todo!', Todo, {
+    id: Input<'ID!', Scalar_ID>
   }>
-  allIdItems: Field<'allIdItems', Res<'[ItemWithId!]!'>>
-  allData: Field<'allData', Res<'[Data!]!'>>
+  allIdItems: Field<'[ItemWithId!]!', ItemWithId>
+  allData: Field<'[Data!]!', Data>
 }>
 
-type Mutation = TypeObject<'Mutation', {
-  addTodo: Field<'addTodo', Res<'Todo!'>, {
-    content: Arg<'string!'>
-  }>
-}>
-
-type Subscription = TypeObject<'Subscription', {
-  watchTodo: Field<'watchTodo', Res<'Todo'>, {
-    id: Arg<'ID!'>
+type Mutation = ObjectType<'Mutation', {
+  addTodo: Field<'Todo!', Todo, {
+    content: Input<'String!', Scalar_String>
   }>
 }>
 
-type ItemWithId = InterfaceObject<'ItemWithId', {
-  id: Field<'id', Res<'Int!'>>
+type Subscription = ObjectType<'Subscription', {
+  watchTodo: Field<'Todo', Todo, {
+    id: Input<'ID!', Scalar_ID>
+  }>
+}>
+
+type ItemWithId = InterfaceType<'ItemWithId', {
+  id: Field<'Int!', Scalar_Int>
 }, {
   User: User
   Todo: Todo
 }>
 
-type Data = Union<'Data', {
+type Data = UnionType<'Data', {
   User: User
   Todo: Todo
 }>
 
-type User = TypeObject<'User', {
-  id: Field<'id', Res<'ID!'>>
-  name: Field<'name', Res<'String!'>>
-  email: Field<'email', Res<'String'>>
-  todo: Field<'todo', Res<'[Todo!]!'>>
+type User = ObjectType<'User', {
+  id: Field<'ID!', Scalar_ID>
+  name: Field<'String!', Scalar_String>
+  email: Field<'String', Scalar_String>
+  todo: Field<'[Todo!]!', Todo>
 }>
 
-type Todo = TypeObject<'Todo', {
-  id: Field<'id', Res<'ID!'>>
-  title: Field<'title', Res<'String'>>
-  content: Field<'content', Res<'String!'>>
-  isDone: Field<'isDone', Res<'Boolean!'>>
-  owner: Field<'User!', Res<'User!'>>
+type Todo = ObjectType<'Todo', {
+  id: Field<'ID!', Scalar_ID>
+  title: Field<'String', Scalar_String>
+  content: Field<'String!', Scalar_String>
+  isDone: Field<'Boolean!', Scalar_Boolean>
+  owner: Field<'User!', User>
 }>
 
 export type Schema = DefineSchema<{
-  Interfaces: {
-    ItemWithId: ItemWithId
-  }
-  Unions: {
-    Data: Data
-  }
-  Objects: {
-    Query: Query
-    Mutation: Mutation
-    Subscription: Subscription
-
-    User: User
-    Todo: Todo
-  }
+  ItemWithId: ItemWithId
+  Data: Data
+  Query: Query
+  Mutation: Mutation
+  Subscription: Subscription
+  User: User
+  Todo: Todo
 }>
 ```
 
@@ -281,59 +272,91 @@ type Todo implements ItemWithId {
 ```ts
 export interface ScalarType<
   Name extends string,
-  Input = unknown,
-  Output = Input,
-> { /* internal */ }
+  Output,
+  Input,
+> extends BaseScalar<Name, Output, Input> {
+  __type__?: () => 'Scalar'
+}
 
 export interface EnumType<
   Name extends string,
-  Values extends string,
-> { /* internal */ }
+  Definition extends string,
+> extends BaseScalar<
+    Name,
+    Definition,
+    PackedEnum<Definition>
+  > {
+  __type__?: () => 'Enum'
+}
 
-export interface InputObject<
+export interface ObjectType<
   Name extends string,
-  Fields extends Record<
-    string,
-    ArgOf<any, string>
-  >,
-> { /* internal */ }
+  Fields extends Record<string, Field<any, any, any>>,
+> extends BaseObject<Name, Fields, Record<string, never>> {
+  __type__?: () => 'Type'
+}
 
-export interface InterfaceObject<
+export interface UnionType<
   Name extends string,
-  Fields extends Record<
-    string,
-    Field<string, any, any>
-  >,
-  Implements extends Record<string, TypeObject<string, any>>,
-> { /* internal */ }
+  Implements extends Record<string, BaseObject<any, any, any>>,
+> extends BaseObject<Name, Record<string, never>, Implements> {
+  __type__?: () => 'Union'
+}
 
-export interface TypeObject<
+export interface InterfaceType<
   Name extends string,
-  Fields extends Record<
-    string,
-    Field<string, any, any>
-  >,
-  Types extends Record<string, TypeObject<string, any>> = EmptyRecord,
-> { /* internal */ }
+  Fields extends Record<string, Field<any, any, any>>,
+  Implements extends Record<string, BaseObject<any, any, any>>,
+> extends BaseObject<Name, Fields, Implements> {
+  __type__?: () => 'Interface'
+}
 
-export interface Union<
+export interface InputObjectType<
   Name extends string,
-  Types extends Record<string, TypeObject<string, any>>,
-> { /* internal */ }
+  Fields extends Record<string, Input<any, any>>,
+> extends BaseType<'InputObject', Name> {
+  __define__?: (fields: Fields) => void
+}
 
 export interface Field<
+  Modifier extends string,
+  Type extends BaseType<any, any>,
+  Args extends Record<string, Input<any, any>> = Record<string, never>,
+> {
+  __define__?: (args: Args) => [Modifier, Type]
+}
+
+export interface Input<
+  Modifier extends string,
+  Type extends BaseType<string, string>,
+> {
+  __define__?: (modifier: Modifier, type: Type) => void
+}
+
+export interface DefineSchema<
+  Namespace extends Record<string, BaseType<any, any>>,
+> {
+  __define__?: () => Namespace
+}
+
+export interface BaseScalar<
   Name extends string,
-  Return extends ResOf<any, string>,
-  Argument extends Record<string, ArgOf<any, string>> = EmptyRecord,
-> { /* internal */ }
+  Output,
+  Input,
+> extends BaseType<'BaseScalar', Name> {
+  __define__?: (input: Input) => Output
+}
 
-export type ArgOf<
-  Schema extends DefineSchema<any>,
-  TKey extends string,
-> = internal // It converts GraphQL input type to TypeScript type
+export interface BaseObject<
+  Name extends string,
+  Fields extends Record<string, Field<any, any, any>>,
+  Implements extends Record<string, BaseObject<string, any, any>>,
+> extends BaseType<'BaseObject', Name> {
+  __define__?: (Implements: Implements) => Fields
+}
 
-export type ResOf<
-  Schema extends DefineSchema<any>,
-  TKey extends string,
-> = internal // It converts GraphQL output type to TypeScript type
+export interface BaseType<Base extends string, Name extends string> {
+  __base__?: () => Base
+  __name__?: () => Name
+}
 ```

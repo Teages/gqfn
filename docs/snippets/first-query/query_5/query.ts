@@ -1,8 +1,8 @@
-import { useGQFnSchema } from '@gqfn/core'
+import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
 
 const endpoint = 'https://graphql.anilist.co'
-const gqfn = useGQFnSchema(endpoint)
+const gqfn = useSchema(endpoint)
 // ---cut---
 const query = gqfn('query FetchAnime', {
   id: 'Int = 127549',

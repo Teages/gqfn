@@ -42,11 +42,11 @@ You can get the type hint when writing the query.
 ```ts twoslash [Query Builder]
 /* eslint-disable eslint-comments/no-unlimited-disable */
 /* eslint-disable */
-import { useGQFnSchema } from '@gqfn/core'
+import { useSchema } from '@gqfn/core'
 import { request } from 'graphql-request'
 
 const endpoint = 'https://graphql.anilist.co'
-const gqfn = useGQFnSchema(endpoint)
+const gqfn = useSchema(endpoint)
 // ---cut---
 const query = gqfn([{
   Media: $ => $({ id: 127549 }, [
