@@ -1,5 +1,4 @@
 import type { ResultOf, UnknownSchema, VariablesOf } from '../src'
-import type { DollarPackage } from '../src/types/dollar'
 import { describe, expectTypeOf, test } from 'vitest'
 import { useSchema } from '../src'
 
