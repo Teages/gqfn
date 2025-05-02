@@ -28,17 +28,17 @@ interface SelectionSetDollarFunctionWithArguments<
   Shape,
   Arguments,
 > {
-  <U extends Shape>(
+  <T extends Shape>(
     arg: Arguments,
-    selection: Exact<Shape, U>
-  ): DollarPackage<U>
+    selection: Exact<Shape, T>
+  ): DollarPackage<T>
 }
 interface SelectionSetDollarFunctionWithoutArguments<
   Shape,
 > {
-  <U extends Shape>(
-    selection: Exact<Shape, U>
-  ): DollarPackage<U>
+  <T extends Shape>(
+    selection: Exact<Shape, T>
+  ): DollarPackage<T>
 }
 interface SelectionSetDollarFunctionCouldHaveArguments<
   Shape,

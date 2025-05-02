@@ -35,7 +35,9 @@ export type Exact<Shape, T extends Shape> =
     ? ExactFunction<Shape, T>
     : Shape extends [...infer ItemShapes extends Array<string>, infer FollowShape extends Record<string, any>]
       ? T extends Array<string>
-        ? T
+        ? T[number] extends ItemShapes[number]
+          ? T
+          : never
         : T extends [...infer Items extends ItemShapes, infer Follow extends FollowShape]
           ? [...Items, ExactRecord<FollowShape, Follow>]
           : never
@@ -43,9 +45,9 @@ export type Exact<Shape, T extends Shape> =
         ? ExactRecord<Shape, T>
         : T
 type ExactFunction<Shape extends (...args: any) => any, T extends Shape> =
-  Shape extends (...args: any) => infer ReturnShape
-    ? T extends (...args: infer Args) => (infer Return extends ReturnShape)
-      ? (...args: Args) => Exact<ReturnShape, Return>
+  Shape extends (...args: any) => infer RetShape
+    ? T extends (...args: infer Args) => (infer Ret extends RetShape)
+      ? (...args: Args) => Exact<RetShape, Ret>
       : never
     : never
 type ExactRecord<Shape extends Record<string, any>, T extends Shape> = {

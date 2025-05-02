@@ -55,9 +55,19 @@ describe('types/result', () => {
     >>().toEqualTypeOf<string>()
 
     expectTypeOf<ParseObjectSelectionContextField<
+      Field<'User', Type_User, any>,
+      ['__typename', 'name', 'email']
+    >>().toEqualTypeOf<{ __typename: 'User', name: string, email: string } | null | undefined>()
+
+    expectTypeOf<ParseObjectSelectionContextField<
       Field<'User!', Type_User, any>,
       ['__typename', 'name', 'email']
     >>().toEqualTypeOf<{ __typename: 'User', name: string, email: string }>()
+
+    expectTypeOf<ParseObjectSelectionContextField<
+      Field<'[User!]!', Type_User, any>,
+      ['__typename', 'name', 'email']
+    >>().toEqualTypeOf<{ __typename: 'User', name: string, email: string }[]>()
   })
 
   test('ParseSelectionName', () => {

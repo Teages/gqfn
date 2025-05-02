@@ -1,4 +1,5 @@
 import type { ResultOf, UnknownSchema, VariablesOf } from '../src'
+import type { DollarPackage } from '../src/types/dollar'
 import { describe, expectTypeOf, test } from 'vitest'
 import { useSchema } from '../src'
 
@@ -32,6 +33,27 @@ describe('typeof @gqfn/core', () => {
     }])
     expectTypeOf<ResultOf<typeof _i3>>().toEqualTypeOf<{ hello: string | null | undefined }>()
     expectTypeOf<VariablesOf<typeof _i3>>().toEqualTypeOf<{ name?: string | undefined }>()
+  })
+  test('complex query', () => {
+    const schema = useSchema('/graphql')
+
+    const _i0 = schema.gqfn('query Test', { name: 'String! = "world"' }, [{
+      hello: $ => $({ name: $.name }, true)
+        .withDirective(['@skip', { if: true }]),
+      sayings: $ => $({ category: schema.enum('funny') }, [
+        'id',
+        'content',
+      ]),
+    }])
+
+    expectTypeOf<ResultOf<typeof _i0>>().toEqualTypeOf<{
+      hello: string | null | undefined
+      sayings: {
+        id: number
+        content: string
+      }[]
+    }>()
+    expectTypeOf<VariablesOf<typeof _i0>>().toEqualTypeOf<{ name?: string | undefined }>()
   })
 
   test('query with fragment (partial)', () => {
