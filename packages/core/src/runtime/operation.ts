@@ -1,8 +1,8 @@
-import type { DocumentNode } from 'graphql'
+import type { DocumentNode } from '@0no-co/graphql.web'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
 import type { SelectionSetComplex } from './selection'
 import type { PrepareVariables, VariableDefinition } from './variable'
-import { Kind, OperationTypeNode } from 'graphql'
+import { Kind, OperationTypeNode } from '@0no-co/graphql.web'
 import { createDocumentNodeContext } from './context'
 import { parseDirective } from './directive'
 import { initDirectiveDollar } from './dollar'
@@ -129,80 +129,82 @@ if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest
 
   it('createGraphQueryFunctionCore', async () => {
-    const { parse } = await import('graphql')
-    const gql = (str: string) => parse(str, { noLocation: true })
+    const { print } = await import('@0no-co/graphql.web')
 
     const gqfn = createGraphQueryFunctionCore()
     expect(typeof gqfn).toBe('function')
 
-    expect(gqfn(['hello'])).toMatchObject(gql(`
-      {
-        hello
-      }
-    `))
+    expect(print(gqfn(['hello'])))
+      .toMatchInlineSnapshot(`
+        "{
+          hello
+        }"
+      `)
 
-    expect(gqfn('mutation', ['hello'])).toMatchObject(gql(`
-      mutation {
-        hello
-      }
-    `))
+    expect(print(gqfn('mutation', ['hello'])))
+      .toMatchInlineSnapshot(`
+        "mutation {
+          hello
+        }"
+      `)
 
-    expect(gqfn('query GetHello', ['hello'])).toMatchObject(gql(`
-      query GetHello {
-        hello
-      }
-    `))
+    expect(print(gqfn('query GetHello', ['hello'])))
+      .toMatchInlineSnapshot(`
+        "query GetHello {
+          hello
+        }"
+      `)
 
-    expect(gqfn(
+    expect(print(gqfn(
       'query GetHello',
       ['hello'],
       [['@log', { tag: 'greeting' }]],
-    )).toMatchObject(gql(`
-      query GetHello @log(tag: "greeting") {
+    ))).toMatchInlineSnapshot(`
+      "query GetHello @log(tag: "greeting") {
         hello
-      }
-    `))
+      }"
+    `)
 
-    expect(gqfn(
+    expect(print(gqfn(
       'mutation',
       ['hello'],
       [['@log', { tag: 'greeting' }]],
-    )).toMatchObject(gql(`
-      mutation @log(tag: "greeting") {
+    ))).toMatchInlineSnapshot(`
+      "mutation @log(tag: "greeting") {
         hello
-      }
-    `))
+      }"
+    `)
 
-    expect(gqfn(
+    expect(print(gqfn(
       'query GetHello',
       { name: 'String!' },
       [{ hello: $ => $({ name: $.name }, true) }],
-    )).toMatchObject(gql(`
-      query GetHello($name: String!) {
+    ))).toMatchInlineSnapshot(`
+      "query GetHello($name: String!) {
         hello(name: $name)
-      }
-    `))
+      }"
+    `)
 
-    expect(gqfn(
+    expect(print(gqfn(
       'query GetHello',
       { name: 'String!' },
       [{ hello: $ => $({ name: $.name }, true) }],
       [['@log', { tag: 'greeting' }]],
-    )).toMatchObject(gql(`
-      query GetHello($name: String!) @log(tag: "greeting") {
+    ))).toMatchInlineSnapshot(`
+      "query GetHello($name: String!) @log(tag: "greeting") {
         hello(name: $name)
-      }
-    `))
+      }"
+    `)
 
-    expect(gqfn(
+    expect(print(gqfn(
       'query GetHello',
       { name: 'String!' },
       [{ hello: $ => $({ name: $.name }, true) }],
       $ => [['@log', { tag: 'greeting', username: $.name }]],
-    )).toMatchObject(gql(`
-      query GetHello($name: String!) @log(tag: "greeting", username: $name) {
+    ))).toMatchInlineSnapshot(`
+      "query GetHello($name: String!) @log(tag: "greeting", username: $name) {
         hello(name: $name)
-      }
-    `))
+      }"
+    `)
   })
 }

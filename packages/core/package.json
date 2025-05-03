@@ -46,7 +46,7 @@
     }
   },
   "dependencies": {
-    "graphql": "^16.11.0"
+    "@0no-co/graphql.web": "^1.1.2"
   },
   "devDependencies": {
     "@gqfn/cli": "workspace:*",
@@ -55,6 +55,7 @@
     "@types/node": "^22.15.3",
     "@vitest/coverage-v8": "^3.1.2",
     "eslint": "^9.25.1",
+    "graphql": "^16.11.0",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
     "unbuild": "3.5.0",

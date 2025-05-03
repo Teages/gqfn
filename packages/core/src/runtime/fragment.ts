@@ -1,8 +1,8 @@
-import type { DocumentNode } from 'graphql'
+import type { DocumentNode } from '@0no-co/graphql.web'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
 import type { SelectionSetComplex } from './selection'
 import type { PrepareVariables, VariableDefinition } from './variable'
-import { Kind } from 'graphql'
+import { Kind } from '@0no-co/graphql.web'
 import { createDocumentNodeContext } from './context'
 import { parseDirective } from './directive'
 import { initDirectiveDollar } from './dollar'
@@ -135,58 +135,66 @@ if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest
 
   it('createGraphQueryFunctionFragment', async () => {
-    const { parse } = await import('graphql')
-    const gql = (str: string) => parse(str, { noLocation: true })
+    const { print } = await import('@0no-co/graphql.web')
 
     const gqfr = createGraphQueryFunctionFragment()
     expect(typeof gqfr).toBe('function')
 
-    expect(gqfr('fragment A', 'on T', ['id'])).toMatchObject(gql(`
-      fragment A on T { id }
-    `))
+    expect(print(gqfr('fragment A', 'on T', ['id'])))
+      .toMatchInlineSnapshot(`
+        "fragment A on T {
+          id
+        }"
+      `)
 
-    expect(gqfr(
+    expect(print(gqfr(
       'fragment A',
       'on T',
       ['id'],
       [['@log', { tag: 'greeting' }]],
-    )).toMatchObject(gql(`
-      fragment A on T @log(tag: "greeting") { id }
-    `))
+    )))
+      .toMatchInlineSnapshot(`
+        "fragment A on T @log(tag: "greeting") {
+          id
+        }"
+      `)
 
-    expect(gqfr(
+    expect(print(gqfr(
       'fragment A',
       'on T',
       { username: 'String!' },
       [{ hello: $ => $({ name: $.username }, true) }],
-    )).toMatchObject(gql(`
-      fragment A on T {
-        hello(name: $username)
-      }
-    `))
+    )))
+      .toMatchInlineSnapshot(`
+        "fragment A on T {
+          hello(name: $username)
+        }"
+      `)
 
-    expect(gqfr(
+    expect(print(gqfr(
       'fragment A',
       'on T',
       { username: 'String!' },
       [{ hello: $ => $({ name: $.username }, true) }],
       [['@log', { tag: 'greeting' }]],
-    )).toMatchObject(gql(`
-      fragment A on T @log(tag: "greeting") {
-        hello(name: $username)
-      }
-    `))
+    )))
+      .toMatchInlineSnapshot(`
+        "fragment A on T @log(tag: "greeting") {
+          hello(name: $username)
+        }"
+      `)
 
-    expect(gqfr(
+    expect(print(gqfr(
       'fragment A',
       'on T',
       { username: 'String!' },
       [{ hello: $ => $({ name: $.username }, true) }],
       $ => [['@log', { tag: 'greeting', username: $.username }]],
-    )).toMatchObject(gql(`
-      fragment A on T @log(tag: "greeting", username: $username) {
-        hello(name: $username)
-      }
-    `))
+    )))
+      .toMatchInlineSnapshot(`
+        "fragment A on T @log(tag: "greeting", username: $username) {
+          hello(name: $username)
+        }"
+      `)
   })
 }

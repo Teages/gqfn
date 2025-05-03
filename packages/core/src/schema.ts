@@ -20,3 +20,5 @@ export type SchemaFromUrl<T extends string> =
       ? Schemas[T]
       : never
     : never
+
+export {}

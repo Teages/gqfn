@@ -1,10 +1,10 @@
-import type { DocumentNode } from 'graphql'
+import type { DocumentNode } from '@0no-co/graphql.web'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
 import type { SelectionSetDollar } from './dollar'
 import type { FragmentBaseDefinition, FragmentName } from './fragment'
 import type { SelectionSetComplex } from './selection'
 import type { PrepareVariables, Variable, VariableDefinition } from './variable'
-import { Kind } from 'graphql'
+import { Kind } from '@0no-co/graphql.web'
 import { DirectivesSymbol, PartialContentDocumentNodeSymbol, PartialContentFragmentNameSymbol } from '../internal/symbol'
 import { createGraphQueryFunctionFragment } from './fragment'
 
@@ -138,8 +138,7 @@ if (import.meta.vitest) {
     const gqfp = createGraphQueryPartial()
     const gqfr = createGraphQueryFunctionFragment()
     const dollar = await import('./dollar').then(m => m.initSelectionDollar)
-    const { parse } = await import('graphql')
-    const gql = (str: string) => parse(str, { noLocation: true })
+    const { print, parse } = await import('@0no-co/graphql.web')
 
     const case_0 = gqfp(
       'fragment A',
@@ -163,57 +162,63 @@ if (import.meta.vitest) {
     )
 
     const case_2 = gqfp('fragment A', 'on T', ['id'], [['@log', { tag: 'greeting' }]])
-    expect(getPartialDocumentNode(
+    expect(print(getPartialDocumentNode(
       case_2(dollar<Record<string, never>>()),
-    )).toMatchObject(gql(`
-      fragment A on T @log(tag: "greeting") { id }
-    `))
+    )))
+      .toMatchInlineSnapshot(`
+        "fragment A on T @log(tag: "greeting") {
+          id
+        }"
+      `)
 
     const case_3 = gqfp('fragment A', 'on T', { username: 'String!' }, [{ hello: $ => $({ name: $.username }, true) }])
-    expect(getPartialDocumentNode(
+    expect(print(getPartialDocumentNode(
       case_3(dollar<{ username: Variable<'String!'> }>()),
-    )).toMatchObject(gql(`
-      fragment A on T {
-        hello(name: $username)
-      }
-    `))
-    expect(
+    )))
+      .toMatchInlineSnapshot(`
+        "fragment A on T {
+          hello(name: $username)
+        }"
+      `)
+    expect(print(
       gqf('query Q', { username: 'String!', count: 'Int!' }, [{
         '...': $ => $([{ ...case_3($) }]),
       }]),
-    ).toMatchObject(gql(`
-      query Q($username: String!, $count: Int!) {
+    )).toMatchInlineSnapshot(`
+      "query Q($username: String!, $count: Int!) {
         ... {
           ...A
         }
       }
+
       fragment A on T {
         hello(name: $username)
-      }
-    `))
+      }"
+    `)
 
     const case_4 = gqfp('fragment A', 'on T', { username: 'String!' }, [{ hello: $ => $({ name: $.username }, true) }], [['@log', { tag: 'greeting' }]])
-    expect(getPartialDocumentNode(
+    expect(print(getPartialDocumentNode(
       case_4(dollar<{ username: Variable<'String!'> }>()),
-    )).toMatchObject(gql(`
-      fragment A on T @log(tag: "greeting") {
+    ))).toMatchInlineSnapshot(`
+      "fragment A on T @log(tag: "greeting") {
         hello(name: $username)
-      }
-    `))
-    expect(
+      }"
+    `)
+    expect(print(
       gqf('query Q', { username: 'String!', count: 'Int!' }, [{
         '...': $ => $([{ ...case_4($) }]),
       }]),
-    ).toMatchObject(gql(`
-      query Q($username: String!, $count: Int!) {
+    )).toMatchInlineSnapshot(`
+      "query Q($username: String!, $count: Int!) {
         ... {
           ...A
         }
       }
+
       fragment A on T @log(tag: "greeting") {
         hello(name: $username)
-      }
-    `))
+      }"
+    `)
 
     const case_5 = gqfp(
       'fragment A',
@@ -222,32 +227,33 @@ if (import.meta.vitest) {
       [{ hello: $ => $({ name: $.username }, true) }],
       $ => [['@log', { tag: 'greeting', username: $.username }]],
     )
-    expect(getPartialDocumentNode(
+    expect(print(getPartialDocumentNode(
       case_5(dollar<{ username: Variable<'String!'> }>()),
-    )).toMatchObject(gql(`
-      fragment A on T @log(tag: "greeting", username: $username) {
+    ))).toMatchInlineSnapshot(`
+      "fragment A on T @log(tag: "greeting", username: $username) {
         hello(name: $username)
-      }
-    `))
-    expect(
+      }"
+    `)
+    expect(print(
       gqf('query Q', { username: 'String!', count: 'Int!' }, [{
         '...': $ => $([{ ...case_5($) }]),
       }]),
-    ).toMatchObject(gql(`
-      query Q($username: String!, $count: Int!) {
+    )).toMatchInlineSnapshot(`
+      "query Q($username: String!, $count: Int!) {
         ... {
           ...A
         }
       }
+
       fragment A on T @log(tag: "greeting", username: $username) {
         hello(name: $username)
-      }
-    `))
+      }"
+    `)
 
-    expect(() => gqfp('fragment A', 'on T', gql(`{ hello }`)))
+    expect(() => gqfp('fragment A', 'on T', parse(`{ hello }`)))
       .toThrow('Unexpected definitions, expected a DocumentNode with one or more fragment definition')
 
-    expect(() => gqfp('fragment A', 'on T', gql(`fragment B on T { id }`)))
+    expect(() => gqfp('fragment A', 'on T', parse(`fragment B on T { id }`)))
       .toThrow('Cannot find fragment definition for "A"')
   })
 

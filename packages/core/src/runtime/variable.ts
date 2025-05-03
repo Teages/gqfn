@@ -1,6 +1,17 @@
-import type { VariableDefinitionNode } from 'graphql'
+import type {
+  BooleanValueNode,
+  ConstListValueNode,
+  ConstObjectValueNode,
+  EnumValueNode,
+  FloatValueNode,
+  IntValueNode,
+  NullValueNode,
+  StringValueNode,
+  ValueNode,
+  VariableDefinitionNode,
+} from '@0no-co/graphql.web'
 import type { DollarPackage, VariableDefinitionDollar } from './dollar'
-import { Kind, parseConstValue, parseType } from 'graphql'
+import { Kind, parseType, parseValue } from '@0no-co/graphql.web'
 import { DirectivesSymbol, VariableTypeSymbol } from '../internal/symbol'
 import { parseDirective } from './directive'
 import { initVariableDefinitionDollar } from './dollar'
@@ -55,7 +66,7 @@ export function parseVariables(
       },
       type: parseType(type, { noLocation: true }),
       defaultValue: defaultValue
-        ? parseConstValue(defaultValue, { noLocation: true })
+        ? parseConstValue(defaultValue)
         : undefined,
       directives: parseDirective(directives, true),
     }
@@ -145,4 +156,44 @@ if (import.meta.vitest) {
       }],
     }])
   })
+}
+
+type ConstValueNode =
+  | IntValueNode
+  | FloatValueNode
+  | StringValueNode
+  | BooleanValueNode
+  | NullValueNode
+  | EnumValueNode
+  | ConstListValueNode
+  | ConstObjectValueNode
+function parseConstValue(source: string): ConstValueNode {
+  const res = parseValue(source, { noLocation: true })
+
+  if (!isConstValueNode(res)) {
+    throw new Error(`Invalid constant value: ${source}`)
+  }
+
+  return res
+}
+function isConstValueNode(node: ValueNode): node is ConstValueNode {
+  switch (node.kind) {
+    case Kind.INT:
+    case Kind.FLOAT:
+    case Kind.STRING:
+    case Kind.BOOLEAN:
+    case Kind.NULL:
+    case Kind.ENUM: {
+      return true
+    }
+    case Kind.LIST: {
+      return node.values.every(isConstValueNode)
+    }
+    case Kind.OBJECT: {
+      return node.fields.every(field => field.kind === Kind.OBJECT_FIELD && isConstValueNode(field.value))
+    }
+    default: {
+      return false
+    }
+  }
 }

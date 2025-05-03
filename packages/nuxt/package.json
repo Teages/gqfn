@@ -38,6 +38,7 @@
     "test:prepare": "pnpm dev:prepare"
   },
   "dependencies": {
+    "@0no-co/graphql.web": "^1.1.2",
     "@gqfn/cli": "workspace:*",
     "@gqfn/core": "workspace:*",
     "@nuxt/kit": "^3.17.1"
@@ -54,7 +55,6 @@
     "consola": "^3.4.2",
     "eslint": "^9.25.1",
     "get-port-please": "^3.1.2",
-    "graphql": "^16.11.0",
     "nuxt": "^3.17.1",
     "tsx": "^4.19.4",
     "typescript": "~5.8.3",

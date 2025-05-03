@@ -1,4 +1,4 @@
-import type { DocumentNode } from 'graphql'
+import type { DocumentNode } from '@0no-co/graphql.web'
 
 export interface TypedDocumentNode<
   Result = Record<string, any>,
