@@ -1,5 +1,18 @@
-import type { ArgumentNode, BooleanValueNode, EnumValueNode, FloatValueNode, IntValueNode, ListValueNode, NullValueNode, ObjectFieldNode, ObjectValueNode, StringValueNode, ValueNode, VariableNode } from 'graphql'
-import { Kind } from 'graphql'
+import type {
+  ArgumentNode,
+  BooleanValueNode,
+  EnumValueNode,
+  FloatValueNode,
+  IntValueNode,
+  ListValueNode,
+  NullValueNode,
+  ObjectFieldNode,
+  ObjectValueNode,
+  StringValueNode,
+  ValueNode,
+  VariableNode,
+} from '@0no-co/graphql.web'
+import { Kind } from '@0no-co/graphql.web'
 import { Variable } from './variable'
 
 export type Argument = Record<string, unknown>

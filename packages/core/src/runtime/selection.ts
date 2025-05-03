@@ -1,10 +1,19 @@
-import type { ArgumentNode, DirectiveNode, FieldNode, FragmentDefinitionNode, FragmentSpreadNode, InlineFragmentNode, SelectionNode, SelectionSetNode } from 'graphql'
+import type {
+  ArgumentNode,
+  DirectiveNode,
+  FieldNode,
+  FragmentDefinitionNode,
+  FragmentSpreadNode,
+  InlineFragmentNode,
+  SelectionNode,
+  SelectionSetNode,
+} from '@0no-co/graphql.web'
 import type { Argument } from './argument'
 import type { DocumentNodeContext } from './context'
 import type { DirectiveInput } from './directive'
 import type { DollarPackage, DollarPayload, SelectionSetDollar } from './dollar'
 import type { PartialResult } from './partial'
-import { Kind } from 'graphql'
+import { Kind } from '@0no-co/graphql.web'
 import { DirectivesSymbol } from '../internal/symbol'
 import { parseArgument } from './argument'
 import { createDocumentNodeContext } from './context'
@@ -132,7 +141,7 @@ function parseAlias(key: string): { name: string, value: string } {
 export function parseSelectionSetDollarPackageInput<Variables extends DollarPayload>(
   input: SelectionSetDollarPackageInput<Variables>,
   ctx: DocumentNodeContext,
-) {
+): SelectionSetNode | undefined {
   if (input === true) {
     return undefined
   }

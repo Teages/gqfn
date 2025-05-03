@@ -1,5 +1,5 @@
-import type { DocumentNode } from 'graphql'
-import { parse, print } from 'graphql'
+import type { DocumentNode } from '@0no-co/graphql.web'
+import { parse, print } from '@0no-co/graphql.web'
 import { expect } from 'vitest'
 
 export function fixture(

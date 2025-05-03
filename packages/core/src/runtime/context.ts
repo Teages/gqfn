@@ -1,5 +1,5 @@
-import type { ExecutableDefinitionNode } from 'graphql'
-import { Kind } from 'graphql'
+import type { ExecutableDefinitionNode } from '@0no-co/graphql.web'
+import { Kind } from '@0no-co/graphql.web'
 
 export interface DocumentNodeContext {
   definitions: ExecutableDefinitionNode[]
@@ -44,7 +44,7 @@ if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest
 
   it('createDocumentNodeContext', async () => {
-    const { parse } = await import('graphql')
+    const { parse } = await import('@0no-co/graphql.web')
     const gql = (str: string) => parse(str, { noLocation: true })
 
     const ctx_0 = createDocumentNodeContext()
