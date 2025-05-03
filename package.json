@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.6.0",
   "private": true,
-  "packageManager": "pnpm@10.6.3",
+  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -13,11 +13,11 @@
     "postinstall": "pnpm -C packages/core build && pnpm -C packages/cli build && pnpm --filter './packages/*' dev:prepare",
     "lint": "eslint --cache . && pnpm --filter=!. lint",
     "lint:fix": "eslint --cache --fix . && pnpm --filter=!. lint:fix",
-    "test": "pnpm --filter './packages/*' test",
-    "test:full": "pnpm --filter './packages/*' test:full",
-    "test:types": "pnpm --filter './packages/*' test:types",
+    "test": "pnpm run -r test",
+    "test:full": "pnpm run -r test:full",
+    "test:types": "pnpm run -r test:types",
     "build": "pnpm docs:build && pnpm prepack",
-    "prepack": "pnpm --filter './packages/*' prepack",
+    "prepack": "pnpm run -r prepack",
     "docs:dev": "pnpm -C docs dev",
     "docs:build": "pnpm -C docs build",
     "docs:preview": "pnpm -C docs preview",
@@ -31,12 +31,12 @@
     "@drizzle-team/brocli": "^0.11.0",
     "changelogen": "^0.6.1",
     "consola": "^3.4.2",
-    "eslint": "^9.24.0",
+    "eslint": "^9.25.1",
     "fast-glob": "^3.3.3",
     "pathe": "^2.0.3",
     "pkg-types": "^2.1.0",
     "simple-git": "^3.25.0",
-    "tsx": "^4.19.3"
+    "tsx": "^4.19.4"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
