@@ -1,5 +1,4 @@
 packages:
-  - docs
   - packages/*
 
 overrides:
@@ -11,6 +10,8 @@ ignoredBuiltDependencies:
   - vue-demi
 
 onlyBuiltDependencies:
-  - better-sqlite3
   - '@parcel/watcher'
+  - better-sqlite3
   - esbuild
+  - sharp
+  - unrs-resolver

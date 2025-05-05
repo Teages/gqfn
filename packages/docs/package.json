@@ -1,0 +1,45 @@
+{
+  "name": "@gqfn/docs",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@10.10.0",
+  "exports": {
+    "./*": "./*"
+  },
+  "files": [
+    "./content/**/*.md",
+    "./content/**/*.yml"
+  ],
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck"
+  },
+  "devDependencies": {
+    "@gqfn/nuxt": "workspace:*",
+    "@iconify-json/lucide": "^1.2.39",
+    "@iconify-json/simple-icons": "^1.2.33",
+    "@iconify-json/vscode-icons": "^1.2.20",
+    "@nuxt/content": "^3.5.1",
+    "@nuxt/eslint": "^1.3.0",
+    "@nuxt/image": "^1.10.0",
+    "@nuxt/ui-pro": "^3.1.0",
+    "@pothos/core": "^4.6.2",
+    "@teages/nuxt-simple-graphql-client": "^0.0.3",
+    "better-sqlite3": "^11.9.1",
+    "eslint": "^9.25.1",
+    "graphql": "^16.11.0",
+    "graphql-yoga": "^5.13.4",
+    "nuxt": "^3.16.2",
+    "nuxt-llms": "0.1.2",
+    "nuxt-og-image": "^5.1.3",
+    "nuxt-workers": "^0.1.0",
+    "tailwindcss": "^4.1.5",
+    "typescript": "^5.8.3",
+    "vue-tsc": "^2.2.10"
+  }
+}
