@@ -7,11 +7,11 @@ overrides:
   '@gqfn/nuxt': workspace:*
 
 ignoredBuiltDependencies:
+  - better-sqlite3
   - vue-demi
 
 onlyBuiltDependencies:
   - '@parcel/watcher'
-  - better-sqlite3
   - esbuild
   - sharp
   - unrs-resolver
