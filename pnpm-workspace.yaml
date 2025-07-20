@@ -6,8 +6,8 @@ overrides:
   '@gqfn/cli': workspace:*
   '@gqfn/core': workspace:*
   '@gqfn/nuxt': workspace:*
-
 ignoredBuiltDependencies:
+  - unrs-resolver
   - vue-demi
 
 onlyBuiltDependencies:
