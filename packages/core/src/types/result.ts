@@ -66,8 +66,8 @@ export type ParseObjectSelectionContextField<
     : ParseOutputModifier<Modifier, Type, ParseSelection<Type, Selection>>
   : never
 
-export type ParseSelectionName<T extends string> =
-  T extends `${infer Name}:${infer Field}`
+export type ParseSelectionName<T extends string>
+  = T extends `${infer Name}:${infer Field}`
     ? { Field: Trim<Field>, Name: Name }
     : { Field: T, Name: T }
 

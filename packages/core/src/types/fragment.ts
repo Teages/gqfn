@@ -9,8 +9,8 @@ import type { PrepareVariables, RequireVariables, VariablesDefinition } from './
 export type FragmentType = 'fragment'
 export type FragmentName = `${FragmentType} ${string}`
 export type FragmentBaseDefinition = `on ${string}`
-export type FragmentBase<Schema extends DefineSchema<any>> =
-  Schema extends DefineSchema<infer Namespace>
+export type FragmentBase<Schema extends DefineSchema<any>>
+  = Schema extends DefineSchema<infer Namespace>
     ? {
         [K in keyof Namespace as Namespace[K] extends BaseObject<any, any, any> ? K : never]: Namespace[K]
       }

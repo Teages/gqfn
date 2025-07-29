@@ -158,15 +158,15 @@ if (import.meta.vitest) {
   })
 }
 
-type ConstValueNode =
-  | IntValueNode
-  | FloatValueNode
-  | StringValueNode
-  | BooleanValueNode
-  | NullValueNode
-  | EnumValueNode
-  | ConstListValueNode
-  | ConstObjectValueNode
+type ConstValueNode
+  = | IntValueNode
+    | FloatValueNode
+    | StringValueNode
+    | BooleanValueNode
+    | NullValueNode
+    | EnumValueNode
+    | ConstListValueNode
+    | ConstObjectValueNode
 function parseConstValue(source: string): ConstValueNode {
   const res = parseValue(source, { noLocation: true })
 

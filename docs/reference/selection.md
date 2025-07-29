@@ -140,12 +140,12 @@ The type definition is not complete, it only shows the basic structure of the `T
 :::
 
 ```ts
-export type TypeSelection =
-  | Array<string>
-  | [
-    ...Array<string>,
-    SelectionObject,
-  ]
+export type TypeSelection
+  = | Array<string>
+    | [
+      ...Array<string>,
+      SelectionObject,
+    ]
 
 interface SelectionObject {
   [key: string]:

@@ -87,10 +87,10 @@ describe('types/result', () => {
       '...': () => DollarPackage<['__typename', 'name', 'email'], true>
     }>>()
       .toEqualTypeOf<{
-      __typename: 'User' | null | undefined
-      name: string | null | undefined
-      email: string | null | undefined
-    }>()
+        __typename: 'User' | null | undefined
+        name: string | null | undefined
+        email: string | null | undefined
+      }>()
 
     expectTypeOf<ParseObjectSelectionContextInlineFragments<Union_Data, {
       '... on User': () => DollarPackage<['__typename', 'name', 'email']>

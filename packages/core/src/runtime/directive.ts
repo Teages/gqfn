@@ -17,8 +17,8 @@ export type WithDirective<T extends DollarPackage<any> | DocumentNode> = T & {
 }
 export type MaybeWithDirective<T extends DollarPackage<any> | DocumentNode> = T | WithDirective<T>
 
-export type DirectivesInputWithDollar<Variables extends DollarPayload> =
-  ($: DirectiveDollar<Variables>) => Array<DirectiveInput>
+export type DirectivesInputWithDollar<Variables extends DollarPayload>
+  = ($: DirectiveDollar<Variables>) => Array<DirectiveInput>
 
 export interface WithDirectivesFunction<Variables extends DollarPayload> {
   <T extends DollarPackage<any> | DocumentNode>(

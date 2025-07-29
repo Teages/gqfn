@@ -44,7 +44,6 @@ gqfn([
 ])
 ```
 
-
 ### Directives
 
 If you need to add directives in selection, you need to pass a empty object even the field don't accept arguments:

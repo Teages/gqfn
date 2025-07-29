@@ -77,10 +77,10 @@ import type {
   UnionType
 } from '@gqfn/core/schema'
 // ---cut---
-export type RoleEnum =
-  | 'ADMIN'
-  | 'USER'
-  | 'GUEST'
+export type RoleEnum
+  = | 'ADMIN'
+    | 'USER'
+    | 'GUEST'
 
 type Enum_RoleEnum = EnumType<'RoleEnum', RoleEnum>
 ```
@@ -117,10 +117,10 @@ export type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
 export type Scalar_ID = ScalarType<'ID', string | number, string | number>
 export type Scalar_Date = ScalarType<'Date', string, string>
 
-export type RoleEnum =
-  | 'ADMIN'
-  | 'USER'
-  | 'GUEST'
+export type RoleEnum
+  = | 'ADMIN'
+    | 'USER'
+    | 'GUEST'
 
 type Enum_RoleEnum = EnumType<'RoleEnum', RoleEnum>
 // ---cut---
@@ -163,10 +163,10 @@ export type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
 export type Scalar_ID = ScalarType<'ID', string | number, string | number>
 export type Scalar_Date = ScalarType<'Date', string, string>
 
-export type RoleEnum =
-  | 'ADMIN'
-  | 'USER'
-  | 'GUEST'
+export type RoleEnum
+  = | 'ADMIN'
+    | 'USER'
+    | 'GUEST'
 
 // ---cut---
 type Query = ObjectType<'Query', {
