@@ -1,10 +1,24 @@
-# Query Builder
+# Runtime Core
 
-The query builder is a tool to build GraphQL query.
-
-## Full Spread
+GQFn is designed as non-schema dependent. You can directly use the core by importing `raw`.
 
 ```ts
+import { raw } from '@gqfn/core'
+```
+
+By designing it this way, we can focus on the core functionality and testing without the complexity of schema types affecting the runtime design.
+
+## Specification
+
+```ts
+export function gqfn(
+  selection: TypeSelection
+): DocumentNode
+export function gqfn(
+  name: OperationName,
+  selection: TypeSelection,
+  directives?: Directives
+): DocumentNode
 export function gqfn(
   name: OperationName,
   variables: Variables,
@@ -118,15 +132,11 @@ query FetchData(
 Like writing GraphQL queries, you can skip `name` and `variables` if you don't need them.
 
 ::: tip
-You need to use full spread if you want to use `directives`.
+Difference with schema-typed GQFn, You don't need to use full spread if you want to use `directives`.
 :::
 
 ```ts
 export function gqfn(selection: TypeSelection): DocumentNode
-export function gqfn(
-  name: OperationName,
-  selection: TypeSelection
-): DocumentNode
 ```
 
 ### Example

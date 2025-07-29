@@ -131,7 +131,7 @@ const query = gqfn([
 ```
 :::
 
-Learn more about [`$` and dollar function](./dollar).
+<!-- Learn more about [`$` and dollar function](./dollar). -->
 
 ## Type Definition
 

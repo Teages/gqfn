@@ -1,7 +1,7 @@
 # Schema
 
 ::: tip
-We suggest to use [Schema Loader CLI](../cli/) to load the schema.
+We suggest to use [@gqfn/cli](../packages/cli) to load the schema.
 
 This page is written for those who want to manually write the schema type.
 :::
