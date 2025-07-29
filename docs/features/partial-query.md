@@ -6,7 +6,7 @@ Use `gqfp` to reuse common fields like [GraphQL Fragments](https://graphql.org/l
 
 ::: code-group
 ```ts [Query Builder]
-const userFields = gqp(
+const userFields = gqfp(
   'fragment UserFields',
   'on Users',
   [
@@ -49,12 +49,12 @@ On the base of Fragment, we add the type check for Variables.
 ## Type Definition
 
 ```ts
-export function gqp(
+export function gqfp(
   name: 'fragment' | `fragment ${string}`,
   base: `on ${string}`,
   selection: TypeSelection,
 ): ($: Dollar<any>) => SelectionObject
-export function gqp(
+export function gqfp(
   name: 'fragment' | `fragment ${string}`,
   base: `on ${string}`,
   vars: Variables,
