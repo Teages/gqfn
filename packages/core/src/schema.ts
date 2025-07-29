@@ -14,8 +14,8 @@ export type {
 
 export interface Schemas {}
 
-export type SchemaFromUrl<T extends string> =
-  T extends keyof Schemas
+export type SchemaFromUrl<T extends string>
+  = T extends keyof Schemas
     ? Schemas[T] extends DefineSchema<any>
       ? Schemas[T]
       : never

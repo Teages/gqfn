@@ -1,9 +1,9 @@
 import type { DefineSchema, EnumType, Field, Input, InputObjectType, InterfaceType, ObjectType, ScalarType, UnionType } from '../../src/schema'
 
-export type CategoryEnum =
-  | 'funny'
-  | 'jokes'
-  | 'serious'
+export type CategoryEnum
+  = | 'funny'
+    | 'jokes'
+    | 'serious'
 
 export type Scalar_Int = ScalarType<'Int', number, number>
 export type Scalar_Float = ScalarType<'Float', number, number>

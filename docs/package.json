@@ -23,6 +23,6 @@
     "graphql-request": "^7.1.0",
     "graphql-scalars": "^1.24.2",
     "typescript": "^5.8.3",
-    "vitepress": "^1.6.3"
+    "vitepress": "2.0.0-alpha.8"
   }
 }

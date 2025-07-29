@@ -1,3 +1,16 @@
 packages:
   - docs
   - packages/*
+
+overrides:
+  '@gqfn/cli': workspace:*
+  '@gqfn/core': workspace:*
+  '@gqfn/nuxt': workspace:*
+ignoredBuiltDependencies:
+  - unrs-resolver
+  - vue-demi
+
+onlyBuiltDependencies:
+  - better-sqlite3
+  - '@parcel/watcher'
+  - esbuild

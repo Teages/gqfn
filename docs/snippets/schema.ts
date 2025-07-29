@@ -9,449 +9,449 @@ type Scalar_String = ScalarType<'String', string, string>
 type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
 type Scalar_ID = ScalarType<'ID', string | number, string>
 
-export type UserSort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'USERNAME'
-  | 'USERNAME_DESC'
-  | 'WATCHED_TIME'
-  | 'WATCHED_TIME_DESC'
-  | 'CHAPTERS_READ'
-  | 'CHAPTERS_READ_DESC'
-  | 'SEARCH_MATCH'
+export type UserSort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'USERNAME'
+    | 'USERNAME_DESC'
+    | 'WATCHED_TIME'
+    | 'WATCHED_TIME_DESC'
+    | 'CHAPTERS_READ'
+    | 'CHAPTERS_READ_DESC'
+    | 'SEARCH_MATCH'
 type Enum_UserSort = EnumType<'UserSort', UserSort>
 
-export type UserTitleLanguage =
-  | 'ROMAJI'
-  | 'ENGLISH'
-  | 'NATIVE'
-  | 'ROMAJI_STYLISED'
-  | 'ENGLISH_STYLISED'
-  | 'NATIVE_STYLISED'
+export type UserTitleLanguage
+  = | 'ROMAJI'
+    | 'ENGLISH'
+    | 'NATIVE'
+    | 'ROMAJI_STYLISED'
+    | 'ENGLISH_STYLISED'
+    | 'NATIVE_STYLISED'
 type Enum_UserTitleLanguage = EnumType<'UserTitleLanguage', UserTitleLanguage>
 
-export type NotificationType =
-  | 'ACTIVITY_MESSAGE'
-  | 'ACTIVITY_REPLY'
-  | 'FOLLOWING'
-  | 'ACTIVITY_MENTION'
-  | 'THREAD_COMMENT_MENTION'
-  | 'THREAD_SUBSCRIBED'
-  | 'THREAD_COMMENT_REPLY'
-  | 'AIRING'
-  | 'ACTIVITY_LIKE'
-  | 'ACTIVITY_REPLY_LIKE'
-  | 'THREAD_LIKE'
-  | 'THREAD_COMMENT_LIKE'
-  | 'ACTIVITY_REPLY_SUBSCRIBED'
-  | 'RELATED_MEDIA_ADDITION'
-  | 'MEDIA_DATA_CHANGE'
-  | 'MEDIA_MERGE'
-  | 'MEDIA_DELETION'
+export type NotificationType
+  = | 'ACTIVITY_MESSAGE'
+    | 'ACTIVITY_REPLY'
+    | 'FOLLOWING'
+    | 'ACTIVITY_MENTION'
+    | 'THREAD_COMMENT_MENTION'
+    | 'THREAD_SUBSCRIBED'
+    | 'THREAD_COMMENT_REPLY'
+    | 'AIRING'
+    | 'ACTIVITY_LIKE'
+    | 'ACTIVITY_REPLY_LIKE'
+    | 'THREAD_LIKE'
+    | 'THREAD_COMMENT_LIKE'
+    | 'ACTIVITY_REPLY_SUBSCRIBED'
+    | 'RELATED_MEDIA_ADDITION'
+    | 'MEDIA_DATA_CHANGE'
+    | 'MEDIA_MERGE'
+    | 'MEDIA_DELETION'
 type Enum_NotificationType = EnumType<'NotificationType', NotificationType>
 
-export type UserStaffNameLanguage =
-  | 'ROMAJI_WESTERN'
-  | 'ROMAJI'
-  | 'NATIVE'
+export type UserStaffNameLanguage
+  = | 'ROMAJI_WESTERN'
+    | 'ROMAJI'
+    | 'NATIVE'
 type Enum_UserStaffNameLanguage = EnumType<'UserStaffNameLanguage', UserStaffNameLanguage>
 
-export type MediaListStatus =
-  | 'CURRENT'
-  | 'PLANNING'
-  | 'COMPLETED'
-  | 'DROPPED'
-  | 'PAUSED'
-  | 'REPEATING'
+export type MediaListStatus
+  = | 'CURRENT'
+    | 'PLANNING'
+    | 'COMPLETED'
+    | 'DROPPED'
+    | 'PAUSED'
+    | 'REPEATING'
 type Enum_MediaListStatus = EnumType<'MediaListStatus', MediaListStatus>
 
-export type ScoreFormat =
-  | 'POINT_100'
-  | 'POINT_10_DECIMAL'
-  | 'POINT_10'
-  | 'POINT_5'
-  | 'POINT_3'
+export type ScoreFormat
+  = | 'POINT_100'
+    | 'POINT_10_DECIMAL'
+    | 'POINT_10'
+    | 'POINT_5'
+    | 'POINT_3'
 type Enum_ScoreFormat = EnumType<'ScoreFormat', ScoreFormat>
 
-export type MediaType =
-  | 'ANIME'
-  | 'MANGA'
+export type MediaType
+  = | 'ANIME'
+    | 'MANGA'
 type Enum_MediaType = EnumType<'MediaType', MediaType>
 
-export type MediaFormat =
-  | 'TV'
-  | 'TV_SHORT'
-  | 'MOVIE'
-  | 'SPECIAL'
-  | 'OVA'
-  | 'ONA'
-  | 'MUSIC'
-  | 'MANGA'
-  | 'NOVEL'
-  | 'ONE_SHOT'
+export type MediaFormat
+  = | 'TV'
+    | 'TV_SHORT'
+    | 'MOVIE'
+    | 'SPECIAL'
+    | 'OVA'
+    | 'ONA'
+    | 'MUSIC'
+    | 'MANGA'
+    | 'NOVEL'
+    | 'ONE_SHOT'
 type Enum_MediaFormat = EnumType<'MediaFormat', MediaFormat>
 
-export type MediaStatus =
-  | 'FINISHED'
-  | 'RELEASING'
-  | 'NOT_YET_RELEASED'
-  | 'CANCELLED'
-  | 'HIATUS'
+export type MediaStatus
+  = | 'FINISHED'
+    | 'RELEASING'
+    | 'NOT_YET_RELEASED'
+    | 'CANCELLED'
+    | 'HIATUS'
 type Enum_MediaStatus = EnumType<'MediaStatus', MediaStatus>
 
-export type MediaSeason =
-  | 'WINTER'
-  | 'SPRING'
-  | 'SUMMER'
-  | 'FALL'
+export type MediaSeason
+  = | 'WINTER'
+    | 'SPRING'
+    | 'SUMMER'
+    | 'FALL'
 type Enum_MediaSeason = EnumType<'MediaSeason', MediaSeason>
 
-export type MediaSource =
-  | 'ORIGINAL'
-  | 'MANGA'
-  | 'LIGHT_NOVEL'
-  | 'VISUAL_NOVEL'
-  | 'VIDEO_GAME'
-  | 'OTHER'
-  | 'NOVEL'
-  | 'DOUJINSHI'
-  | 'ANIME'
-  | 'WEB_NOVEL'
-  | 'LIVE_ACTION'
-  | 'GAME'
-  | 'COMIC'
-  | 'MULTIMEDIA_PROJECT'
-  | 'PICTURE_BOOK'
+export type MediaSource
+  = | 'ORIGINAL'
+    | 'MANGA'
+    | 'LIGHT_NOVEL'
+    | 'VISUAL_NOVEL'
+    | 'VIDEO_GAME'
+    | 'OTHER'
+    | 'NOVEL'
+    | 'DOUJINSHI'
+    | 'ANIME'
+    | 'WEB_NOVEL'
+    | 'LIVE_ACTION'
+    | 'GAME'
+    | 'COMIC'
+    | 'MULTIMEDIA_PROJECT'
+    | 'PICTURE_BOOK'
 type Enum_MediaSource = EnumType<'MediaSource', MediaSource>
 
-export type CharacterSort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'ROLE'
-  | 'ROLE_DESC'
-  | 'SEARCH_MATCH'
-  | 'FAVOURITES'
-  | 'FAVOURITES_DESC'
-  | 'RELEVANCE'
+export type CharacterSort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'ROLE'
+    | 'ROLE_DESC'
+    | 'SEARCH_MATCH'
+    | 'FAVOURITES'
+    | 'FAVOURITES_DESC'
+    | 'RELEVANCE'
 type Enum_CharacterSort = EnumType<'CharacterSort', CharacterSort>
 
-export type CharacterRole =
-  | 'MAIN'
-  | 'SUPPORTING'
-  | 'BACKGROUND'
+export type CharacterRole
+  = | 'MAIN'
+    | 'SUPPORTING'
+    | 'BACKGROUND'
 type Enum_CharacterRole = EnumType<'CharacterRole', CharacterRole>
 
-export type MediaSort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'TITLE_ROMAJI'
-  | 'TITLE_ROMAJI_DESC'
-  | 'TITLE_ENGLISH'
-  | 'TITLE_ENGLISH_DESC'
-  | 'TITLE_NATIVE'
-  | 'TITLE_NATIVE_DESC'
-  | 'TYPE'
-  | 'TYPE_DESC'
-  | 'FORMAT'
-  | 'FORMAT_DESC'
-  | 'START_DATE'
-  | 'START_DATE_DESC'
-  | 'END_DATE'
-  | 'END_DATE_DESC'
-  | 'SCORE'
-  | 'SCORE_DESC'
-  | 'POPULARITY'
-  | 'POPULARITY_DESC'
-  | 'TRENDING'
-  | 'TRENDING_DESC'
-  | 'EPISODES'
-  | 'EPISODES_DESC'
-  | 'DURATION'
-  | 'DURATION_DESC'
-  | 'STATUS'
-  | 'STATUS_DESC'
-  | 'CHAPTERS'
-  | 'CHAPTERS_DESC'
-  | 'VOLUMES'
-  | 'VOLUMES_DESC'
-  | 'UPDATED_AT'
-  | 'UPDATED_AT_DESC'
-  | 'SEARCH_MATCH'
-  | 'FAVOURITES'
-  | 'FAVOURITES_DESC'
+export type MediaSort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'TITLE_ROMAJI'
+    | 'TITLE_ROMAJI_DESC'
+    | 'TITLE_ENGLISH'
+    | 'TITLE_ENGLISH_DESC'
+    | 'TITLE_NATIVE'
+    | 'TITLE_NATIVE_DESC'
+    | 'TYPE'
+    | 'TYPE_DESC'
+    | 'FORMAT'
+    | 'FORMAT_DESC'
+    | 'START_DATE'
+    | 'START_DATE_DESC'
+    | 'END_DATE'
+    | 'END_DATE_DESC'
+    | 'SCORE'
+    | 'SCORE_DESC'
+    | 'POPULARITY'
+    | 'POPULARITY_DESC'
+    | 'TRENDING'
+    | 'TRENDING_DESC'
+    | 'EPISODES'
+    | 'EPISODES_DESC'
+    | 'DURATION'
+    | 'DURATION_DESC'
+    | 'STATUS'
+    | 'STATUS_DESC'
+    | 'CHAPTERS'
+    | 'CHAPTERS_DESC'
+    | 'VOLUMES'
+    | 'VOLUMES_DESC'
+    | 'UPDATED_AT'
+    | 'UPDATED_AT_DESC'
+    | 'SEARCH_MATCH'
+    | 'FAVOURITES'
+    | 'FAVOURITES_DESC'
 type Enum_MediaSort = EnumType<'MediaSort', MediaSort>
 
-export type StaffLanguage =
-  | 'JAPANESE'
-  | 'ENGLISH'
-  | 'KOREAN'
-  | 'ITALIAN'
-  | 'SPANISH'
-  | 'PORTUGUESE'
-  | 'FRENCH'
-  | 'GERMAN'
-  | 'HEBREW'
-  | 'HUNGARIAN'
+export type StaffLanguage
+  = | 'JAPANESE'
+    | 'ENGLISH'
+    | 'KOREAN'
+    | 'ITALIAN'
+    | 'SPANISH'
+    | 'PORTUGUESE'
+    | 'FRENCH'
+    | 'GERMAN'
+    | 'HEBREW'
+    | 'HUNGARIAN'
 type Enum_StaffLanguage = EnumType<'StaffLanguage', StaffLanguage>
 
-export type StaffSort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'ROLE'
-  | 'ROLE_DESC'
-  | 'LANGUAGE'
-  | 'LANGUAGE_DESC'
-  | 'SEARCH_MATCH'
-  | 'FAVOURITES'
-  | 'FAVOURITES_DESC'
-  | 'RELEVANCE'
+export type StaffSort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'ROLE'
+    | 'ROLE_DESC'
+    | 'LANGUAGE'
+    | 'LANGUAGE_DESC'
+    | 'SEARCH_MATCH'
+    | 'FAVOURITES'
+    | 'FAVOURITES_DESC'
+    | 'RELEVANCE'
 type Enum_StaffSort = EnumType<'StaffSort', StaffSort>
 
-export type StudioSort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'NAME'
-  | 'NAME_DESC'
-  | 'SEARCH_MATCH'
-  | 'FAVOURITES'
-  | 'FAVOURITES_DESC'
+export type StudioSort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'NAME'
+    | 'NAME_DESC'
+    | 'SEARCH_MATCH'
+    | 'FAVOURITES'
+    | 'FAVOURITES_DESC'
 type Enum_StudioSort = EnumType<'StudioSort', StudioSort>
 
-export type MediaTrendSort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'MEDIA_ID'
-  | 'MEDIA_ID_DESC'
-  | 'DATE'
-  | 'DATE_DESC'
-  | 'SCORE'
-  | 'SCORE_DESC'
-  | 'POPULARITY'
-  | 'POPULARITY_DESC'
-  | 'TRENDING'
-  | 'TRENDING_DESC'
-  | 'EPISODE'
-  | 'EPISODE_DESC'
+export type MediaTrendSort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'MEDIA_ID'
+    | 'MEDIA_ID_DESC'
+    | 'DATE'
+    | 'DATE_DESC'
+    | 'SCORE'
+    | 'SCORE_DESC'
+    | 'POPULARITY'
+    | 'POPULARITY_DESC'
+    | 'TRENDING'
+    | 'TRENDING_DESC'
+    | 'EPISODE'
+    | 'EPISODE_DESC'
 type Enum_MediaTrendSort = EnumType<'MediaTrendSort', MediaTrendSort>
 
-export type ExternalLinkType =
-  | 'INFO'
-  | 'STREAMING'
-  | 'SOCIAL'
+export type ExternalLinkType
+  = | 'INFO'
+    | 'STREAMING'
+    | 'SOCIAL'
 type Enum_ExternalLinkType = EnumType<'ExternalLinkType', ExternalLinkType>
 
-export type MediaRankType =
-  | 'RATED'
-  | 'POPULAR'
+export type MediaRankType
+  = | 'RATED'
+    | 'POPULAR'
 type Enum_MediaRankType = EnumType<'MediaRankType', MediaRankType>
 
-export type ReviewSort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'SCORE'
-  | 'SCORE_DESC'
-  | 'RATING'
-  | 'RATING_DESC'
-  | 'CREATED_AT'
-  | 'CREATED_AT_DESC'
-  | 'UPDATED_AT'
-  | 'UPDATED_AT_DESC'
+export type ReviewSort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'SCORE'
+    | 'SCORE_DESC'
+    | 'RATING'
+    | 'RATING_DESC'
+    | 'CREATED_AT'
+    | 'CREATED_AT_DESC'
+    | 'UPDATED_AT'
+    | 'UPDATED_AT_DESC'
 type Enum_ReviewSort = EnumType<'ReviewSort', ReviewSort>
 
-export type ReviewRating =
-  | 'NO_VOTE'
-  | 'UP_VOTE'
-  | 'DOWN_VOTE'
+export type ReviewRating
+  = | 'NO_VOTE'
+    | 'UP_VOTE'
+    | 'DOWN_VOTE'
 type Enum_ReviewRating = EnumType<'ReviewRating', ReviewRating>
 
-export type RecommendationSort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'RATING'
-  | 'RATING_DESC'
+export type RecommendationSort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'RATING'
+    | 'RATING_DESC'
 type Enum_RecommendationSort = EnumType<'RecommendationSort', RecommendationSort>
 
-export type RecommendationRating =
-  | 'NO_RATING'
-  | 'RATE_UP'
-  | 'RATE_DOWN'
+export type RecommendationRating
+  = | 'NO_RATING'
+    | 'RATE_UP'
+    | 'RATE_DOWN'
 type Enum_RecommendationRating = EnumType<'RecommendationRating', RecommendationRating>
 
-export type MediaRelation =
-  | 'ADAPTATION'
-  | 'PREQUEL'
-  | 'SEQUEL'
-  | 'PARENT'
-  | 'SIDE_STORY'
-  | 'CHARACTER'
-  | 'SUMMARY'
-  | 'ALTERNATIVE'
-  | 'SPIN_OFF'
-  | 'OTHER'
-  | 'SOURCE'
-  | 'COMPILATION'
-  | 'CONTAINS'
+export type MediaRelation
+  = | 'ADAPTATION'
+    | 'PREQUEL'
+    | 'SEQUEL'
+    | 'PARENT'
+    | 'SIDE_STORY'
+    | 'CHARACTER'
+    | 'SUMMARY'
+    | 'ALTERNATIVE'
+    | 'SPIN_OFF'
+    | 'OTHER'
+    | 'SOURCE'
+    | 'COMPILATION'
+    | 'CONTAINS'
 type Enum_MediaRelation = EnumType<'MediaRelation', MediaRelation>
 
-export type UserStatisticsSort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'COUNT'
-  | 'COUNT_DESC'
-  | 'PROGRESS'
-  | 'PROGRESS_DESC'
-  | 'MEAN_SCORE'
-  | 'MEAN_SCORE_DESC'
+export type UserStatisticsSort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'COUNT'
+    | 'COUNT_DESC'
+    | 'PROGRESS'
+    | 'PROGRESS_DESC'
+    | 'MEAN_SCORE'
+    | 'MEAN_SCORE_DESC'
 type Enum_UserStatisticsSort = EnumType<'UserStatisticsSort', UserStatisticsSort>
 
-export type ModRole =
-  | 'ADMIN'
-  | 'LEAD_DEVELOPER'
-  | 'DEVELOPER'
-  | 'LEAD_COMMUNITY'
-  | 'COMMUNITY'
-  | 'DISCORD_COMMUNITY'
-  | 'LEAD_ANIME_DATA'
-  | 'ANIME_DATA'
-  | 'LEAD_MANGA_DATA'
-  | 'MANGA_DATA'
-  | 'LEAD_SOCIAL_MEDIA'
-  | 'SOCIAL_MEDIA'
-  | 'RETIRED'
-  | 'CHARACTER_DATA'
-  | 'STAFF_DATA'
+export type ModRole
+  = | 'ADMIN'
+    | 'LEAD_DEVELOPER'
+    | 'DEVELOPER'
+    | 'LEAD_COMMUNITY'
+    | 'COMMUNITY'
+    | 'DISCORD_COMMUNITY'
+    | 'LEAD_ANIME_DATA'
+    | 'ANIME_DATA'
+    | 'LEAD_MANGA_DATA'
+    | 'MANGA_DATA'
+    | 'LEAD_SOCIAL_MEDIA'
+    | 'SOCIAL_MEDIA'
+    | 'RETIRED'
+    | 'CHARACTER_DATA'
+    | 'STAFF_DATA'
 type Enum_ModRole = EnumType<'ModRole', ModRole>
 
-export type MediaListSort =
-  | 'MEDIA_ID'
-  | 'MEDIA_ID_DESC'
-  | 'SCORE'
-  | 'SCORE_DESC'
-  | 'STATUS'
-  | 'STATUS_DESC'
-  | 'PROGRESS'
-  | 'PROGRESS_DESC'
-  | 'PROGRESS_VOLUMES'
-  | 'PROGRESS_VOLUMES_DESC'
-  | 'REPEAT'
-  | 'REPEAT_DESC'
-  | 'PRIORITY'
-  | 'PRIORITY_DESC'
-  | 'STARTED_ON'
-  | 'STARTED_ON_DESC'
-  | 'FINISHED_ON'
-  | 'FINISHED_ON_DESC'
-  | 'ADDED_TIME'
-  | 'ADDED_TIME_DESC'
-  | 'UPDATED_TIME'
-  | 'UPDATED_TIME_DESC'
-  | 'MEDIA_TITLE_ROMAJI'
-  | 'MEDIA_TITLE_ROMAJI_DESC'
-  | 'MEDIA_TITLE_ENGLISH'
-  | 'MEDIA_TITLE_ENGLISH_DESC'
-  | 'MEDIA_TITLE_NATIVE'
-  | 'MEDIA_TITLE_NATIVE_DESC'
-  | 'MEDIA_POPULARITY'
-  | 'MEDIA_POPULARITY_DESC'
+export type MediaListSort
+  = | 'MEDIA_ID'
+    | 'MEDIA_ID_DESC'
+    | 'SCORE'
+    | 'SCORE_DESC'
+    | 'STATUS'
+    | 'STATUS_DESC'
+    | 'PROGRESS'
+    | 'PROGRESS_DESC'
+    | 'PROGRESS_VOLUMES'
+    | 'PROGRESS_VOLUMES_DESC'
+    | 'REPEAT'
+    | 'REPEAT_DESC'
+    | 'PRIORITY'
+    | 'PRIORITY_DESC'
+    | 'STARTED_ON'
+    | 'STARTED_ON_DESC'
+    | 'FINISHED_ON'
+    | 'FINISHED_ON_DESC'
+    | 'ADDED_TIME'
+    | 'ADDED_TIME_DESC'
+    | 'UPDATED_TIME'
+    | 'UPDATED_TIME_DESC'
+    | 'MEDIA_TITLE_ROMAJI'
+    | 'MEDIA_TITLE_ROMAJI_DESC'
+    | 'MEDIA_TITLE_ENGLISH'
+    | 'MEDIA_TITLE_ENGLISH_DESC'
+    | 'MEDIA_TITLE_NATIVE'
+    | 'MEDIA_TITLE_NATIVE_DESC'
+    | 'MEDIA_POPULARITY'
+    | 'MEDIA_POPULARITY_DESC'
 type Enum_MediaListSort = EnumType<'MediaListSort', MediaListSort>
 
-export type AiringSort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'MEDIA_ID'
-  | 'MEDIA_ID_DESC'
-  | 'TIME'
-  | 'TIME_DESC'
-  | 'EPISODE'
-  | 'EPISODE_DESC'
+export type AiringSort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'MEDIA_ID'
+    | 'MEDIA_ID_DESC'
+    | 'TIME'
+    | 'TIME_DESC'
+    | 'EPISODE'
+    | 'EPISODE_DESC'
 type Enum_AiringSort = EnumType<'AiringSort', AiringSort>
 
-export type ActivityType =
-  | 'TEXT'
-  | 'ANIME_LIST'
-  | 'MANGA_LIST'
-  | 'MESSAGE'
-  | 'MEDIA_LIST'
+export type ActivityType
+  = | 'TEXT'
+    | 'ANIME_LIST'
+    | 'MANGA_LIST'
+    | 'MESSAGE'
+    | 'MEDIA_LIST'
 type Enum_ActivityType = EnumType<'ActivityType', ActivityType>
 
-export type ActivitySort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'PINNED'
+export type ActivitySort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'PINNED'
 type Enum_ActivitySort = EnumType<'ActivitySort', ActivitySort>
 
-export type ThreadSort =
-  | 'ID'
-  | 'ID_DESC'
-  | 'TITLE'
-  | 'TITLE_DESC'
-  | 'CREATED_AT'
-  | 'CREATED_AT_DESC'
-  | 'UPDATED_AT'
-  | 'UPDATED_AT_DESC'
-  | 'REPLIED_AT'
-  | 'REPLIED_AT_DESC'
-  | 'REPLY_COUNT'
-  | 'REPLY_COUNT_DESC'
-  | 'VIEW_COUNT'
-  | 'VIEW_COUNT_DESC'
-  | 'IS_STICKY'
-  | 'SEARCH_MATCH'
+export type ThreadSort
+  = | 'ID'
+    | 'ID_DESC'
+    | 'TITLE'
+    | 'TITLE_DESC'
+    | 'CREATED_AT'
+    | 'CREATED_AT_DESC'
+    | 'UPDATED_AT'
+    | 'UPDATED_AT_DESC'
+    | 'REPLIED_AT'
+    | 'REPLIED_AT_DESC'
+    | 'REPLY_COUNT'
+    | 'REPLY_COUNT_DESC'
+    | 'VIEW_COUNT'
+    | 'VIEW_COUNT_DESC'
+    | 'IS_STICKY'
+    | 'SEARCH_MATCH'
 type Enum_ThreadSort = EnumType<'ThreadSort', ThreadSort>
 
-export type ThreadCommentSort =
-  | 'ID'
-  | 'ID_DESC'
+export type ThreadCommentSort
+  = | 'ID'
+    | 'ID_DESC'
 type Enum_ThreadCommentSort = EnumType<'ThreadCommentSort', ThreadCommentSort>
 
-export type LikeableType =
-  | 'THREAD'
-  | 'THREAD_COMMENT'
-  | 'ACTIVITY'
-  | 'ACTIVITY_REPLY'
+export type LikeableType
+  = | 'THREAD'
+    | 'THREAD_COMMENT'
+    | 'ACTIVITY'
+    | 'ACTIVITY_REPLY'
 type Enum_LikeableType = EnumType<'LikeableType', LikeableType>
 
-export type SiteTrendSort =
-  | 'DATE'
-  | 'DATE_DESC'
-  | 'COUNT'
-  | 'COUNT_DESC'
-  | 'CHANGE'
-  | 'CHANGE_DESC'
+export type SiteTrendSort
+  = | 'DATE'
+    | 'DATE_DESC'
+    | 'COUNT'
+    | 'COUNT_DESC'
+    | 'CHANGE'
+    | 'CHANGE_DESC'
 type Enum_SiteTrendSort = EnumType<'SiteTrendSort', SiteTrendSort>
 
-export type ExternalLinkMediaType =
-  | 'ANIME'
-  | 'MANGA'
-  | 'STAFF'
+export type ExternalLinkMediaType
+  = | 'ANIME'
+    | 'MANGA'
+    | 'STAFF'
 type Enum_ExternalLinkMediaType = EnumType<'ExternalLinkMediaType', ExternalLinkMediaType>
 
-export type SubmissionStatus =
-  | 'PENDING'
-  | 'REJECTED'
-  | 'PARTIALLY_ACCEPTED'
-  | 'ACCEPTED'
+export type SubmissionStatus
+  = | 'PENDING'
+    | 'REJECTED'
+    | 'PARTIALLY_ACCEPTED'
+    | 'ACCEPTED'
 type Enum_SubmissionStatus = EnumType<'SubmissionStatus', SubmissionStatus>
 
-export type SubmissionSort =
-  | 'ID'
-  | 'ID_DESC'
+export type SubmissionSort
+  = | 'ID'
+    | 'ID_DESC'
 type Enum_SubmissionSort = EnumType<'SubmissionSort', SubmissionSort>
 
-export type RevisionHistoryAction =
-  | 'CREATE'
-  | 'EDIT'
+export type RevisionHistoryAction
+  = | 'CREATE'
+    | 'EDIT'
 type Enum_RevisionHistoryAction = EnumType<'RevisionHistoryAction', RevisionHistoryAction>
 
-export type ModActionType =
-  | 'NOTE'
-  | 'BAN'
-  | 'DELETE'
-  | 'EDIT'
-  | 'EXPIRE'
-  | 'REPORT'
-  | 'RESET'
-  | 'ANON'
+export type ModActionType
+  = | 'NOTE'
+    | 'BAN'
+    | 'DELETE'
+    | 'EDIT'
+    | 'EXPIRE'
+    | 'REPORT'
+    | 'RESET'
+    | 'ANON'
 type Enum_ModActionType = EnumType<'ModActionType', ModActionType>
 
 type Input_NotificationOptionInput = InputObjectType<'NotificationOptionInput', {

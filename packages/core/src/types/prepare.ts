@@ -6,8 +6,8 @@ import type { TypenameField } from './utils'
 export type PrepareSelection<
   T extends BaseType<any, any>,
   Variables extends DollarPayload,
-> =
-  T extends BaseObject<any, any, any>
+>
+  = T extends BaseObject<any, any, any>
     ? ObjectSelection<T, Variables>
     : T extends BaseScalar<any, any, any>
       ? ScalarSelection
@@ -17,9 +17,9 @@ export type ScalarSelection = true
 export type ObjectSelection<
   T extends BaseObject<any, any, any>,
   Variables extends DollarPayload,
-> =
-  | ObjectSelectionSimple<ObjectSelectionContext<T, Variables>>[]
-  | [...ObjectSelectionSimple<ObjectSelectionContext<T, Variables>>[], ObjectSelectionContext<T, Variables>]
+>
+  = | ObjectSelectionSimple<ObjectSelectionContext<T, Variables>>[]
+    | [...ObjectSelectionSimple<ObjectSelectionContext<T, Variables>>[], ObjectSelectionContext<T, Variables>]
 
 export type ObjectSelectionSimple<Context> = keyof {
   [K in keyof Context as true extends Context[K] ? K : never]: true
@@ -49,8 +49,7 @@ export type SelectionOnField<
   T extends Field<any, any, any>,
   Variables extends DollarPayload,
 > = T extends Field<any, infer Type, infer Arguments>
-  ?
-  | SelectionSimplyOnField<Type, PrepareSelectionArgument<Arguments>>
+  ? | SelectionSimplyOnField<Type, PrepareSelectionArgument<Arguments>>
   | SelectionFnOnField<Type, PrepareSelectionArgument<Arguments>, Variables>
   : never
 

@@ -6,8 +6,8 @@ export type DirectiveInput = [
   argument: Argument,
 ]
 
-export type HasSkipDirective<Input extends Array<DirectiveInput>> =
-  Input extends Array<[infer Name, infer _Args]>
+export type HasSkipDirective<Input extends Array<DirectiveInput>>
+  = Input extends Array<[infer Name, infer _Args]>
     ? `@${string}` extends Name
       ? false
       : '@skip' extends Name
@@ -17,7 +17,7 @@ export type HasSkipDirective<Input extends Array<DirectiveInput>> =
           : false
     : false
 
-export type DirectivesInputWithDollar<Variables> =
-  Variables extends DollarPayload
+export type DirectivesInputWithDollar<Variables>
+  = Variables extends DollarPayload
     ? ($: DirectiveDollar<Variables>) => Array<DirectiveInput>
     : never

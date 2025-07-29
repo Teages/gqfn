@@ -30,8 +30,8 @@ export type Values<T> = T[keyof T]
  * Make all properties in argument exact.
  * @see https://github.com/microsoft/TypeScript/issues/12936#issuecomment-2088768988
  */
-export type Exact<Shape, T extends Shape> =
-  Shape extends (...args: any) => any
+export type Exact<Shape, T extends Shape>
+  = Shape extends (...args: any) => any
     ? ExactFunction<Shape, T>
     : Shape extends [...infer ItemShapes extends Array<string>, infer FollowShape extends Record<string, any>]
       ? T extends Array<string>
@@ -44,8 +44,8 @@ export type Exact<Shape, T extends Shape> =
       : Shape extends Record<string, any>
         ? ExactRecord<Shape, T>
         : T
-type ExactFunction<Shape extends (...args: any) => any, T extends Shape> =
-  Shape extends (...args: any) => infer RetShape
+type ExactFunction<Shape extends (...args: any) => any, T extends Shape>
+  = Shape extends (...args: any) => infer RetShape
     ? T extends (...args: infer Args) => (infer Ret extends RetShape)
       ? (...args: Args) => Exact<RetShape, Ret>
       : never
@@ -56,32 +56,32 @@ type ExactRecord<Shape extends Record<string, any>, T extends Shape> = {
     : never
 }
 
-export type UnionToIntersection<U extends Record<string, any>> =
-  (U extends any ? (x: U) => void : never) extends ((x: infer I) => void) ? I : never
+export type UnionToIntersection<U extends Record<string, any>>
+  = (U extends any ? (x: U) => void : never) extends ((x: infer I) => void) ? I : never
 
 export type DefaultSpaces = ' ' | '\t' | '\n' | '\r'
 
 /**
  * Trim the spaces before the last character of a string.
  */
-export type TrimBefore<T, S extends string = DefaultSpaces> =
-  T extends `${S}${infer Rest}`
+export type TrimBefore<T, S extends string = DefaultSpaces>
+  = T extends `${S}${infer Rest}`
     ? TrimBefore<Rest>
     : T
 
 /**
  * Trim the spaces before the first character of a string.
  */
-export type TrimAfter<T, S extends string = DefaultSpaces> =
-  T extends `${infer Rest}${S}`
+export type TrimAfter<T, S extends string = DefaultSpaces>
+  = T extends `${infer Rest}${S}`
     ? TrimAfter<Rest>
     : T
 
 /**
  * Trim both sides of a string.
  */
-export type Trim<T, S extends string = DefaultSpaces> =
-  TrimBefore<TrimAfter<T, S>, S>
+export type Trim<T, S extends string = DefaultSpaces>
+  = TrimBefore<TrimAfter<T, S>, S>
 
 export type Expand<T> = T extends (...args: infer A) => infer R
   ? (...args: Expand<A>) => Expand<R>
@@ -93,8 +93,8 @@ export type Expand<T> = T extends (...args: infer A) => infer R
 
 export type MayBePartial<T> = { [K in keyof T]: T[K] | null | undefined }
 
-export type IntersectionAvoidEmpty<T, U> =
-  T extends Record<string, never>
+export type IntersectionAvoidEmpty<T, U>
+  = T extends Record<string, never>
     ? U
     : U extends Record<string, never>
       ? T

@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: Getting Started
-      link: /guide/
+      link: /introduction/installation
     - theme: alt
       text: GitHub
       link: https://github.com/teages/gqfn

@@ -12,84 +12,73 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Guide', link: '/guide/' },
-      { text: 'Ecosystem', link: '/ecosystem/' },
+      {
+        text: 'Document',
+        link: '/introduction/installation',
+        activeMatch: '^/(introduction|features|packages)/',
+      },
+      {
+        text: 'Reference',
+        link: '/reference/runtime-core',
+        activeMatch: '^/reference',
+      },
     ],
 
     sidebar: {
       '/': [
         {
           collapsed: false,
-          base: '/guide/',
+          base: '/introduction/',
           text: 'Introduction',
-          link: '/',
+          link: '/installation',
           items: [
-            { text: 'Getting Started', link: '/' },
-            // { text: 'Why GQFn?', link: '/why' },
-            { text: 'First Query', link: '/first-query' },
+            { text: 'What is GQFn?', link: '/' },
+            { text: 'Installation', link: '/installation' },
+            { text: 'Prepare Schema', link: '/prepare-schema' },
+            { text: 'Write Your First Query', link: '/write-your-first-query' },
           ],
         },
         {
           collapsed: false,
-          base: '/typed/',
-          text: 'Typed Query Builder',
-          link: '/',
+          base: '/features/',
+          text: 'Features',
+          link: '/query',
           items: [
-            { text: 'Typed Document Node', link: '/typed-document-node' },
-            { text: 'Typed Query Builder', link: '/' },
-            { text: 'Schema', link: '/schema' },
+            { text: 'Operation', link: '/query' },
+            { text: 'Fragment', link: '/fragment' },
+            { text: 'Partial Query', link: '/partial-query' },
           ],
         },
         {
           collapsed: false,
-          base: '/runtime/',
-          text: 'Query Builder',
-          link: '/',
+          base: '/packages/',
+          text: 'Packages',
+          link: '/core',
           items: [
-            { text: 'Query Builder', link: '/' },
-            { text: 'Selection', link: '/selection' },
-            { text: 'Enum', link: '/enum' },
-            { text: '$ and Dollar Function', link: '/dollar' },
-            { text: 'Query Part', link: '/part' },
-            { text: 'Directive', link: '/directive' },
-          ],
-        },
-        {
-          collapsed: false,
-          base: '/cli/',
-          text: 'Schema Loader CLI',
-          link: '/',
-          items: [
-            { text: 'Schema Loader CLI', link: '/' },
-            { text: 'Command Line', link: '/command' },
-            { text: 'Programmatic Usage', link: '/programmatic' },
-            { text: 'Configuration', link: '/config' },
-          ],
-        },
-        {
-          text: 'Ecosystem',
-          link: '/ecosystem/',
-        },
-      ],
-      '/ecosystem/': [
-        {
-          text: 'Overview',
-          link: '/ecosystem/',
-        },
-        {
-          collapsed: false,
-          base: '/ecosystem/nuxt',
-          text: 'GQFn with Nuxt',
-          link: '/',
-          items: [
-            { text: 'Installation', link: '/' },
-            { text: 'useSchema', link: '/schema' },
-            { text: 'Type Utils', link: '/types' },
-            { text: 'withGQFnClient', link: '/with-client' },
-            { text: 'Nitro Server', link: '/server' },
+            { text: 'Core', link: '/core' },
+            { text: 'Cli', link: '/cli' },
+            { text: 'Nuxt Module', link: '/nuxt' },
           ],
         },
       ],
+      '/reference/': [{
+        collapsed: false,
+        base: '/reference/',
+        text: 'Reference',
+        link: '/runtime-core',
+        items: [
+          { text: 'Core Runtime', link: '/runtime-core' },
+          { text: 'Typed Document Node', link: '/typed-document-node' },
+          { text: 'Typed Core', link: '/typed-core' },
+          { text: 'Schema', link: '/schema' },
+          { text: 'Operation', link: '/operation' },
+          { text: 'Selection', link: '/selection' },
+          { text: 'Variable', link: '/variable' },
+          { text: 'Enum', link: '/enum' },
+          { text: 'Dollar', link: '/dollar' },
+          { text: 'Directive', link: '/directive' },
+        ],
+      }],
     },
 
     socialLinks: [
@@ -98,6 +87,8 @@ export default defineConfig({
 
     search: { provider: 'local' },
   },
+
+  cleanUrls: true,
 
   markdown: {
     codeTransformers: [

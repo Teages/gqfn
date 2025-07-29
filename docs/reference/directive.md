@@ -1,6 +1,6 @@
 # Directive
 
-The way to add extra directive. [Learn about Directives](https://graphql.org/learn/queries/#directives)
+[Learn about Directives](https://graphql.org/learn/queries/#directives)
 
 ## Specification
 
@@ -13,22 +13,23 @@ There are three places where you can add directives:
 
 ::: tip
 You need to use full spread query builder if you want to use `directives`. It means you need to add a empty variable definition to the query. The builder will automatically ignore the empty variable.
-:::
 
-::: code-group
-```ts [Query Builder]
-const query = gqfn('query', {}, [
-  'time'
-], $ => [
-  ['@cache', { rule: 'cache-first', maxAge: 3600 }],
-])
-```
+  ::: code-group
+  ```ts [Query Builder]
+  const query = gqfn('query', {}, [
+    'time'
+  ], $ => [
+    ['@cache', { rule: 'cache-first', maxAge: 3600 }],
+  ])
+  ```
 
-```graphql [GraphQL Query]
-query @cache(rule: "cache-first", maxAge: 3600) {
-  time
-}
-```
+  ```graphql [GraphQL Query]
+  query @cache(rule: "cache-first", maxAge: 3600) {
+    time
+  }
+  ```
+
+  It is a typescript limit.
 :::
 
 Some times you need to use variables in the directive, for example:
@@ -127,6 +128,39 @@ query ($withDate: Boolean!) {
       updatedAt
     }
   }
+}
+```
+:::
+
+### `@skip` and `@include`
+
+We have built-in support for `@skip` and `@include` directives.
+
+Once you use these directives, the fields with these directives will be nullable.
+
+::: code-group
+```ts [Query Builder]
+const query = gqfn('query', {}, [
+  {
+    'maybeNow:now': $ => $(true, [
+      ['@skip', { if: false }],
+    ]),
+    'now': $ => $(true),
+  },
+])
+```
+
+```graphql [GraphQL Query]
+{
+  maybeNow: now @skip(if: false)
+  now
+}
+```
+
+```ts [Response Type]
+interface Response {
+  maybeNow: boolean | null | undefined
+  now: boolean
 }
 ```
 :::

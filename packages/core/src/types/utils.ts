@@ -2,18 +2,18 @@ import type { GraphQueryFunction } from '.'
 import type { BaseObject, BaseScalar, BaseType, DefineSchema, Field, Input, InputObjectType, ScalarType } from './define'
 import type { AcceptVariable } from './variable'
 
-export type TypenameField<Name extends string> =
-  Field<'String!', ScalarType<'String', Name, Name>>
+export type TypenameField<Name extends string>
+  = Field<'String!', ScalarType<'String', Name, Name>>
 
-export type Typename<T extends BaseType<any, any>> =
-  T extends BaseObject<infer Name, any, infer Implements>
+export type Typename<T extends BaseType<any, any>>
+  = T extends BaseObject<infer Name, any, infer Implements>
     ? Implements extends Record<string, never>
       ? Name
       : keyof Implements
     : never
 
-export type ModifiedName<Modifier extends string> =
-  Modifier extends `${string}!!`
+export type ModifiedName<Modifier extends string>
+  = Modifier extends `${string}!!`
     ? never
     : Modifier extends `${infer F}!`
       ? ModifiedName<F>
@@ -21,15 +21,15 @@ export type ModifiedName<Modifier extends string> =
         ? ModifiedName<F>
         : Modifier
 
-export type FindType<Schema, Name extends string> =
-  Schema extends DefineSchema<infer Namespace>
+export type FindType<Schema, Name extends string>
+  = Schema extends DefineSchema<infer Namespace>
     ? Name extends keyof Namespace
       ? Namespace[Name]
       : never
     : never
 
-export type RequireInput<T extends Input<any, any>> =
-  T extends Input<infer Modifier, infer Type>
+export type RequireInput<T extends Input<any, any>>
+  = T extends Input<infer Modifier, infer Type>
     ? Type extends BaseScalar<any, any, infer InputType>
       ? ParseInputModifier<Modifier, Type, InputType>
       : Type extends InputObjectType<any, infer Fields>
@@ -37,8 +37,8 @@ export type RequireInput<T extends Input<any, any>> =
         : never
     : never
 
-export type RequireInputOrVariable<T extends Input<any, any>> =
-  T extends Input<infer Modifier, infer Type>
+export type RequireInputOrVariable<T extends Input<any, any>>
+  = T extends Input<infer Modifier, infer Type>
     ? Type extends BaseScalar<any, any, infer InputType>
       ? ParseInputModifier<Modifier, Type, InputType> | AcceptVariable<Modifier>
       : Type extends InputObjectType<any, infer Fields>
@@ -50,8 +50,8 @@ export type ParseOutputModifier<
   Modifier extends string,
   T extends BaseType<any, any>,
   U,
-> =
-  Modifier extends `${string}!!`
+>
+  = Modifier extends `${string}!!`
     ? never
     : Modifier extends `${infer F}!`
       ? ParseOutputModifier<F, T, U> & {}
@@ -72,8 +72,8 @@ type _ParseInputModifier<
   Modifier extends string,
   T extends BaseType<any, any>,
   U,
-> =
-  Modifier extends `${string}!!`
+>
+  = Modifier extends `${string}!!`
     ? never
     : Modifier extends `${infer F}!`
       ? _ParseInputModifier<F, T, U> & {}
@@ -90,8 +90,8 @@ export type SchemaRequire<GQFn extends GraphQueryFunction<any>, Modifier extends
     ? RequireInput<Input<Modifier, FindType<Schema, ModifiedName<Modifier>>>>
     : never
 
-type RelexInputArray<T, U> =
-  [T] extends [never]
+type RelexInputArray<T, U>
+  = [T] extends [never]
     ? never
     : T extends Array<any>
       ? T | U

@@ -22,26 +22,26 @@ import { initSelectionDollar } from './dollar'
 import { parsePartialResult } from './partial'
 
 export type SelectionField = string
-export type SelectionObject<Variables extends DollarPayload> =
-  Record<string, SelectionSet<Variables>>
-  & Record<symbol, PartialResult>
+export type SelectionObject<Variables extends DollarPayload>
+  = Record<string, SelectionSet<Variables>>
+    & Record<symbol, PartialResult>
 
 export type SelectionSetSimple = true
-export type SelectionSetComplex<Variables extends DollarPayload> =
-  Array<
+export type SelectionSetComplex<Variables extends DollarPayload>
+  = Array<
     | SelectionField
     | SelectionObject<Variables>
   >
 
-export type SelectionSetDollarPackageInput<Variables extends DollarPayload> =
-  | SelectionSetComplex<Variables>
-  | SelectionSetSimple
-export type SelectionSetDollarPackage<Variables extends DollarPayload> =
-  DollarPackage<SelectionSetDollarPackageInput<Variables>>
+export type SelectionSetDollarPackageInput<Variables extends DollarPayload>
+  = | SelectionSetComplex<Variables>
+    | SelectionSetSimple
+export type SelectionSetDollarPackage<Variables extends DollarPayload>
+  = DollarPackage<SelectionSetDollarPackageInput<Variables>>
 
-export type SelectionSet<Variables extends DollarPayload> =
-  | SelectionSetSimple
-  | (($: SelectionSetDollar<Variables>) => SelectionSetDollarPackage<Variables>)
+export type SelectionSet<Variables extends DollarPayload>
+  = | SelectionSetSimple
+    | (($: SelectionSetDollar<Variables>) => SelectionSetDollarPackage<Variables>)
 
 export function parseSelectionSet<Variables extends DollarPayload>(
   key: string,
