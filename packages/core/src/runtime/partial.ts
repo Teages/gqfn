@@ -1,9 +1,9 @@
 import type { DocumentNode } from '@0no-co/graphql.web'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
-import type { SelectionSetDollar } from './dollar'
+import type { DollarPayload } from './dollar'
 import type { FragmentBaseDefinition, FragmentName } from './fragment'
 import type { SelectionSetComplex } from './selection'
-import type { PrepareVariables, Variable, VariableDefinition } from './variable'
+import type { PrepareVariables, Variable, VariableDefinition, VariableStore } from './variable'
 import { Kind } from '@0no-co/graphql.web'
 import { DirectivesSymbol, PartialContentDocumentNodeSymbol, PartialContentFragmentNameSymbol } from '../internal/symbol'
 import { createGraphQueryFunctionFragment } from './fragment'
@@ -18,7 +18,7 @@ export interface PartialResult {
 }
 
 export interface PartialPackage {
-  ($: SelectionSetDollar<any>, directives?: DirectiveInput[]): PartialContent
+  ($: DollarPayload<VariableStore>, directives?: DirectiveInput[]): PartialContent
 }
 
 export interface GraphQueryPartial {
@@ -171,7 +171,7 @@ if (import.meta.vitest) {
         }"
       `)
 
-    const case_3 = gqfp('fragment A', 'on T', { username: 'String!' }, [{ hello: $ => $({ name: $.username }, true) }])
+    const case_3 = gqfp('fragment A', 'on T', { username: 'String!' }, [{ hello: $ => $({ name: $.vars.username }, true) }])
     expect(print(getPartialDocumentNode(
       case_3(dollar<{ username: Variable<'String!'> }>()),
     )))
@@ -196,7 +196,7 @@ if (import.meta.vitest) {
       }"
     `)
 
-    const case_4 = gqfp('fragment A', 'on T', { username: 'String!' }, [{ hello: $ => $({ name: $.username }, true) }], [['@log', { tag: 'greeting' }]])
+    const case_4 = gqfp('fragment A', 'on T', { username: 'String!' }, [{ hello: $ => $({ name: $.vars.username }, true) }], [['@log', { tag: 'greeting' }]])
     expect(print(getPartialDocumentNode(
       case_4(dollar<{ username: Variable<'String!'> }>()),
     ))).toMatchInlineSnapshot(`
@@ -224,8 +224,8 @@ if (import.meta.vitest) {
       'fragment A',
       'on T',
       { username: 'String!' },
-      [{ hello: $ => $({ name: $.username }, true) }],
-      $ => [['@log', { tag: 'greeting', username: $.username }]],
+      [{ hello: $ => $({ name: $.vars.username }, true) }],
+      $ => [['@log', { tag: 'greeting', username: $.vars.username }]],
     )
     expect(print(getPartialDocumentNode(
       case_5(dollar<{ username: Variable<'String!'> }>()),

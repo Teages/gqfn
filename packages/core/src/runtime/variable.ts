@@ -32,6 +32,17 @@ export class Variable<T extends string> {
   }
 }
 
+export type VariableStore<K extends string = string> = Record<K, Variable<string>>
+export function createVariableStore<K extends string = string>(): VariableStore<K> {
+  return new Proxy(Object.create(null), {
+    get: (_target, prop) => {
+      if (typeof prop === 'string') {
+        return new Variable(prop)
+      }
+    },
+  })
+}
+
 export type PrepareVariables<
   T extends VariableDefinition<string>,
 > = {

@@ -5,16 +5,16 @@ import type { DollarPayload } from './dollar'
 import type { FragmentBase, FragmentName } from './fragment'
 import type { PrepareSelection } from './prepare'
 import type { AnalyzedObjectSelection, ParseObjectSelectionContext } from './result'
-import type { PrepareVariables, VariablesDefinition } from './variable'
+import type { PrepareVariables, VariablesDefinition, VariableStore } from './variable'
 
 const OperationPartialBaseSymbol = Symbol('@gqfn/core:OperationPartialBase')
 export interface OperationPartial<
   T extends BaseObject<string, any, any>,
   P,
-  Variables extends DollarPayload,
+  Variables extends VariableStore,
 > {
   [OperationPartialBaseSymbol]: T
-  ($: Variables): P
+  ($: DollarPayload<Variables>): P
 }
 
 export type RequireOperationPartialData<

@@ -1,13 +1,21 @@
+import type { DeprecateFunctionPrototype } from '../internal/utils'
 import type { Argument } from './argument'
 import type { DirectiveInput } from './directive'
+import type { EnumFunction } from './enum'
 import type { SelectionSetDollarPackage, SelectionSetDollarPackageInput } from './selection'
+import type { VariableStore } from './variable'
 import { DirectivesSymbol } from '../internal/symbol'
+import { createEnumFunction } from './enum'
 import { Variable } from './variable'
 
-export type DollarPayload = Record<string, Variable<string>>
+export interface DollarPayload<Variables extends VariableStore> {
+  vars: Variables
+  enum: EnumFunction
+}
 
-export type SelectionSetDollar<Variables extends DollarPayload> = SelectionSetDollarFunction<Variables> & Variables
-interface SelectionSetDollarFunction<Variables extends DollarPayload> {
+export interface SelectionSetDollar<Variables extends VariableStore>
+  extends DollarPayload<Variables>, SelectionSetDollarFunction<Variables> {}
+interface SelectionSetDollarFunction<Variables extends VariableStore> extends DeprecateFunctionPrototype {
   (
     selection: SelectionSetDollarPackageInput<Variables>
   ): SelectionSetDollarPackage<Variables>
@@ -18,10 +26,7 @@ interface SelectionSetDollarFunction<Variables extends DollarPayload> {
   ): SelectionSetDollarPackage<Variables>
 }
 
-export type DirectiveDollar<Variables extends DollarPayload> = DirectiveDollarFunction & Variables
-interface DirectiveDollarFunction {
-  (): void
-}
+export type DirectiveDollar<Variables extends VariableStore> = DollarPayload<Variables>
 
 export type VariableDefinitionDollar = VariableDefinitionDollarFunction
 interface VariableDefinitionDollarFunction {
@@ -46,7 +51,7 @@ export class DollarPackage<T> {
   }
 }
 
-export function initSelectionDollar<Variables extends DollarPayload>(): SelectionSetDollar<Variables> {
+export function initSelectionDollar<Variables extends VariableStore>(): SelectionSetDollar<Variables> {
   const fn = (
     ...args: (
       | [selection: SelectionSetDollarPackageInput<Variables>]
@@ -68,10 +73,8 @@ export function initSelectionDollar<Variables extends DollarPayload>(): Selectio
   return withDollarPayload(fn) as SelectionSetDollar<Variables>
 }
 
-export function initDirectiveDollar<T extends DollarPayload>(): DirectiveDollar<T> {
-  const fn = () => {}
-
-  return withDollarPayload(fn) as DirectiveDollar<T>
+export function initDirectiveDollar<Variables extends VariableStore>(): DirectiveDollar<Variables> {
+  return withDollarPayload(Object.create(null)) as DirectiveDollar<Variables>
 }
 
 export function initVariableDefinitionDollar(): VariableDefinitionDollar {
@@ -81,14 +84,28 @@ export function initVariableDefinitionDollar(): VariableDefinitionDollar {
   return fn
 }
 
-function withDollarPayload<T extends object>(target: T): T & DollarPayload {
+function withDollarPayload<T extends object>(target: T): T & DollarPayload<VariableStore> {
   return new Proxy(target, {
     get: (_target, prop) => {
       if (typeof prop === 'string') {
-        return new Variable(prop)
+        switch (prop) {
+          case 'vars': {
+            return new Proxy(target, {
+              get: (_target, prop) => {
+                if (typeof prop === 'string') {
+                  return new Variable(prop)
+                }
+              },
+            })
+          }
+
+          case 'enum': {
+            return createEnumFunction()
+          }
+        }
       }
     },
-  }) as T & DollarPayload
+  }) as T & DollarPayload<VariableStore>
 }
 
 if (import.meta.vitest) {
@@ -98,8 +115,8 @@ if (import.meta.vitest) {
     const $ = initSelectionDollar<{ username: Variable<string> }>()
     expect(typeof $).toBe('function')
 
-    expect($.username).toBeInstanceOf(Variable)
-    expect($.username.name).toBe('username')
+    expect($.vars.username).toBeInstanceOf(Variable)
+    expect($.vars.username.name).toBe('username')
 
     expect($(true)).toBeInstanceOf(DollarPackage)
     expect($(true).args).toMatchObject({})
@@ -117,10 +134,10 @@ if (import.meta.vitest) {
 
   it('initDirectiveDollar', () => {
     const $ = initDirectiveDollar<{ username: Variable<string> }>()
-    expect(typeof $).toBe('function')
+    expect(typeof $).toBe('object')
 
-    expect($.username).toBeInstanceOf(Variable)
-    expect($.username.name).toBe('username')
+    expect($.vars.username).toBeInstanceOf(Variable)
+    expect($.vars.username.name).toBe('username')
   })
 
   it('initVariableDefinitionDollar', () => {

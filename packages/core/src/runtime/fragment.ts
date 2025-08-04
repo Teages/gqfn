@@ -163,7 +163,7 @@ if (import.meta.vitest) {
       'fragment A',
       'on T',
       { username: 'String!' },
-      [{ hello: $ => $({ name: $.username }, true) }],
+      [{ hello: $ => $({ name: $.vars.username }, true) }],
     )))
       .toMatchInlineSnapshot(`
         "fragment A on T {
@@ -175,7 +175,7 @@ if (import.meta.vitest) {
       'fragment A',
       'on T',
       { username: 'String!' },
-      [{ hello: $ => $({ name: $.username }, true) }],
+      [{ hello: $ => $({ name: $.vars.username }, true) }],
       [['@log', { tag: 'greeting' }]],
     )))
       .toMatchInlineSnapshot(`
@@ -188,8 +188,8 @@ if (import.meta.vitest) {
       'fragment A',
       'on T',
       { username: 'String!' },
-      [{ hello: $ => $({ name: $.username }, true) }],
-      $ => [['@log', { tag: 'greeting', username: $.username }]],
+      [{ hello: $ => $({ name: $.vars.username }, true) }],
+      $ => [['@log', { tag: 'greeting', username: $.vars.username }]],
     )))
       .toMatchInlineSnapshot(`
         "fragment A on T @log(tag: "greeting", username: $username) {

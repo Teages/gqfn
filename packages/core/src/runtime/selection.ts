@@ -11,8 +11,9 @@ import type {
 import type { Argument } from './argument'
 import type { DocumentNodeContext } from './context'
 import type { DirectiveInput } from './directive'
-import type { DollarPackage, DollarPayload, SelectionSetDollar } from './dollar'
+import type { DollarPackage, SelectionSetDollar } from './dollar'
 import type { PartialResult } from './partial'
+import type { VariableStore } from './variable'
 import { Kind } from '@0no-co/graphql.web'
 import { DirectivesSymbol } from '../internal/symbol'
 import { parseArgument } from './argument'
@@ -22,28 +23,28 @@ import { initSelectionDollar } from './dollar'
 import { parsePartialResult } from './partial'
 
 export type SelectionField = string
-export type SelectionObject<Variables extends DollarPayload>
+export type SelectionObject<Variables extends VariableStore>
   = Record<string, SelectionSet<Variables>>
     & Record<symbol, PartialResult>
 
 export type SelectionSetSimple = true
-export type SelectionSetComplex<Variables extends DollarPayload>
+export type SelectionSetComplex<Variables extends VariableStore>
   = Array<
     | SelectionField
     | SelectionObject<Variables>
   >
 
-export type SelectionSetDollarPackageInput<Variables extends DollarPayload>
+export type SelectionSetDollarPackageInput<Variables extends VariableStore>
   = | SelectionSetComplex<Variables>
     | SelectionSetSimple
-export type SelectionSetDollarPackage<Variables extends DollarPayload>
+export type SelectionSetDollarPackage<Variables extends VariableStore>
   = DollarPackage<SelectionSetDollarPackageInput<Variables>>
 
-export type SelectionSet<Variables extends DollarPayload>
+export type SelectionSet<Variables extends VariableStore>
   = | SelectionSetSimple
     | (($: SelectionSetDollar<Variables>) => SelectionSetDollarPackage<Variables>)
 
-export function parseSelectionSet<Variables extends DollarPayload>(
+export function parseSelectionSet<Variables extends VariableStore>(
   key: string,
   selection: SelectionSet<Variables>,
   ctx: DocumentNodeContext,
@@ -138,7 +139,7 @@ function parseAlias(key: string): { name: string, value: string } {
   return { name, value }
 }
 
-export function parseSelectionSetDollarPackageInput<Variables extends DollarPayload>(
+export function parseSelectionSetDollarPackageInput<Variables extends VariableStore>(
   input: SelectionSetDollarPackageInput<Variables>,
   ctx: DocumentNodeContext,
 ): SelectionSetNode | undefined {
@@ -149,7 +150,7 @@ export function parseSelectionSetDollarPackageInput<Variables extends DollarPayl
   return parseSelectionSetComplex(input, ctx)
 }
 
-export function parseSelectionSetComplex<Variables extends DollarPayload>(
+export function parseSelectionSetComplex<Variables extends VariableStore>(
   selectionSet: SelectionSetComplex<Variables>,
   ctx: DocumentNodeContext,
 ): SelectionSetNode {

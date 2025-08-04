@@ -4,6 +4,8 @@ import type { Input } from './define'
 import type { DollarPackage, VariablesDefinitionDollar } from './dollar'
 import type { FindType, ModifiedName, RequireInput } from './utils'
 
+export type VariableStore<K extends string = string> = Record<K, Variable<string>>
+
 export type VariablesDefinitionDollarPackage<T extends string>
   = ($: VariablesDefinitionDollar) => DollarPackage<T>
 export type VariablesDefinition<T extends string>

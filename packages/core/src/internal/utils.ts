@@ -99,3 +99,24 @@ export type IntersectionAvoidEmpty<T, U>
     : U extends Record<string, never>
       ? T
       : T & U
+
+export interface DeprecateFunctionPrototype {
+  /** @deprecated */
+  apply: unknown
+  /** @deprecated */
+  arguments: unknown
+  /** @deprecated */
+  bind: unknown
+  /** @deprecated */
+  call: unknown
+  /** @deprecated */
+  caller: unknown
+  /** @deprecated */
+  length: unknown
+  /** @deprecated */
+  name: unknown
+  /** @deprecated */
+  prototype: unknown
+  /** @deprecated */
+  toString: unknown
+}
