@@ -39,12 +39,12 @@ describe('@gqfn/core/runtime', () => {
       'helloWorld',
       {
         'hello:helloWorld': $ => $({ name: 'Tom' }, true),
-        'user': $ => $({ id: $.userId }, [
+        'user': $ => $({ id: $.vars.userId }, [
           'id',
           'name',
           'email',
           {
-            posts: $ => $({ category: $.category }, [
+            posts: $ => $({ category: $.vars.category }, [
               'id',
               'title',
               'content',
@@ -95,18 +95,18 @@ describe('@gqfn/core/runtime', () => {
       captchaType: 'CaptchaEnum! = google',
     }, [{
       login: $ => $({
-        username: $.username,
-        password: $.password,
+        username: $.vars.username,
+        password: $.vars.password,
       }, [{
-        'token': $ => $(true).withDirective(['@skip', { if: $.skipToken }]),
+        'token': $ => $(true).withDirective(['@skip', { if: $.vars.skipToken }]),
         '...': $ => $([
           'id',
           'name',
           'email',
-        ]).withDirective(['@include', { if: $.withUserData }]),
+        ]).withDirective(['@include', { if: $.vars.withUserData }]),
       }]),
     }], $ => [
-      ['@captcha', { provider: $.captchaType }],
+      ['@captcha', { provider: $.vars.captchaType }],
       ['@cors', { host: 'teages.xyz' }],
     ]),
   ))
@@ -165,7 +165,7 @@ describe('@gqfn/core/runtime', () => {
     gqfn('query FetchAnime', {
       id: 'Int = 127549',
     }, [{
-      Media: $ => $({ id: $.id, type: gqfn.enum('ANIME') }, [
+      Media: $ => $({ id: $.vars.id, type: gqfn.enum('ANIME') }, [
         'id',
         {
           ...MediaFields($),
@@ -202,7 +202,7 @@ describe('@gqfn/core/runtime', () => {
     gqfn('query FetchLevel', {
       id: 'Int = 127549',
     }, [{
-      level: $ => $({ id: $.id }, [
+      level: $ => $({ id: $.vars.id }, [
         {
           ...LevelFields($),
         },

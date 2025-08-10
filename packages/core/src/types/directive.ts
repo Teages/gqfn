@@ -1,5 +1,6 @@
 import type { Argument } from './argument'
-import type { DirectiveDollar, DollarPayload } from './dollar'
+import type { DirectiveDollar } from './dollar'
+import type { VariableStore } from './variable'
 
 export type DirectiveInput = [
   def: `@${string}`,
@@ -18,6 +19,6 @@ export type HasSkipDirective<Input extends Array<DirectiveInput>>
     : false
 
 export type DirectivesInputWithDollar<Variables>
-  = Variables extends DollarPayload
+  = Variables extends VariableStore
     ? ($: DirectiveDollar<Variables>) => Array<DirectiveInput>
     : never

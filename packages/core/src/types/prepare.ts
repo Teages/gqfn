@@ -1,11 +1,12 @@
 import type { PrepareSelectionArgument } from './argument'
 import type { BaseObject, BaseScalar, BaseType, Field } from './define'
-import type { DollarPackage, DollarPayload, SelectionDollar } from './dollar'
+import type { DollarPackage, SelectionDollar } from './dollar'
 import type { TypenameField } from './utils'
+import type { VariableStore } from './variable'
 
 export type PrepareSelection<
   T extends BaseType<any, any>,
-  Variables extends DollarPayload,
+  Variables extends VariableStore,
 >
   = T extends BaseObject<any, any, any>
     ? ObjectSelection<T, Variables>
@@ -16,7 +17,7 @@ export type PrepareSelection<
 export type ScalarSelection = true
 export type ObjectSelection<
   T extends BaseObject<any, any, any>,
-  Variables extends DollarPayload,
+  Variables extends VariableStore,
 >
   = | ObjectSelectionSimple<ObjectSelectionContext<T, Variables>>[]
     | [...ObjectSelectionSimple<ObjectSelectionContext<T, Variables>>[], ObjectSelectionContext<T, Variables>]
@@ -27,19 +28,19 @@ export type ObjectSelectionSimple<Context> = keyof {
 
 export type ObjectSelectionContext<
   T extends BaseObject<any, any, any>,
-  Variables extends DollarPayload,
+  Variables extends VariableStore,
 > = ObjectSelectionOnFields<T, Variables> & ObjectSelectionOnInlineFragments<T, Variables>
 
 export type ObjectSelectionOnFields<
   T extends BaseObject<any, any, any>,
-  Variables extends DollarPayload,
+  Variables extends VariableStore,
 > = T extends BaseObject<infer Name, infer Fields, any>
   ? ({ [K in keyof Fields as WithAlias<K>]?: SelectionOnField<Fields[K], Variables> }
     & { [K in '__typename' as WithAlias<K>]?: SelectionOnField<TypenameField<Name>, Variables> })
   : never
 export type ObjectSelectionOnInlineFragments<
   T extends BaseObject<any, any, any>,
-  Variables extends DollarPayload,
+  Variables extends VariableStore,
 > = T extends BaseObject<any, any, infer Implements>
   ? ({ [K in keyof Implements as `... on ${K & string}`]?: SelectionFnOnInlineFragment<Implements[K], Variables> }
     & { '...'?: SelectionFnOnInlineFragment<T, Variables> })
@@ -47,7 +48,7 @@ export type ObjectSelectionOnInlineFragments<
 
 export type SelectionOnField<
   T extends Field<any, any, any>,
-  Variables extends DollarPayload,
+  Variables extends VariableStore,
 > = T extends Field<any, infer Type, infer Arguments>
   ? | SelectionSimplyOnField<Type, PrepareSelectionArgument<Arguments>>
   | SelectionFnOnField<Type, PrepareSelectionArgument<Arguments>, Variables>
@@ -65,7 +66,7 @@ export type SelectionSimplyOnField<
 export interface SelectionFnOnField<
   Type extends BaseType<any, any>,
   PreparedArguments extends Record<string, any>,
-  Variables extends DollarPayload,
+  Variables extends VariableStore,
 > {
   (
     $: SelectionDollar<
@@ -78,7 +79,7 @@ export interface SelectionFnOnField<
 
 export type SelectionFnOnInlineFragment<
   T extends BaseObject<any, any, any>,
-  Variables extends DollarPayload,
+  Variables extends VariableStore,
 > = (
   $: SelectionDollar<
     ObjectSelection<T, Variables>,

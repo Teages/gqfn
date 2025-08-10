@@ -178,7 +178,7 @@ if (import.meta.vitest) {
     expect(print(gqfn(
       'query GetHello',
       { name: 'String!' },
-      [{ hello: $ => $({ name: $.name }, true) }],
+      [{ hello: $ => $({ name: $.vars.name }, true) }],
     ))).toMatchInlineSnapshot(`
       "query GetHello($name: String!) {
         hello(name: $name)
@@ -188,7 +188,7 @@ if (import.meta.vitest) {
     expect(print(gqfn(
       'query GetHello',
       { name: 'String!' },
-      [{ hello: $ => $({ name: $.name }, true) }],
+      [{ hello: $ => $({ name: $.vars.name }, true) }],
       [['@log', { tag: 'greeting' }]],
     ))).toMatchInlineSnapshot(`
       "query GetHello($name: String!) @log(tag: "greeting") {
@@ -199,8 +199,8 @@ if (import.meta.vitest) {
     expect(print(gqfn(
       'query GetHello',
       { name: 'String!' },
-      [{ hello: $ => $({ name: $.name }, true) }],
-      $ => [['@log', { tag: 'greeting', username: $.name }]],
+      [{ hello: $ => $({ name: $.vars.name }, true) }],
+      $ => [['@log', { tag: 'greeting', username: $.vars.name }]],
     ))).toMatchInlineSnapshot(`
       "query GetHello($name: String!) @log(tag: "greeting", username: $name) {
         hello(name: $name)

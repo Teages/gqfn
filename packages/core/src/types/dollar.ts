@@ -1,9 +1,13 @@
 import type { DollarPackageContentSymbol, DollarPackageIsOptionalSymbol } from '../internal/symbol'
-import type { Exact } from '../internal/utils'
+import type { DeprecateFunctionPrototype, Exact } from '../internal/utils'
 import type { DirectiveInput, HasSkipDirective } from './directive'
+import type { EnumFunction } from './enum'
+import type { VariableStore } from './variable'
 
-export type DollarPayload = Record<string, unknown>
-
+export interface DollarPayload<Variables extends VariableStore> {
+  vars: Variables
+  enum: EnumFunction
+}
 export interface VariablesDefinitionDollar {
   <T extends string>(
     def: T
@@ -13,8 +17,8 @@ export interface VariablesDefinitionDollar {
 export type SelectionDollar<
   Shape,
   Arguments,
-  Variables extends DollarPayload,
-> = SelectionDollarFunction<Shape, Arguments> & Variables
+  Variables extends VariableStore,
+> = SelectionDollarFunction<Shape, Arguments> & DollarPayload<Variables>
 type SelectionDollarFunction<
   Shape,
   Arguments,
@@ -27,7 +31,7 @@ type SelectionDollarFunction<
 interface SelectionSetDollarFunctionWithArguments<
   Shape,
   Arguments,
-> {
+> extends DeprecateFunctionPrototype {
   <T extends Shape>(
     arg: Arguments,
     selection: Exact<Shape, T>
@@ -35,7 +39,7 @@ interface SelectionSetDollarFunctionWithArguments<
 }
 interface SelectionSetDollarFunctionWithoutArguments<
   Shape,
-> {
+> extends DeprecateFunctionPrototype {
   <T extends Shape>(
     selection: Exact<Shape, T>
   ): DollarPackage<T>
@@ -44,10 +48,7 @@ interface SelectionSetDollarFunctionCouldHaveArguments<
   Shape,
   Arguments,
 > extends SelectionSetDollarFunctionWithArguments<Shape, Arguments>, SelectionSetDollarFunctionWithoutArguments<Shape> { }
-export type DirectiveDollar<Variables extends DollarPayload> = DirectiveDollarFunction & Variables
-interface DirectiveDollarFunction {
-  (): void
-}
+export type DirectiveDollar<Variables extends VariableStore> = DollarPayload<Variables>
 
 export interface DollarPackage<T, IsOptional extends boolean = false> {
   [DollarPackageContentSymbol]?: () => T

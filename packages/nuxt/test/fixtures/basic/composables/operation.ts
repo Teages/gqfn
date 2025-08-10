@@ -16,6 +16,6 @@ export const useAsyncUser = defineAsyncQuery(
   gqfn('query QueryUser', {
     id: 'ID',
   }, [{
-    user: $ => $({ id: $.id }, [{ ...userFragment($) }]),
+    user: $ => $({ id: $.vars.id }, [{ ...userFragment($) }]),
   }]),
 )

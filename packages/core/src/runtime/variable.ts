@@ -32,6 +32,8 @@ export class Variable<T extends string> {
   }
 }
 
+export type VariableStore = Record<string, Variable<string>>
+
 export type PrepareVariables<
   T extends VariableDefinition<string>,
 > = {

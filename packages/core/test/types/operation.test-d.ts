@@ -20,8 +20,8 @@ describe('types/document', () => {
     const _i3 = gqfn('query Hello', { name: 'String! = "world"' }, [{
       hello: ($) => {
         // just for test and don't do it in real code
-        expectTypeOf($).toExtend<{ name: Variable<'String!'> }>()
-        return $({ name: $.name }, true).withDirective(['@skip', { if: true }])
+        expectTypeOf($.vars).toExtend<{ name: Variable<'String!'> }>()
+        return $({ name: $.vars.name }, true).withDirective(['@skip', { if: true }])
       },
     }])
     expectTypeOf<ResultOf<typeof _i3>>().toEqualTypeOf<{ hello: string | null | undefined }>()

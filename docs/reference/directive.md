@@ -41,7 +41,7 @@ const query = gqfn('query', {
 }, [
   'time'
 ], $ => [
-  ['@cache', { rule: 'cache-first', maxAge: $.maxAge }],
+  ['@cache', { rule: 'cache-first', maxAge: $.vars.maxAge }],
 ])
 ```
 
@@ -79,7 +79,7 @@ Also you can use variables in the directive:
 const query = gqfn('query', { withTime: 'Boolean!' }, [
   {
     now: $ => $(true, [
-      ['@include', { if: $.withTime }],
+      ['@include', { if: $.vars.withTime }],
     ]),
   },
 ])
@@ -109,7 +109,7 @@ const query = gqfn('query', { withDate: 'Boolean!' }, [
           'createdAt',
           'updatedAt',
         ], [
-          ['@include', { if: $.withDate }],
+          ['@include', { if: $.vars.withDate }],
         ]),
       },
     ]),

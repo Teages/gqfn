@@ -58,7 +58,7 @@ Example:
 const query = gqfn('query FetchHello', {
   name: 'String!',
 }, [{
-  hello: $ => $({ name: $.name }, true)
+  hello: $ => $({ name: $.vars.name }, true)
 }])
 ```
 
@@ -88,9 +88,9 @@ const query = gqfn('query FetchData', {
   'hello',
   {
     'hi:hello': true,
-    'greeting:hello': $ => $(true, [['@skip', { if: $.withGreeting }]]),
+    'greeting:hello': $ => $(true, [['@skip', { if: $.vars.withGreeting }]]),
     'user': $ => $({
-      userId: $.userId
+      userId: $.vars.userId
     }, [
       'id',
       'name',

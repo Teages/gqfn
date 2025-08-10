@@ -1,6 +1,7 @@
 import type { ConstDirectiveNode, DirectiveNode, DocumentNode, ValueNode } from '@0no-co/graphql.web'
 import type { Argument } from './argument'
-import type { DirectiveDollar, DollarPackage, DollarPayload } from './dollar'
+import type { DirectiveDollar, DollarPackage } from './dollar'
+import type { VariableStore } from './variable'
 import { Kind } from '@0no-co/graphql.web'
 import { DirectivesSymbol } from '../internal/symbol'
 import { parseArgument } from './argument'
@@ -17,16 +18,16 @@ export type WithDirective<T extends DollarPackage<any> | DocumentNode> = T & {
 }
 export type MaybeWithDirective<T extends DollarPackage<any> | DocumentNode> = T | WithDirective<T>
 
-export type DirectivesInputWithDollar<Variables extends DollarPayload>
+export type DirectivesInputWithDollar<Variables extends VariableStore>
   = ($: DirectiveDollar<Variables>) => Array<DirectiveInput>
 
-export interface WithDirectivesFunction<Variables extends DollarPayload> {
+export interface WithDirectivesFunction<Variables extends VariableStore> {
   <T extends DollarPackage<any> | DocumentNode>(
     target: T,
     directives: DirectiveInput[] | DirectivesInputWithDollar<Variables>,
   ): WithDirective<T>
 }
-export function createWithDirectives<Variables extends DollarPayload>(): WithDirectivesFunction<Variables> {
+export function createWithDirectives<Variables extends VariableStore>(): WithDirectivesFunction<Variables> {
   return (target, directives) => Object.assign({ ...target }, {
     [DirectivesSymbol]: typeof directives === 'function'
       ? directives(initDirectiveDollar())
@@ -190,7 +191,7 @@ if (import.meta.vitest) {
     ])
 
     expect(withDirectives(fragment, $ => [
-      ['@foo', { a: $.username }],
+      ['@foo', { a: $.vars.username }],
     ])[DirectivesSymbol]).toMatchObject([
       ['@foo', { a: new Variable('username') }],
     ])

@@ -13,7 +13,7 @@ const client = createClient(endpoint)
 const query = schema.gqfn('query FetchAnime', {
   id: 'Int = 127549',
 }, [{
-  Media: $ => $({ id: $.id, type: schema.enum('ANIME') }, [
+  Media: $ => $({ id: $.vars.id, type: schema.enum('ANIME') }, [
     'id',
     {
       title: $ => $([

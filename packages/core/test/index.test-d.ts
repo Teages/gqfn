@@ -27,7 +27,7 @@ describe('typeof @gqfn/core', () => {
     expectTypeOf<ResultOf<typeof _i2>>().toEqualTypeOf<{ __typename: 'Query', hi: string }>()
 
     const _i3 = schema.gqfn('query Hello', { name: 'String! = "world"' }, [{
-      hello: $ => $({ name: $.name }, true)
+      hello: $ => $({ name: $.vars.name }, true)
         .withDirective(['@skip', { if: true }]),
     }])
     expectTypeOf<ResultOf<typeof _i3>>().toEqualTypeOf<{ hello: string | null | undefined }>()
@@ -37,7 +37,7 @@ describe('typeof @gqfn/core', () => {
     const schema = useSchema('/graphql')
 
     const _i0 = schema.gqfn('query Test', { name: 'String! = "world"' }, [{
-      hello: $ => $({ name: $.name }, true)
+      hello: $ => $({ name: $.vars.name }, true)
         .withDirective(['@skip', { if: true }]),
       sayings: $ => $({ category: schema.enum('funny') }, [
         'id',
