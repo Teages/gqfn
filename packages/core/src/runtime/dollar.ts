@@ -85,25 +85,25 @@ export function initVariableDefinitionDollar(): VariableDefinitionDollar {
 }
 
 function withDollarPayload<T extends object>(target: T): T & DollarPayload<VariableStore> {
-  return new Proxy(target, {
+  const enumFn = createEnumFunction()
+  const store = new Proxy(Object.create(null), {
     get: (_target, prop) => {
       if (typeof prop === 'string') {
-        switch (prop) {
-          case 'vars': {
-            return new Proxy(target, {
-              get: (_target, prop) => {
-                if (typeof prop === 'string') {
-                  return new Variable(prop)
-                }
-              },
-            })
-          }
-
-          case 'enum': {
-            return createEnumFunction()
-          }
-        }
+        return new Variable(prop)
       }
+    },
+  })
+
+  return new Proxy(target, {
+    get: (_target, prop, receiver) => {
+      if (prop === 'enum') {
+        return enumFn
+      }
+      if (prop === 'vars') {
+        return store
+      }
+
+      return Reflect.get(target, prop, receiver)
     },
   }) as T & DollarPayload<VariableStore>
 }
