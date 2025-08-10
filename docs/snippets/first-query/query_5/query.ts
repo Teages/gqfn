@@ -7,7 +7,7 @@ const gqfn = useSchema(endpoint)
 const query = gqfn('query FetchAnime', {
   id: 'Int = 127549',
 }, [{
-  Media: $ => $({ id: $.id, type: gqfn.enum('ANIME') }, [
+  Media: $ => $({ id: $.vars.id, type: gqfn.enum('ANIME') }, [
     'id',
     {
       title: $ => $([

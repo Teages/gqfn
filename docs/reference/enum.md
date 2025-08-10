@@ -81,7 +81,7 @@ const query = gqfn('query', {
   value: 'Int!',
 }, [
   {
-    toBytes: $ => $({ unit: $.unit, value: $.value }, true),
+    toBytes: $ => $({ unit: $.vars.unit, value: $.vars.value }, true),
   },
 ])
 
