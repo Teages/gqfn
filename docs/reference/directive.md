@@ -164,10 +164,3 @@ interface Response {
 }
 ```
 :::
-
-## Type Definition
-
-```ts
-export type Directives = Array<Directive>
-export type Directive = [`@${string}`, { [key: string]: any }]
-```

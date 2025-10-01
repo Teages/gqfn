@@ -3,45 +3,93 @@
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 
-<!-- [![bundle][bundle-src]][bundle-href] -->
-<!-- [![Codecov][codecov-src]][codecov-href] -->
+The CLI tool for GQFn - provides commands to initialize, manage, and sync GraphQL schemas for @gqfn/core.
 
-GQFn provides a *typed* way to write GraphQL queries with the help of TypeScript.
-
-<!-- - ✨ [Stackblitz Playground](#) TODO: new playground -->
 - 📖 [Documentation](https://gqfn.teages.xyz)
 
-## Usage
+## Installation
 
-Install package:
+Install the CLI package globally or locally in your project:
 
 ```sh
 # ✨ Auto-detect
-npx nypm i @gqfn/core
+npx nypm i @gqfn/cli
 
 # npm
-npm install @gqfn/core
+npm install @gqfn/cli
 
 # yarn
-yarn add @gqfn/core
+yarn add @gqfn/cli
 
 # pnpm
-pnpm install @gqfn/core
+pnpm install @gqfn/cli
 
 # bun
-bun install @gqfn/core
+bun install @gqfn/cli
 ```
 
-Import:
+For global installation:
 
-```js
-// ESM
-import { useSchema } from '@gqfn/core'
+```sh
+npm install -g @gqfn/cli
 ```
 
-```js
-// CommonJS
-const { useSchema } = require('@gqfn/core')
+## Usage
+
+### Initialize GQFn in your project
+
+```bash
+gqfn init
+```
+
+This command creates the necessary configuration files and sets up your project for GQFn usage.
+
+### Add a GraphQL schema
+
+```bash
+gqfn add https://your-graphql-endpoint.com/graphql
+```
+
+You can add multiple endpoints at once:
+
+```bash
+gqfn add https://api.example.com/graphql https://graphql.example.com/v1
+```
+
+### Sync schemas
+
+```bash
+gqfn sync
+```
+
+This command fetches the latest schema definitions from all configured endpoints and updates the generated types.
+
+### Command Options
+
+All commands support the following options:
+
+- `-s, --silent`: Disable all output
+- `--ignore-error` (sync only): Ignore errors when syncing the schema
+
+### Configuration
+
+The CLI uses a `gqfn.config.ts` file for configuration. Here's an example:
+
+```ts
+import { defineConfig } from '@gqfn/cli'
+
+export default defineConfig({
+  clients: [
+    {
+      name: 'api',
+      url: 'https://your-graphql-endpoint.com/graphql',
+      headers: {
+        'Authorization': 'Bearer YOUR_TOKEN'
+      }
+    }
+  ],
+  outputDir: './src/gqfn'
+})
 ```
 
 ## Development
@@ -58,13 +106,7 @@ Published under [MIT License](./LICENSE).
 
 <!-- Badges -->
 
-[npm-version-src]: https://img.shields.io/npm/v/@gqfn/core?style=flat&color=blue
-[npm-version-href]: https://npmjs.com/package/@gqfn/core
-[npm-downloads-src]: https://img.shields.io/npm/dm/@gqfn/core?style=flat&color=blue
-[npm-downloads-href]: https://npmjs.com/package/@gqfn/core
-
-<!-- [codecov-src]: https://img.shields.io/codecov/c/gh/Teages/gqfn/main?style=flat&color=blue
-[codecov-href]: https://codecov.io/gh/Teages/gqfn
-
-[bundle-src]: https://img.shields.io/bundlephobia/minzip/@gqfn/core?style=flat&color=blue
-[bundle-href]: https://bundlephobia.com/result?p=@gqfn/core -->
+[npm-version-src]: https://img.shields.io/npm/v/@gqfn/cli?style=flat&color=blue
+[npm-version-href]: https://npmjs.com/package/@gqfn/cli
+[npm-downloads-src]: https://img.shields.io/npm/dm/@gqfn/cli?style=flat&color=blue
+[npm-downloads-href]: https://npmjs.com/package/@gqfn/cli

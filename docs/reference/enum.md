@@ -97,10 +97,3 @@ query ($unit: UnitEnum! = MB, $value: Int!) {
 }
 ```
 :::
-
-## Type definition
-
-```ts
-export type EnumPackage<T extends string> = () => T
-export function $enum<T extends string>(content: T): EnumPackage<T>
-```
