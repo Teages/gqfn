@@ -1,0 +1,34 @@
+name: Release
+
+on:
+  workflow_dispatch
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup git user
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - run: npm i -g corepack@latest && corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install
+
+      - run: pnpm lint
+      - run: pnpm test:full
+      - run: pnpm build
+
+      - name: Generate GitHub changelog
+        run: pnpm changelog:bump && pnpm cli pre-release && git push --follow-tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update NPM version
+        run: npm install -g npm@latest && npm --version
+      - name: Publish to NPM
+        run: pnpm --filter './packages/*' publish --access public --no-git-checks

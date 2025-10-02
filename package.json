@@ -23,8 +23,7 @@
     "docs:preview": "pnpm -C docs preview",
     "changelog:preview": "changelogen",
     "changelog:bump": "pnpm cli pre-bump && changelogen --release --no-commit --no-tag && pnpm cli post-bump",
-    "cli": "tsx scripts",
-    "release": "pnpm test:full && pnpm prepack && pnpm changelog:bump && pnpm cli pre-release && git push --follow-tags && pnpm --filter './packages/*' publish"
+    "cli": "tsx scripts"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.17.0",
