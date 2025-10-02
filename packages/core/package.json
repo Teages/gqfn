@@ -1,7 +1,7 @@
 {
   "name": "@gqfn/core",
   "type": "module",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Writing GraphQL queries with type safety and type hints, power by TypeScript.",
   "license": "MIT",
   "repository": {

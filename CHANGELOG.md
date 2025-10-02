@@ -1,6 +1,27 @@
 # Changelog
 
 
+## v0.7.1
+
+[compare changes](https://github.com/Teages/gqfn/compare/v0.7.0...v0.7.1)
+
+### 🩹 Fixes
+
+- **core:** Update types configuration in package.json ([f1e0f38](https://github.com/Teages/gqfn/commit/f1e0f38))
+- **cli:** Swap input and output parameters in ScalarType printing ([614ab34](https://github.com/Teages/gqfn/commit/614ab34))
+
+### 🏡 Chore
+
+- **release:** V0.7.0 ([e27ac64](https://github.com/Teages/gqfn/commit/e27ac64))
+
+### ✅ Tests
+
+- Update test snapshot ([ef841ea](https://github.com/Teages/gqfn/commit/ef841ea))
+
+### ❤️ Contributors
+
+- Teages ([@Teages](https://github.com/Teages))
+
 ## v0.7.0
 
 [compare changes](https://github.com/Teages/gqfn/compare/v0.6.0...v0.7.0)
