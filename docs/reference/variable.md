@@ -240,7 +240,7 @@ const query = schema.gqfn(
 const query = schema.gqfn(
   {
     filter: 'PostFilter!',
-    sort: 'PostSort' = { field: 'createdAt', direction: 'DESC' },
+    sort: `PostSort = { field: 'createdAt', direction: 'DESC' }`,
   },
   [
     {
