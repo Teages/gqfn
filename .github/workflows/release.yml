@@ -1,13 +1,29 @@
 name: Release
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      version_type:
+        type: choice
+        description: Type of version bump
+        required: false
+        options:
+        - patch
+        - minor
+        - major
+        - auto
+        default: auto
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - name: Setup git user
         run: |
           git config --global user.name 'github-actions[bot]'
@@ -25,7 +41,7 @@ jobs:
       - run: pnpm build
 
       - name: Generate GitHub changelog
-        run: pnpm changelog:bump && pnpm cli pre-release && git push --follow-tags
+        run: pnpm cli bump --type ${{ github.event.inputs.version_type }} && pnpm cli pre-release && git push --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update NPM version
