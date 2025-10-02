@@ -8,7 +8,7 @@ Use `partial` to define reusable common fields like [GraphQL Fragments](https://
 ```ts [Query Builder]
 const userFields = schema.partial(
   'fragment UserFields',
-  'on Users',
+  'on User',
   [
     'id',
     'name',
