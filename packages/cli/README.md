@@ -84,7 +84,7 @@ export default defineConfig({
       name: 'api',
       url: 'https://your-graphql-endpoint.com/graphql',
       headers: {
-        'Authorization': 'Bearer YOUR_TOKEN'
+        Authorization: `Bearer ${process.env.API_TOKEN}`
       }
     }
   ],

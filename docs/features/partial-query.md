@@ -1,6 +1,6 @@
 # Partial Query
 
-Use `partial` to define reuseable common fields like [GraphQL Fragments](https://graphql.org/learn/queries/#fragments).
+Use `partial` to define reusable common fields like [GraphQL Fragments](https://graphql.org/learn/queries/#fragments).
 
 ## Example
 

@@ -179,15 +179,17 @@ Use variables in directive arguments:
 const query = schema.gqfn(
   {
     includeEmail: 'Boolean!',
-    includePosts: 'Boolean!' = true,
+    includePosts: 'Boolean! = true',
   },
   [
     {
       user: $ => $({ id: 1 }, [
         'id',
         'name',
-        $ => $.vars.includeEmail ? 'email' : null,
         {
+          email: $(true, [
+            ['@include', { if: $.vars.includeEmail }],
+          ]),
           posts: $ => $({ first: 5 }, [
             'id',
             'title',

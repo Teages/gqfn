@@ -143,7 +143,7 @@ const query = schema.gqfn([
         ]),
       },
       {
-        featuredPosts: $$ => $$.posts({ first: 3, featured: true }, [
+        featuredPosts: $ => $.posts({ first: 3, featured: true }, [
           'id',
           'title',
         ]),
@@ -183,8 +183,10 @@ const query = schema.gqfn(
     user: $ => $({ id: 1 }, [
       'id',
       'name',
-      $ => $.includeEmail ? 'email' : null,
       {
+        email: $(true, [
+          ['@include', { if: $.vars.includeEmail }],
+        ]),
         posts: $ => $({ first: 10 }, [
           'id',
           'title',

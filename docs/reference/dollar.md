@@ -40,7 +40,7 @@ Access query variables through the `$.vars` property:
 const query = schema.gqfn(
   {
     userId: 'ID!',
-    postLimit: 'Int!' = 10,
+    postLimit: 'Int! = 10',
     status: 'PostStatus',
   },
   [
