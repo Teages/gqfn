@@ -17,7 +17,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string>
+        type Scalar_ID = ScalarType<'ID', string, string | number>
 
         export type Schema = DefineSchema<{
           DateTime: Scalar_DateTime
@@ -37,12 +37,12 @@ describe('codegen', () => {
         "/* eslint-ignore */
         import type { ScalarType, DefineSchema } from '@gqfn/core/schema'
 
-        type Scalar_DateTime = ScalarType<'DateTime', string | number | Date, string>
+        type Scalar_DateTime = ScalarType<'DateTime', string, string | number | Date>
         type Scalar_Int = ScalarType<'Int', number, number>
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string>
+        type Scalar_ID = ScalarType<'ID', string, string | number>
 
         export type Schema = DefineSchema<{
           DateTime: Scalar_DateTime
@@ -73,7 +73,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string>
+        type Scalar_ID = ScalarType<'ID', string, string | number>
 
         export type UserRole =
           | 'ADMIN'
@@ -110,7 +110,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string>
+        type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Input_UserInput = InputObjectType<'UserInput', {
           name: Input<'String!', Scalar_String>
@@ -156,7 +156,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string>
+        type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Type_User = ObjectType<'User', {
           id: Field<'ID!', Scalar_ID>
@@ -217,7 +217,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string>
+        type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Type_Dog = ObjectType<'Dog', {
           name: Field<'String!', Scalar_String>
@@ -276,7 +276,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string>
+        type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Type_User = ObjectType<'User', {
           id: Field<'ID!', Scalar_ID>
@@ -313,7 +313,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string>
+        type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Type_Query = ObjectType<'Query', {
           user: Field<'User', undefined, {
@@ -363,7 +363,7 @@ describe('codegen', () => {
         type Scalar_Float = ScalarType<'Float', number, number>
         type Scalar_String = ScalarType<'String', string, string>
         type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-        type Scalar_ID = ScalarType<'ID', string | number, string>
+        type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Type_Query = ObjectType<'Query', {
           hello: Field<'String!', Scalar_String>

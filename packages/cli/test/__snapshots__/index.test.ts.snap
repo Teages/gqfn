@@ -12,7 +12,7 @@ type Scalar_Int = ScalarType<'Int', number, number>
 type Scalar_Float = ScalarType<'Float', number, number>
 type Scalar_String = ScalarType<'String', string, string>
 type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-type Scalar_ID = ScalarType<'ID', string | number, string>
+type Scalar_ID = ScalarType<'ID', string, string | number>
 
 export type ResourceState =
   | 'PRIVATE'
@@ -865,7 +865,7 @@ type Scalar_Int = ScalarType<'Int', number, number>
 type Scalar_Float = ScalarType<'Float', number, number>
 type Scalar_String = ScalarType<'String', string, string>
 type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-type Scalar_ID = ScalarType<'ID', string | number, string>
+type Scalar_ID = ScalarType<'ID', string, string | number>
 
 export type GameplayMods =
   | 'FC'
@@ -1715,7 +1715,7 @@ type Scalar_Int = ScalarType<'Int', number, number>
 type Scalar_Float = ScalarType<'Float', number, number>
 type Scalar_String = ScalarType<'String', string, string>
 type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-type Scalar_ID = ScalarType<'ID', string | number, string>
+type Scalar_ID = ScalarType<'ID', string, string | number>
 
 export type CategoryEnum =
   | 'funny'
@@ -1824,7 +1824,7 @@ type Scalar_Int = ScalarType<'Int', number, number>
 type Scalar_Float = ScalarType<'Float', number, number>
 type Scalar_String = ScalarType<'String', string, string>
 type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
-type Scalar_ID = ScalarType<'ID', string | number, string>
+type Scalar_ID = ScalarType<'ID', string, string | number>
 
 type Type_Film = ObjectType<'Film', {
   characterConnection: Field<'FilmCharactersConnection', Type_FilmCharactersConnection, {
