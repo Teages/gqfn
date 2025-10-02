@@ -30,7 +30,7 @@ export function print(schemaData: SchemaData, { url }: CodegenOptions = {}): str
 
   // scalars
   Object.entries(schemaData.scalarTypes).forEach(([name, { input, output }]) => {
-    push(`type ${nameMap.get(name)} = ScalarType<'${name}', ${input}, ${output}>`)
+    push(`type ${nameMap.get(name)} = ScalarType<'${name}', ${output}, ${input}>`)
   })
   if (Object.keys(schemaData.scalarTypes).length) {
     helpers.add('ScalarType')
