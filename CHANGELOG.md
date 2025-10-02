@@ -1,6 +1,52 @@
 # Changelog
 
 
+## v0.7.0
+
+[compare changes](https://github.com/Teages/gqfn/compare/v0.6.0...v0.7.0)
+
+### 🚀 Enhancements
+
+- **cli:** ⚠️  Split cli to standalone package ([288b5af](https://github.com/Teages/gqfn/commit/288b5af))
+- ⚠️  Split cli to standalone package ([#9](https://github.com/Teages/gqfn/pull/9))
+- ⚠️  Refactor type system ([#10](https://github.com/Teages/gqfn/pull/10))
+- ⚠️  Move variables into vars field ([#13](https://github.com/Teages/gqfn/pull/13))
+
+### 🩹 Fixes
+
+- Release command not work on unix ([5a0a3e2](https://github.com/Teages/gqfn/commit/5a0a3e2))
+- Add missing license files and tsconfig ([7573d4f](https://github.com/Teages/gqfn/commit/7573d4f))
+- Replace `@gqfn/core/cli` with `@gqfn/cli` ([0e19735](https://github.com/Teages/gqfn/commit/0e19735))
+- Update postinstall script to build cli package ([aea35d6](https://github.com/Teages/gqfn/commit/aea35d6))
+- Add @gqfn/cli as a devDependency of docs ([71605be](https://github.com/Teages/gqfn/commit/71605be))
+
+### 📖 Documentation
+
+- Update docs for 0.7.0 ([#12](https://github.com/Teages/gqfn/pull/12))
+- Update documentation ([#14](https://github.com/Teages/gqfn/pull/14))
+
+### 🏡 Chore
+
+- Update dependence ([#11](https://github.com/Teages/gqfn/pull/11))
+- **ci:** Add release ci ([0380df8](https://github.com/Teages/gqfn/commit/0380df8))
+- **ci:** Improve release workflow ([b3a516d](https://github.com/Teages/gqfn/commit/b3a516d))
+- **lint:** Apply automatic fix ([796b07d](https://github.com/Teages/gqfn/commit/796b07d))
+
+### ✅ Tests
+
+- **cli:** Update snapshot ([dd4e544](https://github.com/Teages/gqfn/commit/dd4e544))
+
+#### ⚠️ Breaking Changes
+
+- **cli:** ⚠️  Split cli to standalone package ([288b5af](https://github.com/Teages/gqfn/commit/288b5af))
+- ⚠️  Split cli to standalone package ([#9](https://github.com/Teages/gqfn/pull/9))
+- ⚠️  Refactor type system ([#10](https://github.com/Teages/gqfn/pull/10))
+- ⚠️  Move variables into vars field ([#13](https://github.com/Teages/gqfn/pull/13))
+
+### ❤️ Contributors
+
+- Teages ([@Teages](https://github.com/Teages))
+
 ## v0.6.0
 
 [compare changes](https://github.com/Teages/gqfn/compare/v0.5.1...v0.6.0)
