@@ -8,10 +8,10 @@ on:
         description: Type of version bump
         required: false
         options:
-        - patch
-        - minor
-        - major
-        - auto
+          - patch
+          - minor
+          - major
+          - auto
         default: auto
 
 jobs:
