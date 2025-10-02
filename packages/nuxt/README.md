@@ -15,7 +15,7 @@ The Nuxt binding for @gqfn/core.
 <!-- Highlight some of the features your module provide here -->
 - 🔒 &nbsp;Write queries with type safety and type hints.
 - 🚀 &nbsp;No need to scan your source code, no code generation during HMR.
-- ❤️ &nbsp;he experience of using gqfn is very similar to writing plain GraphQL queries.
+- ❤️ &nbsp;The experience of using gqfn is very similar to writing plain GraphQL queries.
 - 🌐 &nbsp;Working for most clients with TypedDocumentNode.
 
 ## Quick Setup

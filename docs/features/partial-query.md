@@ -1,21 +1,21 @@
 # Partial Query
 
-Use `gqfp` to reuse common fields like [GraphQL Fragments](https://graphql.org/learn/queries/#fragments).
+Use `partial` to define reusable common fields like [GraphQL Fragments](https://graphql.org/learn/queries/#fragments).
 
 ## Example
 
 ::: code-group
 ```ts [Query Builder]
-const userFields = gqfp(
+const userFields = schema.partial(
   'fragment UserFields',
-  'on Users',
+  'on User',
   [
     'id',
     'name',
   ],
 )
 
-const query = gqfn([
+const query = schema.gqfn([
   {
     user: $ => $({ id: 1 }, [{
       ...userFields($),
@@ -46,24 +46,4 @@ const query = gqfn([
 Partial Query is a typed package of GraphQL Fragments.
 On the base of Fragment, we add the type check for Variables.
 
-## Type Definition
-
-```ts
-export function gqfp(
-  name: 'fragment' | `fragment ${string}`,
-  base: `on ${string}`,
-  selection: TypeSelection,
-): ($: Dollar<any>) => SelectionObject
-export function gqfp(
-  name: 'fragment' | `fragment ${string}`,
-  base: `on ${string}`,
-  vars: Variables,
-  selection: TypeSelection,
-): ($: Dollar) => SelectionObject
-
-interface SelectionObject {
-  [key: string]:
-    | true
-    | (($: Dollar) => DollarContext<TypeSelection>)
-}
-```
+Fragments can not be used in gqfn, it is for compatibility with other GraphQL tools.

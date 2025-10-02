@@ -131,25 +131,4 @@ const query = gqfn([
 ```
 :::
 
-<!-- Learn more about [`$` and dollar function](./dollar). -->
-
-## Type Definition
-
-:::tip
-The type definition is not complete, it only shows the basic structure of the `TypeSelection` type.
-:::
-
-```ts
-export type TypeSelection
-  = | Array<string>
-    | [
-      ...Array<string>,
-      SelectionObject,
-    ]
-
-interface SelectionObject {
-  [key: string]:
-    | true
-    | (($: Dollar) => DollarContext<TypeSelection>)
-}
-```
+Learn more about [`$` and dollar function](./dollar).
