@@ -1,7 +1,7 @@
 import type { Expand, FlatRecord, IntersectionAvoidEmpty, MayBePartial, Trim, UnionToIntersection, Values } from '../internal/utils'
 import type { BaseObject, BaseScalar, BaseType, Field } from './define'
 import type { DollarPackage } from './dollar'
-import type { ParseOutputModifier, Typename } from './utils'
+import type { ExtractBaseType, ParseOutputModifier, Typename } from './utils'
 
 export type ParseSelection<
   T extends BaseType<any, any> | undefined,
@@ -56,14 +56,16 @@ export type ParseObjectSelectionContextFields<
   : never
 
 export type ParseObjectSelectionContextField<
-  T extends Field<any, any, any>,
+  T extends Field<any, any>,
   Selection,
-> = T extends Field<infer Modifier, infer Type, any>
-  ? Selection extends (...args: any) => DollarPackage<infer Context, infer IsOptional>
-    ? true extends IsOptional
-      ? ParseOutputModifier<Modifier, Type, ParseSelection<Type, Context>> | null | undefined
-      : ParseOutputModifier<Modifier, Type, ParseSelection<Type, Context>>
-    : ParseOutputModifier<Modifier, Type, ParseSelection<Type, Selection>>
+> = T extends Field<infer TypeExpr, any>
+  ? ExtractBaseType<TypeExpr> extends infer BT extends (BaseType<any, any> | undefined)
+    ? Selection extends (...args: any) => DollarPackage<infer Context, infer IsOptional>
+      ? true extends IsOptional
+        ? ParseOutputModifier<TypeExpr, ParseSelection<BT, Context>> | null | undefined
+        : ParseOutputModifier<TypeExpr, ParseSelection<BT, Context>>
+      : ParseOutputModifier<TypeExpr, ParseSelection<BT, Selection>>
+    : never
   : never
 
 export type ParseSelectionName<T extends string>

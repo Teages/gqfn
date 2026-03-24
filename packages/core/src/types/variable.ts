@@ -2,7 +2,7 @@ import type { VariableIdentitySymbol } from '../internal/symbol'
 import type { RelaxedOptional, Values } from '../internal/utils'
 import type { Input } from './define'
 import type { DollarPackage, VariablesDefinitionDollar } from './dollar'
-import type { FindType, ModifiedName, RequireInput } from './utils'
+import type { FindType, ModifiedName, ModifierToTypeExpr, RequireInput } from './utils'
 
 export type VariableStore = Record<string, Variable<string>>
 
@@ -58,7 +58,7 @@ export type RequireVariables<Schema, T extends VariablesDefinition<string>> = Re
     : RequireVariable<Schema, UnpackDollar<T[K]>>
 }>
 type RequireVariable<Schema, Modifier extends string>
-  = RequireInput<Input<Modifier, FindType<Schema, ModifiedName<Modifier>>>>
+  = RequireInput<Input<ModifierToTypeExpr<Modifier, FindType<Schema, ModifiedName<Modifier>>>>>
 
 type UnpackDollar<T extends Values<VariablesDefinition<string>>>
   = T extends (($: VariablesDefinitionDollar) => DollarPackage<infer U extends string, boolean>)

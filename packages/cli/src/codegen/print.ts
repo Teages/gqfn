@@ -54,7 +54,7 @@ export function print(schemaData: SchemaData, { url }: CodegenOptions = {}): str
   Object.entries(schemaData.inputObjects).forEach(([name, { args }]) => {
     push(
       `type ${nameMap.get(name)} = InputObjectType<'${name}', {`,
-      ...Object.entries(args).map(([key, val]) => `  ${key}: Input<'${val}', ${nameMap.get(removeModifier(val))}>`),
+      ...Object.entries(args).map(([key, val]) => `  ${key}: Input<${modifierToTypeExpr(val, nameMap)}>`),
       `}>`,
       '',
     )
@@ -71,16 +71,16 @@ export function print(schemaData: SchemaData, { url }: CodegenOptions = {}): str
     fields.forEach(({ name, args, res }) => {
       if (args && Object.keys(args).length > 0) {
         push(
-          `  ${name}: Field<'${res}', ${nameMap.get(removeModifier(res))}, {`,
+          `  ${name}: Field<${modifierToTypeExpr(res, nameMap)}, {`,
           ...Object.entries(args).map(([key, val]) =>
-            `    ${key}: Input<'${val}', ${nameMap.get(removeModifier(val))}>`),
+            `    ${key}: Input<${modifierToTypeExpr(val, nameMap)}>`),
           `  }>`,
         )
         helpers.add('Field')
         helpers.add('Input')
       }
       else {
-        push(`  ${name}: Field<'${res}', ${nameMap.get(removeModifier(res))}>`)
+        push(`  ${name}: Field<${modifierToTypeExpr(res, nameMap)}>`)
         helpers.add('Field')
       }
     })
@@ -115,7 +115,7 @@ export function print(schemaData: SchemaData, { url }: CodegenOptions = {}): str
 
     push(
       `type ${nameMap.get(name)} = InterfaceType<'${name}', {`,
-      ...fields.map(({ name, res }) => `  ${name}: Field<'${res}', ${nameMap.get(removeModifier(res))}>`),
+      ...fields.map(({ name, res }) => `  ${name}: Field<${modifierToTypeExpr(res, nameMap)}>`),
       `}, {`,
       ...Array.from(entities).map(key => `  ${key}: ${nameMap.get(key)}`),
       `}>`,
@@ -189,6 +189,26 @@ export function print(schemaData: SchemaData, { url }: CodegenOptions = {}): str
   )
 
   return lines.join('\n')
+}
+
+function modifierToTypeExpr(modifier: string, nameMap: Map<string, string>): string {
+  const baseName = removeModifier(modifier)
+  const typeName = nameMap.get(baseName) ?? 'undefined'
+  return buildTypeExpr(modifier, typeName)
+}
+
+function buildTypeExpr(modifier: string, typeName: string): string {
+  if (modifier.endsWith('!')) {
+    return buildTypeExprCore(modifier.slice(0, -1), typeName)
+  }
+  return `${buildTypeExprCore(modifier, typeName)} | null`
+}
+
+function buildTypeExprCore(modifier: string, typeName: string): string {
+  if (modifier.startsWith('[') && modifier.endsWith(']')) {
+    return `[${buildTypeExpr(modifier.slice(1, -1), typeName)}]`
+  }
+  return typeName
 }
 
 function removeModifier(str: string) {
