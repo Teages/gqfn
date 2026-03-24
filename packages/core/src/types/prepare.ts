@@ -52,7 +52,7 @@ export type SelectionOnField<
 > = T extends Field<infer TypeExpr, infer Arguments>
   ? ExtractBaseType<TypeExpr> extends infer BT extends BaseType<any, any>
     ? | SelectionSimplyOnField<BT, PrepareSelectionArgument<Arguments>>
-      | SelectionFnOnField<BT, PrepareSelectionArgument<Arguments>, Variables>
+    | SelectionFnOnField<BT, PrepareSelectionArgument<Arguments>, Variables>
     : never
   : never
 
