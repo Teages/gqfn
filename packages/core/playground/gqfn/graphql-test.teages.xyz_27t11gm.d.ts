@@ -8,18 +8,18 @@ type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
 type Scalar_ID = ScalarType<'ID', string | number, string>
 
 type Type_Query = ObjectType<'Query', {
-  hello: Field<'String!', Scalar_String, {
-    name: Input<'String', Scalar_String>
+  hello: Field<Scalar_String, {
+    name: Input<Scalar_String | null>
   }>
-  user: Field<'User', Type_User, {
-    id: Input<'ID', Scalar_ID>
+  user: Field<Type_User | null, {
+    id: Input<Scalar_ID | null>
   }>
-  users: Field<'[User!]!', Type_User>
+  users: Field<[Type_User]>
 }>
 
 type Type_User = ObjectType<'User', {
-  id: Field<'ID!', Scalar_ID>
-  name: Field<'String!', Scalar_String>
+  id: Field<Scalar_ID>
+  name: Field<Scalar_String>
 }>
 
 export type Schema = DefineSchema<{
