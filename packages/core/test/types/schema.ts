@@ -15,33 +15,33 @@ export type Scalar_Date = ScalarType<'Date', string, string>
 export type Enum_CategoryEnum = EnumType<'CategoryEnum', CategoryEnum>
 
 export type Input_SayingDataInput = InputObjectType<'SayingDataInput', {
-  category: Input<'CategoryEnum!', Enum_CategoryEnum>
-  content: Input<'String!', Scalar_String>
+  category: Input<Enum_CategoryEnum>
+  content: Input<Scalar_String>
 }>
 
 export type Interface_ItemWithId = InterfaceType<'ItemWithId', {
-  id: Field<'Int!', Scalar_Int>
+  id: Field<Scalar_Int>
 }, {
   Saying: Type_Saying
   User: Type_User
 }>
 
 export type Type_Saying = ObjectType<'Saying', {
-  category: Field<'CategoryEnum!', Enum_CategoryEnum>
-  content: Field<'String!', Scalar_String>
-  createdAt: Field<'Date!', Scalar_Date>
-  id: Field<'Int!', Scalar_Int>
-  owner: Field<'User!', Type_User>
-  updatedAt: Field<'Date!', Scalar_Date>
+  category: Field<Enum_CategoryEnum>
+  content: Field<Scalar_String>
+  createdAt: Field<Scalar_Date>
+  id: Field<Scalar_Int>
+  owner: Field<Type_User>
+  updatedAt: Field<Scalar_Date>
 }>
 
 export type Type_User = ObjectType<'User', {
-  email: Field<'String!', Scalar_String>
-  friends: Field<'[User!]!', Type_User>
-  id: Field<'Int!', Scalar_Int>
-  name: Field<'String!', Scalar_String>
-  sayings: Field<'[Saying!]!', Type_Saying, {
-    category: Input<'CategoryEnum', Enum_CategoryEnum>
+  email: Field<Scalar_String>
+  friends: Field<[Type_User]>
+  id: Field<Scalar_Int>
+  name: Field<Scalar_String>
+  sayings: Field<[Type_Saying], {
+    category: Input<Enum_CategoryEnum | null>
   }>
 }>
 
@@ -51,33 +51,33 @@ export type Union_Data = UnionType<'Data', {
 }>
 
 export type Type_Mutation = ObjectType<'Mutation', {
-  addSaying: Field<'Saying!', Type_Saying, {
-    input: Input<'SayingDataInput', Input_SayingDataInput>
-    ownerId: Input<'Int!', Scalar_Int>
+  addSaying: Field<Type_Saying, {
+    input: Input<Input_SayingDataInput | null>
+    ownerId: Input<Scalar_Int>
   }>
 }>
 
 export type Type_Query = ObjectType<'Query', {
-  all: Field<'[Data!]!', Union_Data>
-  allId: Field<'[ItemWithId!]!', Interface_ItemWithId>
-  hello: Field<'String!', Scalar_String, {
-    name: Input<'String', Scalar_String>
+  all: Field<[Union_Data]>
+  allId: Field<[Interface_ItemWithId]>
+  hello: Field<Scalar_String, {
+    name: Input<Scalar_String | null>
   }>
-  saying: Field<'Saying!', Type_Saying, {
-    id: Input<'Int!', Scalar_Int>
+  saying: Field<Type_Saying, {
+    id: Input<Scalar_Int>
   }>
-  sayings: Field<'[Saying!]!', Type_Saying, {
-    category: Input<'CategoryEnum', Enum_CategoryEnum>
+  sayings: Field<[Type_Saying], {
+    category: Input<Enum_CategoryEnum | null>
   }>
-  user: Field<'User!', Type_User, {
-    id: Input<'Int!', Scalar_Int>
+  user: Field<Type_User, {
+    id: Input<Scalar_Int>
   }>
-  users: Field<'[User!]!', Type_User>
+  users: Field<[Type_User]>
 }>
 
 export type Type_Subscription = ObjectType<'Subscription', {
-  countdown: Field<'Int!', Scalar_Int, {
-    from: Input<'Int!', Scalar_Int>
+  countdown: Field<Scalar_Int, {
+    from: Input<Scalar_Int>
   }>
 }>
 

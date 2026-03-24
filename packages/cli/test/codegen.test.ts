@@ -113,9 +113,9 @@ describe('codegen', () => {
         type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Input_UserInput = InputObjectType<'UserInput', {
-          name: Input<'String!', Scalar_String>
-          age: Input<'Int', Scalar_Int>
-          email: Input<'String', Scalar_String>
+          name: Input<Scalar_String>
+          age: Input<Scalar_Int | null>
+          email: Input<Scalar_String | null>
         }>
 
         export type Schema = DefineSchema<{
@@ -159,20 +159,20 @@ describe('codegen', () => {
         type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Type_User = ObjectType<'User', {
-          id: Field<'ID!', Scalar_ID>
-          uuid: Field<'String!', Scalar_String>
-          name: Field<'String!', Scalar_String>
+          id: Field<Scalar_ID>
+          uuid: Field<Scalar_String>
+          name: Field<Scalar_String>
         }>
 
         type Interface_Node = InterfaceType<'Node', {
-          id: Field<'ID!', Scalar_ID>
+          id: Field<Scalar_ID>
         }, {
           User: Type_User
         }>
 
         type Interface_NodeWithUUID = InterfaceType<'NodeWithUUID', {
-          id: Field<'ID!', Scalar_ID>
-          uuid: Field<'String!', Scalar_String>
+          id: Field<Scalar_ID>
+          uuid: Field<Scalar_String>
         }, {
           User: Type_User
         }>
@@ -220,15 +220,15 @@ describe('codegen', () => {
         type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Type_Dog = ObjectType<'Dog', {
-          name: Field<'String!', Scalar_String>
+          name: Field<Scalar_String>
         }>
 
         type Type_Cat = ObjectType<'Cat', {
-          name: Field<'String!', Scalar_String>
+          name: Field<Scalar_String>
         }>
 
         type Type_Human = ObjectType<'Human', {
-          name: Field<'String!', Scalar_String>
+          name: Field<Scalar_String>
         }>
 
         type Union_Pet = UnionType<'Pet', {
@@ -279,10 +279,10 @@ describe('codegen', () => {
         type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Type_User = ObjectType<'User', {
-          id: Field<'ID!', Scalar_ID>
-          name: Field<'String!', Scalar_String>
-          age: Field<'Int', Scalar_Int>
-          email: Field<'String', Scalar_String>
+          id: Field<Scalar_ID>
+          name: Field<Scalar_String>
+          age: Field<Scalar_Int | null>
+          email: Field<Scalar_String | null>
         }>
 
         export type Schema = DefineSchema<{
@@ -316,12 +316,12 @@ describe('codegen', () => {
         type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Type_Query = ObjectType<'Query', {
-          user: Field<'User', undefined, {
-            id: Input<'ID!', Scalar_ID>
+          user: Field<undefined | null, {
+            id: Input<Scalar_ID>
           }>
-          users: Field<'[User!]!', undefined, {
-            limit: Input<'Int', Scalar_Int>
-            offset: Input<'Int', Scalar_Int>
+          users: Field<[undefined], {
+            limit: Input<Scalar_Int | null>
+            offset: Input<Scalar_Int | null>
           }>
         }>
 
@@ -366,7 +366,7 @@ describe('codegen', () => {
         type Scalar_ID = ScalarType<'ID', string, string | number>
 
         type Type_Query = ObjectType<'Query', {
-          hello: Field<'String!', Scalar_String>
+          hello: Field<Scalar_String>
         }>
 
         export type Schema = DefineSchema<{

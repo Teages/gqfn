@@ -1,7 +1,7 @@
 import type { GraphQueryFunction } from '../../src/types'
 import type { Input } from '../../src/types/define'
 import type { ParseObjectSelectionContextField } from '../../src/types/result'
-import type { FindType, ModifiedName, ParseInputModifier, ParseOutputModifier, RequireInput, RequireInputOrVariable, SchemaRequire, Typename, TypenameField } from '../../src/types/utils'
+import type { ExtractBaseType, FindType, ModifiedName, ModifierToTypeExpr, ParseInputModifier, ParseOutputModifier, RequireInput, RequireInputOrVariable, SchemaRequire, TypeExprToModifier, Typename, TypenameField } from '../../src/types/utils'
 import type { Variable } from '../../src/types/variable'
 import type {
   Enum_CategoryEnum,
@@ -50,6 +50,34 @@ describe('type-next/utils', () => {
     expectTypeOf<ModifiedName<'[String!]!'>>().toEqualTypeOf<'String'>()
   })
 
+  test('ExtractBaseType', () => {
+    expectTypeOf<ExtractBaseType<Scalar_String>>().toEqualTypeOf<Scalar_String>()
+    expectTypeOf<ExtractBaseType<Scalar_String | null>>().toEqualTypeOf<Scalar_String>()
+    expectTypeOf<ExtractBaseType<[Scalar_String]>>().toEqualTypeOf<Scalar_String>()
+    expectTypeOf<ExtractBaseType<[Scalar_String | null]>>().toEqualTypeOf<Scalar_String>()
+    expectTypeOf<ExtractBaseType<[Scalar_String] | null>>().toEqualTypeOf<Scalar_String>()
+    expectTypeOf<ExtractBaseType<[Scalar_String | null] | null>>().toEqualTypeOf<Scalar_String>()
+    expectTypeOf<ExtractBaseType<[[Scalar_String]]>>().toEqualTypeOf<Scalar_String>()
+  })
+
+  test('ModifierToTypeExpr', () => {
+    expectTypeOf<ModifierToTypeExpr<'String!', Scalar_String>>().toEqualTypeOf<Scalar_String>()
+    expectTypeOf<ModifierToTypeExpr<'String', Scalar_String>>().toEqualTypeOf<Scalar_String | null>()
+    expectTypeOf<ModifierToTypeExpr<'[String!]!', Scalar_String>>().toEqualTypeOf<[Scalar_String]>()
+    expectTypeOf<ModifierToTypeExpr<'[String!]', Scalar_String>>().toEqualTypeOf<[Scalar_String] | null>()
+    expectTypeOf<ModifierToTypeExpr<'[String]!', Scalar_String>>().toEqualTypeOf<[Scalar_String | null]>()
+    expectTypeOf<ModifierToTypeExpr<'[String]', Scalar_String>>().toEqualTypeOf<[Scalar_String | null] | null>()
+  })
+
+  test('TypeExprToModifier', () => {
+    expectTypeOf<TypeExprToModifier<Scalar_String>>().toEqualTypeOf<'String!'>()
+    expectTypeOf<TypeExprToModifier<Scalar_String | null>>().toEqualTypeOf<'String'>()
+    expectTypeOf<TypeExprToModifier<[Scalar_String]>>().toEqualTypeOf<'[String!]!'>()
+    expectTypeOf<TypeExprToModifier<[Scalar_String] | null>>().toEqualTypeOf<'[String!]'>()
+    expectTypeOf<TypeExprToModifier<[Scalar_String | null]>>().toEqualTypeOf<'[String]!'>()
+    expectTypeOf<TypeExprToModifier<[Scalar_String | null] | null>>().toEqualTypeOf<'[String]'>()
+  })
+
   test('FindType', () => {
     expectTypeOf<FindType<Schema, 'Int'>>().toEqualTypeOf<Scalar_Int>()
     expectTypeOf<FindType<Schema, 'Float'>>().toEqualTypeOf<Scalar_Float>()
@@ -68,15 +96,15 @@ describe('type-next/utils', () => {
   })
 
   test('RequireInput', () => {
-    expectTypeOf<RequireInput<Input<'Int', Scalar_Int>>>()
+    expectTypeOf<RequireInput<Input<Scalar_Int | null>>>()
       .toEqualTypeOf<number | null | undefined>()
-    expectTypeOf<RequireInput<Input<'Int!', Scalar_Int>>>()
+    expectTypeOf<RequireInput<Input<Scalar_Int>>>()
       .toEqualTypeOf<number>()
-    expectTypeOf<RequireInput<Input<'[Int!]!', Scalar_Int>>>()
+    expectTypeOf<RequireInput<Input<[Scalar_Int]>>>()
       .toEqualTypeOf<number[] | number>()
-    expectTypeOf<RequireInput<Input<'SayingDataInput!', Input_SayingDataInput>>>()
+    expectTypeOf<RequireInput<Input<Input_SayingDataInput>>>()
       .toEqualTypeOf<{ category: (() => 'funny') | (() => 'jokes') | (() => 'serious'), content: string }>()
-    expectTypeOf<RequireInput<Input<'[SayingDataInput!]!', Input_SayingDataInput>>>()
+    expectTypeOf<RequireInput<Input<[Input_SayingDataInput]>>>()
       .toEqualTypeOf<
         | { category: (() => 'funny') | (() => 'jokes') | (() => 'serious'), content: string }[]
         | { category: (() => 'funny') | (() => 'jokes') | (() => 'serious'), content: string }
@@ -84,33 +112,33 @@ describe('type-next/utils', () => {
   })
 
   test('RequireInputOrVariable', () => {
-    expectTypeOf<RequireInputOrVariable<Input<'Int', Scalar_Int>>>()
+    expectTypeOf<RequireInputOrVariable<Input<Scalar_Int | null>>>()
       .toEqualTypeOf<number | Variable<'Int!'> | Variable<'Int'> | null | undefined>()
-    expectTypeOf<RequireInputOrVariable<Input<'Int!', Scalar_Int>>>()
+    expectTypeOf<RequireInputOrVariable<Input<Scalar_Int>>>()
       .toEqualTypeOf<number | Variable<'Int!'>>()
-    expectTypeOf<RequireInputOrVariable<Input<'[Int!]!', Scalar_Int>>>()
+    expectTypeOf<RequireInputOrVariable<Input<[Scalar_Int]>>>()
       .toEqualTypeOf<number[] | number | Variable<'[Int!]!'> | Variable<'Int!'>>()
-    expectTypeOf<RequireInputOrVariable<Input<'[Int]!', Scalar_Int>>>()
+    expectTypeOf<RequireInputOrVariable<Input<[Scalar_Int | null]>>>()
       .toEqualTypeOf<
         | number | (number | null | undefined)[]
         | Variable<'[Int]!'> | Variable<'[Int!]!'>
         | Variable<'Int!'>
     >()
-    expectTypeOf<RequireInputOrVariable<Input<'[Int!]', Scalar_Int>>>()
+    expectTypeOf<RequireInputOrVariable<Input<[Scalar_Int] | null>>>()
       .toEqualTypeOf<
         | number[] | number
         | Variable<'[Int!]'> | Variable<'[Int!]!'>
         | Variable<'Int!'> | Variable<'Int'>
         | null | undefined
     >()
-    expectTypeOf<RequireInputOrVariable<Input<'[Int]', Scalar_Int>>>()
+    expectTypeOf<RequireInputOrVariable<Input<[Scalar_Int | null] | null>>>()
       .toEqualTypeOf<
         | number | (number | null | undefined)[]
         | Variable<'[Int]'> | Variable<'[Int]!'> | Variable<'[Int!]'> | Variable<'[Int!]!'>
         | Variable<'Int!'> | Variable<'Int'>
         | null | undefined
     >()
-    expectTypeOf<RequireInputOrVariable<Input<'SayingDataInput!', Input_SayingDataInput>>>()
+    expectTypeOf<RequireInputOrVariable<Input<Input_SayingDataInput>>>()
       .toEqualTypeOf<
         | {
           category: (() => 'funny') | (() => 'jokes') | (() => 'serious') | Variable<'CategoryEnum!'>
@@ -118,7 +146,7 @@ describe('type-next/utils', () => {
         }
         | Variable<'SayingDataInput!'>
     >()
-    expectTypeOf<RequireInputOrVariable<Input<'[SayingDataInput!]!', Input_SayingDataInput>>>()
+    expectTypeOf<RequireInputOrVariable<Input<[Input_SayingDataInput]>>>()
       .toEqualTypeOf<
         | {
           category: (() => 'funny') | (() => 'jokes') | (() => 'serious') | Variable<'CategoryEnum!'>
@@ -134,113 +162,105 @@ describe('type-next/utils', () => {
   })
 
   test('ParseOutputModifier', () => {
-    expectTypeOf<ParseOutputModifier<'String', Scalar_String, string>>()
+    expectTypeOf<ParseOutputModifier<Scalar_String | null, string>>()
       .toEqualTypeOf<string | null | undefined>()
-    expectTypeOf<ParseOutputModifier<'String]', Scalar_String, string>>()
-      .toEqualTypeOf<never>()
-    expectTypeOf<ParseOutputModifier<'String!', Scalar_String, string>>()
+    expectTypeOf<ParseOutputModifier<Scalar_String, string>>()
       .toEqualTypeOf<string>()
-    expectTypeOf<ParseOutputModifier<'String!!', Scalar_String, string>>()
-      .toEqualTypeOf<never>()
-    expectTypeOf<ParseOutputModifier<'[String!]!', Scalar_String, string>>()
+    expectTypeOf<ParseOutputModifier<[Scalar_String], string>>()
       .toEqualTypeOf<string[]>()
-    expectTypeOf<ParseOutputModifier<'[[String!]!]!', Scalar_String, string>>()
+    expectTypeOf<ParseOutputModifier<[[Scalar_String]], string>>()
       .toEqualTypeOf<string[][]>()
   })
 
   test('ParseInputModifier', () => {
-    expectTypeOf<ParseInputModifier<'String', Scalar_String, string>>()
+    expectTypeOf<ParseInputModifier<Scalar_String | null, string>>()
       .toEqualTypeOf<string | null | undefined>()
-    expectTypeOf<ParseInputModifier<'String]', Scalar_String, string>>()
-      .toEqualTypeOf<never>()
-    expectTypeOf<ParseInputModifier<'String!', Scalar_String, string>>()
+    expectTypeOf<ParseInputModifier<Scalar_String, string>>()
       .toEqualTypeOf<string>()
-    expectTypeOf<ParseInputModifier<'String!!', Scalar_String, string>>()
-      .toEqualTypeOf<never>()
-    expectTypeOf<ParseInputModifier<'[String!]!', Scalar_String, string>>()
+    expectTypeOf<ParseInputModifier<[Scalar_String], string>>()
       .toEqualTypeOf<string[] | string>()
-    expectTypeOf<ParseInputModifier<'[[String!]!]!', Scalar_String, string>>()
+    expectTypeOf<ParseInputModifier<[[Scalar_String]], string>>()
       .toEqualTypeOf<string[][] | string>()
 
     // from spec 3.11 List
     // [Int] [1, 2, 3] [1, 2, 3]
     expectTypeOf([1, 2, 3])
-      .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int | null] | null, number>>()
     // [Int] [1, "b", true] Error: Incorrect item value
     expectTypeOf([1, 'b', true])
       .not
-      .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int | null] | null, number>>()
     // [Int] 1 [1]
     expectTypeOf(1)
-      .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int | null] | null, number>>()
     // [Int] null null
     expectTypeOf(null)
-      .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int | null] | null, number>>()
     // [[Int]] [[1], [2, 3]] [[1], [2, 3]]
     expectTypeOf([[1], [2, 3]])
-      .toExtend<ParseInputModifier<'[[Int]]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[[Scalar_Int | null] | null] | null, number>>()
     // [[Int]] [1, 2, 3] Error: Incorrect item value
     expectTypeOf([1, 2, 3])
       .not
-      .toExtend<ParseInputModifier<'[[Int]]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[[Scalar_Int | null] | null] | null, number>>()
     // [[Int]] 1 [[1]]
     expectTypeOf(1)
-      .toExtend<ParseInputModifier<'[[Int]]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[[Scalar_Int | null] | null] | null, number>>()
     // [[Int]] null null
     expectTypeOf(null)
-      .toExtend<ParseInputModifier<'[[Int]]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[[Scalar_Int | null] | null] | null, number>>()
 
     // from spec 3.12.1 Combining List and Non-Null
     // [Int] [1, 2, null] [1, 2, null]
     expectTypeOf([1, 2, null])
-      .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int | null] | null, number>>()
     // [Int] [1, 2, Error] [1, 2, null] (With logged error)
     expectTypeOf([1, 2, 'a'])
       .not
-      .toExtend<ParseInputModifier<'[Int]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int | null] | null, number>>()
     // [Int]! [1, 2, 3] [1, 2, 3]
     expectTypeOf([1, 2, 3])
-      .toExtend<ParseInputModifier<'[Int]!', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int | null], number>>()
     // [Int]! null Error: Value cannot be null
     expectTypeOf(null)
       .not
-      .toExtend<ParseInputModifier<'[Int]!', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int | null], number>>()
     // [Int]! [1, 2, null] [1, 2, null]
     expectTypeOf([1, 2, null])
-      .toExtend<ParseInputModifier<'[Int]!', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int | null], number>>()
     // [Int]! [1, 2, Error] [1, 2, null] (With logged error)
     expectTypeOf([1, 2, 'a'])
       .not
-      .toExtend<ParseInputModifier<'[Int]!', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int | null], number>>()
     // [Int!] [1, 2, 3] [1, 2, 3]
     expectTypeOf([1, 2, 3])
-      .toExtend<ParseInputModifier<'[Int!]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int] | null, number>>()
     // [Int!] null null
     expectTypeOf(null)
-      .toExtend<ParseInputModifier<'[Int!]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int] | null, number>>()
     // [Int!] [1, 2, null] null (With logged coercion error)
     expectTypeOf([1, 2, null])
       .not
-      .toExtend<ParseInputModifier<'[Int!]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int] | null, number>>()
     // [Int!] [1, 2, Error] null (With logged error)
     expectTypeOf([1, 2, 'a'])
       .not
-      .toExtend<ParseInputModifier<'[Int!]', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int] | null, number>>()
     // [Int!]! [1, 2, 3] [1, 2, 3]
     expectTypeOf([1, 2, 3])
-      .toExtend<ParseInputModifier<'[Int!]!', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int], number>>()
     // [Int!]! null Error: Value cannot be null
     expectTypeOf(null)
       .not
-      .toExtend<ParseInputModifier<'[Int!]!', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int], number>>()
     // [Int!]! [1, 2, null] Error: Item cannot be null
     expectTypeOf([1, 2, null])
       .not
-      .toExtend<ParseInputModifier<'[Int!]!', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int], number>>()
     // [Int!]! [1, 2, Error] Error: Error occurred in item
     expectTypeOf([1, 2, 'a'])
       .not
-      .toExtend<ParseInputModifier<'[Int!]!', Scalar_Int, number>>()
+      .toExtend<ParseInputModifier<[Scalar_Int], number>>()
   })
 
   test('SchemaRequire', () => {
