@@ -1,4 +1,4 @@
-import type { Exact, Expand } from '../internal/utils'
+import type { Exact, Simplify } from '../internal/utils'
 import type { BaseObject, DefineSchema } from './define'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
 import type { DollarPayload } from './dollar'
@@ -20,7 +20,7 @@ export interface OperationPartial<
 export type RequireOperationPartialData<
   T extends OperationPartial<any, any, any>,
 > = T extends OperationPartial<infer Base, infer P, any>
-  ? Expand<ParseObjectSelectionContext<Base, P>>
+  ? Simplify<ParseObjectSelectionContext<Base, P>>
   : never
 
 export interface GraphQueryFunctionPartial<
