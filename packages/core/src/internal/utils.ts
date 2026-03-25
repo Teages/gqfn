@@ -91,6 +91,16 @@ export type Expand<T> = T extends (...args: infer A) => infer R
       : never
     : T
 
+/**
+ * Flatten an intersection type into a single object type, without recursing into values.
+ * Prefer this over `Expand` for result types — it is significantly cheaper for the
+ * TypeScript type-checker because it does not eagerly recurse into every nested property.
+ * @example
+ * type A = { a: number } & { b: string }
+ * type B = Simplify<A> // { a: number, b: string }
+ */
+export type Simplify<T> = T extends object ? { [K in keyof T]: T[K] } : T
+
 export type MayBePartial<T> = { [K in keyof T]: T[K] | null | undefined }
 
 export type IntersectionAvoidEmpty<T, U>

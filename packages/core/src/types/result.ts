@@ -1,4 +1,4 @@
-import type { Expand, FlatRecord, IntersectionAvoidEmpty, MayBePartial, Trim, UnionToIntersection, Values } from '../internal/utils'
+import type { IntersectionAvoidEmpty, MayBePartial, Simplify, Trim, UnionToIntersection, Values } from '../internal/utils'
 import type { BaseObject, BaseScalar, BaseType, Field } from './define'
 import type { DollarPackage } from './dollar'
 import type { ExtractBaseType, ParseOutputModifier, Typename } from './utils'
@@ -7,7 +7,7 @@ export type ParseSelection<
   T extends BaseType<any, any> | undefined,
   Selection,
 > = T extends BaseType<any, any>
-  ? Expand<
+  ? Simplify<
     T extends BaseScalar<any, infer Output, any>
       ? Selection extends true
         ? Output
@@ -49,9 +49,11 @@ export type ParseObjectSelectionContextFields<
 > = T extends BaseObject<any, infer Fields, any>
   ? {
       [K in keyof SelectionObject as ParseSelectionName<K & string>['Name']]:
-      ParseSelectionName<K & string>['Field'] extends '__typename'
-        ? Typename<T>
-        : ParseObjectSelectionContextField<Fields[ParseSelectionName<K & string>['Field']], SelectionObject[K]>
+        ParseSelectionName<K & string> extends infer Parsed extends { Name: string, Field: string }
+          ? Parsed['Field'] extends '__typename'
+            ? Typename<T>
+            : ParseObjectSelectionContextField<Fields[Parsed['Field']], SelectionObject[K]>
+          : never
     }
   : never
 
@@ -105,7 +107,7 @@ export type ParseInlineFragmentReturn<
  */
 export type AnalyzedObjectSelection<
   Selection,
-> = FlatRecord<UnionToIntersection<
+> = Simplify<UnionToIntersection<
   Selection extends Array<infer Items>
     ? Items extends string
       ? { [K in Items]: true }
