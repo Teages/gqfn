@@ -49,11 +49,11 @@ export type ParseObjectSelectionContextFields<
 > = T extends BaseObject<any, infer Fields, any>
   ? {
       [K in keyof SelectionObject as ParseSelectionName<K & string>['Name']]:
-        ParseSelectionName<K & string> extends infer Parsed extends { Name: string, Field: string }
-          ? Parsed['Field'] extends '__typename'
-            ? Typename<T>
-            : ParseObjectSelectionContextField<Fields[Parsed['Field']], SelectionObject[K]>
-          : never
+      ParseSelectionName<K & string> extends infer Parsed extends { Name: string, Field: string }
+        ? Parsed['Field'] extends '__typename'
+          ? Typename<T>
+          : ParseObjectSelectionContextField<Fields[Parsed['Field']], SelectionObject[K]>
+        : never
     }
   : never
 
