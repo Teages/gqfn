@@ -1,4 +1,4 @@
-import type { Exact, Expand } from '../internal/utils'
+import type { Expand } from '../internal/utils'
 import type { BaseObject, DefineSchema } from './define'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
 import type { DollarPayload } from './dollar'
@@ -36,13 +36,7 @@ export interface GraphQueryFunctionPartial<
   >(
     name: Name,
     base: `on ${Type & string}`,
-    selection: Exact<
-      PrepareSelection<
-        FragmentBase<Schema>[Type],
-        Record<string, never>
-      >,
-      Selection
-    >,
+    selection: Selection,
     directives?: Array<DirectiveInput> | DirectivesInputWithDollar<Record<string, never>>,
   ): OperationPartial<
     FragmentBase<Schema>[Type],
@@ -63,13 +57,7 @@ export interface GraphQueryFunctionPartial<
     name: Name,
     base: `on ${Type & string}`,
     variables: Variables,
-    selection: Exact<
-      PrepareSelection<
-        FragmentBase<Schema>[Type],
-        PrepareVariables<NoInfer<Variables>>
-      >,
-      Selection
-    >,
+    selection: Selection,
     directives?: Array<DirectiveInput> | DirectivesInputWithDollar<Record<string, never>>,
   ): OperationPartial<
     FragmentBase<Schema>[Type],
