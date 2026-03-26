@@ -1,3 +1,4 @@
+import type { Exact } from '../internal/utils'
 import type { BaseObject, DefineSchema } from './define'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
 import type { TypedDocumentNode } from './document'
@@ -28,7 +29,13 @@ export interface GraphQueryFunctionFragment<
   >(
     name: Name,
     base: `on ${Type & string}`,
-    selection: Selection,
+    selection: Exact<
+      PrepareSelection<
+        FragmentBase<Schema>[Type],
+        Record<string, never>
+      >,
+      Selection
+    >,
   ): TypedDocumentNode<
     ParseSelection<FragmentBase<Schema>[Type], Selection>,
     Record<string, never>
@@ -47,7 +54,13 @@ export interface GraphQueryFunctionFragment<
     name: Name,
     base: `on ${Type & string}`,
     variables: Variables,
-    selection: Selection,
+    selection: Exact<
+      PrepareSelection<
+        FragmentBase<Schema>[Type],
+        PrepareVariables<NoInfer<Variables>>
+      >,
+      Selection
+    >,
     directives?: Array<DirectiveInput> | DirectivesInputWithDollar<Record<string, never>>,
   ): TypedDocumentNode<
     ParseSelection<FragmentBase<Schema>[Type], Selection>,

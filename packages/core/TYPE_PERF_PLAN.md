@@ -59,10 +59,8 @@ Current (eager — `PrepareSelection<Type, Vars>` is computed immediately as a t
 ```ts
 interface SelectionFnOnField<Type, PreparedArguments, Variables> {
   ($: SelectionDollar<
-      PrepareSelection<Type, Variables>, // ← eagerly expanded
-      PreparedArguments,
-      Variables,
-      Type
+    PrepareSelection<Type, Variables>,  // ← eagerly expanded
+    PreparedArguments, Variables, Type
   >): DollarPackage<any, boolean>
 }
 ```
@@ -101,19 +99,6 @@ Steps 1-2 implemented. Results:
 - ObjectSelection: 276 → 74 (-73%)
 - checkVariableDeclaration: ~2112ms → ~1750ms (-17%)
 - All 66 tests pass
-
-## Applied changes (remove Exact, direct extends only)
-
-Removed all `Exact<Shape, T>` wrappers across `operation.ts`, `fragment.ts`, `partial.ts`, and `dollar.ts`.
-Instead of `selection: Exact<PrepareSelection<...>, T>`, use `selection: T` directly (the generic constraint `T extends PrepareSelection<...>` already enforces correctness).
-
-Results:
-- Type instantiations: 25,511 → 16,975 (-33%)
-- checkVariableDeclaration (query var): ~2130ms → ~353ms (-83%)
-- structuredTypeRelatedTo total: ~2053ms → ~1122ms (-45%)
-- All 66 tests pass
-
-Trade-off: `Exact` previously rejected extra unknown keys (e.g., `{ title: ..., _extra: ... }`). Without it, extra keys are silently ignored (TypeScript structural typing). No existing tests cover this behavior, and it is a minor regression in strictness.
 
 ## Remaining bottleneck: constraint drives recursive expansion
 

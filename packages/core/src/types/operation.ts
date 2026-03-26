@@ -1,3 +1,4 @@
+import type { Exact } from '../internal/utils'
 import type { DefineSchema } from './define'
 import type { DirectiveInput, DirectivesInputWithDollar } from './directive'
 import type { TypedDocumentNode } from './document'
@@ -31,7 +32,13 @@ export interface GraphQueryFunctionCore<
       Record<string, never>
     >,
   >(
-    selection: Selection,
+    selection: Exact<
+      PrepareSelection<
+        OperationTypeObject<Schema, 'Query'>,
+        Record<string, never>
+      >,
+      Selection
+    >,
   ): TypedDocumentNode<
     ParseSelection<OperationTypeObject<Schema, 'Query'>, Selection>,
     Record<string, never>
@@ -45,7 +52,13 @@ export interface GraphQueryFunctionCore<
     >,
   >(
     name: Name,
-    selection: Selection,
+    selection: Exact<
+      PrepareSelection<
+        OperationTypeObject<Schema, GetOperationType<Name>>,
+        Record<string, never>
+      >,
+      Selection
+    >,
   ): TypedDocumentNode<
     ParseSelection<OperationTypeObject<Schema, GetOperationType<Name>>, Selection>,
     Record<string, never>
@@ -62,7 +75,13 @@ export interface GraphQueryFunctionCore<
   >(
     name: Name,
     variables: Variables,
-    selection: Selection,
+    selection: Exact<
+      PrepareSelection<
+        OperationTypeObject<Schema, GetOperationType<Name>>,
+        PrepareVariables<NoInfer<Variables>>
+      >,
+      Selection
+    >,
     directives?: Array<DirectiveInput> | DirectivesInputWithDollar<PrepareVariables<NoInfer<Variables>>>,
   ): TypedDocumentNode<
     ParseSelection<OperationTypeObject<Schema, GetOperationType<Name>>, Selection>,
