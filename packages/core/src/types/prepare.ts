@@ -24,7 +24,7 @@ export type ObjectSelection<
 
 export type ObjectSelectionSimple<
   T extends BaseObject<any, any, any>,
-> = T extends BaseObject<infer Name, infer Fields, any>
+> = T extends BaseObject<infer _Name, infer Fields, any>
   ? WithAlias<ScalarFieldKeys<Fields> | '__typename'>
   : never
 

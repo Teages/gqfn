@@ -92,7 +92,7 @@ export type ParseObjectSelectionContextInlineFragments<
     }>
   : never
 export type ParseInlineFragmentReturn<
-  T extends BaseObject<any, any, any>,
+  _T extends BaseObject<any, any, any>,
   SelectionField,
 > = SelectionField extends (...args: any) => DollarPackage<infer Result, infer IsOptional>
   ? true extends IsOptional

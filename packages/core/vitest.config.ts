@@ -13,6 +13,9 @@ export default defineConfig({
       enabled: true,
       tsconfig: 'test/tsconfig.json',
     },
+    benchmark: {
+      include: ['bench/**/*.bench.ts'],
+    },
   },
   resolve: {
     alias: {
