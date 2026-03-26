@@ -138,11 +138,7 @@ typing, and a shallow dollar with `selection: any` makes inner `$` parameters `a
 2. **Depth-limited constraint**: Use full `PrepareSelection` for depth 0-1 and `any` for
    deeper levels. Would cover most use cases but add type complexity.
 
-3. **Alternative Exact implementation**: Replace `Exact<Shape, T extends Shape>` with a
-   version that doesn't require `T extends Shape`, using a different contextual typing
-   mechanism. Would require fundamental changes to the type checking approach.
-
-4. **TypeScript compiler improvements**: The TS team has been working on deferred type
+3. **TypeScript compiler improvements**: The TS team has been working on deferred type
    resolution. Future TS versions may resolve interface member types more lazily.
 
 ## Files modified
