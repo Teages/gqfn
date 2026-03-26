@@ -30,7 +30,7 @@ describe('type-next/prepare', () => {
   })
 
   test('ObjectSelectionSimple', () => {
-    expectTypeOf<ObjectSelectionSimple<ObjectSelectionContext<Type_User, Record<string, never>>>>()
+    expectTypeOf<ObjectSelectionSimple<Type_User>>()
       .toEqualTypeOf<
         | 'id'
         | 'email'
@@ -46,7 +46,7 @@ describe('type-next/prepare', () => {
         | `${string}: name`
     >()
 
-    expectTypeOf<ObjectSelectionSimple<ObjectSelectionContext<Interface_ItemWithId, Record<string, never>>>>()
+    expectTypeOf<ObjectSelectionSimple<Interface_ItemWithId>>()
       .toEqualTypeOf<
         | 'id'
         | `__typename`

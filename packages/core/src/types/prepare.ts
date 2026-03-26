@@ -19,12 +19,22 @@ export type ObjectSelection<
   T extends BaseObject<any, any, any>,
   Variables extends VariableStore,
 >
-  = | ObjectSelectionSimple<ObjectSelectionContext<T, Variables>>[]
-    | [...ObjectSelectionSimple<ObjectSelectionContext<T, Variables>>[], ObjectSelectionContext<T, Variables>]
+  = | ObjectSelectionSimple<T>[]
+    | [...ObjectSelectionSimple<T>[], ObjectSelectionContext<T, Variables>]
 
-export type ObjectSelectionSimple<Context> = keyof {
-  [K in keyof Context as true extends Context[K] ? K : never]: true
-}
+export type ObjectSelectionSimple<
+  T extends BaseObject<any, any, any>,
+> = T extends BaseObject<infer Name, infer Fields, any>
+  ? WithAlias<ScalarFieldKeys<Fields> | '__typename'>
+  : never
+
+type ScalarFieldKeys<Fields extends Record<string, Field<any, any>>> = {
+  [K in keyof Fields]: Fields[K] extends Field<infer TypeExpr, any>
+    ? ExtractBaseType<TypeExpr> extends BaseScalar<any, any, any>
+      ? K
+      : never
+    : never
+}[keyof Fields]
 
 export type ObjectSelectionContext<
   T extends BaseObject<any, any, any>,
