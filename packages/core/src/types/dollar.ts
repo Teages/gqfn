@@ -1,5 +1,5 @@
 import type { DollarPackageContentSymbol, DollarPackageIsOptionalSymbol } from '../internal/symbol'
-import type { DeprecateFunctionPrototype, Exact } from '../internal/utils'
+import type { DeprecateFunctionPrototype } from '../internal/utils'
 import type { DirectiveInput, HasSkipDirective } from './directive'
 import type { EnumFunction } from './enum'
 import type { VariableStore } from './variable'
@@ -34,14 +34,14 @@ interface SelectionSetDollarFunctionWithArguments<
 > extends DeprecateFunctionPrototype {
   <T extends Shape>(
     arg: Arguments,
-    selection: Exact<Shape, T>
+    selection: T
   ): DollarPackage<T>
 }
 interface SelectionSetDollarFunctionWithoutArguments<
   Shape,
 > extends DeprecateFunctionPrototype {
   <T extends Shape>(
-    selection: Exact<Shape, T>
+    selection: T
   ): DollarPackage<T>
 }
 interface SelectionSetDollarFunctionCouldHaveArguments<
