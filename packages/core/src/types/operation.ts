@@ -70,7 +70,7 @@ export interface GraphQueryFunctionCore<
     VariablesInputs extends string,
     Selection extends PrepareSelection<
       OperationTypeObject<Schema, GetOperationType<Name>>,
-      PrepareVariables<Variables>
+      PrepareVariables<NoInfer<Variables>>
     >,
   >(
     name: Name,

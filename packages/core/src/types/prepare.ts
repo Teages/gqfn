@@ -82,10 +82,9 @@ export interface SelectionFnOnField<
 > {
   (
     $: SelectionDollar<
-      PrepareSelection<Type, Variables>,
+      Type,
       PreparedArguments,
-      Variables,
-      Type
+      Variables
     >
   ): DollarPackage<any, boolean>
 }
@@ -95,10 +94,9 @@ export type SelectionFnOnInlineFragment<
   Variables extends VariableStore,
 > = (
   $: SelectionDollar<
-    ObjectSelection<T, Variables>,
+    T,
     Record<string, never>,
-    Variables,
-    T
+    Variables
   >
 ) => DollarPackage<any, boolean>
 
