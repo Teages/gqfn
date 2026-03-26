@@ -59,13 +59,13 @@ export type ParseObjectSelectionContextField<
   T extends Field<any, any>,
   Selection,
 > = T extends Field<infer TypeExpr, any>
-  ? ExtractBaseType<TypeExpr> extends infer BT extends (BaseType<any, any> | undefined)
-    ? Selection extends (...args: any) => DollarPackage<infer Context, infer IsOptional>
-      ? true extends IsOptional
-        ? ParseOutputModifier<TypeExpr, ParseSelection<BT, Context>> | null | undefined
-        : ParseOutputModifier<TypeExpr, ParseSelection<BT, Context>>
-      : ParseOutputModifier<TypeExpr, ParseSelection<BT, Selection>>
-    : never
+  ? Selection extends (...args: any) => DollarPackage<infer Result, infer IsOptional>
+    ? true extends IsOptional
+      ? ParseOutputModifier<TypeExpr, Result> | null | undefined
+      : ParseOutputModifier<TypeExpr, Result>
+    : ExtractBaseType<TypeExpr> extends infer BT extends (BaseType<any, any> | undefined)
+      ? ParseOutputModifier<TypeExpr, ParseSelection<BT, Selection>>
+      : never
   : never
 
 export type ParseSelectionName<T extends string>
@@ -94,10 +94,10 @@ export type ParseObjectSelectionContextInlineFragments<
 export type ParseInlineFragmentReturn<
   T extends BaseObject<any, any, any>,
   SelectionField,
-> = SelectionField extends (...args: any) => DollarPackage<infer Selection extends Array<any>, infer IsOptional>
+> = SelectionField extends (...args: any) => DollarPackage<infer Result, infer IsOptional>
   ? true extends IsOptional
-    ? MayBePartial<ParseObjectSelection<T, Selection>>
-    : ParseObjectSelection<T, Selection>
+    ? MayBePartial<Result>
+    : Result
   : never
 
 /**

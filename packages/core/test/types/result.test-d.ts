@@ -24,7 +24,7 @@ describe('types/result', () => {
   test('ParseObjectSelectionContext', () => {
     expectTypeOf<ParseObjectSelectionContext<Type_Query, { hello: true }>>()
       .toEqualTypeOf<{ hello: string }>()
-    expectTypeOf<ParseObjectSelectionContext<Type_Query, { '...': () => DollarPackage<['hello']> }>>()
+    expectTypeOf<ParseObjectSelectionContext<Type_Query, { '...': () => DollarPackage<{ hello: string }> }>>()
       .toEqualTypeOf<{ hello: string }>()
   })
 
@@ -84,7 +84,7 @@ describe('types/result', () => {
 
   test('ParseObjectSelectionContextInlineFragments', () => {
     expectTypeOf<ParseObjectSelectionContextInlineFragments<Type_User, {
-      '...': () => DollarPackage<['__typename', 'name', 'email'], true>
+      '...': () => DollarPackage<{ __typename: 'User', name: string, email: string }, true>
     }>>()
       .toEqualTypeOf<{
         __typename: 'User' | null | undefined
@@ -93,7 +93,7 @@ describe('types/result', () => {
       }>()
 
     expectTypeOf<ParseObjectSelectionContextInlineFragments<Union_Data, {
-      '... on User': () => DollarPackage<['__typename', 'name', 'email']>
+      '... on User': () => DollarPackage<{ __typename: 'User', name: string, email: string }>
     }>>()
       .toEqualTypeOf<{
         __typename?: 'Saying' | 'User' | undefined
@@ -105,9 +105,9 @@ describe('types/result', () => {
   })
 
   test('ParseInlineFragmentReturn', () => {
-    expectTypeOf<ParseInlineFragmentReturn<Type_User, () => DollarPackage<['__typename', 'name', 'email']>>>()
+    expectTypeOf<ParseInlineFragmentReturn<Type_User, () => DollarPackage<{ __typename: 'User', name: string, email: string }>>>()
       .toEqualTypeOf<{ __typename: 'User', name: string, email: string }>()
-    expectTypeOf<ParseInlineFragmentReturn<Type_User, () => DollarPackage<['__typename', 'name', 'email'], true>>>()
+    expectTypeOf<ParseInlineFragmentReturn<Type_User, () => DollarPackage<{ __typename: 'User', name: string, email: string }, true>>>()
       .toEqualTypeOf<{ __typename: 'User' | null | undefined, name: string | null | undefined, email: string | null | undefined }>()
   })
 

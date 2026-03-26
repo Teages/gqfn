@@ -1,7 +1,9 @@
 import type { DollarPackageContentSymbol, DollarPackageIsOptionalSymbol } from '../internal/symbol'
 import type { DeprecateFunctionPrototype, Exact } from '../internal/utils'
+import type { BaseType } from './define'
 import type { DirectiveInput, HasSkipDirective } from './directive'
 import type { EnumFunction } from './enum'
+import type { ParseSelection } from './result'
 import type { VariableStore } from './variable'
 
 export interface DollarPayload<Variables extends VariableStore> {
@@ -18,36 +20,41 @@ export type SelectionDollar<
   Shape,
   Arguments,
   Variables extends VariableStore,
-> = SelectionDollarFunction<Shape, Arguments> & DollarPayload<Variables>
+  Type extends BaseType<any, any> | undefined,
+> = SelectionDollarFunction<Shape, Arguments, Type> & DollarPayload<Variables>
 type SelectionDollarFunction<
   Shape,
   Arguments,
+  Type extends BaseType<any, any> | undefined,
 > = Arguments extends Record<string, never>
-  ? SelectionSetDollarFunctionWithoutArguments<Shape>
+  ? SelectionSetDollarFunctionWithoutArguments<Shape, Type>
   : Record<string, never> extends Arguments
-    ? SelectionSetDollarFunctionCouldHaveArguments<Shape, Arguments>
-    : SelectionSetDollarFunctionWithArguments<Shape, Arguments>
+    ? SelectionSetDollarFunctionCouldHaveArguments<Shape, Arguments, Type>
+    : SelectionSetDollarFunctionWithArguments<Shape, Arguments, Type>
 
 interface SelectionSetDollarFunctionWithArguments<
   Shape,
   Arguments,
+  Type extends BaseType<any, any> | undefined,
 > extends DeprecateFunctionPrototype {
   <T extends Shape>(
     arg: Arguments,
     selection: Exact<Shape, T>
-  ): DollarPackage<T>
+  ): DollarPackage<ParseSelection<Type, T>>
 }
 interface SelectionSetDollarFunctionWithoutArguments<
   Shape,
+  Type extends BaseType<any, any> | undefined,
 > extends DeprecateFunctionPrototype {
   <T extends Shape>(
     selection: Exact<Shape, T>
-  ): DollarPackage<T>
+  ): DollarPackage<ParseSelection<Type, T>>
 }
 interface SelectionSetDollarFunctionCouldHaveArguments<
   Shape,
   Arguments,
-> extends SelectionSetDollarFunctionWithArguments<Shape, Arguments>, SelectionSetDollarFunctionWithoutArguments<Shape> { }
+  Type extends BaseType<any, any> | undefined,
+> extends SelectionSetDollarFunctionWithArguments<Shape, Arguments, Type>, SelectionSetDollarFunctionWithoutArguments<Shape, Type> { }
 export type DirectiveDollar<Variables extends VariableStore> = DollarPayload<Variables>
 
 export interface DollarPackage<T, IsOptional extends boolean = false> {

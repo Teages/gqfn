@@ -74,9 +74,10 @@ export interface SelectionFnOnField<
     $: SelectionDollar<
       PrepareSelection<Type, Variables>,
       PreparedArguments,
-      Variables
+      Variables,
+      Type
     >
-  ): DollarPackage<PrepareSelection<Type, Variables>, boolean>
+  ): DollarPackage<any, boolean>
 }
 
 export type SelectionFnOnInlineFragment<
@@ -86,9 +87,10 @@ export type SelectionFnOnInlineFragment<
   $: SelectionDollar<
     ObjectSelection<T, Variables>,
     Record<string, never>,
-    Variables
+    Variables,
+    T
   >
-) => DollarPackage<ObjectSelection<T, Variables>, boolean>
+) => DollarPackage<any, boolean>
 
 export type AliasSpace = ' ' | ''
 export type WithAlias<
