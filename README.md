@@ -1,3 +1,5 @@
+> Not under maintenance, use https://github.com/Teages/gazania
+
 # GQFn
 
 GQFn provides a *typed* way to write GraphQL queries with the help of TypeScript.
