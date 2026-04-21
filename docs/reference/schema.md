@@ -125,9 +125,9 @@ export type RoleEnum
 type Enum_RoleEnum = EnumType<'RoleEnum', RoleEnum>
 // ---cut---
 type UserInput = InputObjectType<'UserInput', {
-  name: Input<'String!', Scalar_String>
-  role: Input<'RoleEnum!', Enum_RoleEnum>
-  email: Input<'String', Scalar_String>
+  name: Input<Scalar_String>
+  role: Input<Enum_RoleEnum>
+  email: Input<Scalar_String | null>
 }>
 ```
 
@@ -170,28 +170,28 @@ export type RoleEnum
 
 // ---cut---
 type Query = ObjectType<'Query', {
-  users: Field<'[User!]!', User>
-  todo: Field<'Todo!', Todo, {
-    id: Input<'ID!', Scalar_ID>
+  users: Field<[User]>
+  todo: Field<Todo, {
+    id: Input<Scalar_ID>
   }>
-  allIdItems: Field<'[ItemWithId!]!', ItemWithId>
-  allData: Field<'[Data!]!', Data>
+  allIdItems: Field<[ItemWithId]>
+  allData: Field<[Data]>
 }>
 
 type Mutation = ObjectType<'Mutation', {
-  addTodo: Field<'Todo!', Todo, {
-    content: Input<'String!', Scalar_String>
+  addTodo: Field<Todo, {
+    content: Input<Scalar_String>
   }>
 }>
 
 type Subscription = ObjectType<'Subscription', {
-  watchTodo: Field<'Todo', Todo, {
-    id: Input<'ID!', Scalar_ID>
+  watchTodo: Field<Todo | null, {
+    id: Input<Scalar_ID>
   }>
 }>
 
 type ItemWithId = InterfaceType<'ItemWithId', {
-  id: Field<'Int!', Scalar_Int>
+  id: Field<Scalar_Int>
 }, {
   User: User
   Todo: Todo
@@ -203,18 +203,18 @@ type Data = UnionType<'Data', {
 }>
 
 type User = ObjectType<'User', {
-  id: Field<'ID!', Scalar_ID>
-  name: Field<'String!', Scalar_String>
-  email: Field<'String', Scalar_String>
-  todo: Field<'[Todo!]!', Todo>
+  id: Field<Scalar_ID>
+  name: Field<Scalar_String>
+  email: Field<Scalar_String | null>
+  todo: Field<[Todo]>
 }>
 
 type Todo = ObjectType<'Todo', {
-  id: Field<'ID!', Scalar_ID>
-  title: Field<'String', Scalar_String>
-  content: Field<'String!', Scalar_String>
-  isDone: Field<'Boolean!', Scalar_Boolean>
-  owner: Field<'User!', User>
+  id: Field<Scalar_ID>
+  title: Field<Scalar_String | null>
+  content: Field<Scalar_String>
+  isDone: Field<Scalar_Boolean>
+  owner: Field<User>
 }>
 
 export type Schema = DefineSchema<{

@@ -1,7 +1,7 @@
 import type { PrepareSelectionArgument } from './argument'
 import type { BaseObject, BaseScalar, BaseType, Field } from './define'
 import type { DollarPackage, SelectionDollar } from './dollar'
-import type { TypenameField } from './utils'
+import type { ExtractBaseType, TypenameField } from './utils'
 import type { VariableStore } from './variable'
 
 export type PrepareSelection<
@@ -47,11 +47,13 @@ export type ObjectSelectionOnInlineFragments<
   : never
 
 export type SelectionOnField<
-  T extends Field<any, any, any>,
+  T extends Field<any, any>,
   Variables extends VariableStore,
-> = T extends Field<any, infer Type, infer Arguments>
-  ? | SelectionSimplyOnField<Type, PrepareSelectionArgument<Arguments>>
-  | SelectionFnOnField<Type, PrepareSelectionArgument<Arguments>, Variables>
+> = T extends Field<infer TypeExpr, infer Arguments>
+  ? ExtractBaseType<TypeExpr> extends infer BT extends BaseType<any, any>
+    ? | SelectionSimplyOnField<BT, PrepareSelectionArgument<Arguments>>
+    | SelectionFnOnField<BT, PrepareSelectionArgument<Arguments>, Variables>
+    : never
   : never
 
 export type SelectionSimplyOnField<

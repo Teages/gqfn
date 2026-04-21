@@ -8,92 +8,92 @@ type Scalar_Boolean = ScalarType<'Boolean', boolean, boolean>
 type Scalar_ID = ScalarType<'ID', string | number, string>
 
 type Input_ContinentFilterInput = InputObjectType<'ContinentFilterInput', {
-  code: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
+  code: Input<Input_StringQueryOperatorInput | null>
 }>
 
 type Input_CountryFilterInput = InputObjectType<'CountryFilterInput', {
-  code: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
-  continent: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
-  currency: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
-  name: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
+  code: Input<Input_StringQueryOperatorInput | null>
+  continent: Input<Input_StringQueryOperatorInput | null>
+  currency: Input<Input_StringQueryOperatorInput | null>
+  name: Input<Input_StringQueryOperatorInput | null>
 }>
 
 type Input_LanguageFilterInput = InputObjectType<'LanguageFilterInput', {
-  code: Input<'StringQueryOperatorInput', Input_StringQueryOperatorInput>
+  code: Input<Input_StringQueryOperatorInput | null>
 }>
 
 type Input_StringQueryOperatorInput = InputObjectType<'StringQueryOperatorInput', {
-  eq: Input<'String', Scalar_String>
-  in: Input<'[String!]', Scalar_String>
-  ne: Input<'String', Scalar_String>
-  nin: Input<'[String!]', Scalar_String>
-  regex: Input<'String', Scalar_String>
+  eq: Input<Scalar_String | null>
+  in: Input<[Scalar_String] | null>
+  ne: Input<Scalar_String | null>
+  nin: Input<[Scalar_String] | null>
+  regex: Input<Scalar_String | null>
 }>
 
 type Type_Continent = ObjectType<'Continent', {
-  code: Field<'ID!', Scalar_ID>
-  countries: Field<'[Country!]!', Type_Country>
-  name: Field<'String!', Scalar_String>
+  code: Field<Scalar_ID>
+  countries: Field<[Type_Country]>
+  name: Field<Scalar_String>
 }>
 
 type Type_Country = ObjectType<'Country', {
-  awsRegion: Field<'String!', Scalar_String>
-  capital: Field<'String', Scalar_String>
-  code: Field<'ID!', Scalar_ID>
-  continent: Field<'Continent!', Type_Continent>
-  currencies: Field<'[String!]!', Scalar_String>
-  currency: Field<'String', Scalar_String>
-  emoji: Field<'String!', Scalar_String>
-  emojiU: Field<'String!', Scalar_String>
-  languages: Field<'[Language!]!', Type_Language>
-  name: Field<'String!', Scalar_String, {
-    lang: Input<'String', Scalar_String>
+  awsRegion: Field<Scalar_String>
+  capital: Field<Scalar_String | null>
+  code: Field<Scalar_ID>
+  continent: Field<Type_Continent>
+  currencies: Field<[Scalar_String]>
+  currency: Field<Scalar_String | null>
+  emoji: Field<Scalar_String>
+  emojiU: Field<Scalar_String>
+  languages: Field<[Type_Language]>
+  name: Field<Scalar_String, {
+    lang: Input<Scalar_String | null>
   }>
-  native: Field<'String!', Scalar_String>
-  phone: Field<'String!', Scalar_String>
-  phones: Field<'[String!]!', Scalar_String>
-  states: Field<'[State!]!', Type_State>
-  subdivisions: Field<'[Subdivision!]!', Type_Subdivision>
+  native: Field<Scalar_String>
+  phone: Field<Scalar_String>
+  phones: Field<[Scalar_String]>
+  states: Field<[Type_State]>
+  subdivisions: Field<[Type_Subdivision]>
 }>
 
 type Type_Language = ObjectType<'Language', {
-  code: Field<'ID!', Scalar_ID>
-  name: Field<'String!', Scalar_String>
-  native: Field<'String!', Scalar_String>
-  rtl: Field<'Boolean!', Scalar_Boolean>
+  code: Field<Scalar_ID>
+  name: Field<Scalar_String>
+  native: Field<Scalar_String>
+  rtl: Field<Scalar_Boolean>
 }>
 
 type Type_Query = ObjectType<'Query', {
-  continent: Field<'Continent', Type_Continent, {
-    code: Input<'ID!', Scalar_ID>
+  continent: Field<Type_Continent | null, {
+    code: Input<Scalar_ID>
   }>
-  continents: Field<'[Continent!]!', Type_Continent, {
-    filter: Input<'ContinentFilterInput', Input_ContinentFilterInput>
+  continents: Field<[Type_Continent], {
+    filter: Input<Input_ContinentFilterInput | null>
   }>
-  countries: Field<'[Country!]!', Type_Country, {
-    filter: Input<'CountryFilterInput', Input_CountryFilterInput>
+  countries: Field<[Type_Country], {
+    filter: Input<Input_CountryFilterInput | null>
   }>
-  country: Field<'Country', Type_Country, {
-    code: Input<'ID!', Scalar_ID>
+  country: Field<Type_Country | null, {
+    code: Input<Scalar_ID>
   }>
-  language: Field<'Language', Type_Language, {
-    code: Input<'ID!', Scalar_ID>
+  language: Field<Type_Language | null, {
+    code: Input<Scalar_ID>
   }>
-  languages: Field<'[Language!]!', Type_Language, {
-    filter: Input<'LanguageFilterInput', Input_LanguageFilterInput>
+  languages: Field<[Type_Language], {
+    filter: Input<Input_LanguageFilterInput | null>
   }>
 }>
 
 type Type_State = ObjectType<'State', {
-  code: Field<'String', Scalar_String>
-  country: Field<'Country!', Type_Country>
-  name: Field<'String!', Scalar_String>
+  code: Field<Scalar_String | null>
+  country: Field<Type_Country>
+  name: Field<Scalar_String>
 }>
 
 type Type_Subdivision = ObjectType<'Subdivision', {
-  code: Field<'ID!', Scalar_ID>
-  emoji: Field<'String', Scalar_String>
-  name: Field<'String!', Scalar_String>
+  code: Field<Scalar_ID>
+  emoji: Field<Scalar_String | null>
+  name: Field<Scalar_String>
 }>
 
 export type Schema = DefineSchema<{
